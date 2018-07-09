@@ -11,10 +11,28 @@
 |
 */
 
+// -------------------[USER]-------------------
+
+//  [PUBLIC MAP]
 Route::get('/', function () {
     return view('home');
 });
 
-Route::get('/contact', function () {
-    return view('contact');
-});
+//  [CONTACT]
+//Need to think if I must make a whole new view for the contact form. Maybe a simple prompt on the map view could be enough.
+// Route::get('/contact', function () {
+//     return view('contact');
+// });
+
+
+// -------------------[ADMIN]-------------------
+
+//  [CONNEXION]
+
+//  [ADMIN LIST]
+
+//  [EDIT/CREATE CATEGORIES]
+
+//  [EDIT/CREATE REFERENCES]
+
+//  [EDIT/CREATE POINTS]

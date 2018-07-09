@@ -14,6 +14,8 @@
 // import 'leaflet.markercluster'
 require('../../../../node_modules/leaflet/dist/leaflet.css')
 require('../../../../node_modules/leaflet.markercluster/dist/MarkerCluster.css')
+require('../../../../node_modules/geoportal-extensions-leaflet/dist/GpPluginLeaflet.css')
+
 import MapControls from './MapControls.vue'
 
 const L = window.L;

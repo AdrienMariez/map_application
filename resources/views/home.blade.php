@@ -18,6 +18,7 @@
             integrity="sha512-/Nsx9X4HebavoBvEBuyp3I7od5tA0UzAxs+j83KgC8PU0kgB4XiK4Lfe4y4cgBtaRJQEIFCW+oC506aPT2L1zw=="
             crossorigin="">
         </script>
+        <script src="../../node_modules/geoportal-extensions-leaflet/dist/GpPluginLeaflet.js" data-key="CLEAPI"></script>
 
     </head>
     <body>
