@@ -1,8 +1,38 @@
+use :
+
 cd exercises/july_laravel_vuejs/map_application
 
 php artisan serve
 
 npm run watch
+
+Installation :
+
+Clone repository:
+
+    git clone git@github.com:AdrienMariez/map_application.git
+
+Go in the folder:
+
+    cd map_application
+
+Install all laravel dependencies:
+
+    composer install
+
+Modify .env file for Db structure :
+
+    cp .env.example .env
+
+    Modify DB_* value in .env with your database config.
+
+Generate application key:
+
+    php artisan key:generate
+
+Run migration table:
+
+    php artisan migrate
 
 Need to see :
     http://www.ign.fr/institut/actus/choisir-services-en-ligne-geoportail
@@ -20,6 +50,11 @@ Sources :
         https://github.com/herusdianto/laravel-vue-crud
         https://github.com/anthonygore/vue-laravel-crud
         https://github.com/vicmars5/skycatch-challenge
+
+    database structure for languages :
+        https://www.apphp.com/tutorials/index.php?page=multilanguage-database-design-in-mysql
+    database multiple rows as primary :
+        https://stackoverflow.com/questions/1110349/how-can-i-define-a-composite-primary-key-in-sql
 
 <p align="center"><img src="https://laravel.com/assets/img/components/logo-laravel.svg"></p>
 
