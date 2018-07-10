@@ -34,6 +34,11 @@ Run migration table:
 
     php artisan migrate
 
+-------------------
+Models :
+skycatch-challenge
+-------------------
+
 Need to see :
     http://www.ign.fr/institut/actus/choisir-services-en-ligne-geoportail
 
@@ -53,8 +58,13 @@ Sources :
 
     database structure for languages :
         https://www.apphp.com/tutorials/index.php?page=multilanguage-database-design-in-mysql
+
     database multiple rows as primary :
         https://stackoverflow.com/questions/1110349/how-can-i-define-a-composite-primary-key-in-sql
+
+    laravel RESTful API
+        https://www.toptal.com/laravel/restful-laravel-api-tutorial
+        https://medium.com/js-dojo/the-ultimate-vue-js-laravel-crud-tutorial-3640baf7eda0
 
 <p align="center"><img src="https://laravel.com/assets/img/components/logo-laravel.svg"></p>
 

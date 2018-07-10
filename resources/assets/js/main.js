@@ -9,6 +9,8 @@ require('../../../node_modules/leaflet/dist/leaflet.css')
 require('../../../node_modules/leaflet.markercluster/dist/MarkerCluster.css')
 require('../../../node_modules/geoportal-extensions-leaflet/dist/GpPluginLeaflet.css')
 
+require('./bootstrap');
+
 import App from './App.vue'
 import { store } from './store'
 
