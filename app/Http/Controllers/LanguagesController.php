@@ -16,18 +16,18 @@ class LanguagesController extends Controller
 
     public function create(Generator $faker)
     {
-        $Language = new Language();
-        $Language->name = $faker->lexify('????????');
-        $Language->save();
+        $language = new Language();
+        $language->name = $faker->lexify('????????');
+        $language->save();
 
         return response($Language->jsonSerialize(), Response::HTTP_CREATED);
     }
 
     public function update(Request $request, $id)
     {
-        $Language = Language::findOrFail($id);
-        $Language->name = $request->name;
-        $Language->save();
+        $language = Language::findOrFail($id);
+        $language->name = $request->name;
+        $language->save();
 
         return response(null, Response::HTTP_OK);
     }

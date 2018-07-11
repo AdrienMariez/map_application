@@ -29,6 +29,10 @@ Route::resource('/references', 'ReferencesController', [
     'except' => ['edit', 'show', 'store']
 ]);
 
+Route::resource('/referenceNames', 'ReferenceNameController', [
+    'except' => ['edit', 'show', 'store']
+]);
+
 Route::resource('/categories', 'CategoriesController', [
     'except' => ['edit', 'show', 'store']
 ]);

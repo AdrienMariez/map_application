@@ -23059,20 +23059,28 @@ function Reference(_ref2) {
     this.weight = weight;
     this.fk_category_id = fk_category_id;
 }
-function Category(_ref3) {
+function ReferenceName(_ref3) {
     var id = _ref3.id,
-        icon = _ref3.icon,
-        color = _ref3.color,
-        weight = _ref3.weight;
+        name = _ref3.name;
+
+    this.id = id;
+    this.text = text;
+    this.fk_language_id = fk_language_id;
+}
+function Category(_ref4) {
+    var id = _ref4.id,
+        icon = _ref4.icon,
+        color = _ref4.color,
+        weight = _ref4.weight;
 
     this.id = id;
     this.icon = icon;
     this.color = color;
     this.weight = weight;
 }
-function Language(_ref4) {
-    var id = _ref4.id,
-        name = _ref4.name;
+function Language(_ref5) {
+    var id = _ref5.id,
+        name = _ref5.name;
 
     this.id = id;
     this.name = name;
@@ -23089,6 +23097,7 @@ function Language(_ref4) {
             languages: [],
             categories: [],
             references: [],
+            referenceNames: [],
             working: false
         };
     },
@@ -23103,26 +23112,26 @@ function Language(_ref4) {
 
             this.mute = true;
 
-            window.axios.get('/api/points/create').then(function (_ref5) {
-                var data = _ref5.data;
+            window.axios.get('/api/points/create').then(function (_ref6) {
+                var data = _ref6.data;
 
                 _this.points.push(new Point(data));
                 _this.mute = false;
             });
-            window.axios.get('/api/languages/create').then(function (_ref6) {
-                var data = _ref6.data;
+            window.axios.get('/api/languages/create').then(function (_ref7) {
+                var data = _ref7.data;
 
                 _this.languages.push(new Language(data));
                 _this.mute = false;
             });
-            window.axios.get('/api/categories/create').then(function (_ref7) {
-                var data = _ref7.data;
+            window.axios.get('/api/categories/create').then(function (_ref8) {
+                var data = _ref8.data;
 
                 _this.categories.push(new Category(data));
                 _this.mute = false;
             });
-            window.axios.get('/api/references/create').then(function (_ref8) {
-                var data = _ref8.data;
+            window.axios.get('/api/references/create').then(function (_ref9) {
+                var data = _ref9.data;
 
                 _this.references.push(new Reference(data));
                 _this.mute = false;
@@ -23132,13 +23141,13 @@ function Language(_ref4) {
             var _this2 = this;
 
             this.mute = true;
-            window.axios.get('/api/points').then(function (_ref9) {
-                var data = _ref9.data;
+            window.axios.get('/api/points').then(function (_ref10) {
+                var data = _ref10.data;
 
                 data.forEach(function (point) {
                     //loops over each point in db
-                    // console.log("point :");
-                    // console.log(point);
+                    console.log("point :");
+                    console.log(point);
                     _this2.points.push(new Point(point));
                 });
                 _this2.mute = false;
@@ -23173,8 +23182,8 @@ function Language(_ref4) {
             var _this5 = this;
 
             this.mute = true;
-            window.axios.get('/api/references').then(function (_ref10) {
-                var data = _ref10.data;
+            window.axios.get('/api/references').then(function (_ref11) {
+                var data = _ref11.data;
 
                 data.forEach(function (reference) {
                     //loops over each reference in db
@@ -23186,39 +23195,59 @@ function Language(_ref4) {
             });
         },
 
-        //CATEGORIES READ
-        readCategories: function readCategories() {
+        //REFERENCE NAMES READ
+        readReferenceName: function readReferenceName() {
             var _this6 = this;
 
             this.mute = true;
-            window.axios.get('/api/categories').then(function (_ref11) {
-                var data = _ref11.data;
+            console.log(window.axios.get('/api/referenceNames'));
 
-                data.forEach(function (category) {
-                    //loops over each category in db
-                    console.log("category :");
-                    console.log(category);
-                    _this6.categories.push(new Category(category));
+            window.axios.get('/api/referenceNames').then(function (_ref12) {
+                var data = _ref12.data;
+
+                data.forEach(function (referenceName) {
+                    //loops over each language in db
+                    console.log("referenceName :");
+                    console.log(referenceName);
+                    _this6.referenceNames.push(new ReferenceName(referenceName));
                 });
                 _this6.mute = false;
             });
         },
 
-        //LANGUAGES READ
-        readLanguages: function readLanguages() {
+        //CATEGORIES READ
+        readCategories: function readCategories() {
             var _this7 = this;
 
             this.mute = true;
-            window.axios.get('/api/languages').then(function (_ref12) {
-                var data = _ref12.data;
+            window.axios.get('/api/categories').then(function (_ref13) {
+                var data = _ref13.data;
+
+                data.forEach(function (category) {
+                    //loops over each category in db
+                    console.log("category :");
+                    console.log(category);
+                    _this7.categories.push(new Category(category));
+                });
+                _this7.mute = false;
+            });
+        },
+
+        //LANGUAGES READ
+        readLanguages: function readLanguages() {
+            var _this8 = this;
+
+            this.mute = true;
+            window.axios.get('/api/languages').then(function (_ref14) {
+                var data = _ref14.data;
 
                 data.forEach(function (language) {
                     //loops over each language in db
-                    // console.log("language :");
-                    // console.log(language);
-                    _this7.languages.push(new Language(language));
+                    console.log("language :");
+                    console.log(language);
+                    _this8.languages.push(new Language(language));
                 });
-                _this7.mute = false;
+                _this8.mute = false;
             });
         }
     },
@@ -23229,16 +23258,19 @@ function Language(_ref4) {
     created: function created() {
         this.readPoints();
         this.readReferences();
+        this.readReferenceName();
         this.readLanguages();
         this.readCategories();
-        // console.log("points"); 
-        // console.log(this.points); 
-        // console.log("references"); 
-        // console.log(this.references); 
-        // console.log("categories"); 
-        // console.log(this.categories); 
-        // console.log("languages"); 
-        // console.log(this.languages); 
+        console.log("points");
+        console.log(this.points);
+        console.log("references");
+        console.log(this.references);
+        console.log("referenceNames");
+        console.log(this.referenceNames);
+        console.log("categories");
+        console.log(this.categories);
+        console.log("languages");
+        console.log(this.languages);
     },
 
     components: {

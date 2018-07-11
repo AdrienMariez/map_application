@@ -203,6 +203,11 @@
     this.weight = weight;
     this.fk_category_id = fk_category_id;
   }
+function ReferenceName({ id, name}) {
+    this.id = id;
+    this.text = text;
+    this.fk_language_id = fk_language_id;
+  }
   function Category({ id, icon, color, weight}) {
     this.id = id;
     this.icon = icon;
@@ -225,6 +230,7 @@ import PointListComponent from './PointList.vue';
         languages: [],
         categories: [],
         references: [],
+        referenceNames: [],
         working: false,
       }
     },
@@ -258,8 +264,8 @@ import PointListComponent from './PointList.vue';
             window.axios.get('/api/points').then(({ data }) => {
             data.forEach(point => {
                 //loops over each point in db
-                // console.log("point :");
-                // console.log(point);
+                console.log("point :");
+                console.log(point);
                 this.points.push(new Point(point));
                 
             });
@@ -295,6 +301,22 @@ import PointListComponent from './PointList.vue';
             this.mute = false;
             });
         },
+    //REFERENCE NAMES READ
+        readReferenceName() {
+            this.mute = true;
+            console.log(window.axios.get('/api/referenceNames'));
+            
+            window.axios.get('/api/referenceNames').then(({ data }) => {
+            data.forEach(referenceName => {
+                //loops over each language in db
+                console.log("referenceName :");
+                console.log(referenceName);
+                this.referenceNames.push(new ReferenceName(referenceName));
+                
+            });
+            this.mute = false;
+            });
+        },
     //CATEGORIES READ
         readCategories() {
             this.mute = true;
@@ -314,8 +336,8 @@ import PointListComponent from './PointList.vue';
             window.axios.get('/api/languages').then(({ data }) => {
             data.forEach(language => {
                 //loops over each language in db
-                // console.log("language :");
-                // console.log(language);
+                console.log("language :");
+                console.log(language);
                 this.languages.push(new Language(language));
                 
             });
@@ -332,16 +354,19 @@ import PointListComponent from './PointList.vue';
     created() {
         this.readPoints();
         this.readReferences();
+        this.readReferenceName();
         this.readLanguages();
         this.readCategories();
-        // console.log("points"); 
-        // console.log(this.points); 
-        // console.log("references"); 
-        // console.log(this.references); 
-        // console.log("categories"); 
-        // console.log(this.categories); 
-        // console.log("languages"); 
-        // console.log(this.languages); 
+        console.log("points"); 
+        console.log(this.points); 
+        console.log("references"); 
+        console.log(this.references); 
+        console.log("referenceNames"); 
+        console.log(this.referenceNames); 
+        console.log("categories"); 
+        console.log(this.categories); 
+        console.log("languages"); 
+        console.log(this.languages); 
     },
     components: {
         MapControls,
