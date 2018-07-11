@@ -32,7 +32,13 @@ class PointsController extends Controller
     public function update(Request $request, $id)
     {
         $point = Point::findOrFail($id);
+        $point->link = $request->link;
+        $point->icon = $request->icon;
         $point->color = $request->color;
+        $point->longitude = $request->longitude;
+        $point->lattitude = $request->lattitude;
+        $point->uses_image = $request->uses_image;
+        $point->image_path = $request->image_path;
         $point->save();
 
         return response(null, Response::HTTP_OK);

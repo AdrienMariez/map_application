@@ -21,6 +21,7 @@
 </template>
 
 <script>
+//REMOVE ALL ?
 export default {
   data() {
     return {
@@ -76,7 +77,6 @@ export default {
           this.$store.commit('addPlace', place)
           this.clear()
         }
-        console.log('Places form befor set center');
         this.$store.commit('locationsMap_center', place.location)
         this.$store.commit('placesForm_setPlace', null)
       } else {

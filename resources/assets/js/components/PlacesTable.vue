@@ -34,6 +34,7 @@
 </template>
 
 <script>
+//REMOVE ALL
 const pageLen = 10
 export default {
   computed: {

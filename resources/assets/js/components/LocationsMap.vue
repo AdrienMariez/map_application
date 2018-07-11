@@ -6,10 +6,32 @@
 
     <map-controls id="controls" v-model="zoomLevel" @input="input"></map-controls>
 
+    <!-- TEST NAV -->
+          <!-- @displayPoints="displayPoints" -->
+        <point-display-component
+          v-for="point in points"
+          v-bind="point"
+          :key="point.id"
+          @displayPoints="displayPoints"
+        >
+        </point-display-component>
+    <!-- END TEST NAV -->
+
   </v-card>
 </template>
 
 <script>
+  function Point({ id, link, icon, color, longitude, lattitude, uses_image, image_path}) {
+    this.id = id;
+    this.link = link;
+    this.icon = icon;
+    this.color = color;
+    this.longitude = longitude;
+    this.lattitude = lattitude;
+    this.uses_image = uses_image;
+    this.image_path = image_path;
+  }
+
 // import 'leaflet'
 // import 'leaflet.markercluster'
 require('../../../../node_modules/leaflet/dist/leaflet.css')
@@ -17,6 +39,7 @@ require('../../../../node_modules/leaflet.markercluster/dist/MarkerCluster.css')
 require('../../../../node_modules/geoportal-extensions-leaflet/dist/GpPluginLeaflet.css')
 
 import MapControls from './MapControls.vue'
+import PointDisplayComponent from './PointDisplay.vue';
 
 const L = window.L;
 export default {
@@ -25,7 +48,8 @@ export default {
       map: [],
       markers: null,
       zoom: 14,
-      zoomLevel: 14
+      zoomLevel: 14,
+      points: [],
     }
   },
   computed: {
@@ -111,6 +135,34 @@ export default {
       this.zoomLevel+=newValue;
 
       this.map.setZoom(this.zoomLevel);
+    },
+    readPoints() {
+      this.mute = true;
+      // const markers = new L.FeatureGroup().addTo(map);
+      window.axios.get('/api/points').then(({ data }) => {
+        data.forEach(point => {
+          //looping for each object "point"
+
+          this.points.push(new Point(point));
+
+          // console.log("location loop");
+          // console.log(point);
+          // this.displayPoints(point);
+          // const m = L.marker([point.longitude, point.lattitude])
+          //   .addTo(map);
+          // const p = L.marker([point.lattitude, point.longitude])
+          //   .addTo(map);
+        });
+        this.mute = false;
+      });
+    },
+    displayPoints(point) {
+      console.log("back in ussr");
+      console.log(point);
+      // const m = L.marker([point.longitude, point.lattitude])
+      //   .addTo(map);
+      // const p = L.marker([point.lattitude, point.longitude])
+      //   .addTo(map);
     }
   },
   mounted() {
@@ -141,19 +193,20 @@ export default {
       // map : mapbox.streets
       //satellite : i81oam9h
 
-      const map = L.map('map').setView([44.5040577, 1.1874496], this.zoom)
-      L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+    const map = L.map('map').setView([44.5040577, 1.1874496], this.zoom)
+    L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
         minZoom: 10,
         maxZoom: 18,
         id: 'mapbox.streets',
         accessToken: 'pk.eyJ1IjoiYmlib3VuIiwiYSI6ImNqaGhvdTc1ZzAyYXIzZW5yN3ZnaThrdnMifQ.-m9db8kuRMAOEiSsdvQTQA',
         zoomControl: false
-      }).addTo(map);
+    }).addTo(map);
 
-      this.map = map;
-      this.addPlaces(this.places);
+    this.map = map;
+    this.addPlaces(this.places);
       
-      map.zoomControl.remove();
+    map.zoomControl.remove();
+    
       // map.touchZoom.disable();
       // map.doubleClickZoom.disable();
       // map.scrollWheelZoom.disable();
@@ -186,8 +239,13 @@ export default {
         //   position:'topright'
         // }).addTo(map);
   },
+    created() {
+      this.readPoints();
+      // console.log(this.points); 
+    },
   components: {
     MapControls,
+    PointDisplayComponent
   }
 }
 </script>

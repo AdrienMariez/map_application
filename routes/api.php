@@ -20,3 +20,15 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::resource('/points', 'PointsController', [
     'except' => ['edit', 'show', 'store']
 ]);
+
+Route::resource('/languages', 'LanguagesController', [
+    'except' => ['edit', 'show', 'store']
+]);
+
+Route::resource('/references', 'ReferencesController', [
+    'except' => ['edit', 'show', 'store']
+]);
+
+Route::resource('/categories', 'CategoriesController', [
+    'except' => ['edit', 'show', 'store']
+]);
