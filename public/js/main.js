@@ -23114,6 +23114,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 
 //Needed for promises to work
@@ -23189,6 +23192,7 @@ function Point(_ref6) {
     this.uses_image = uses_image;
     this.image_path = image_path;
 }
+//END Needed for promises to work
 
 
 
@@ -23196,13 +23200,14 @@ function Point(_ref6) {
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
+            red: "red",
             drawer: true,
             mini: false,
             fr: true,
             points: [],
             languages: [],
             // TO CHANGE : languageSelected basic value should be 1- french OR 2- client language. If 1-, set to 0,if 2-,ask google how.
-            languageSelected: 1,
+            languageSelected: 0,
             categories: [],
             categoriesNames: [],
             references: [],
@@ -23381,7 +23386,6 @@ function Point(_ref6) {
         }
     },
     computed: {
-        // function
         functionName: function functionName() {}
     },
     created: function created() {
@@ -23656,7 +23660,7 @@ exports = module.exports = __webpack_require__(1)();
 
 
 // module
-exports.push([module.i, "\n.noPaddingLeft[data-v-390defd6]{\n      margin-left: -15% !important;\n}\n.buttonContact[data-v-390defd6]{\n      height: 60px;\n      width: 100px;\n      position: absolute;\n      right: 0;\n      bottom: 0;\n      z-index: 1;\n}\n.buttonContact > button[data-v-390defd6]{\n      right: 5px;\n}\n.selectTop[data-v-390defd6]{\n      z-index: 200;\n      max-width: 100px;\n}\n.shadow[data-v-390defd6]{\n      /* text-shadow: 0px 0px 10px black; */\n      text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;\n}\n.logoContainer > img[data-v-390defd6]{\n      width: 200px;\n      height: 200px;\n}\n.logoContainerMedium > img[data-v-390defd6]{\n      width: 80px;\n      height: 80px;\n}\n.logoContainerMini[data-v-390defd6]{\n      height: 100%;\n}\n.logoContainerMini > img[data-v-390defd6]{\n      width: 48px;\n      height: 48px;\n}\n\n/* #publicMapControls{\n  float: right;\n  border: 5px;\n  border-color: brown;\n  border-style: solid;\n  z-index: 100;\n} */\n\n\n", ""]);
+exports.push([module.i, "\n.noPaddingLeft[data-v-390defd6]{\n      margin-left: -15% !important;\n}\n.buttonContact[data-v-390defd6]{\n      height: 60px;\n      width: 100px;\n      position: absolute;\n      right: 0;\n      bottom: 0;\n      z-index: 1;\n}\n.buttonContact > button[data-v-390defd6]{\n      right: 5px;\n}\n.selectTop[data-v-390defd6]{\n      z-index: 200;\n      max-width: 100px;\n}\n  /* .shadow{\n      text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;\n  } */\n.logoContainer > img[data-v-390defd6]{\n      width: 200px;\n      height: 200px;\n}\n.logoContainerMedium > img[data-v-390defd6]{\n      width: 80px;\n      height: 80px;\n}\n.logoContainerMini[data-v-390defd6]{\n      height: 100%;\n}\n.logoContainerMini > img[data-v-390defd6]{\n      width: 48px;\n      height: 48px;\n}\n\n/* #publicMapControls{\n  float: right;\n  border: 5px;\n  border-color: brown;\n  border-style: solid;\n  z-index: 100;\n} */\n\n\n", ""]);
 
 // exports
 
@@ -45504,11 +45508,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('v-list-tile-action', [_c('v-icon', [_vm._v("chevron_right")])], 1)], 1) : _vm._e(), _vm._v(" "), (!_vm.mini) ? _c('v-list-tile', [_c('v-layout', {
     attrs: {
       "row": "",
-      "wrap": ""
+      "wrap": "",
+      "justify-center": ""
     }
   }, [_c('v-flex', {
     attrs: {
-      "xs6": ""
+      "xs4": ""
     }
   }, [_c('v-list-tile-action', {
     staticClass: "text-xs-center flexCenter",
@@ -45525,7 +45530,23 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_c('v-icon', [_vm._v("\n                            chevron_left\n                        ")])], 1)], 1), _vm._v(" "), _c('v-flex', {
     attrs: {
-      "xs6": "",
+      "xs4": "",
+      "align-center": ""
+    }
+  }, [(!_vm.mini) ? _c('v-list-tile-action', {
+    staticClass: "text-xs-center flexCenter logoContainerMini hidden-md-and-up",
+    attrs: {
+      "text-xs-center": "",
+      "align-center": "",
+      "justify-center": ""
+    }
+  }, [_c('img', {
+    attrs: {
+      "src": '/images/Prayssac_logo.png'
+    }
+  })]) : _vm._e()], 1), _vm._v(" "), _c('v-flex', {
+    attrs: {
+      "xs4": "",
       "align-center": ""
     }
   }, [_c('v-list-tile-action', {
@@ -45543,18 +45564,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.drawer = !_vm.drawer
       }]
     }
-  }, [_c('v-icon', [_vm._v("\n                            close\n                        ")])], 1)], 1)], 1)], 1) : _vm._e(), _vm._v(" "), _c('v-divider'), _vm._v(" "), _c('v-spacer'), _vm._v(" "), (!_vm.mini) ? _c('v-layout', {
-    staticClass: "mx-5 logoContainerMedium hidden-md-and-up",
-    attrs: {
-      "align-center": "",
-      "row": "",
-      "justify-center": ""
-    }
-  }, [_c('img', {
-    attrs: {
-      "src": '/images/Prayssac_logo.png'
-    }
-  })]) : _vm._e(), _vm._v(" "), (!_vm.mini) ? _c('div', {
+  }, [_c('v-icon', [_vm._v("\n                            close\n                        ")])], 1)], 1)], 1)], 1) : _vm._e(), _vm._v(" "), _c('v-divider'), _vm._v(" "), _c('v-spacer'), _vm._v(" "), (!_vm.mini) ? _c('div', {
     staticClass: "mx-5 logoContainer hidden-sm-and-down"
   }, [_c('img', {
     attrs: {
@@ -45579,24 +45589,24 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }, [_c('v-list', {
       staticClass: "noPaddingLeft"
     }, [_c('v-list-tile', [_c('v-list-tile-action', [_c('v-icon', {
-      staticClass: "shadow",
+      style: ({
+        color: category.color
+      }),
       attrs: {
-        "large": "",
-        "color": "deep-orange darken-2"
+        "large": ""
       }
-    }, [_vm._v("\n                                    home\n                                ")])], 1), _vm._v(" "), _c('v-list-tile-action', [(_vm.fr) ? _c('v-list-tile-content', [_vm._v("\n                                    " + _vm._s(category.color) + "\n                                ")]) : _vm._e(), _vm._v(" "), (!_vm.fr) ? _c('v-list-tile-content', [_vm._v("\n                                    " + _vm._s(category.icon) + "\n                                ")]) : _vm._e()], 1)], 1)], 1)], 1), _vm._v(" "), _vm._l((_vm.references), function(reference, y) {
-      return _c('v-list', {
+    }, [_vm._v("\n                                    " + _vm._s(category.icon) + "\n                                ")])], 1), _vm._v(" "), _c('v-list-tile-action', [(_vm.fr) ? _c('v-list-tile-content', [_vm._v("\n                                    " + _vm._s(category.icon) + "\n                                ")]) : _vm._e(), _vm._v(" "), (!_vm.fr) ? _c('v-list-tile-content', [_vm._v("\n                                    " + _vm._s(category.color) + "\n                                ")]) : _vm._e()], 1)], 1)], 1)], 1), _vm._v(" "), _vm._l((_vm.references), function(reference, y) {
+      return (reference.fk_category_id == category.id) ? _c('v-list', {
         key: y,
         staticClass: "pt-0 white",
         attrs: {
           "color": "white"
         }
-      }, [(reference.fk_category_id == category.id) ? _c('v-list-tile', [_c('v-list-tile-action', [_c('v-icon', {
-        staticClass: "shadow",
-        attrs: {
-          "color": "blue darken-2"
-        }
-      }, [_vm._v("\n                                grade\n                            ")])], 1), _vm._v(" "), _c('v-list-tile-action', [(_vm.fr) ? _c('v-list-tile-content', [_vm._v("\n                                " + _vm._s(reference.icon) + "\n                            ")]) : _vm._e(), _vm._v(" "), (!_vm.fr) ? _c('v-list-tile-content', [_vm._v("\n                                " + _vm._s(reference.id) + "\n                            ")]) : _vm._e()], 1)], 1) : _vm._e()], 1)
+      }, [_c('v-list-tile', [_c('v-list-tile-action', [_c('v-icon', {
+        style: ({
+          color: reference.color
+        })
+      }, [_vm._v("\n                                " + _vm._s(reference.icon) + "\n                            ")])], 1), _vm._v(" "), _c('v-list-tile-action', [(_vm.fr) ? _c('v-list-tile-content', [_vm._v("\n                                " + _vm._s(reference.icon) + "\n                            ")]) : _vm._e(), _vm._v(" "), (!_vm.fr) ? _c('v-list-tile-content', [_vm._v("\n                                " + _vm._s(reference.id) + "\n                            ")]) : _vm._e()], 1)], 1)], 1) : _vm._e()
     })], 2)
   }))], 1), _vm._v(" "), _c('v-toolbar', {
     attrs: {

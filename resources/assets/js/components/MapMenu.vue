@@ -11,17 +11,18 @@
             class="white"
             app>
 
-            <!-- deploy full nav -->
+            <!-- deploy full nav when miniaturized -->
             <v-list-tile v-if="mini" @click.stop="mini = !mini">
                 <v-list-tile-action>
                     <v-icon>chevron_right</v-icon>
                 </v-list-tile-action>
             </v-list-tile>
 
-            <!-- fold full nav -->
+            <!-- top menu when deployed -->
             <v-list-tile v-if="!mini">
-                <v-layout row wrap>
-                    <v-flex xs6>
+                <v-layout row wrap justify-center>
+                <!-- fold full nav -->
+                    <v-flex xs4>
                         <v-list-tile-action
                             text-xs-center
                             align-center
@@ -33,8 +34,19 @@
                             </v-icon>
                         </v-list-tile-action>
                     </v-flex>
-            <!-- close full nav -->
-                    <v-flex xs6 align-center>
+                <!-- logo Prayssac responsive -->
+                    <v-flex xs4 align-center>
+                        <v-list-tile-action
+                            text-xs-center
+                            align-center
+                            justify-center
+                            v-if="!mini"
+                            class="text-xs-center flexCenter logoContainerMini hidden-md-and-up">
+                                <img :src="'/images/Prayssac_logo.png'" >
+                        </v-list-tile-action>
+                    </v-flex>
+                <!-- close full nav -->
+                    <v-flex xs4 align-center>
                         <v-list-tile-action
                             text-xs-center
                             align-center
@@ -73,17 +85,7 @@
             <!-- sends back the current language id -->
             <!-- <div>{{ languageSelected }}</div> -->
             
-            <!-- logos Prayssac -->
-                <!-- responsive -->
-                <v-layout
-                    align-center
-                    row
-                    justify-center
-                    v-if="!mini"
-                    class="mx-5 logoContainerMedium hidden-md-and-up">
-                    <img :src="'/images/Prayssac_logo.png'" >
-                </v-layout>
-                <!-- desktop -->
+            <!-- logo Prayssac desktop -->
                 <div
                     v-if="!mini"
                     class="mx-5 logoContainer hidden-sm-and-down">
@@ -107,11 +109,11 @@
                         <v-list class="noPaddingLeft">
                             <v-list-tile>
                                 <v-list-tile-action>
+                                    <!-- class="shadow" -->
                                     <v-icon
                                         large
-                                        color="deep-orange darken-2"
-                                        class="shadow">
-                                        home
+                                        v-bind:style="{ color: category.color}">
+                                        {{category.icon}}
                                     </v-icon>
                                 </v-list-tile-action>
                                 <v-list-tile-action>
@@ -125,10 +127,10 @@
                                     </v-list-tile-content> -->
 
                                     <v-list-tile-content v-if="fr">
-                                        {{category.color}}
+                                        {{category.icon}}
                                     </v-list-tile-content>
                                     <v-list-tile-content v-if="!fr">
-                                        {{category.icon}}
+                                        {{category.color}}
                                     </v-list-tile-content>
                                 </v-list-tile-action>
                             </v-list-tile>
@@ -139,14 +141,15 @@
                     <v-list
                         class="pt-0 white"
                         v-for="(reference,y) in references"
+                        v-if="reference.fk_category_id == category.id"
                         :key="y"
                         color="white">
-                        <v-list-tile v-if="reference.fk_category_id == category.id">
+                        <v-list-tile>
                             <v-list-tile-action>
+                                <!-- class="shadow" -->
                                 <v-icon
-                                    class="shadow"
-                                    color="blue darken-2">
-                                    grade
+                                    v-bind:style="{ color: reference.color}">
+                                    {{reference.icon}}
                                 </v-icon>
                             </v-list-tile-action>
                             <v-list-tile-action>
@@ -262,60 +265,62 @@
 
 <script>
 
-//Needed for promises to work
-    function Language({ id, name}) {
-        this.id = id;
-        this.name = name;
-    }
-    function Category({ id, icon, color, weight}) {
-        this.id = id;
-        this.icon = icon;
-        this.color = color;
-        this.weight = weight;
-    }
-    function CategoryName({ id, fk_category_id, fk_language_id, text}) {
-        this.id = id;
-        this.fk_category_id = fk_category_id;
-        this.fk_language_id = fk_language_id;
-        this.text = text;
-    }
-    function Reference({ id, icon, color, weight, fk_category_id}) {
-        this.id = id;
-        this.icon = icon;
-        this.color = color;
-        this.weight = weight;
-        this.fk_category_id = fk_category_id;
-    }
-    function ReferenceName({ id, fk_reference_id, fk_language_id, text}) {
-        this.id = id;
-        this.fk_reference_id = fk_reference_id;
-        this.fk_language_id = fk_language_id;
-        this.text = text;
-    }
-    function Point({ id, link, icon, color, longitude, lattitude, uses_image, image_path}) {
-        this.id = id;
-        this.link = link;
-        this.icon = icon;
-        this.color = color;
-        this.longitude = longitude;
-        this.lattitude = lattitude;
-        this.uses_image = uses_image;
-        this.image_path = image_path;
-    }
+    //Needed for promises to work
+        function Language({ id, name}) {
+            this.id = id;
+            this.name = name;
+        }
+        function Category({ id, icon, color, weight}) {
+            this.id = id;
+            this.icon = icon;
+            this.color = color;
+            this.weight = weight;
+        }
+        function CategoryName({ id, fk_category_id, fk_language_id, text}) {
+            this.id = id;
+            this.fk_category_id = fk_category_id;
+            this.fk_language_id = fk_language_id;
+            this.text = text;
+        }
+        function Reference({ id, icon, color, weight, fk_category_id}) {
+            this.id = id;
+            this.icon = icon;
+            this.color = color;
+            this.weight = weight;
+            this.fk_category_id = fk_category_id;
+        }
+        function ReferenceName({ id, fk_reference_id, fk_language_id, text}) {
+            this.id = id;
+            this.fk_reference_id = fk_reference_id;
+            this.fk_language_id = fk_language_id;
+            this.text = text;
+        }
+        function Point({ id, link, icon, color, longitude, lattitude, uses_image, image_path}) {
+            this.id = id;
+            this.link = link;
+            this.icon = icon;
+            this.color = color;
+            this.longitude = longitude;
+            this.lattitude = lattitude;
+            this.uses_image = uses_image;
+            this.image_path = image_path;
+        }
+    //END Needed for promises to work
 
-import MapControls from './MapControls.vue'
-import PointListComponent from './PointList.vue';
+    import MapControls from './MapControls.vue'
+    import PointListComponent from './PointList.vue';
 
   export default {
     data () {
       return {
+        red: "red",
         drawer: true,
         mini: false,
         fr: true,
         points: [],
         languages: [],
         // TO CHANGE : languageSelected basic value should be 1- french OR 2- client language. If 1-, set to 0,if 2-,ask google how.
-        languageSelected: 1,
+        languageSelected: 0,
         categories: [],
         categoriesNames: [],
         references: [],
@@ -327,131 +332,130 @@ import PointListComponent from './PointList.vue';
         drawerMethod() {
             this.$emit('drawerMethod', this.drawer);
         },
-        
+
         //inspired from vue-laravel-crud
-    //POINTS CRUD NEED READ ONLY
-        //methods other than read() are useless, but kept for the moment until I can remove them and not break anything in the process.
-        create() {
-            this.mute = true;
-            
-            window.axios.get('/api/points/create').then(({ data }) => {
-            this.points.push(new Point(data));
-            this.mute = false;
-            });
-            window.axios.get('/api/languages/create').then(({ data }) => {
-            this.languages.push(new Language(data));
-            this.mute = false;
-            });
-            window.axios.get('/api/categories/create').then(({ data }) => {
-            this.categories.push(new Category(data));
-            this.mute = false;
-            });
-            window.axios.get('/api/references/create').then(({ data }) => {
-            this.references.push(new Reference(data));
-            this.mute = false;
-            });
-        },
-        readPoints() {
-            this.mute = true;
-            window.axios.get('/api/points').then(({ data }) => {
-            data.forEach(point => {
-                //loops over each point in db
-                // console.log("point :");
-                // console.log(point);
-                this.points.push(new Point(point));
-            });
-            this.mute = false;
-            });
-        },
-        update(id, color) {
-            this.mute = true;
-            window.axios.put(`/api/points/${id}`, { color }).then(() => {
-            this.points.find(point => point.id === id).color = color;
-            this.mute = false;
-            });
-        },
-        del(id) {
-            this.mute = true;
-            window.axios.delete(`/api/points/${id}`).then(() => {
-            let index = this.points.findIndex(point => point.id === id);
-            this.points.splice(index, 1);
-            this.mute = false;
-            });
-        },
-    //REFERENCES READ
-        readReferences() {
-            this.mute = true;
-            window.axios.get('/api/references').then(({ data }) => {
-            data.forEach(reference => {
-                //loops over each reference in db
-                // console.log("reference :");
-                // console.log(reference);
-                this.references.push(new Reference(reference));
+        //POINTS CRUD NEED READ ONLY
+            //methods other than read() are useless, but kept for the moment until I can remove them and not break anything in the process.
+            create() {
+                this.mute = true;
                 
-            });
-            this.mute = false;
-            });
-        },
-    //REFERENCE NAMES READ
-        readReferenceNames() {
-            this.mute = true;
-            window.axios.get('/api/referencesNames').then(({ data }) => {
-            data.forEach(referenceName => {
-                //loops over each reference name in db
-                // console.log("reference name :");
-                // console.log(referenceName);
-                this.referenceNames.push(new ReferenceName(referenceName));
-            });
-            this.mute = false;
-            });
-        },
-    //CATEGORIES READ
-        readCategories() {
-            this.mute = true;
-            window.axios.get('/api/categories').then(({ data }) => {
-            data.forEach(category => {
-                //loops over each category in db
-                // console.log("category :");
-                // console.log(category);
-                this.categories.push(new Category(category));
-            });
-            this.mute = false;
-            });
-        },
-    //CATEGORIES NAMES READ
-        readCategoriesNames() {
-            this.mute = true;
-            window.axios.get('/api/categoriesNames').then(({ data }) => {
-            data.forEach(categoryName => {
-                //loops over each category name in db
-                // console.log("category name :");
-                // console.log(categoryName);
-                this.categoriesNames.push(new CategoryName(categoryName));
-                
-            });
-            this.mute = false;
-            });
-        },
-    //LANGUAGES READ
-        readLanguages() {
-            this.mute = true;
-            window.axios.get('/api/languages').then(({ data }) => {
-            data.forEach(language => {
-                //loops over each language in db
-                // console.log("language :");
-                // console.log(language);
-                this.languages.push(new Language(language));
-                
-            });
-            this.mute = false;
-            });
-        },
+                window.axios.get('/api/points/create').then(({ data }) => {
+                this.points.push(new Point(data));
+                this.mute = false;
+                });
+                window.axios.get('/api/languages/create').then(({ data }) => {
+                this.languages.push(new Language(data));
+                this.mute = false;
+                });
+                window.axios.get('/api/categories/create').then(({ data }) => {
+                this.categories.push(new Category(data));
+                this.mute = false;
+                });
+                window.axios.get('/api/references/create').then(({ data }) => {
+                this.references.push(new Reference(data));
+                this.mute = false;
+                });
+            },
+            readPoints() {
+                this.mute = true;
+                window.axios.get('/api/points').then(({ data }) => {
+                data.forEach(point => {
+                    //loops over each point in db
+                    // console.log("point :");
+                    // console.log(point);
+                    this.points.push(new Point(point));
+                });
+                this.mute = false;
+                });
+            },
+            update(id, color) {
+                this.mute = true;
+                window.axios.put(`/api/points/${id}`, { color }).then(() => {
+                this.points.find(point => point.id === id).color = color;
+                this.mute = false;
+                });
+            },
+            del(id) {
+                this.mute = true;
+                window.axios.delete(`/api/points/${id}`).then(() => {
+                let index = this.points.findIndex(point => point.id === id);
+                this.points.splice(index, 1);
+                this.mute = false;
+                });
+            },
+        //REFERENCES READ
+            readReferences() {
+                this.mute = true;
+                window.axios.get('/api/references').then(({ data }) => {
+                data.forEach(reference => {
+                    //loops over each reference in db
+                    // console.log("reference :");
+                    // console.log(reference);
+                    this.references.push(new Reference(reference));
+                    
+                });
+                this.mute = false;
+                });
+            },
+        //REFERENCE NAMES READ
+            readReferenceNames() {
+                this.mute = true;
+                window.axios.get('/api/referencesNames').then(({ data }) => {
+                data.forEach(referenceName => {
+                    //loops over each reference name in db
+                    // console.log("reference name :");
+                    // console.log(referenceName);
+                    this.referenceNames.push(new ReferenceName(referenceName));
+                });
+                this.mute = false;
+                });
+            },
+        //CATEGORIES READ
+            readCategories() {
+                this.mute = true;
+                window.axios.get('/api/categories').then(({ data }) => {
+                data.forEach(category => {
+                    //loops over each category in db
+                    // console.log("category :");
+                    // console.log(category);
+                    this.categories.push(new Category(category));
+                });
+                this.mute = false;
+                });
+            },
+        //CATEGORIES NAMES READ
+            readCategoriesNames() {
+                this.mute = true;
+                window.axios.get('/api/categoriesNames').then(({ data }) => {
+                data.forEach(categoryName => {
+                    //loops over each category name in db
+                    // console.log("category name :");
+                    // console.log(categoryName);
+                    this.categoriesNames.push(new CategoryName(categoryName));
+                    
+                });
+                this.mute = false;
+                });
+            },
+        //LANGUAGES READ
+            readLanguages() {
+                this.mute = true;
+                window.axios.get('/api/languages').then(({ data }) => {
+                data.forEach(language => {
+                    //loops over each language in db
+                    // console.log("language :");
+                    // console.log(language);
+                    this.languages.push(new Language(language));
+                    
+                });
+                this.mute = false;
+                });
+            },
     },
     computed: {
-    // function
-      functionName: function() {
+        functionName: function() {
 
-      }
+        }
     },
     created() {
         //each line calls for the function responsible for the api returns
@@ -503,10 +507,9 @@ import PointListComponent from './PointList.vue';
         z-index: 200;
         max-width: 100px;
     }
-    .shadow{
-        /* text-shadow: 0px 0px 10px black; */
+    /* .shadow{
         text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
-    }
+    } */
     .logoContainer > img{
         width: 200px;
         height: 200px;
