@@ -1,10 +1,15 @@
-use :
+Dev use :
 
-cd exercises/july_laravel_vuejs/map_application
+    cd exercises/july_laravel_vuejs/map_application
 
-php artisan serve
+    php artisan serve
 
-npm run watch
+    npm run watch
+
+In case of troubles with the watch :
+    php artisan cache:clear
+    composer dump-autoload
+
 
 Installation :
 
@@ -37,6 +42,10 @@ Run migration table:
 -------------------
 Models :
 skycatch-challenge
+-------------------
+TEST
+TO REMOVE
+TO CHANGE
 -------------------
 
 Need to see :

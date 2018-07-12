@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Faker\Generator;
 
-class ReferenceNamesController extends Controller
+class ReferencesNamesController extends Controller
 {
     public function index()
     {

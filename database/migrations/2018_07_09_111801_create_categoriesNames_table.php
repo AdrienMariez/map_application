@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateReferenceNameTable extends Migration
+class CreateCategoriesNamesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,10 @@ class CreateReferenceNameTable extends Migration
      */
     public function up()
     {
-        Schema::create('referenceName', function (Blueprint $table) {
-            $table->integer('fk_reference_id')->unique();
-            $table->integer('fk_language_id')->unique();
+        Schema::create('categoriesNames', function (Blueprint $table) {
+            $table->increments('id')->unique();
+            $table->integer('fk_category_id');
+            $table->integer('fk_language_id');
             $table->string('text');
         });
     }
@@ -27,6 +28,6 @@ class CreateReferenceNameTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('referenceName');
+        Schema::dropIfExists('categoriesNames');
     }
 }

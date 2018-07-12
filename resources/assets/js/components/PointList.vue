@@ -5,7 +5,6 @@
             <v-expansion-panel-content
                 color="green darken-3"
                 class="green darken-3">
-
                 <!-- header -->
                 <div 
                     slot="header">
@@ -18,10 +17,10 @@
                             </v-list-tile-action>
                             <v-list-tile-action>
                                 <v-list-tile-content v-if="fr">
-                                    Categorie
+                                    Categorie {{id}}
                                 </v-list-tile-content>
                                 <v-list-tile-content v-if="!fr">
-                                    Category
+                                    Category {{id}}
                                 </v-list-tile-content>
                             </v-list-tile-action>
                         </v-list-tile>
@@ -39,10 +38,12 @@
                         </v-list-tile-action>
                         <v-list-tile-action>
                             <v-list-tile-content v-if="fr">
-                                {{ link }}
+                                <!-- {{ link }} -->
+                                reference
                             </v-list-tile-content>
                             <v-list-tile-content v-if="!fr">
-                                {{ link }}
+                                <!-- {{ link }} -->
+                                reference
                             </v-list-tile-content>
                         </v-list-tile-action>
                     </v-list-tile>
@@ -97,7 +98,8 @@
         this.$emit('delete', this.id);
       }
     },
-    props: ['id', 'link', 'icon', 'color', 'longitude', 'lattitude', 'uses_image', 'image_path', 'fr']
+    // props: ['id', 'link', 'icon', 'color', 'longitude', 'lattitude', 'uses_image', 'image_path', 'fr']
+    props: ['id', 'icon', 'color', 'weight', 'fr']
     // filters: {
     //   properCase(string) {
     //     return string.charAt(0).toUpperCase() + string.slice(1);
