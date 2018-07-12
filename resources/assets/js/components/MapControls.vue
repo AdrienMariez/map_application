@@ -6,7 +6,7 @@
                 dark
                 fab
                 center
-                color="green darken-3"
+                color="green lighten-1"
                 v-bind:value=value
                 v-on:click="zoomingIn($event.target.value)"
             >
@@ -22,7 +22,7 @@
                 dark
                 fab
                 center
-                color="green darken-3"
+                color="green lighten-1"
                 v-bind:value=value
                 v-on:click="zoomingOut($event.target.value)"
             >

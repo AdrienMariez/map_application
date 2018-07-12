@@ -1,14 +1,14 @@
 <template>
     <div>
+        <!-- Prayssac_logo.png -->
 
         <!-- <map-controls></map-controls> -->
 
         <v-navigation-drawer
             v-model="drawer"
             :mini-variant="mini"
-            dark
-            color="green darken-4"
-            class="green darken-4"
+            color="white"
+            class="white"
             app>
 
             <!-- deploy full nav -->
@@ -39,6 +39,7 @@
                             text-xs-center
                             align-center
                             justify-center
+                            v-on:click="drawerMethod()"
                             @click.stop="drawer = !drawer"
                             class="text-xs-center flexCenter">
                             <v-icon>
@@ -53,8 +54,7 @@
 
             <v-spacer></v-spacer>
 
-            <!-- switch language -->
-                <!-- old -->
+            <!-- OBSOLETE language switch -->
                 <!-- <v-list-tile @click.stop="fr = !fr">
                     <v-list-tile-action>
                         <v-icon>language</v-icon>
@@ -68,87 +68,103 @@
                         </v-list-tile-content>
                     </v-list-tile-action>
                 </v-list-tile> -->
+            <!-- END OBSOLETE language switch -->
 
-            <!-- Ok this cooooould get some improvements...FIX IT ASAP THE V-SELECT FRONT WON'T WORK -->
-            <!-- <v-select
-                :items="languages"
-                v-model="languageSelected"
-                label="Langage"
-                class="input-group--focused"
-                item-value=id
-                item-text=id
-            >
-            </v-select> -->
-            <div>{{ languageSelected }}</div>
+            <!-- sends back the current language id -->
+            <!-- <div>{{ languageSelected }}</div> -->
+            
+            <!-- logos Prayssac -->
+                <!-- responsive -->
+                <v-layout
+                    align-center
+                    row
+                    justify-center
+                    v-if="!mini"
+                    class="mx-5 logoContainerMedium hidden-md-and-up">
+                    <img :src="'/images/Prayssac_logo.png'" >
+                </v-layout>
+                <!-- desktop -->
+                <div
+                    v-if="!mini"
+                    class="mx-5 logoContainer hidden-sm-and-down">
+                    <img :src="'/images/Prayssac_logo.png'" >
+                </div>
+            <!-- END logo Prayssac responsive -->
 
             <!-- // NOT SO DUMMY NAV  -->
-            <v-expansion-panel
-                expand>
-                <!-- loop on categories -->
-                <v-expansion-panel-content
-                v-for="(category,i) in categories"
-                :key="i"
-                color="green darken-3"
-                class="green darken-3">
+                <v-expansion-panel
+                    expand>
+                    <!-- loop on categories -->
+                    <v-expansion-panel-content
+                    v-for="(category,i) in categories"
+                    :key="i"
+                    color="green lighten-4"
+                    class="green lighten-4">
 
-                <!-- header -->
-                <div 
-                    slot="header">
-                    <v-list class="noPaddingLeft">
-                        <v-list-tile>
+                    <!-- header -->
+                    <div 
+                        slot="header">
+                        <v-list class="noPaddingLeft">
+                            <v-list-tile>
+                                <v-list-tile-action>
+                                    <v-icon
+                                        large
+                                        color="deep-orange darken-2"
+                                        class="shadow">
+                                        home
+                                    </v-icon>
+                                </v-list-tile-action>
+                                <v-list-tile-action>
+                                    <!-- TO CHANGE uncomment this -->
+                                    <!-- <v-list-tile-content
+                                        v-for="(categoryname,x) in categoriesNames"
+                                        :key="x">
+                                        <div v-if="categoryname.fk_language_id == languageSelected">
+                                            {{categoryname.text}}
+                                        </div>
+                                    </v-list-tile-content> -->
+
+                                    <v-list-tile-content v-if="fr">
+                                        {{category.color}}
+                                    </v-list-tile-content>
+                                    <v-list-tile-content v-if="!fr">
+                                        {{category.icon}}
+                                    </v-list-tile-content>
+                                </v-list-tile-action>
+                            </v-list-tile>
+                        </v-list>
+                    </div>
+
+                    <!-- loop on references in categories -->
+                    <v-list
+                        class="pt-0 white"
+                        v-for="(reference,y) in references"
+                        :key="y"
+                        color="white">
+                        <v-list-tile v-if="reference.fk_category_id == category.id">
                             <v-list-tile-action>
-                                <v-icon large color="brown lighten-4">
-                                    home
+                                <v-icon
+                                    class="shadow"
+                                    color="blue darken-2">
+                                    grade
                                 </v-icon>
                             </v-list-tile-action>
                             <v-list-tile-action>
-                                <!-- TO CHANGE uncomment this -->
-                                <!-- <v-list-tile-content
-                                    v-for="(categoryname,x) in categoriesNames"
-                                    :key="x">
-                                    <div v-if="categoryname.fk_language_id == languageSelected">
-                                        {{categoryname.text}}
-                                    </div>
-                                </v-list-tile-content> -->
-
                                 <v-list-tile-content v-if="fr">
-                                    {{category.color}}
+                                    {{reference.icon}}
                                 </v-list-tile-content>
                                 <v-list-tile-content v-if="!fr">
-                                    {{category.icon}}
+                                    {{reference.id}}
                                 </v-list-tile-content>
                             </v-list-tile-action>
                         </v-list-tile>
                     </v-list>
-                </div>
 
-                <!-- loop on references in categories -->
-                <v-list
-                    class="pt-0"
-                    v-for="(reference,y) in references"
-                    :key="y">
-                    <v-list-tile v-if="reference.fk_category_id == category.id">
-                        <v-list-tile-action>
-                            <v-icon color="blue darken-2">
-                                grade
-                            </v-icon>
-                        </v-list-tile-action>
-                        <v-list-tile-action>
-                            <v-list-tile-content v-if="fr">
-                                {{reference.icon}}
-                            </v-list-tile-content>
-                            <v-list-tile-content v-if="!fr">
-                                {{reference.id}}
-                            </v-list-tile-content>
-                        </v-list-tile-action>
-                    </v-list-tile>
-                </v-list>
-
-                </v-expansion-panel-content>
-            </v-expansion-panel>
+                    </v-expansion-panel-content>
+                </v-expansion-panel>
             <!-- // END NOT SO DUMMY NAV  -->
 
-            <!-- TEST NAV -->
+            <!-- OBSOLETE TEST NAV -->
                 <!-- <point-list-component
                     v-for="category in categories"
                     v-bind="category"
@@ -157,33 +173,75 @@
                     @delete="del"
                 >
                 </point-list-component> -->
-            <!-- END TEST NAV -->
+            <!-- END OBSOLETE TEST NAV -->
 
         </v-navigation-drawer>
 
         <!-- top header -->
         <v-toolbar
-            color="green darken-4"
+            color="white"
             fixed
             app
             dense>
-            <v-toolbar-side-icon
-                v-if="!drawer"
-                @click.stop="drawer = !drawer"
-                 color="green darken-1">
-            </v-toolbar-side-icon>
-            <v-toolbar-title
-                class="white--text">
-                Carte interactive de Prayssac
-            </v-toolbar-title>
-            <v-select
-                :items="languages"
-                v-model="languageSelected"
-                class="input-group--focused selectTop"
-                item-value=id
-                item-text=name
-            >
-            </v-select>
+            <v-layout align-center justify-space-around row fill-height>
+                <v-flex>
+                    <v-layout align-center row fill-height>
+                    <!-- show the menu if hidden -->
+                        <v-toolbar-side-icon
+                            v-if="!drawer"
+                            v-on:click="drawerMethod()"
+                            @click.stop="drawer = !drawer"
+                            color="green lighten-1"
+                            class="white--text">
+                        </v-toolbar-side-icon>
+
+                    <!-- logo Prayssac -->
+                        <v-layout
+                            align-center
+                            row
+                            v-if="!drawer || mini"
+                            class="logoContainerMini">
+                            <img :src="'/images/Prayssac_logo.png'" >
+                            <v-toolbar-title
+                                class="hidden-xs-only">
+                                Carte interactive de Prayssac
+                            </v-toolbar-title>
+                        </v-layout>
+                    </v-layout>
+                </v-flex>
+
+                <!-- title -->
+                <!-- <v-flex>
+                <v-toolbar-title>
+                    Carte interactive de Prayssac
+                </v-toolbar-title>
+                </v-flex> -->
+            
+                <!-- logo Prayssac -->
+                <!-- <v-flex>
+                    <div
+                        v-if="!drawer"
+                        class="logoContainerMini">
+                        <img :src="'/images/Prayssac_logo.png'" >
+                    </div>
+                </v-flex> -->
+
+                <v-flex>
+                <v-layout align-space-around justify-end row fill-height>
+                <!-- select language -->
+                    <v-select
+                        :items="languages"
+                        v-model="languageSelected"
+                        prepend-icon="map"
+                        single-line
+                        class="mr-3 input-group--focused selectTop"
+                        item-value=id
+                        item-text=name
+                    >
+                    </v-select>
+                </v-layout>
+                </v-flex>
+            </v-layout>
         </v-toolbar>
 
         <!-- contact button -->
@@ -192,7 +250,7 @@
                 absolute
                 dark
                 center
-                color="green darken-3"
+                color="green lighten-1"
             >
                 <div class="linkColor">Contact</div>
             </v-btn>
@@ -266,8 +324,11 @@ import PointListComponent from './PointList.vue';
       }
     },
     methods: {
+        drawerMethod() {
+            this.$emit('drawerMethod', this.drawer);
+        },
+        
         //inspired from vue-laravel-crud
-
     //POINTS CRUD NEED READ ONLY
         //methods other than read() are useless, but kept for the moment until I can remove them and not break anything in the process.
         create() {
@@ -440,6 +501,26 @@ import PointListComponent from './PointList.vue';
     }
     .selectTop{
         z-index: 200;
+        max-width: 100px;
+    }
+    .shadow{
+        /* text-shadow: 0px 0px 10px black; */
+        text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+    }
+    .logoContainer > img{
+        width: 200px;
+        height: 200px;
+    }
+    .logoContainerMedium > img{
+        width: 80px;
+        height: 80px;
+    }
+    .logoContainerMini{
+        height: 100%;
+    }
+    .logoContainerMini > img{
+        width: 48px;
+        height: 48px;
     }
 
   /* #publicMapControls{
@@ -450,7 +531,5 @@ import PointListComponent from './PointList.vue';
     z-index: 100;
   } */
 
-    .linkColor{
-        color: rgb(230, 230, 103);
-    }
+
 </style>

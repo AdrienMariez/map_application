@@ -22471,17 +22471,30 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-
+//
+//
+//
+//
+//
+//
+//
 
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: 'app',
+  name: "app",
   data: function data() {
-    return {};
+    return {
+      drawerCallBack: true
+    };
   },
 
+  methods: {
+    drawerMethod: function drawerMethod(updatedDrawer) {
+      this.drawerCallBack = updatedDrawer;
+    }
+  },
   components: {
     LocationsMap: __WEBPACK_IMPORTED_MODULE_1__components_LocationsMap_vue___default.a,
     MapMenu: __WEBPACK_IMPORTED_MODULE_0__components_MapMenu_vue___default.a
@@ -23043,6 +23056,64 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 //Needed for promises to work
@@ -23141,8 +23212,12 @@ function Point(_ref6) {
     },
 
     methods: {
-        //inspired from vue-laravel-crud
+        drawerMethod: function drawerMethod() {
+            this.$emit('drawerMethod', this.drawer);
+        },
 
+
+        //inspired from vue-laravel-crud
         //POINTS CRUD NEED READ ONLY
         //methods other than read() are useless, but kept for the moment until I can remove them and not break anything in the process.
         create: function create() {
@@ -23581,7 +23656,7 @@ exports = module.exports = __webpack_require__(1)();
 
 
 // module
-exports.push([module.i, "\n.noPaddingLeft[data-v-390defd6]{\n      margin-left: -15% !important;\n}\n.buttonContact[data-v-390defd6]{\n      height: 60px;\n      width: 100px;\n      position: absolute;\n      right: 0;\n      bottom: 0;\n      z-index: 1;\n}\n.buttonContact > button[data-v-390defd6]{\n      right: 5px;\n}\n.selectTop[data-v-390defd6]{\n      z-index: 200;\n}\n\n/* #publicMapControls{\n  float: right;\n  border: 5px;\n  border-color: brown;\n  border-style: solid;\n  z-index: 100;\n} */\n.linkColor[data-v-390defd6]{\n      color: rgb(230, 230, 103);\n}\n", ""]);
+exports.push([module.i, "\n.noPaddingLeft[data-v-390defd6]{\n      margin-left: -15% !important;\n}\n.buttonContact[data-v-390defd6]{\n      height: 60px;\n      width: 100px;\n      position: absolute;\n      right: 0;\n      bottom: 0;\n      z-index: 1;\n}\n.buttonContact > button[data-v-390defd6]{\n      right: 5px;\n}\n.selectTop[data-v-390defd6]{\n      z-index: 200;\n      max-width: 100px;\n}\n.shadow[data-v-390defd6]{\n      /* text-shadow: 0px 0px 10px black; */\n      text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;\n}\n.logoContainer > img[data-v-390defd6]{\n      width: 200px;\n      height: 200px;\n}\n.logoContainerMedium > img[data-v-390defd6]{\n      width: 80px;\n      height: 80px;\n}\n.logoContainerMini[data-v-390defd6]{\n      height: 100%;\n}\n.logoContainerMini > img[data-v-390defd6]{\n      width: 48px;\n      height: 48px;\n}\n\n/* #publicMapControls{\n  float: right;\n  border: 5px;\n  border-color: brown;\n  border-style: solid;\n  z-index: 100;\n} */\n\n\n", ""]);
 
 // exports
 
@@ -23609,7 +23684,7 @@ exports = module.exports = __webpack_require__(1)();
 
 
 // module
-exports.push([module.i, "\na{\n  color: rgb(230, 230, 103) !important;\n  text-decoration: inherit;\n}\n#publicMenu{\n  z-index: 50;\n}\n#publicMap{\n  z-index: 1;\n  height: 100%\n}\n#footer{\n  z-index: 25;\n}\n.flexCenter{\njustify-content: center;\n}\n", ""]);
+exports.push([module.i, "\na {\n  color: rgb(146, 221, 123) !important;\n  text-decoration: inherit;\n}\n#publicMenu {\n  z-index: 50;\n}\n#publicMap {\n  z-index: 1;\n  height: 100%;\n}\n#footer {\n  z-index: 25;\n}\n.flexFooterPosition {\n  justify-content: center;\n  /* if need to get it at start position : */\n  /* justify-content: flex-start; */\n}\n.flexCenter {\n  justify-content: center;\n}\n", ""]);
 
 // exports
 
@@ -45366,7 +45441,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "dark": "",
       "fab": "",
       "center": "",
-      "color": "green darken-3",
+      "color": "green lighten-1",
       "value": _vm.value
     },
     on: {
@@ -45382,7 +45457,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "dark": "",
       "fab": "",
       "center": "",
-      "color": "green darken-3",
+      "color": "green lighten-1",
       "value": _vm.value
     },
     on: {
@@ -45406,11 +45481,10 @@ if (false) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', [_c('v-navigation-drawer', {
-    staticClass: "green darken-4",
+    staticClass: "white",
     attrs: {
       "mini-variant": _vm.mini,
-      "dark": "",
-      "color": "green darken-4",
+      "color": "white",
       "app": ""
     },
     model: {
@@ -45462,21 +45536,40 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "justify-center": ""
     },
     on: {
-      "click": function($event) {
+      "click": [function($event) {
+        _vm.drawerMethod()
+      }, function($event) {
         $event.stopPropagation();
         _vm.drawer = !_vm.drawer
-      }
+      }]
     }
-  }, [_c('v-icon', [_vm._v("\n                            close\n                        ")])], 1)], 1)], 1)], 1) : _vm._e(), _vm._v(" "), _c('v-divider'), _vm._v(" "), _c('v-spacer'), _vm._v(" "), _c('div', [_vm._v(_vm._s(_vm.languageSelected))]), _vm._v(" "), _c('v-expansion-panel', {
+  }, [_c('v-icon', [_vm._v("\n                            close\n                        ")])], 1)], 1)], 1)], 1) : _vm._e(), _vm._v(" "), _c('v-divider'), _vm._v(" "), _c('v-spacer'), _vm._v(" "), (!_vm.mini) ? _c('v-layout', {
+    staticClass: "mx-5 logoContainerMedium hidden-md-and-up",
+    attrs: {
+      "align-center": "",
+      "row": "",
+      "justify-center": ""
+    }
+  }, [_c('img', {
+    attrs: {
+      "src": '/images/Prayssac_logo.png'
+    }
+  })]) : _vm._e(), _vm._v(" "), (!_vm.mini) ? _c('div', {
+    staticClass: "mx-5 logoContainer hidden-sm-and-down"
+  }, [_c('img', {
+    attrs: {
+      "src": '/images/Prayssac_logo.png'
+    }
+  })]) : _vm._e(), _vm._v(" "), _c('v-expansion-panel', {
     attrs: {
       "expand": ""
     }
   }, _vm._l((_vm.categories), function(category, i) {
     return _c('v-expansion-panel-content', {
       key: i,
-      staticClass: "green darken-3",
+      staticClass: "green lighten-4",
       attrs: {
-        "color": "green darken-3"
+        "color": "green lighten-4"
       }
     }, [_c('div', {
       attrs: {
@@ -45486,43 +45579,83 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }, [_c('v-list', {
       staticClass: "noPaddingLeft"
     }, [_c('v-list-tile', [_c('v-list-tile-action', [_c('v-icon', {
+      staticClass: "shadow",
       attrs: {
         "large": "",
-        "color": "brown lighten-4"
+        "color": "deep-orange darken-2"
       }
-    }, [_vm._v("\n                                home\n                            ")])], 1), _vm._v(" "), _c('v-list-tile-action', [(_vm.fr) ? _c('v-list-tile-content', [_vm._v("\n                                " + _vm._s(category.color) + "\n                            ")]) : _vm._e(), _vm._v(" "), (!_vm.fr) ? _c('v-list-tile-content', [_vm._v("\n                                " + _vm._s(category.icon) + "\n                            ")]) : _vm._e()], 1)], 1)], 1)], 1), _vm._v(" "), _vm._l((_vm.references), function(reference, y) {
+    }, [_vm._v("\n                                    home\n                                ")])], 1), _vm._v(" "), _c('v-list-tile-action', [(_vm.fr) ? _c('v-list-tile-content', [_vm._v("\n                                    " + _vm._s(category.color) + "\n                                ")]) : _vm._e(), _vm._v(" "), (!_vm.fr) ? _c('v-list-tile-content', [_vm._v("\n                                    " + _vm._s(category.icon) + "\n                                ")]) : _vm._e()], 1)], 1)], 1)], 1), _vm._v(" "), _vm._l((_vm.references), function(reference, y) {
       return _c('v-list', {
         key: y,
-        staticClass: "pt-0"
+        staticClass: "pt-0 white",
+        attrs: {
+          "color": "white"
+        }
       }, [(reference.fk_category_id == category.id) ? _c('v-list-tile', [_c('v-list-tile-action', [_c('v-icon', {
+        staticClass: "shadow",
         attrs: {
           "color": "blue darken-2"
         }
-      }, [_vm._v("\n                            grade\n                        ")])], 1), _vm._v(" "), _c('v-list-tile-action', [(_vm.fr) ? _c('v-list-tile-content', [_vm._v("\n                            " + _vm._s(reference.icon) + "\n                        ")]) : _vm._e(), _vm._v(" "), (!_vm.fr) ? _c('v-list-tile-content', [_vm._v("\n                            " + _vm._s(reference.id) + "\n                        ")]) : _vm._e()], 1)], 1) : _vm._e()], 1)
+      }, [_vm._v("\n                                grade\n                            ")])], 1), _vm._v(" "), _c('v-list-tile-action', [(_vm.fr) ? _c('v-list-tile-content', [_vm._v("\n                                " + _vm._s(reference.icon) + "\n                            ")]) : _vm._e(), _vm._v(" "), (!_vm.fr) ? _c('v-list-tile-content', [_vm._v("\n                                " + _vm._s(reference.id) + "\n                            ")]) : _vm._e()], 1)], 1) : _vm._e()], 1)
     })], 2)
   }))], 1), _vm._v(" "), _c('v-toolbar', {
     attrs: {
-      "color": "green darken-4",
+      "color": "white",
       "fixed": "",
       "app": "",
       "dense": ""
     }
-  }, [(!_vm.drawer) ? _c('v-toolbar-side-icon', {
+  }, [_c('v-layout', {
     attrs: {
-      "color": "green darken-1"
+      "align-center": "",
+      "justify-space-around": "",
+      "row": "",
+      "fill-height": ""
+    }
+  }, [_c('v-flex', [_c('v-layout', {
+    attrs: {
+      "align-center": "",
+      "row": "",
+      "fill-height": ""
+    }
+  }, [(!_vm.drawer) ? _c('v-toolbar-side-icon', {
+    staticClass: "white--text",
+    attrs: {
+      "color": "green lighten-1"
     },
     on: {
-      "click": function($event) {
+      "click": [function($event) {
+        _vm.drawerMethod()
+      }, function($event) {
         $event.stopPropagation();
         _vm.drawer = !_vm.drawer
-      }
+      }]
     }
-  }) : _vm._e(), _vm._v(" "), _c('v-toolbar-title', {
-    staticClass: "white--text"
-  }, [_vm._v("\n            Carte interactive de Prayssac\n        ")]), _vm._v(" "), _c('v-select', {
-    staticClass: "input-group--focused selectTop",
+  }) : _vm._e(), _vm._v(" "), (!_vm.drawer || _vm.mini) ? _c('v-layout', {
+    staticClass: "logoContainerMini",
+    attrs: {
+      "align-center": "",
+      "row": ""
+    }
+  }, [_c('img', {
+    attrs: {
+      "src": '/images/Prayssac_logo.png'
+    }
+  }), _vm._v(" "), _c('v-toolbar-title', {
+    staticClass: "hidden-xs-only"
+  }, [_vm._v("\n                            Carte interactive de Prayssac\n                        ")])], 1) : _vm._e()], 1)], 1), _vm._v(" "), _c('v-flex', [_c('v-layout', {
+    attrs: {
+      "align-space-around": "",
+      "justify-end": "",
+      "row": "",
+      "fill-height": ""
+    }
+  }, [_c('v-select', {
+    staticClass: "mr-3 input-group--focused selectTop",
     attrs: {
       "items": _vm.languages,
+      "prepend-icon": "map",
+      "single-line": "",
       "item-value": "id",
       "item-text": "name"
     },
@@ -45533,14 +45666,14 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       },
       expression: "languageSelected"
     }
-  })], 1), _vm._v(" "), _c('v-card-text', {
+  })], 1)], 1)], 1)], 1), _vm._v(" "), _c('v-card-text', {
     staticClass: "buttonContact"
   }, [_c('v-btn', {
     attrs: {
       "absolute": "",
       "dark": "",
       "center": "",
-      "color": "green darken-3"
+      "color": "green lighten-1"
     }
   }, [_c('div', {
     staticClass: "linkColor"
@@ -45613,30 +45746,40 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('map-menu', {
     attrs: {
       "id": "publicMenu"
+    },
+    on: {
+      "drawerMethod": _vm.drawerMethod
     }
   }), _vm._v(" "), _c('locations-map', {
     attrs: {
       "id": "publicMap"
     }
   }), _vm._v(" "), _c('v-footer', {
-    staticClass: "text-xs-center flexCenter",
+    staticClass: "text-xs-center flexFooterPosition",
     attrs: {
       "app": "",
       "text-xs-center": "",
       "align-center": "",
       "justify-center": "",
-      "color": "green darken-4",
+      "dark": "",
+      "color": "grey darken-3",
       "id": "footer"
     }
-  }, [_c('span', {
-    staticClass: "white--text"
-  }, [_vm._v("\n      © 2018 - " + _vm._s(new Date().getFullYear()) + " - \n      "), _c('a', {
+  }, [(_vm.drawerCallBack) ? _c('v-layout', {
+    attrs: {
+      "align-center": "",
+      "row": "",
+      "justify-start": ""
+    }
+  }, [_c('div', {
+    staticClass: "hidden-xs-only"
+  }, [_vm._v("\n        © 2018 - " + _vm._s(new Date().getFullYear()) + " - \n      ")]), _vm._v(" "), _c('a', {
     attrs: {
       "target": "_blank",
       "rel": "noopener noreferrer",
       "href": "http://www.prayssac.fr/"
     }
-  }, [_vm._v("Mairie de Prayssac")])])])], 1)
+  }, [_vm._v("Mairie de Prayssac")])]) : _vm._e()], 1)], 1)
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {

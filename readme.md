@@ -43,9 +43,11 @@ Run migration table:
 Models :
 skycatch-challenge
 -------------------
+To know what is to be worked on or to be refactoredn, search for :
 TEST
 TO REMOVE
 TO CHANGE
+OBSOLETE
 -------------------
 
 Need to see :

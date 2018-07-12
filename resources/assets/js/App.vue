@@ -1,7 +1,7 @@
 <template>
   <v-app id="inspire">
  
-    <map-menu id="publicMenu"></map-menu>
+    <map-menu id="publicMenu" @drawerMethod="drawerMethod"></map-menu>
 
     <locations-map id="publicMap"></locations-map>
 
@@ -10,53 +10,70 @@
       text-xs-center
       align-center
       justify-center
-      color="green darken-4"
+      dark
+      color="grey darken-3"
       id="footer"
-      class="text-xs-center flexCenter">
-      <span
-        class="white--text">
-        &copy; 2018 - {{new Date().getFullYear()}} - 
+      class="text-xs-center flexFooterPosition">
+      <v-layout
+        align-center
+        row
+        justify-start
+        v-if="drawerCallBack"
+        class="">
+        <div class="hidden-xs-only">
+          &copy; 2018 - {{new Date().getFullYear()}} - 
+        </div>
         <a target="_blank" rel="noopener noreferrer" href="http://www.prayssac.fr/">Mairie de Prayssac</a>
-      </span>
+      </v-layout>
     </v-footer>
 
   </v-app>
 </template>
 
 <script>
-
-import MapMenu from './components/MapMenu.vue'
-import LocationsMap from './components/LocationsMap.vue'
+import MapMenu from "./components/MapMenu.vue";
+import LocationsMap from "./components/LocationsMap.vue";
 
 export default {
-  name: 'app',
-  data () {
+  name: "app",
+  data() {
     return {
+      drawerCallBack: true
+    };
+  },
+  methods: {
+    drawerMethod(updatedDrawer) {
+      this.drawerCallBack = updatedDrawer;
     }
   },
   components: {
     LocationsMap,
     MapMenu
   }
-}
+};
 </script>
 
 <style>
-  a{
-    color: rgb(230, 230, 103) !important;
-    text-decoration: inherit;
-  }
-  #publicMenu{
-    z-index: 50;
-  }
-  #publicMap{
-    z-index: 1;
-    height: 100%
-  }
-  #footer{
-    z-index: 25;
-  }
-  .flexCenter{
+a {
+  color: rgb(146, 221, 123) !important;
+  text-decoration: inherit;
+}
+#publicMenu {
+  z-index: 50;
+}
+#publicMap {
+  z-index: 1;
+  height: 100%;
+}
+#footer {
+  z-index: 25;
+}
+.flexFooterPosition {
   justify-content: center;
-  }
+  /* if need to get it at start position : */
+  /* justify-content: flex-start; */
+}
+.flexCenter {
+  justify-content: center;
+}
 </style>
