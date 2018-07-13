@@ -23117,6 +23117,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 
 //Needed for promises to work
@@ -23200,7 +23207,6 @@ function Point(_ref6) {
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
-            red: "red",
             drawer: true,
             mini: false,
             fr: true,
@@ -23323,8 +23329,8 @@ function Point(_ref6) {
 
                 data.forEach(function (referenceName) {
                     //loops over each reference name in db
-                    console.log("reference name :");
-                    console.log(referenceName);
+                    // console.log("reference name :");
+                    // console.log(referenceName);
                     _this6.referenceNames.push(new ReferenceName(referenceName));
                 });
                 _this6.mute = false;
@@ -23359,8 +23365,8 @@ function Point(_ref6) {
 
                 data.forEach(function (categoryName) {
                     //loops over each category name in db
-                    console.log("category name :");
-                    console.log(categoryName);
+                    // console.log("category name :");
+                    // console.log(categoryName);
                     _this8.categoriesNames.push(new CategoryName(categoryName));
                 });
                 _this8.mute = false;
@@ -45595,7 +45601,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       attrs: {
         "large": ""
       }
-    }, [_vm._v("\n                                    " + _vm._s(category.icon) + "\n                                ")])], 1), _vm._v(" "), _c('v-list-tile-action', [(_vm.fr) ? _c('v-list-tile-content', [_vm._v("\n                                    " + _vm._s(category.icon) + " - " + _vm._s(category.weight) + "\n                                ")]) : _vm._e(), _vm._v(" "), (!_vm.fr) ? _c('v-list-tile-content', [_vm._v("\n                                    " + _vm._s(category.color) + " - " + _vm._s(category.weight) + "\n                                ")]) : _vm._e()], 1)], 1)], 1)], 1), _vm._v(" "), _vm._l((_vm.references), function(reference, y) {
+    }, [_vm._v("\n                                    " + _vm._s(category.icon) + "\n                                ")])], 1), _vm._v(" "), _c('v-list-tile-action', _vm._l((_vm.categoriesNames), function(catName, a) {
+      return (catName.fk_language_id == _vm.languageSelected && catName.fk_category_id == category.id) ? _c('v-list-tile-content', {
+        key: a
+      }, [_vm._v("\n                                    " + _vm._s(catName.text) + "\n                                ")]) : _vm._e()
+    }))], 1)], 1)], 1), _vm._v(" "), _vm._l((_vm.references), function(reference, y) {
       return (reference.fk_category_id == category.id) ? _c('v-list', {
         key: y,
         staticClass: "pt-0 white",
@@ -45606,7 +45616,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         style: ({
           color: reference.color
         })
-      }, [_vm._v("\n                                " + _vm._s(reference.icon) + "\n                            ")])], 1), _vm._v(" "), _c('v-list-tile-action', [(_vm.fr) ? _c('v-list-tile-content', [_vm._v("\n                                " + _vm._s(reference.icon) + " - " + _vm._s(reference.weight) + "\n                            ")]) : _vm._e(), _vm._v(" "), (!_vm.fr) ? _c('v-list-tile-content', [_vm._v("\n                                " + _vm._s(reference.id) + " - " + _vm._s(reference.weight) + "\n                            ")]) : _vm._e()], 1)], 1)], 1) : _vm._e()
+      }, [_vm._v("\n                                " + _vm._s(reference.icon) + "\n                            ")])], 1), _vm._v(" "), _c('v-list-tile-action', _vm._l((_vm.referenceNames), function(refName, b) {
+        return (refName.fk_language_id == _vm.languageSelected && refName.fk_reference_id == reference.id) ? _c('v-list-tile-content', {
+          key: b
+        }, [_vm._v("\n                                " + _vm._s(refName.text) + "\n                            ")]) : _vm._e()
+      }))], 1)], 1) : _vm._e()
     })], 2)
   }))], 1), _vm._v(" "), _c('v-toolbar', {
     attrs: {

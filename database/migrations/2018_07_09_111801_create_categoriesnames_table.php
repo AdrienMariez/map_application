@@ -14,7 +14,7 @@ class CreateCategoriesnamesTable extends Migration
     public function up()
     {
         Schema::create('categoriesnames', function (Blueprint $table) {
-            $table->increments('id')->unique();
+            $table->primary('id')->unique();
             $table->integer('fk_category_id');
             $table->integer('fk_language_id');
             $table->string('text');
@@ -28,6 +28,6 @@ class CreateCategoriesnamesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('categoriesNames');
+        Schema::dropIfExists('categoriesnames');
     }
 }

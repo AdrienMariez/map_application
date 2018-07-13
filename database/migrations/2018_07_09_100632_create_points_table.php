@@ -14,7 +14,7 @@ class CreatePointsTable extends Migration
     public function up()
     {
         Schema::create('points', function (Blueprint $table) {
-            $table->increments('id')->unique();
+            $table->primary('id')->unique();
             $table->string('link');
             $table->string('icon');
             $table->string('color');

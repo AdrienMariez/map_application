@@ -14,7 +14,7 @@ class CreateReferencesnamesTable extends Migration
     public function up()
     {
         Schema::create('referencesnames', function (Blueprint $table) {
-            $table->increments('id')->unique();
+            $table->primary('id')->unique();
             $table->integer('fk_reference_id');
             $table->integer('fk_language_id');
             $table->string('text');
@@ -28,6 +28,6 @@ class CreateReferencesnamesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('referencesNames');
+        Schema::dropIfExists('referencesnames');
     }
 }

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePointLinkAliasTable extends Migration
+class CreatePointlinkaliasTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,8 @@ class CreatePointLinkAliasTable extends Migration
      */
     public function up()
     {
-        Schema::create('pointLinkAlias', function (Blueprint $table) {
+        Schema::create('pointlinkalias', function (Blueprint $table) {
+            $table->primary('id')->unique();
             $table->integer('fk_point_id')->unique();
             $table->integer('fk_language_id')->unique();
             $table->string('text');
@@ -27,6 +28,6 @@ class CreatePointLinkAliasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('pointLinkAlias');
+        Schema::dropIfExists('pointlinkalias');
     }
 }

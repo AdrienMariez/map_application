@@ -117,21 +117,20 @@
                                     </v-icon>
                                 </v-list-tile-action>
                                 <v-list-tile-action>
-                                    <!-- TO CHANGE uncomment this -->
-                                    <!-- <v-list-tile-content
-                                        v-for="(categoryname,x) in categoriesNames"
-                                        :key="x">
-                                        <div v-if="categoryname.fk_language_id == languageSelected">
-                                            {{categoryname.text}}
-                                        </div>
-                                    </v-list-tile-content> -->
-
-                                    <v-list-tile-content v-if="fr">
-                                        {{category.icon}} - {{category.weight}}
+                                    <!-- loop on names in categories & translations -->
+                                    <v-list-tile-content
+                                        v-for="(catName,a) in categoriesNames"
+                                        v-if="catName.fk_language_id == languageSelected && catName.fk_category_id == category.id"
+                                        :key="a">
+                                        {{catName.text}}
                                     </v-list-tile-content>
-                                    <v-list-tile-content v-if="!fr">
-                                        {{category.color}} - {{category.weight}}
-                                    </v-list-tile-content>
+                                    <!-- OBSOLETE old language switch -->
+                                        <!-- <v-list-tile-content v-if="fr">
+                                            {{category.icon}} - {{category.weight}}
+                                        </v-list-tile-content>
+                                        <v-list-tile-content v-if="!fr">
+                                            {{category.color}} - {{category.weight}}
+                                        </v-list-tile-content> -->
                                 </v-list-tile-action>
                             </v-list-tile>
                         </v-list>
@@ -153,12 +152,20 @@
                                 </v-icon>
                             </v-list-tile-action>
                             <v-list-tile-action>
-                                <v-list-tile-content v-if="fr">
-                                    {{reference.icon}} - {{reference.weight}}
+                                <!-- loop on names in references & translations -->
+                                <v-list-tile-content
+                                    v-for="(refName,b) in referenceNames"
+                                    v-if="refName.fk_language_id == languageSelected && refName.fk_reference_id == reference.id"
+                                    :key="b">
+                                    {{refName.text}}
                                 </v-list-tile-content>
-                                <v-list-tile-content v-if="!fr">
-                                    {{reference.id}} - {{reference.weight}}
-                                </v-list-tile-content>
+                                <!-- OBSOLETE old language switch -->
+                                    <!-- <v-list-tile-content v-if="fr">
+                                        {{reference.icon}} - {{reference.weight}}
+                                    </v-list-tile-content>
+                                    <v-list-tile-content v-if="!fr">
+                                        {{reference.id}} - {{reference.weight}}
+                                    </v-list-tile-content> -->
                             </v-list-tile-action>
                         </v-list-tile>
                     </v-list>
@@ -313,7 +320,6 @@
   export default {
     data () {
       return {
-        red: "red",
         drawer: true,
         mini: false,
         fr: true,
@@ -403,8 +409,8 @@
                 window.axios.get('/api/referencesnames').then(({ data }) => {
                 data.forEach(referenceName => {
                     //loops over each reference name in db
-                    console.log("reference name :");
-                    console.log(referenceName);
+                    // console.log("reference name :");
+                    // console.log(referenceName);
                     this.referenceNames.push(new ReferenceName(referenceName));
                 });
                 this.mute = false;
@@ -429,8 +435,8 @@
                 window.axios.get('/api/categoriesnames').then(({ data }) => {
                 data.forEach(categoryName => {
                     //loops over each category name in db
-                    console.log("category name :");
-                    console.log(categoryName);
+                    // console.log("category name :");
+                    // console.log(categoryName);
                     this.categoriesNames.push(new CategoryName(categoryName));
                     
                 });
