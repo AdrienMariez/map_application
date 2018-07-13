@@ -11,7 +11,9 @@ class CategoriesController extends Controller
 {
     public function index()
     {
-        return response(Category::all()->jsonSerialize(), Response::HTTP_OK);
+        $index = Category::orderBy('weight', 'asc')->get();
+        return response($index->jsonSerialize(), Response::HTTP_OK);
+        // return response(Category::all()->jsonSerialize(), Response::HTTP_OK);
     }
 
     public function create(Generator $faker)

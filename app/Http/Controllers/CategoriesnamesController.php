@@ -2,21 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\CategoryName;
+use App\Categoriesnames;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Faker\Generator;
 
-class CategoriesNamesController extends Controller
+class CategoriesnamesController extends Controller
 {
     public function index()
     {
-        return response(CategoryName::all()->jsonSerialize(), Response::HTTP_OK);
+        return response(Categoriesnames::all()->jsonSerialize(), Response::HTTP_OK);
     }
 
     public function create(Generator $faker)
     {
-        $categoryName = new CategoryName();
+        $categoryName = new Categoriesnames();
         $categoryName->fk_category_id = $faker->boolean ? '1' : '2';
         $categoryName->fk_language_id = $faker->boolean ? '1' : '2';
         $categoryName->text = $faker->lexify('????????');
@@ -27,7 +27,7 @@ class CategoriesNamesController extends Controller
 
     public function update(Request $request, $id)
     {
-        $categoryName = CategoryName::findOrFail($id);
+        $categoryName = Categoriesnames::findOrFail($id);
         $categoryName->$request->fk_category_id;
         $categoryName->$request->fk_language_id;
         $categoryName->text = $request->text;
@@ -38,7 +38,7 @@ class CategoriesNamesController extends Controller
 
     public function destroy($id)
     {
-        CategoryName::destroy($id);
+        Categoriesnames::destroy($id);
 
         return response(null, Response::HTTP_OK);
     }

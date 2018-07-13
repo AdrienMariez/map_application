@@ -11,7 +11,9 @@ class ReferencesController extends Controller
 {
     public function index()
     {
-        return response(Reference::all()->jsonSerialize(), Response::HTTP_OK);
+        $index = Reference::orderBy('weight', 'asc')->get();
+        return response($index->jsonSerialize(), Response::HTTP_OK);
+        // return response(Reference::all()->jsonSerialize(), Response::HTTP_OK);
     }
 
     public function create(Generator $faker)

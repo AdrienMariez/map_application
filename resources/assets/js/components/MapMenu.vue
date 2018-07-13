@@ -127,10 +127,10 @@
                                     </v-list-tile-content> -->
 
                                     <v-list-tile-content v-if="fr">
-                                        {{category.icon}}
+                                        {{category.icon}} - {{category.weight}}
                                     </v-list-tile-content>
                                     <v-list-tile-content v-if="!fr">
-                                        {{category.color}}
+                                        {{category.color}} - {{category.weight}}
                                     </v-list-tile-content>
                                 </v-list-tile-action>
                             </v-list-tile>
@@ -154,10 +154,10 @@
                             </v-list-tile-action>
                             <v-list-tile-action>
                                 <v-list-tile-content v-if="fr">
-                                    {{reference.icon}}
+                                    {{reference.icon}} - {{reference.weight}}
                                 </v-list-tile-content>
                                 <v-list-tile-content v-if="!fr">
-                                    {{reference.id}}
+                                    {{reference.id}} - {{reference.weight}}
                                 </v-list-tile-content>
                             </v-list-tile-action>
                         </v-list-tile>
@@ -400,11 +400,11 @@
         //REFERENCE NAMES READ
             readReferenceNames() {
                 this.mute = true;
-                window.axios.get('/api/referencesNames').then(({ data }) => {
+                window.axios.get('/api/referencesnames').then(({ data }) => {
                 data.forEach(referenceName => {
                     //loops over each reference name in db
-                    // console.log("reference name :");
-                    // console.log(referenceName);
+                    console.log("reference name :");
+                    console.log(referenceName);
                     this.referenceNames.push(new ReferenceName(referenceName));
                 });
                 this.mute = false;
@@ -426,11 +426,11 @@
         //CATEGORIES NAMES READ
             readCategoriesNames() {
                 this.mute = true;
-                window.axios.get('/api/categoriesNames').then(({ data }) => {
+                window.axios.get('/api/categoriesnames').then(({ data }) => {
                 data.forEach(categoryName => {
                     //loops over each category name in db
-                    // console.log("category name :");
-                    // console.log(categoryName);
+                    console.log("category name :");
+                    console.log(categoryName);
                     this.categoriesNames.push(new CategoryName(categoryName));
                     
                 });
@@ -476,10 +476,10 @@
             // console.log(this.categories); 
             // console.log("categoriesnames"); 
             // console.log(this.categoriesNames); 
-            console.log("languages :"); 
-            console.log(this.languages); 
-            console.log("language selected :"); 
-            console.log(this.languageSelected);
+            // console.log("languages :"); 
+            // console.log(this.languages); 
+            // console.log("language selected :"); 
+            // console.log(this.languageSelected);
     },
     components: {
         MapControls,

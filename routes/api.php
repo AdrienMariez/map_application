@@ -29,7 +29,7 @@ Route::resource('/references', 'ReferencesController', [
     'except' => ['edit', 'show', 'store']
 ]);
 
-Route::resource('/referencesNames', 'ReferenceNameController', [
+Route::resource('/referencesnames', 'ReferencesnamesController', [
     'except' => ['edit', 'show', 'store']
 ]);
 
@@ -37,6 +37,6 @@ Route::resource('/categories', 'CategoriesController', [
     'except' => ['edit', 'show', 'store']
 ]);
 
-Route::resource('/categoriesNames', 'CategoriesNamesController', [
+Route::resource('/categoriesnames', 'CategoriesnamesController', [
     'except' => ['edit', 'show', 'store']
 ]);

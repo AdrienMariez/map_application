@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateReferencesNamesTable extends Migration
+class CreateReferencesnamesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateReferencesNamesTable extends Migration
      */
     public function up()
     {
-        Schema::create('referencesNames', function (Blueprint $table) {
+        Schema::create('referencesnames', function (Blueprint $table) {
             $table->increments('id')->unique();
             $table->integer('fk_reference_id');
             $table->integer('fk_language_id');

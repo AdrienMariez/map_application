@@ -5,10 +5,15 @@ namespace App\Http\Controllers;
 use App\Point;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+//Faker allows to implement dummy data
 use Faker\Generator;
 
 class PointsController extends Controller
 {
+    
+    // By default, Eloquent expects created_at and updated_at columns to exist on your tables. If you do not wish to have these columns automatically managed by Eloquent, set the $timestamps property on your model to false
+    //public $timestamps = false;
+
     public function index()
     {
         return response(Point::all()->jsonSerialize(), Response::HTTP_OK);
