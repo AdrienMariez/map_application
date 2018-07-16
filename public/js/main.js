@@ -22478,6 +22478,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
 
 
 
@@ -22486,13 +22490,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   name: "app",
   data: function data() {
     return {
-      drawerCallBack: true
+      drawerCallBack: true,
+      pointsDisplayed: [],
+      counter: 0
     };
   },
 
   methods: {
     drawerMethod: function drawerMethod(updatedDrawer) {
       this.drawerCallBack = updatedDrawer;
+    },
+    displayPoints: function displayPoints(referenceClicked, actionCounter) {
+      this.pointsDisplayed = referenceClicked;
+      this.counter = actionCounter;
     }
   },
   components: {
@@ -22534,6 +22544,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 
+
 function Point(_ref) {
   var id = _ref.id,
       link = _ref.link,
@@ -22542,7 +22553,8 @@ function Point(_ref) {
       longitude = _ref.longitude,
       lattitude = _ref.lattitude,
       uses_image = _ref.uses_image,
-      image_path = _ref.image_path;
+      image_path = _ref.image_path,
+      fk_reference_id = _ref.fk_reference_id;
 
   this.id = id;
   this.link = link;
@@ -22552,6 +22564,7 @@ function Point(_ref) {
   this.lattitude = lattitude;
   this.uses_image = uses_image;
   this.image_path = image_path;
+  this.fk_reference_id = fk_reference_id;
 }
 
 // import 'leaflet'
@@ -22564,14 +22577,20 @@ __webpack_require__(14);
 
 
 var L = window.L;
+
 /* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['pointsDisplayed', 'counter'],
   data: function data() {
     return {
       map: [],
       markers: null,
       zoom: 14,
       zoomLevel: 14,
-      points: []
+      points: [],
+      pointsCount: 0,
+      storagePointsDisplayed: [],
+      pointsMarkers: [],
+      pointsLayers: []
     };
   },
 
@@ -22593,37 +22612,222 @@ var L = window.L;
     }
   },
   watch: {
-    places: function places(val) {
-      this.removePlaces();
-      this.addPlaces(val);
-    },
+    // updateOfPoints(pointsDisplayed) {
+    //   console.log("pointsDisplayed");
+    //   console.log(pointsDisplayed);
+    // },
+    // places(val) {
+    //   this.removePlaces()
+    //   this.addPlaces(val)
+    // },
     center: function center(location) {
       this.map.setView([location.lat, location.lng], location.zoom);
+    },
+    counter: function counter(val, oldVal) {
+      var _this = this;
+
+      // console.log('Prop changed: ', val, ' | was: ', oldVal);
+
+      var pointsDisplayed = JSON.parse(JSON.stringify(this.pointsDisplayed));
+
+      var storagePointsDisplayed = JSON.parse(JSON.stringify(this.storagePointsDisplayed));
+
+      var points = JSON.parse(JSON.stringify(this.points));
+
+      //trying stuff
+      var markers = [];
+      var layers = [];
+      var marker;
+
+      if (storagePointsDisplayed.length < 1) {
+        // console.log("too short ! changed !");
+        storagePointsDisplayed = JSON.parse(JSON.stringify(this.pointsDisplayed));
+        // console.log("storagePointsDisplayed before loop");
+        // console.log(storagePointsDisplayed);
+        //if too small look for the false or change the storagePointsDisplayed to be pointsDisplayed but all true
+        for (var _i = 0; _i < storagePointsDisplayed.length; _i++) {
+          if (storagePointsDisplayed[_i]["isToBeDisplayed"] == true) {
+            // console.log(storagePointsDisplayed[i]);
+            storagePointsDisplayed[_i]["isToBeDisplayed"] = false;
+          }
+        }
+        for (var i = 0; i < pointsDisplayed.length; i++) {
+          markers[i] = [];
+        }
+      } else {
+        markers = this.pointsMarkers;
+        layers = this.pointsLayers;
+      }
+      // console.log("storagePointsDisplayed after loop");
+      // console.log(storagePointsDisplayed);
+      // console.log("pointsDisplayed");
+      // console.log(pointsDisplayed);
+
+      var _loop = function _loop(_i2) {
+        // console.log("loop in categories");
+
+        if (pointsDisplayed[_i2]["isToBeDisplayed"] != storagePointsDisplayed[_i2]["isToBeDisplayed"]) {
+          //If a difference with the previous state is detected...
+          // console.log("occurence !");
+          // console.log(pointsDisplayed[i]);
+          //xar
+          layers[_i2] = new L.layerGroup();
+
+          // if (pointsDisplayed[i]["isToBeDisplayed"] == true) {
+          //If it is asked to display the new points...
+          // var m = L.marker([point["longitude"], point["lattitude"]])
+          //   .bindPopup(point["link"])
+          //   .addTo(this.map);
+          console.log("add the points !");
+          points.forEach(function (point) {
+            if (point["fk_reference_id"] == pointsDisplayed[_i2]["id"]) {
+              marker = L.marker([point["longitude"], point["lattitude"]]).bindPopup(point["link"]);
+              //xar
+              if (pointsDisplayed[_i2]["isToBeDisplayed"] == true) {
+                marker.setOpacity(1);
+              } else {
+                marker.setOpacity(0);
+              }
+              layers[_i2].addLayer(marker);
+              //xor
+              // markers[i].push(marker);
+              // layers[i] = L.layerGroup(markers[i]).addTo(this.map);
+              console.log("layers");
+              console.log(layers);
+
+              // console.log("layers creation",i);
+              // console.log(layers[i]);
+            }
+          });
+          //xar
+          _this.map.addLayer(layers[_i2]);
+          // layers[i] = L.featureGroup(markers[i]).addTo(this.map);
+
+          // }
+          // else{
+          //   console.log("remove the points !");
+          //   // layers[i] = [];
+          //   // layers[i] = L.layerGroup(layers[i]).removeFrom(this.map);
+
+          //   // console.log("layers");
+          //   // console.log(layers);
+          //   console.log("layers removal",i);
+          //   console.log(layers[i]);
+          //   // this.map.addLayer(layers[i]);
+          //   this.map.removeLayer(layers[i]);
+          //   // console.log("layers after");
+          //   // console.log(layers);
+          //   // layers[i] = L.layerGroup(markers[i]).removeFrom(this.map);
+          // }
+
+          // pointsDisplayed[i]["id"]
+        }
+      };
+
+      for (var _i2 = 0; _i2 < pointsDisplayed.length; _i2++) {
+        _loop(_i2);
+      }
+
+      // this.map.eachLayer(function (layer) {
+      //     console.log(layer);
+      // });
+
+      // for (let y = 0; y < pointsDisplayed.length; y++) {
+      //   this.map.removeLayer(layers); 
+      // }
+      //trying stuff
+      // console.log(markers);
+
+      //stock values
+      this.pointsMarkers = markers;
+      this.pointsLayers = layers;
+
+      this.storagePointsDisplayed = pointsDisplayed;
+    },
+
+    // watcher for the props pointsDisplayed. May be useless.
+    pointsDisplayed: function pointsDisplayed(val, oldVal) {
+
+      // console.log('Prop changed: ', val, ' | was: ', oldVal);
+      // console.log("method");
+      // for (let i = 0; i < this.pointsDisplayed.length; i++) {
+      //   console.log(this.pointsDisplayed[i]);
+      // }
+      // console.log(val);
+      // console.log(val.length);
+      // for (let i = 0; i < val.length; i++) {
+      //   if (val[i]["isToBeDisplayed"] == true){
+      //     var m = L.marker([44.5048, 1.18704])
+      //     .bindPopup("text")
+      //     .addTo(this.map);
+
+      //     var m = L.marker([44.5060, 1.18700])
+      //     .bindPopup("text2")
+      //     .addTo(this.map);
+      //     console.log(val[i]["isToBeDisplayed"]);
+
+      //   }
+      //   else{
+      //     console.log(val[i]["isToBeDisplayed"]);
+      //   }
+      // }
+
+      // console.log("watcher map");
+      // console.log(map);
+      // console.log("watcher this.map");
+      // console.log(this.map);
+      // console.log("watcher this.points");
+      // console.log(this.points);
+
+      // var x = this.pointsCount;
+      // console.log(x);
+
+      // var m = L.marker([44.5048, 1.18704])
+      // .bindPopup("text")
+      // .addTo(this.map);
+
+      // var m = L.marker([44.5060, 1.18700])
+      // .bindPopup("text2")
+      // .addTo(this.map);
+
+
+      // for (let i = 0; i < x; i++) {
+      //   console.log(i);
+      //   var m = L.marker([this.points[i].longitude, this.points[i].lattitude])
+      //   .bindPopup(this.points[i].color)
+      //   .addTo(this.map);
+      // }
+
+      // this.displayPoints();
     }
   },
   methods: {
-    addPlaces: function addPlaces(places) {
-      // TO REMOVE all comments here are to disable marker cluster
-      if (!this.map) return;
-      var map = this.map;
-      // const markers = L.markerClusterGroup();
-      var store = this.$store;
+    //TO REMOVE
+    // addPlaces(places) {
+    //   // TO REMOVE all comments here are to disable marker cluster
+    //   if(!this.map) return;
+    //   const map = this.map
+    //   // const markers = L.markerClusterGroup();
+    //   const store = this.$store;
 
-      places.forEach(function (place) {
-        var marker = L.marker([place.location.lat, place.location.lng]).on('click', function (el) {
-          store.commit('locationsMap_center', el.latlng);
-        }).bindPopup('<b> ' + place.id + ' </b> ' + place.name);
-        map.addLayer(marker);
-        // .on('click', (el) => alert(el.target))
-      });
+    //   places.forEach( (place) => {
+    //     let marker = L.marker([place.location.lat, place.location.lng])
+    //         .on('click', (el) => {
+    //           store.commit('locationsMap_center', el.latlng)
+    //         })
+    //         .bindPopup(`<b> ${place.id} </b> ${place.name}`)
+    //     map.addLayer(marker)
+    //     // .on('click', (el) => alert(el.target))
+    //   })
 
-      // map.addLayer(markers)
-      // this.markers = markers
-    },
-    removePlaces: function removePlaces() {
-      this.map.removeLayer(this.marker);
-      this.marker = null;
-    },
+    //   // map.addLayer(markers)
+    //   // this.markers = markers
+    // },
+    // removePlaces() {
+    //   this.map.removeLayer(this.marker)
+    //   this.marker = null
+    // },
+    //END TO REMOVE
     input: function input(newValue) {
       // ALGO : 
       //I need to watch so that the user can still scroll to zoom in, meaning that the current zoom (x) must be modified, no the value saved (y).
@@ -22658,36 +22862,31 @@ var L = window.L;
       this.map.setZoom(this.zoomLevel);
     },
     readPoints: function readPoints() {
-      var _this = this;
+      var _this2 = this;
 
       this.mute = true;
+
       // const markers = new L.FeatureGroup().addTo(map);
+
       window.axios.get('/api/points').then(function (_ref2) {
         var data = _ref2.data;
 
         data.forEach(function (point) {
           //looping for each object "point"
-
-          _this.points.push(new Point(point));
+          _this2.points.push(new Point(point));
+          _this2.pointsCount++;
 
           // console.log("location loop");
           // console.log(point);
+
           // this.displayPoints(point);
           // const m = L.marker([point.longitude, point.lattitude])
           //   .addTo(map);
           // const p = L.marker([point.lattitude, point.longitude])
           //   .addTo(map);
         });
-        _this.mute = false;
+        _this2.mute = false;
       });
-    },
-    displayPoints: function displayPoints(point) {
-      console.log("back in ussr");
-      console.log(point);
-      // const m = L.marker([point.longitude, point.lattitude])
-      //   .addTo(map);
-      // const p = L.marker([point.lattitude, point.longitude])
-      //   .addTo(map);
     }
   },
   mounted: function mounted() {
@@ -22728,9 +22927,14 @@ var L = window.L;
     }).addTo(map);
 
     this.map = map;
-    this.addPlaces(this.places);
 
     map.zoomControl.remove();
+
+    // console.log("map");
+    // console.log(map);
+    // console.log("this.map");
+    // console.log(this.map);
+
 
     // map.touchZoom.disable();
     // map.doubleClickZoom.disable();
@@ -23218,7 +23422,9 @@ function Point(_ref6) {
             categoriesNames: [],
             references: [],
             referenceNames: [],
-            working: false
+            referenceDisplayed: [],
+            working: false,
+            actionCounter: 0
         };
     },
 
@@ -23226,7 +23432,15 @@ function Point(_ref6) {
         drawerMethod: function drawerMethod() {
             this.$emit('drawerMethod', this.drawer);
         },
-
+        displayReferencePoints: function displayReferencePoints(refId) {
+            if (this.referenceDisplayed[refId]["isToBeDisplayed"] == true) {
+                this.referenceDisplayed[refId]["isToBeDisplayed"] = false;
+            } else {
+                this.referenceDisplayed[refId]["isToBeDisplayed"] = true;
+            }
+            this.actionCounter++;
+            this.$emit('displayPoints', this.referenceDisplayed, this.actionCounter);
+        },
 
         //inspired from vue-laravel-crud
         //POINTS CRUD NEED READ ONLY
@@ -23314,6 +23528,11 @@ function Point(_ref6) {
                     // console.log("reference :");
                     // console.log(reference);
                     _this5.references.push(new Reference(reference));
+                    var obj = {};
+                    obj["id"] = reference.id;
+                    obj["isToBeDisplayed"] = false;
+                    _this5.referenceDisplayed.push(obj);
+                    // this.referenceDisplayed.push(false);
                 });
                 _this5.mute = false;
             });
@@ -23402,6 +23621,9 @@ function Point(_ref6) {
         this.readCategories();
         this.readLanguages();
         this.readCategoriesNames();
+        // The table is emitted at initialization so the map can work directly.
+        // this.$emit('displayPoints', this.referenceDisplayed);
+        // this.$emit('displayPoints', this.referenceDisplayed);
         //logs for api returns
         // console.log("points"); 
         // console.log(this.points); 
@@ -23409,6 +23631,8 @@ function Point(_ref6) {
         // console.log(this.references); 
         // console.log("referencenames"); 
         // console.log(this.referenceNames); 
+        // console.log("referencedisplayed"); 
+        // console.log(this.referenceDisplayed); 
         // console.log("categories"); 
         // console.log(this.categories); 
         // console.log("categoriesnames"); 
@@ -45612,7 +45836,14 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         attrs: {
           "color": "white"
         }
-      }, [_c('v-list-tile', [_c('v-list-tile-action', [_c('v-icon', {
+      }, [_c('v-list-tile', {
+        on: {
+          "click": function($event) {
+            $event.stopPropagation();
+            _vm.displayReferencePoints(reference.id)
+          }
+        }
+      }, [_c('v-list-tile-action', [_c('v-icon', {
         style: ({
           color: reference.color
         })
@@ -45741,14 +45972,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       },
       expression: "zoomLevel"
     }
-  }), _vm._v(" "), _vm._l((_vm.points), function(point) {
-    return _c('point-display-component', _vm._b({
-      key: point.id,
-      on: {
-        "displayPoints": _vm.displayPoints
-      }
-    }, 'point-display-component', point, false))
-  })], 2)
+  })], 1)
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
@@ -45772,11 +45996,14 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "id": "publicMenu"
     },
     on: {
-      "drawerMethod": _vm.drawerMethod
+      "drawerMethod": _vm.drawerMethod,
+      "displayPoints": _vm.displayPoints
     }
   }), _vm._v(" "), _c('locations-map', {
     attrs: {
-      "id": "publicMap"
+      "id": "publicMap",
+      "counter": _vm.counter,
+      "pointsDisplayed": _vm.pointsDisplayed
     }
   }), _vm._v(" "), _c('v-footer', {
     staticClass: "text-xs-center flexFooterPosition",

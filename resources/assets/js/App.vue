@@ -1,9 +1,13 @@
 <template>
   <v-app id="inspire">
  
-    <map-menu id="publicMenu" @drawerMethod="drawerMethod"></map-menu>
+    <map-menu id="publicMenu" @drawerMethod="drawerMethod" @displayPoints="displayPoints"></map-menu>
 
-    <locations-map id="publicMap"></locations-map>
+    <locations-map
+      id="publicMap"
+      v-bind:counter="counter"
+      v-bind:pointsDisplayed="pointsDisplayed">
+    </locations-map>
 
     <v-footer
       app
@@ -38,12 +42,18 @@ export default {
   name: "app",
   data() {
     return {
-      drawerCallBack: true
+      drawerCallBack: true,
+      pointsDisplayed: [],
+      counter: 0,
     };
   },
   methods: {
     drawerMethod(updatedDrawer) {
       this.drawerCallBack = updatedDrawer;
+    },
+    displayPoints(referenceClicked, actionCounter) {
+      this.pointsDisplayed = referenceClicked;
+      this.counter = actionCounter;
     }
   },
   components: {
@@ -54,26 +64,26 @@ export default {
 </script>
 
 <style>
-a {
-  color: rgb(146, 221, 123) !important;
-  text-decoration: inherit;
-}
-#publicMenu {
-  z-index: 50;
-}
-#publicMap {
-  z-index: 1;
-  height: 100%;
-}
-#footer {
-  z-index: 25;
-}
-.flexFooterPosition {
-  justify-content: center;
-  /* if need to get it at start position : */
-  /* justify-content: flex-start; */
-}
-.flexCenter {
-  justify-content: center;
-}
+  a {
+    color: rgb(146, 221, 123) !important;
+    text-decoration: inherit;
+  }
+  #publicMenu {
+    z-index: 50;
+  }
+  #publicMap {
+    z-index: 1;
+    height: 100%;
+  }
+  #footer {
+    z-index: 25;
+  }
+  .flexFooterPosition {
+    justify-content: center;
+    /* if need to get it at start position : */
+    /* justify-content: flex-start; */
+  }
+  .flexCenter {
+    justify-content: center;
+  }
 </style>

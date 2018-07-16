@@ -143,7 +143,7 @@
                         v-if="reference.fk_category_id == category.id"
                         :key="y"
                         color="white">
-                        <v-list-tile>
+                        <v-list-tile @click.stop="displayReferencePoints(reference.id)">
                             <v-list-tile-action>
                                 <!-- class="shadow" -->
                                 <v-icon
@@ -331,14 +331,25 @@
         categoriesNames: [],
         references: [],
         referenceNames: [],
+        referenceDisplayed: [],
         working: false,
+        actionCounter: 0,
       }
     },
     methods: {
         drawerMethod() {
             this.$emit('drawerMethod', this.drawer);
         },
-
+        displayReferencePoints(refId){
+            if (this.referenceDisplayed[refId]["isToBeDisplayed"] == true){
+                this.referenceDisplayed[refId]["isToBeDisplayed"] = false;
+            }
+            else{
+                this.referenceDisplayed[refId]["isToBeDisplayed"] = true;
+            }
+            this.actionCounter++
+            this.$emit('displayPoints', this.referenceDisplayed, this.actionCounter);
+        },
         //inspired from vue-laravel-crud
         //POINTS CRUD NEED READ ONLY
             //methods other than read() are useless, but kept for the moment until I can remove them and not break anything in the process.
@@ -398,7 +409,11 @@
                     // console.log("reference :");
                     // console.log(reference);
                     this.references.push(new Reference(reference));
-                    
+                    var obj = {};
+                    obj["id"] = reference.id;
+                    obj["isToBeDisplayed"] = false;
+                    this.referenceDisplayed.push(obj);
+                    // this.referenceDisplayed.push(false);
                 });
                 this.mute = false;
                 });
@@ -471,6 +486,9 @@
         this.readCategories();
         this.readLanguages();
         this.readCategoriesNames();
+        // The table is emitted at initialization so the map can work directly.
+        // this.$emit('displayPoints', this.referenceDisplayed);
+        // this.$emit('displayPoints', this.referenceDisplayed);
         //logs for api returns
             // console.log("points"); 
             // console.log(this.points); 
@@ -478,6 +496,8 @@
             // console.log(this.references); 
             // console.log("referencenames"); 
             // console.log(this.referenceNames); 
+            // console.log("referencedisplayed"); 
+            // console.log(this.referenceDisplayed); 
             // console.log("categories"); 
             // console.log(this.categories); 
             // console.log("categoriesnames"); 
