@@ -22566,6 +22566,19 @@ function Point(_ref) {
   this.image_path = image_path;
   this.fk_reference_id = fk_reference_id;
 }
+function Reference(_ref2) {
+  var id = _ref2.id,
+      icon = _ref2.icon,
+      color = _ref2.color,
+      weight = _ref2.weight,
+      fk_category_id = _ref2.fk_category_id;
+
+  this.id = id;
+  this.icon = icon;
+  this.color = color;
+  this.weight = weight;
+  this.fk_category_id = fk_category_id;
+}
 
 // import 'leaflet'
 // import 'leaflet.markercluster'
@@ -22588,6 +22601,7 @@ var L = window.L;
       zoomLevel: 14,
       points: [],
       pointsCount: 0,
+      references: [],
       storagePointsDisplayed: [],
       pointsMarkers: [],
       pointsLayers: []
@@ -22612,194 +22626,11 @@ var L = window.L;
     }
   },
   watch: {
-    // updateOfPoints(pointsDisplayed) {
-    //   console.log("pointsDisplayed");
-    //   console.log(pointsDisplayed);
-    // },
-    // places(val) {
-    //   this.removePlaces()
-    //   this.addPlaces(val)
-    // },
     center: function center(location) {
       this.map.setView([location.lat, location.lng], location.zoom);
     },
     counter: function counter(val, oldVal) {
-      var _this = this;
-
-      // console.log('Prop changed: ', val, ' | was: ', oldVal);
-
-      var pointsDisplayed = JSON.parse(JSON.stringify(this.pointsDisplayed));
-
-      var storagePointsDisplayed = JSON.parse(JSON.stringify(this.storagePointsDisplayed));
-
-      var points = JSON.parse(JSON.stringify(this.points));
-
-      //trying stuff
-      var markers = [];
-      var layers = [];
-      var marker;
-
-      if (storagePointsDisplayed.length < 1) {
-        // console.log("too short ! changed !");
-        storagePointsDisplayed = JSON.parse(JSON.stringify(this.pointsDisplayed));
-        // console.log("storagePointsDisplayed before loop");
-        // console.log(storagePointsDisplayed);
-        //if too small look for the false or change the storagePointsDisplayed to be pointsDisplayed but all true
-        for (var _i = 0; _i < storagePointsDisplayed.length; _i++) {
-          if (storagePointsDisplayed[_i]["isToBeDisplayed"] == true) {
-            // console.log(storagePointsDisplayed[i]);
-            storagePointsDisplayed[_i]["isToBeDisplayed"] = false;
-          }
-        }
-        for (var i = 0; i < pointsDisplayed.length; i++) {
-          markers[i] = [];
-        }
-      } else {
-        markers = this.pointsMarkers;
-        layers = this.pointsLayers;
-      }
-      // console.log("storagePointsDisplayed after loop");
-      // console.log(storagePointsDisplayed);
-      // console.log("pointsDisplayed");
-      // console.log(pointsDisplayed);
-
-      var _loop = function _loop(_i2) {
-        // console.log("loop in categories");
-
-        if (pointsDisplayed[_i2]["isToBeDisplayed"] != storagePointsDisplayed[_i2]["isToBeDisplayed"]) {
-          //If a difference with the previous state is detected...
-          // console.log("occurence !");
-          // console.log(pointsDisplayed[i]);
-          //xar
-          layers[_i2] = new L.layerGroup();
-
-          // if (pointsDisplayed[i]["isToBeDisplayed"] == true) {
-          //If it is asked to display the new points...
-          // var m = L.marker([point["longitude"], point["lattitude"]])
-          //   .bindPopup(point["link"])
-          //   .addTo(this.map);
-          console.log("add the points !");
-          points.forEach(function (point) {
-            if (point["fk_reference_id"] == pointsDisplayed[_i2]["id"]) {
-              marker = L.marker([point["longitude"], point["lattitude"]]).bindPopup(point["link"]);
-              //xar
-              if (pointsDisplayed[_i2]["isToBeDisplayed"] == true) {
-                marker.setOpacity(1);
-              } else {
-                marker.setOpacity(0);
-              }
-              layers[_i2].addLayer(marker);
-              //xor
-              // markers[i].push(marker);
-              // layers[i] = L.layerGroup(markers[i]).addTo(this.map);
-              console.log("layers");
-              console.log(layers);
-              //Newbuntew
-              //ssh-dds1JKJLB9HBGJBHUIB8U78HJHJKHGJGKJ
-              // console.log("layers creation",i);
-              // console.log(layers[i]);
-            }
-          });
-          //xar
-          _this.map.addLayer(layers[_i2]);
-          // layers[i] = L.featureGroup(markers[i]).addTo(this.map);
-
-          // }
-          // else{
-          //   console.log("remove the points !");
-          //   // layers[i] = [];
-          //   // layers[i] = L.layerGroup(layers[i]).removeFrom(this.map);
-
-          //   // console.log("layers");
-          //   // console.log(layers);
-          //   console.log("layers removal",i);
-          //   console.log(layers[i]);
-          //   // this.map.addLayer(layers[i]);
-          //   this.map.removeLayer(layers[i]);
-          //   // console.log("layers after");
-          //   // console.log(layers);
-          //   // layers[i] = L.layerGroup(markers[i]).removeFrom(this.map);
-          // }
-
-          // pointsDisplayed[i]["id"]
-        }
-      };
-
-      for (var _i2 = 0; _i2 < pointsDisplayed.length; _i2++) {
-        _loop(_i2);
-      }
-
-      // this.map.eachLayer(function (layer) {
-      //     console.log(layer);
-      // });
-
-      // for (let y = 0; y < pointsDisplayed.length; y++) {
-      //   this.map.removeLayer(layers); 
-      // }
-      //trying stuff
-      // console.log(markers);
-
-      //stock values
-      this.pointsMarkers = markers;
-      this.pointsLayers = layers;
-
-      this.storagePointsDisplayed = pointsDisplayed;
-    },
-
-    // watcher for the props pointsDisplayed. May be useless.
-    pointsDisplayed: function pointsDisplayed(val, oldVal) {
-
-      // console.log('Prop changed: ', val, ' | was: ', oldVal);
-      // console.log("method");
-      // for (let i = 0; i < this.pointsDisplayed.length; i++) {
-      //   console.log(this.pointsDisplayed[i]);
-      // }
-      // console.log(val);
-      // console.log(val.length);
-      // for (let i = 0; i < val.length; i++) {
-      //   if (val[i]["isToBeDisplayed"] == true){
-      //     var m = L.marker([44.5048, 1.18704])
-      //     .bindPopup("text")
-      //     .addTo(this.map);
-
-      //     var m = L.marker([44.5060, 1.18700])
-      //     .bindPopup("text2")
-      //     .addTo(this.map);
-      //     console.log(val[i]["isToBeDisplayed"]);
-
-      //   }
-      //   else{
-      //     console.log(val[i]["isToBeDisplayed"]);
-      //   }
-      // }
-
-      // console.log("watcher map");
-      // console.log(map);
-      // console.log("watcher this.map");
-      // console.log(this.map);
-      // console.log("watcher this.points");
-      // console.log(this.points);
-
-      // var x = this.pointsCount;
-      // console.log(x);
-
-      // var m = L.marker([44.5048, 1.18704])
-      // .bindPopup("text")
-      // .addTo(this.map);
-
-      // var m = L.marker([44.5060, 1.18700])
-      // .bindPopup("text2")
-      // .addTo(this.map);
-
-
-      // for (let i = 0; i < x; i++) {
-      //   console.log(i);
-      //   var m = L.marker([this.points[i].longitude, this.points[i].lattitude])
-      //   .bindPopup(this.points[i].color)
-      //   .addTo(this.map);
-      // }
-
-      // this.displayPoints();
+      this.createMarkers();
     }
   },
   methods: {
@@ -22829,6 +22660,105 @@ var L = window.L;
     //   this.marker = null
     // },
     //END TO REMOVE
+    //CREATION OF MAP
+    readMap: function readMap() {
+      var map = L.map('map').setView([44.5040577, 1.1874496], this.zoom);
+
+      L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+        minZoom: 10,
+        maxZoom: 18,
+        id: 'mapbox.streets',
+        accessToken: 'pk.eyJ1IjoiYmlib3VuIiwiYSI6ImNqaGhvdTc1ZzAyYXIzZW5yN3ZnaThrdnMifQ.-m9db8kuRMAOEiSsdvQTQA',
+        zoomControl: false
+      }).addTo(map);
+
+      this.map = map;
+
+      map.zoomControl.remove();
+    },
+
+    //POINTS READ
+    readPoints: function readPoints() {
+      var _this = this;
+
+      this.mute = true;
+
+      window.axios.get('/api/points').then(function (_ref3) {
+        var data = _ref3.data;
+
+        data.forEach(function (point) {
+          //looping for each object "point"        
+          _this.points.push(new Point(point));
+          _this.pointsCount++;
+        });
+        _this.mute = false;
+      });
+    },
+
+    //REFERENCES READ
+    readReferences: function readReferences() {
+      var _this2 = this;
+
+      window.axios.get('/api/references').then(function (_ref4) {
+        var data = _ref4.data;
+
+        data.forEach(function (reference) {
+          var obj = {};
+          obj["id"] = reference.id;
+          obj["isToBeDisplayed"] = false;
+          _this2.storagePointsDisplayed.push(obj);
+        });
+      });
+    },
+
+    //CREATE MARKERS
+    createMarkers: function createMarkers() {
+      var _this3 = this;
+
+      var pointsDisplayed = JSON.parse(JSON.stringify(this.pointsDisplayed));
+
+      var storagePointsDisplayed = JSON.parse(JSON.stringify(this.storagePointsDisplayed));
+
+      var points = JSON.parse(JSON.stringify(this.points));
+
+      var markers = this.pointsMarkers;
+      var layers = this.pointsLayers;
+      var marker;
+
+      var _loop = function _loop(i) {
+
+        if (pointsDisplayed[i]["isToBeDisplayed"] != storagePointsDisplayed[i]["isToBeDisplayed"] && pointsDisplayed[i]["isToBeDisplayed"] == true) {
+
+          layers[i] = new L.layerGroup();
+
+          points.forEach(function (point) {
+
+            if (point["fk_reference_id"] == pointsDisplayed[i]["id"]) {
+
+              marker = L.marker([point["longitude"], point["lattitude"]]).bindPopup(point["link"]);
+              layers[i].addLayer(marker);
+            }
+          });
+
+          _this3.map.addLayer(layers[i]);
+        } else if (pointsDisplayed[i]["isToBeDisplayed"] != storagePointsDisplayed[i]["isToBeDisplayed"] && pointsDisplayed[i]["isToBeDisplayed"] == false) {
+          console.log("remove points");
+          _this3.map.removeLayer(layers[i]);
+        }
+      };
+
+      for (var i = 0; i < pointsDisplayed.length; i++) {
+        _loop(i);
+      }
+
+      //stock values
+      this.pointsMarkers = markers;
+      this.pointsLayers = layers;
+
+      this.storagePointsDisplayed = pointsDisplayed;
+    },
+
+    //GET ZOOM
     input: function input(newValue) {
       // ALGO : 
       //I need to watch so that the user can still scroll to zoom in, meaning that the current zoom (x) must be modified, no the value saved (y).
@@ -22861,117 +22791,17 @@ var L = window.L;
       this.zoomLevel += newValue;
 
       this.map.setZoom(this.zoomLevel);
-    },
-    readPoints: function readPoints() {
-      var _this2 = this;
-
-      this.mute = true;
-
-      // const markers = new L.FeatureGroup().addTo(map);
-
-      window.axios.get('/api/points').then(function (_ref2) {
-        var data = _ref2.data;
-
-        data.forEach(function (point) {
-          //looping for each object "point"
-          _this2.points.push(new Point(point));
-          _this2.pointsCount++;
-
-          // console.log("location loop");
-          // console.log(point);
-
-          // this.displayPoints(point);
-          // const m = L.marker([point.longitude, point.lattitude])
-          //   .addTo(map);
-          // const p = L.marker([point.lattitude, point.longitude])
-          //   .addTo(map);
-        });
-        _this2.mute = false;
-      });
     }
   },
   mounted: function mounted() {
-    // CHANGE ME map creation
-    //look at this :
-    //https://www.geoportail.gouv.fr/tutoriels
-    //https://geoservices.ign.fr/documentation/utilisation_web/extension-leaflet.html#download
-    //https://geoservices.ign.fr/documentation/utilisation_web/sdk.html
-
-    // L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
-    //   minZoom: 10,
-    //   maxZoom: 18,
-    //   id: 'mapbox.streets',
-    //   accessToken: 'pk.eyJ1IjoiYmlib3VuIiwiYSI6ImNqaGhvdTc1ZzAyYXIzZW5yN3ZnaThrdnMifQ.-m9db8kuRMAOEiSsdvQTQA'
-    //   zoomControl: false
-    // }).addTo(map);
-
-    // const map = L.map('map').setView([44.5040577, 1.1874496], this.zoom)
-    // L.tileLayer('https://{s}.tiles.mapbox.com/v4/{user}.{mapId}/{z}/{x}/{y}.png?access_token={token}', {
-    //   attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
-    //   maxZoom: 18,
-    //   mapId: 'mapbox.streets',
-    //   user: 'skycatch-dev',
-    //   token: 'pk.eyJ1Ijoic2t5Y2F0Y2gtZGV2IiwiYSI6Ik1PVjVYNEkifQ.j2X9OOZDz7ABqUvHk4kesw',
-    //   zoomControl: false
-    // }).addTo(map);
-
-    // map : mapbox.streets
-    //satellite : i81oam9h
-
-    var map = L.map('map').setView([44.5040577, 1.1874496], this.zoom);
-    L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
-      minZoom: 10,
-      maxZoom: 18,
-      id: 'mapbox.streets',
-      accessToken: 'pk.eyJ1IjoiYmlib3VuIiwiYSI6ImNqaGhvdTc1ZzAyYXIzZW5yN3ZnaThrdnMifQ.-m9db8kuRMAOEiSsdvQTQA',
-      zoomControl: false
-    }).addTo(map);
-
-    this.map = map;
-
-    map.zoomControl.remove();
-
-    // console.log("map");
-    // console.log(map);
-    // console.log("this.map");
-    // console.log(this.map);
-
-
-    // map.touchZoom.disable();
-    // map.doubleClickZoom.disable();
-    // map.scrollWheelZoom.disable();
-    // map.boxZoom.disable();
-    // map.keyboard.disable();
-    // L.touchZoom.disable();
-    // L.doubleClickZoom.disable();
-    // L.scrollWheelZoom.disable();
-    // L.boxZoom.disable();
-    // L.keyboard.disable();
-    // L.zoomControl.remove();
-
-    // zoom controls disabled, manual control with user friendly buttons will be used instead
-
-    // 
-    // map.zoomControl.setPosition('bottomright');
-
-    // var mapHalfHeight = map.getSize().y / 2,
-    //     container = map.zoomControl.getContainer(),
-    //     containerHalfHeight = parseInt(container.offsetHeight / 2),
-    //     containerTop = mapHalfHeight - containerHalfHeight + 'px';
-
-    // container.style.position = 'absolute';
-    // container.style.top = containerTop;
-
-
-    // 
-    // L.control.remove();
-    // L.control.zoom({
-    //   position:'topright'
-    // }).addTo(map);
+    this.readMap();
+    this.readPoints();
+    this.readReferences();
   },
   created: function created() {
-    this.readPoints();
-    // console.log(this.points); 
+    // this.createMarkers();
+    // console.log("created = storagePointsDisplayed"); 
+    // console.log(this.storagePointsDisplayed); 
   },
 
   components: {
@@ -23330,7 +23160,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 
-
 //Needed for promises to work
 function Language(_ref) {
     var id = _ref.id,
@@ -23405,8 +23234,6 @@ function Point(_ref6) {
     this.image_path = image_path;
 }
 //END Needed for promises to work
-
-
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -23891,7 +23718,7 @@ exports = module.exports = __webpack_require__(1)();
 
 
 // module
-exports.push([module.i, "\n.noPaddingLeft[data-v-390defd6]{\n      margin-left: -15% !important;\n}\n.buttonContact[data-v-390defd6]{\n      height: 60px;\n      width: 100px;\n      position: absolute;\n      right: 0;\n      bottom: 0;\n      z-index: 1;\n}\n.buttonContact > button[data-v-390defd6]{\n      right: 5px;\n}\n.selectTop[data-v-390defd6]{\n      z-index: 200;\n      max-width: 100px;\n}\n  /* .shadow{\n      text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;\n  } */\n.logoContainer > img[data-v-390defd6]{\n      width: 200px;\n      height: 200px;\n}\n.logoContainerMedium > img[data-v-390defd6]{\n      width: 80px;\n      height: 80px;\n}\n.logoContainerMini[data-v-390defd6]{\n      height: 100%;\n}\n.logoContainerMini > img[data-v-390defd6]{\n      width: 48px;\n      height: 48px;\n}\n\n/* #publicMapControls{\n  float: right;\n  border: 5px;\n  border-color: brown;\n  border-style: solid;\n  z-index: 100;\n} */\n\n\n", ""]);
+exports.push([module.i, "\n.noPaddingLeft[data-v-390defd6]{\n      margin-left: -15% !important;\n}\n.buttonContact[data-v-390defd6]{\n      height: 60px;\n      width: 100px;\n      position: absolute;\n      right: 0;\n      bottom: 0;\n      z-index: 1;\n}\n.buttonContact > button[data-v-390defd6]{\n      right: 5px;\n}\n.selectTop[data-v-390defd6]{\n      z-index: 200;\n      max-width: 100px;\n}\n  /* .shadow{\n      text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;\n  } */\n.logoContainer > img[data-v-390defd6]{\n      width: 200px;\n      height: 200px;\n}\n.logoContainerMedium > img[data-v-390defd6]{\n      width: 80px;\n      height: 80px;\n}\n.logoContainerMini[data-v-390defd6]{\n      height: 100%;\n}\n.logoContainerMini > img[data-v-390defd6]{\n      width: 48px;\n      height: 48px;\n}\n/* #publicMapControls{\n  float: right;\n  border: 5px;\n  border-color: brown;\n  border-style: solid;\n  z-index: 100;\n} */\n", ""]);
 
 // exports
 

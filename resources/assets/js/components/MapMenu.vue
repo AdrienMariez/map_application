@@ -271,7 +271,6 @@
 </template>
 
 <script>
-
     //Needed for promises to work
         function Language({ id, name}) {
             this.id = id;
@@ -313,10 +312,8 @@
             this.image_path = image_path;
         }
     //END Needed for promises to work
-
     import MapControls from './MapControls.vue'
     import PointListComponent from './PointList.vue';
-
   export default {
     data () {
       return {
@@ -475,7 +472,6 @@
     },
     computed: {
         functionName: function() {
-
         }
     },
     created() {
@@ -551,7 +547,6 @@
         width: 48px;
         height: 48px;
     }
-
   /* #publicMapControls{
     float: right;
     border: 5px;
@@ -559,6 +554,4 @@
     border-style: solid;
     z-index: 100;
   } */
-
-
 </style>
