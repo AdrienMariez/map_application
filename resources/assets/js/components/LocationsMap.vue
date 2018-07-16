@@ -162,7 +162,6 @@ export default {
                 // layers[i] = L.layerGroup(markers[i]).addTo(this.map);
                 console.log("layers");
                 console.log(layers);
-
                 // console.log("layers creation",i);
                 // console.log(layers[i]);
               }
