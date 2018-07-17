@@ -93,7 +93,7 @@
                 </div>
             <!-- END logo Prayssac responsive -->
 
-            <!-- // NOT SO DUMMY NAV  -->
+            <!-- NAVIGATION MENU -->
                 <v-expansion-panel
                     expand>
                     <!-- loop on categories -->
@@ -113,7 +113,7 @@
                                     <v-icon
                                         large
                                         v-bind:style="{ color: category.color}">
-                                        {{category.icon}}
+                                        fa-{{category.icon}}
                                     </v-icon>
                                 </v-list-tile-action>
                                 <v-list-tile-action>
@@ -122,6 +122,7 @@
                                         v-for="(catName,a) in categoriesNames"
                                         v-if="catName.fk_language_id == languageSelected && catName.fk_category_id == category.id"
                                         :key="a">
+                                        <!-- {{catName.fk_category_id}} -  -->
                                         {{catName.text}}
                                     </v-list-tile-content>
                                     <!-- OBSOLETE old language switch -->
@@ -148,7 +149,7 @@
                                 <!-- class="shadow" -->
                                 <v-icon
                                     v-bind:style="{ color: reference.color}">
-                                    {{reference.icon}}
+                                    fa-{{reference.icon}}
                                 </v-icon>
                             </v-list-tile-action>
                             <v-list-tile-action>
@@ -157,6 +158,7 @@
                                     v-for="(refName,b) in referenceNames"
                                     v-if="refName.fk_language_id == languageSelected && refName.fk_reference_id == reference.id"
                                     :key="b">
+                                    {{refName.fk_reference_id}} - 
                                     {{refName.text}}
                                 </v-list-tile-content>
                                 <!-- OBSOLETE old language switch -->
@@ -172,7 +174,7 @@
 
                     </v-expansion-panel-content>
                 </v-expansion-panel>
-            <!-- // END NOT SO DUMMY NAV  -->
+            <!-- NAVIGATION MENU -->
 
             <!-- OBSOLETE TEST NAV -->
                 <!-- <point-list-component
@@ -338,12 +340,23 @@
             this.$emit('drawerMethod', this.drawer);
         },
         displayReferencePoints(refId){
-            if (this.referenceDisplayed[refId]["isToBeDisplayed"] == true){
-                this.referenceDisplayed[refId]["isToBeDisplayed"] = false;
+            var referenceDisplayed = JSON.parse(JSON.stringify(this.referenceDisplayed));
+            console.log("displayReferencePoints");
+            console.log(referenceDisplayed);
+            console.log("id cliqué :");
+            console.log(refId);
+            
+            for (let i = 0; i < referenceDisplayed.length; i++) {
+                if (referenceDisplayed[i]["id"] == refId) {
+                    if (this.referenceDisplayed[i]["isToBeDisplayed"] == true){
+                        this.referenceDisplayed[i]["isToBeDisplayed"] = false;
+                    }
+                    else{
+                        this.referenceDisplayed[i]["isToBeDisplayed"] = true;
+                    }
+                }
             }
-            else{
-                this.referenceDisplayed[refId]["isToBeDisplayed"] = true;
-            }
+
             this.actionCounter++
             this.$emit('displayPoints', this.referenceDisplayed, this.actionCounter);
         },

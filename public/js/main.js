@@ -22702,7 +22702,9 @@ var L = window.L;
       window.axios.get('/api/references').then(function (_ref4) {
         var data = _ref4.data;
 
+
         data.forEach(function (reference) {
+          _this2.references.push(new Reference(reference));
           var obj = {};
           obj["id"] = reference.id;
           obj["isToBeDisplayed"] = false;
@@ -22719,11 +22721,18 @@ var L = window.L;
 
       var storagePointsDisplayed = JSON.parse(JSON.stringify(this.storagePointsDisplayed));
 
+      var references = JSON.parse(JSON.stringify(this.references));
+
       var points = JSON.parse(JSON.stringify(this.points));
 
       var markers = this.pointsMarkers;
       var layers = this.pointsLayers;
       var marker;
+      // console.log("pointsDisplayed");
+      // console.log(pointsDisplayed);
+
+      // console.log("storagePointsDisplayed");
+      // console.log(storagePointsDisplayed);
 
       // Icon test - Creates a red marker with the coffee icon
       // var redMarker = L.ExtraMarkers.icon({
@@ -22742,11 +22751,35 @@ var L = window.L;
 
           layers[i] = new L.layerGroup();
 
+          // console.log(pointsDisplayed[i]);
+          // console.log(references[i]);
+          // console.log(this.references[i]["color"]);
+
           points.forEach(function (point) {
 
             if (point["fk_reference_id"] == pointsDisplayed[i]["id"]) {
-              marker = L.marker([point["longitude"], point["lattitude"]]).bindPopup(point["link"]);
-              layers[i].addLayer(marker);
+
+              for (var x = 0; x < _this3.references.length; x++) {
+
+                if (_this3.references[x]["id"] == pointsDisplayed[i]["id"]) {
+
+                  // console.log(pointsDisplayed[i]["id"]);
+                  // console.log(this.references[x]["id"]);
+
+                  var currentMarker = L.ExtraMarkers.icon({
+                    icon: 'fa-' + _this3.references[x]["icon"],
+                    markerColor: _this3.references[x]["color"],
+                    shape: 'square',
+                    prefix: 'fa'
+                  });
+
+                  marker = L.marker([point["longitude"], point["lattitude"]], { icon: currentMarker }).bindPopup(point["link"]);
+
+                  // marker = L.marker([point["longitude"], point["lattitude"]]).bindPopup(point["link"]);
+
+                  layers[i].addLayer(marker);
+                }
+              }
             }
           });
 
@@ -23168,6 +23201,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 //Needed for promises to work
 function Language(_ref) {
@@ -23270,11 +23305,22 @@ function Point(_ref6) {
             this.$emit('drawerMethod', this.drawer);
         },
         displayReferencePoints: function displayReferencePoints(refId) {
-            if (this.referenceDisplayed[refId]["isToBeDisplayed"] == true) {
-                this.referenceDisplayed[refId]["isToBeDisplayed"] = false;
-            } else {
-                this.referenceDisplayed[refId]["isToBeDisplayed"] = true;
+            var referenceDisplayed = JSON.parse(JSON.stringify(this.referenceDisplayed));
+            console.log("displayReferencePoints");
+            console.log(referenceDisplayed);
+            console.log("id cliqué :");
+            console.log(refId);
+
+            for (var i = 0; i < referenceDisplayed.length; i++) {
+                if (referenceDisplayed[i]["id"] == refId) {
+                    if (this.referenceDisplayed[i]["isToBeDisplayed"] == true) {
+                        this.referenceDisplayed[i]["isToBeDisplayed"] = false;
+                    } else {
+                        this.referenceDisplayed[i]["isToBeDisplayed"] = true;
+                    }
+                }
             }
+
             this.actionCounter++;
             this.$emit('displayPoints', this.referenceDisplayed, this.actionCounter);
         },
@@ -45662,7 +45708,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       attrs: {
         "large": ""
       }
-    }, [_vm._v("\n                                    " + _vm._s(category.icon) + "\n                                ")])], 1), _vm._v(" "), _c('v-list-tile-action', _vm._l((_vm.categoriesNames), function(catName, a) {
+    }, [_vm._v("\n                                    fa-" + _vm._s(category.icon) + "\n                                ")])], 1), _vm._v(" "), _c('v-list-tile-action', _vm._l((_vm.categoriesNames), function(catName, a) {
       return (catName.fk_language_id == _vm.languageSelected && catName.fk_category_id == category.id) ? _c('v-list-tile-content', {
         key: a
       }, [_vm._v("\n                                    " + _vm._s(catName.text) + "\n                                ")]) : _vm._e()
@@ -45684,10 +45730,10 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         style: ({
           color: reference.color
         })
-      }, [_vm._v("\n                                " + _vm._s(reference.icon) + "\n                            ")])], 1), _vm._v(" "), _c('v-list-tile-action', _vm._l((_vm.referenceNames), function(refName, b) {
+      }, [_vm._v("\n                                fa-" + _vm._s(reference.icon) + "\n                            ")])], 1), _vm._v(" "), _c('v-list-tile-action', _vm._l((_vm.referenceNames), function(refName, b) {
         return (refName.fk_language_id == _vm.languageSelected && refName.fk_reference_id == reference.id) ? _c('v-list-tile-content', {
           key: b
-        }, [_vm._v("\n                                " + _vm._s(refName.text) + "\n                            ")]) : _vm._e()
+        }, [_vm._v("\n                                " + _vm._s(refName.fk_reference_id) + " - \n                                " + _vm._s(refName.text) + "\n                            ")]) : _vm._e()
       }))], 1)], 1) : _vm._e()
     })], 2)
   }))], 1), _vm._v(" "), _c('v-toolbar', {

@@ -153,7 +153,9 @@ export default {
     //REFERENCES READ
       readReferences() {
         window.axios.get('/api/references').then(({ data }) => {
+          
           data.forEach(reference => {
+            this.references.push(new Reference(reference));
             var obj = {};
             obj["id"] = reference.id;
             obj["isToBeDisplayed"] = false;
@@ -167,11 +169,18 @@ export default {
 
         var storagePointsDisplayed = JSON.parse(JSON.stringify(this.storagePointsDisplayed));
 
+        var references = JSON.parse(JSON.stringify(this.references));
+
         var points = JSON.parse(JSON.stringify(this.points));
 
         var markers = this.pointsMarkers;
         var layers = this.pointsLayers;
         var marker;
+        // console.log("pointsDisplayed");
+        // console.log(pointsDisplayed);
+
+        // console.log("storagePointsDisplayed");
+        // console.log(storagePointsDisplayed);
 
         // Icon test - Creates a red marker with the coffee icon
           // var redMarker = L.ExtraMarkers.icon({
@@ -189,12 +198,39 @@ export default {
           if(pointsDisplayed[i]["isToBeDisplayed"] != storagePointsDisplayed[i]["isToBeDisplayed"] && pointsDisplayed[i]["isToBeDisplayed"] == true){
 
             layers[i] = new L.layerGroup();
+
             
+            
+            // console.log(pointsDisplayed[i]);
+            // console.log(references[i]);
+            // console.log(this.references[i]["color"]);
+
             points.forEach(point => {
 
               if (point["fk_reference_id"] == pointsDisplayed[i]["id"]) {
-                  marker = L.marker([point["longitude"], point["lattitude"]]).bindPopup(point["link"]);
-                  layers[i].addLayer(marker);
+
+                for (let x = 0; x < this.references.length; x++) {
+
+                  if (this.references[x]["id"] == pointsDisplayed[i]["id"]) {
+
+                    // console.log(pointsDisplayed[i]["id"]);
+                    // console.log(this.references[x]["id"]);
+
+                    var currentMarker = L.ExtraMarkers.icon({
+                      icon: 'fa-'+this.references[x]["icon"],
+                      markerColor: this.references[x]["color"],
+                      shape: 'square',
+                      prefix: 'fa'
+                    });
+
+                    marker = L.marker([point["longitude"], point["lattitude"]], {icon: currentMarker}).bindPopup(point["link"]);
+
+                    // marker = L.marker([point["longitude"], point["lattitude"]]).bindPopup(point["link"]);
+
+                    layers[i].addLayer(marker); 
+                  }
+                }
+
               }
             });
 
