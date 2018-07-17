@@ -22725,6 +22725,17 @@ var L = window.L;
       var layers = this.pointsLayers;
       var marker;
 
+      // Icon test - Creates a red marker with the coffee icon
+      // var redMarker = L.ExtraMarkers.icon({
+      //   icon: 'fa-coffee',
+      //   markerColor: 'red',
+      //   shape: 'square',
+      //   prefix: 'fa'
+      // });
+
+      // L.marker([44.502,1.18764], {icon: redMarker}).addTo(this.map);
+      //END Icon test
+
       var _loop = function _loop(i) {
 
         if (pointsDisplayed[i]["isToBeDisplayed"] != storagePointsDisplayed[i]["isToBeDisplayed"] && pointsDisplayed[i]["isToBeDisplayed"] == true) {
