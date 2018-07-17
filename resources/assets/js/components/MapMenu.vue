@@ -341,11 +341,7 @@
         },
         displayReferencePoints(refId){
             var referenceDisplayed = JSON.parse(JSON.stringify(this.referenceDisplayed));
-            console.log("displayReferencePoints");
-            console.log(referenceDisplayed);
-            console.log("id cliqué :");
-            console.log(refId);
-            
+            //loop over the table as the order isn't by id, or else we end up with the wrong categories and errors in the point display mechanic
             for (let i = 0; i < referenceDisplayed.length; i++) {
                 if (referenceDisplayed[i]["id"] == refId) {
                     if (this.referenceDisplayed[i]["isToBeDisplayed"] == true){
@@ -559,6 +555,13 @@
     .logoContainerMini > img{
         width: 48px;
         height: 48px;
+    }
+    .flexCenter {
+        justify-content: center;
+    }
+    a{
+        color: rgb(24, 53, 17) !important;
+        text-decoration: inherit;
     }
   /* #publicMapControls{
     float: right;

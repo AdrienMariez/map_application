@@ -18,6 +18,7 @@ class ReferencesnamesController extends Controller
     {
         $referenceName = new Referencesnames();
         $referenceName->text = $faker->lexify('????????');
+        $categoryName->fk_category_id = $faker->boolean ? '1' : '2';
         $referenceName->fk_language_id = $faker->boolean ? '2' : '4';
         $referenceName->save();
 
@@ -28,6 +29,7 @@ class ReferencesnamesController extends Controller
     {
         $referenceName = Referencesnames::findOrFail($id);
         $referenceName->text = $request->text;
+        $referenceName->fk_category_id = $request->fk_category_id;
         $referenceName->fk_language_id = $request->fk_language_id;
         $referenceName->save();
 

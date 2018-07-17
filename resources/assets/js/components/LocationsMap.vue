@@ -33,6 +33,12 @@
     this.image_path = image_path;
     this.fk_reference_id = fk_reference_id;
   }
+  function PointName({ id, fk_point_id, fk_language_id, text}) {
+    this.id = id;
+    this.fk_point_id = fk_point_id;
+    this.fk_language_id = fk_language_id;
+    this.text = text;
+  }
   function Reference({ id, icon, color, weight, fk_category_id}) {
     this.id = id;
     this.icon = icon;
@@ -61,6 +67,7 @@ export default {
       zoom: 14,
       zoomLevel: 14,
       points: [],
+      pointsNames: [],
       pointsCount: 0,
       references: [],
       storagePointsDisplayed: [],
@@ -150,6 +157,17 @@ export default {
           this.mute = false;
         });
       },
+    //POINTS NAMES READ
+      readPointsNames() {
+        this.mute = true;
+        
+        window.axios.get('/api/pointsnames').then(({ data }) => {
+          data.forEach(pointname => {
+            this.pointsNames.push(new PointName(pointname));
+          });
+          this.mute = false;
+        });
+      },
     //REFERENCES READ
       readReferences() {
         window.axios.get('/api/references').then(({ data }) => {
@@ -173,25 +191,14 @@ export default {
 
         var points = JSON.parse(JSON.stringify(this.points));
 
+        var pointsNames = JSON.parse(JSON.stringify(this.pointsNames));
+
         var markers = this.pointsMarkers;
         var layers = this.pointsLayers;
         var marker;
-        // console.log("pointsDisplayed");
-        // console.log(pointsDisplayed);
 
-        // console.log("storagePointsDisplayed");
-        // console.log(storagePointsDisplayed);
-
-        // Icon test - Creates a red marker with the coffee icon
-          // var redMarker = L.ExtraMarkers.icon({
-          //   icon: 'fa-coffee',
-          //   markerColor: 'red',
-          //   shape: 'square',
-          //   prefix: 'fa'
-          // });
-
-          // L.marker([44.502,1.18764], {icon: redMarker}).addTo(this.map);
-        //END Icon test
+        console.log(pointsNames);
+        
 
         for (let i = 0; i < pointsDisplayed.length; i++) {
           
@@ -199,31 +206,33 @@ export default {
 
             layers[i] = new L.layerGroup();
 
-            
-            
-            // console.log(pointsDisplayed[i]);
-            // console.log(references[i]);
-            // console.log(this.references[i]["color"]);
-
             points.forEach(point => {
 
               if (point["fk_reference_id"] == pointsDisplayed[i]["id"]) {
 
                 for (let x = 0; x < this.references.length; x++) {
 
-                  if (this.references[x]["id"] == pointsDisplayed[i]["id"]) {
+                  if (references[x]["id"] == pointsDisplayed[i]["id"]) {
 
                     // console.log(pointsDisplayed[i]["id"]);
                     // console.log(this.references[x]["id"]);
+                    
+                    var text = "";
+                    pointsNames.forEach(name => {
+                      if (name["fk_point_id"] == point["id"]) {
+                        console.log(name["id"] +" - "+ name["text"]);
+                        text += name["text"];
+                      }
+                    });
 
                     var currentMarker = L.ExtraMarkers.icon({
                       icon: 'fa-'+this.references[x]["icon"],
                       markerColor: this.references[x]["color"],
-                      shape: 'square',
+                      shape: 'circle',
                       prefix: 'fa'
                     });
 
-                    marker = L.marker([point["longitude"], point["lattitude"]], {icon: currentMarker}).bindPopup(point["link"]);
+                    marker = L.marker([point["longitude"], point["lattitude"]], {icon: currentMarker}).bindPopup(text);
 
                     // marker = L.marker([point["longitude"], point["lattitude"]]).bindPopup(point["link"]);
 
@@ -286,6 +295,7 @@ export default {
   mounted() {
     this.readMap();
     this.readPoints();
+    this.readPointsNames();
     this.readReferences();
   },
   created() {
@@ -323,5 +333,8 @@ export default {
   }
   .leaflet-bottom .leaflet-control .leaflet-control-zoom .leaflet-bar .leaflet-control{
     margin-bottom: 40px !important;
+  }
+  .flexCenter {
+    justify-content: center;
   }
 </style>

@@ -21,6 +21,10 @@ Route::resource('/points', 'PointsController', [
     'except' => ['edit', 'show', 'store']
 ]);
 
+Route::resource('/pointsnames', 'PointsnamesController', [
+    'except' => ['edit', 'show', 'store']
+]);
+
 Route::resource('/languages', 'LanguagesController', [
     'except' => ['edit', 'show', 'store']
 ]);

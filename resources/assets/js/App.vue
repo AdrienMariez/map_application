@@ -63,7 +63,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
   a {
     color: rgb(146, 221, 123) !important;
     text-decoration: inherit;

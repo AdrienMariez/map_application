@@ -22566,12 +22566,23 @@ function Point(_ref) {
   this.image_path = image_path;
   this.fk_reference_id = fk_reference_id;
 }
-function Reference(_ref2) {
+function PointName(_ref2) {
   var id = _ref2.id,
-      icon = _ref2.icon,
-      color = _ref2.color,
-      weight = _ref2.weight,
-      fk_category_id = _ref2.fk_category_id;
+      fk_point_id = _ref2.fk_point_id,
+      fk_language_id = _ref2.fk_language_id,
+      text = _ref2.text;
+
+  this.id = id;
+  this.fk_point_id = fk_point_id;
+  this.fk_language_id = fk_language_id;
+  this.text = text;
+}
+function Reference(_ref3) {
+  var id = _ref3.id,
+      icon = _ref3.icon,
+      color = _ref3.color,
+      weight = _ref3.weight,
+      fk_category_id = _ref3.fk_category_id;
 
   this.id = id;
   this.icon = icon;
@@ -22600,6 +22611,7 @@ var L = window.L;
       zoom: 14,
       zoomLevel: 14,
       points: [],
+      pointsNames: [],
       pointsCount: 0,
       references: [],
       storagePointsDisplayed: [],
@@ -22683,8 +22695,8 @@ var L = window.L;
 
       this.mute = true;
 
-      window.axios.get('/api/points').then(function (_ref3) {
-        var data = _ref3.data;
+      window.axios.get('/api/points').then(function (_ref4) {
+        var data = _ref4.data;
 
         data.forEach(function (point) {
           //looping for each object "point"        
@@ -22695,27 +22707,43 @@ var L = window.L;
       });
     },
 
-    //REFERENCES READ
-    readReferences: function readReferences() {
+    //POINTS NAMES READ
+    readPointsNames: function readPointsNames() {
       var _this2 = this;
 
-      window.axios.get('/api/references').then(function (_ref4) {
-        var data = _ref4.data;
+      this.mute = true;
+
+      window.axios.get('/api/pointsnames').then(function (_ref5) {
+        var data = _ref5.data;
+
+        data.forEach(function (pointname) {
+          _this2.pointsNames.push(new PointName(pointname));
+        });
+        _this2.mute = false;
+      });
+    },
+
+    //REFERENCES READ
+    readReferences: function readReferences() {
+      var _this3 = this;
+
+      window.axios.get('/api/references').then(function (_ref6) {
+        var data = _ref6.data;
 
 
         data.forEach(function (reference) {
-          _this2.references.push(new Reference(reference));
+          _this3.references.push(new Reference(reference));
           var obj = {};
           obj["id"] = reference.id;
           obj["isToBeDisplayed"] = false;
-          _this2.storagePointsDisplayed.push(obj);
+          _this3.storagePointsDisplayed.push(obj);
         });
       });
     },
 
     //CREATE MARKERS
     createMarkers: function createMarkers() {
-      var _this3 = this;
+      var _this4 = this;
 
       var pointsDisplayed = JSON.parse(JSON.stringify(this.pointsDisplayed));
 
@@ -22725,25 +22753,13 @@ var L = window.L;
 
       var points = JSON.parse(JSON.stringify(this.points));
 
+      var pointsNames = JSON.parse(JSON.stringify(this.pointsNames));
+
       var markers = this.pointsMarkers;
       var layers = this.pointsLayers;
       var marker;
-      // console.log("pointsDisplayed");
-      // console.log(pointsDisplayed);
 
-      // console.log("storagePointsDisplayed");
-      // console.log(storagePointsDisplayed);
-
-      // Icon test - Creates a red marker with the coffee icon
-      // var redMarker = L.ExtraMarkers.icon({
-      //   icon: 'fa-coffee',
-      //   markerColor: 'red',
-      //   shape: 'square',
-      //   prefix: 'fa'
-      // });
-
-      // L.marker([44.502,1.18764], {icon: redMarker}).addTo(this.map);
-      //END Icon test
+      console.log(pointsNames);
 
       var _loop = function _loop(i) {
 
@@ -22751,29 +22767,33 @@ var L = window.L;
 
           layers[i] = new L.layerGroup();
 
-          // console.log(pointsDisplayed[i]);
-          // console.log(references[i]);
-          // console.log(this.references[i]["color"]);
-
           points.forEach(function (point) {
 
             if (point["fk_reference_id"] == pointsDisplayed[i]["id"]) {
 
-              for (var x = 0; x < _this3.references.length; x++) {
+              for (var x = 0; x < _this4.references.length; x++) {
 
-                if (_this3.references[x]["id"] == pointsDisplayed[i]["id"]) {
+                if (references[x]["id"] == pointsDisplayed[i]["id"]) {
 
                   // console.log(pointsDisplayed[i]["id"]);
                   // console.log(this.references[x]["id"]);
 
+                  var text = "";
+                  pointsNames.forEach(function (name) {
+                    if (name["fk_point_id"] == point["id"]) {
+                      console.log(name["id"] + " - " + name["text"]);
+                      text += name["text"];
+                    }
+                  });
+
                   var currentMarker = L.ExtraMarkers.icon({
-                    icon: 'fa-' + _this3.references[x]["icon"],
-                    markerColor: _this3.references[x]["color"],
-                    shape: 'square',
+                    icon: 'fa-' + _this4.references[x]["icon"],
+                    markerColor: _this4.references[x]["color"],
+                    shape: 'circle',
                     prefix: 'fa'
                   });
 
-                  marker = L.marker([point["longitude"], point["lattitude"]], { icon: currentMarker }).bindPopup(point["link"]);
+                  marker = L.marker([point["longitude"], point["lattitude"]], { icon: currentMarker }).bindPopup(text);
 
                   // marker = L.marker([point["longitude"], point["lattitude"]]).bindPopup(point["link"]);
 
@@ -22783,9 +22803,9 @@ var L = window.L;
             }
           });
 
-          _this3.map.addLayer(layers[i]);
+          _this4.map.addLayer(layers[i]);
         } else if (pointsDisplayed[i]["isToBeDisplayed"] != storagePointsDisplayed[i]["isToBeDisplayed"] && pointsDisplayed[i]["isToBeDisplayed"] == false) {
-          _this3.map.removeLayer(layers[i]);
+          _this4.map.removeLayer(layers[i]);
         }
       };
 
@@ -22838,6 +22858,7 @@ var L = window.L;
   mounted: function mounted() {
     this.readMap();
     this.readPoints();
+    this.readPointsNames();
     this.readReferences();
   },
   created: function created() {
@@ -23306,11 +23327,7 @@ function Point(_ref6) {
         },
         displayReferencePoints: function displayReferencePoints(refId) {
             var referenceDisplayed = JSON.parse(JSON.stringify(this.referenceDisplayed));
-            console.log("displayReferencePoints");
-            console.log(referenceDisplayed);
-            console.log("id cliqué :");
-            console.log(refId);
-
+            //loop over the table as the order isn't by id, or else we end up with the wrong categories and errors in the point display mechanic
             for (var i = 0; i < referenceDisplayed.length; i++) {
                 if (referenceDisplayed[i]["id"] == refId) {
                     if (this.referenceDisplayed[i]["isToBeDisplayed"] == true) {
@@ -23773,7 +23790,7 @@ exports = module.exports = __webpack_require__(1)();
 
 
 // module
-exports.push([module.i, "\n.noPaddingLeft[data-v-390defd6]{\n      margin-left: -15% !important;\n}\n.buttonContact[data-v-390defd6]{\n      height: 60px;\n      width: 100px;\n      position: absolute;\n      right: 0;\n      bottom: 0;\n      z-index: 1;\n}\n.buttonContact > button[data-v-390defd6]{\n      right: 5px;\n}\n.selectTop[data-v-390defd6]{\n      z-index: 200;\n      max-width: 100px;\n}\n  /* .shadow{\n      text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;\n  } */\n.logoContainer > img[data-v-390defd6]{\n      width: 200px;\n      height: 200px;\n}\n.logoContainerMedium > img[data-v-390defd6]{\n      width: 80px;\n      height: 80px;\n}\n.logoContainerMini[data-v-390defd6]{\n      height: 100%;\n}\n.logoContainerMini > img[data-v-390defd6]{\n      width: 48px;\n      height: 48px;\n}\n/* #publicMapControls{\n  float: right;\n  border: 5px;\n  border-color: brown;\n  border-style: solid;\n  z-index: 100;\n} */\n", ""]);
+exports.push([module.i, "\n.noPaddingLeft[data-v-390defd6]{\n      margin-left: -15% !important;\n}\n.buttonContact[data-v-390defd6]{\n      height: 60px;\n      width: 100px;\n      position: absolute;\n      right: 0;\n      bottom: 0;\n      z-index: 1;\n}\n.buttonContact > button[data-v-390defd6]{\n      right: 5px;\n}\n.selectTop[data-v-390defd6]{\n      z-index: 200;\n      max-width: 100px;\n}\n  /* .shadow{\n      text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;\n  } */\n.logoContainer > img[data-v-390defd6]{\n      width: 200px;\n      height: 200px;\n}\n.logoContainerMedium > img[data-v-390defd6]{\n      width: 80px;\n      height: 80px;\n}\n.logoContainerMini[data-v-390defd6]{\n      height: 100%;\n}\n.logoContainerMini > img[data-v-390defd6]{\n      width: 48px;\n      height: 48px;\n}\n.flexCenter[data-v-390defd6] {\n      justify-content: center;\n}\na[data-v-390defd6]{\n      color: rgb(24, 53, 17) !important;\n      text-decoration: inherit;\n}\n/* #publicMapControls{\n  float: right;\n  border: 5px;\n  border-color: brown;\n  border-style: solid;\n  z-index: 100;\n} */\n", ""]);
 
 // exports
 
@@ -23787,26 +23804,13 @@ exports = module.exports = __webpack_require__(1)();
 
 
 // module
-exports.push([module.i, "\n#mapContainer[data-v-4308d8b3]{\n  height: 100%;\n  width: 100%;\n  position: relative;\n}\n#controls[data-v-4308d8b3]{\n  width: 100px;\n  height: 100px;\n  position: absolute;\n  top: 50px;\n  z-index: 150;\n  right: 10px;\n}\n#map[data-v-4308d8b3]{\n  /* left as comment to remember NOT to try to use it */\n  /* position: initial !important; */\n  height: 100%;\n  width: 100%;\n  z-index: 1;\n}\n.leaflet-bottom .leaflet-control .leaflet-control-zoom .leaflet-bar .leaflet-control[data-v-4308d8b3]{\n  margin-bottom: 40px !important;\n}\n", ""]);
+exports.push([module.i, "\n#mapContainer[data-v-4308d8b3]{\n  height: 100%;\n  width: 100%;\n  position: relative;\n}\n#controls[data-v-4308d8b3]{\n  width: 100px;\n  height: 100px;\n  position: absolute;\n  top: 50px;\n  z-index: 150;\n  right: 10px;\n}\n#map[data-v-4308d8b3]{\n  /* left as comment to remember NOT to try to use it */\n  /* position: initial !important; */\n  height: 100%;\n  width: 100%;\n  z-index: 1;\n}\n.leaflet-bottom .leaflet-control .leaflet-control-zoom .leaflet-bar .leaflet-control[data-v-4308d8b3]{\n  margin-bottom: 40px !important;\n}\n.flexCenter[data-v-4308d8b3] {\n  justify-content: center;\n}\n", ""]);
 
 // exports
 
 
 /***/ }),
-/* 54 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(1)();
-// imports
-
-
-// module
-exports.push([module.i, "\na {\n  color: rgb(146, 221, 123) !important;\n  text-decoration: inherit;\n}\n#publicMenu {\n  z-index: 50;\n}\n#publicMap {\n  z-index: 1;\n  height: 100%;\n}\n#footer {\n  z-index: 25;\n}\n.flexFooterPosition {\n  justify-content: center;\n  /* if need to get it at start position : */\n  /* justify-content: flex-start; */\n}\n.flexCenter {\n  justify-content: center;\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
+/* 54 */,
 /* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -45344,7 +45348,7 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
 
 
 /* styles */
-__webpack_require__(80)
+__webpack_require__(89)
 
 var Component = __webpack_require__(2)(
   /* script */
@@ -45352,7 +45356,7 @@ var Component = __webpack_require__(2)(
   /* template */
   __webpack_require__(74),
   /* scopeId */
-  null,
+  "data-v-61f14fc6",
   /* cssModules */
   null
 )
@@ -46070,32 +46074,7 @@ if(false) {
 }
 
 /***/ }),
-/* 80 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(54);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(3)("216363bb", content, false);
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"id\":\"data-v-61f14fc6\",\"scoped\":false,\"hasInlineConfig\":true}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./App.vue", function() {
-     var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"id\":\"data-v-61f14fc6\",\"scoped\":false,\"hasInlineConfig\":true}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./App.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
+/* 80 */,
 /* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -69695,6 +69674,46 @@ module.exports = function(module) {
 
 module.exports = __webpack_require__(18);
 
+
+/***/ }),
+/* 88 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(1)();
+// imports
+
+
+// module
+exports.push([module.i, "\na[data-v-61f14fc6] {\n  color: rgb(146, 221, 123) !important;\n  text-decoration: inherit;\n}\n#publicMenu[data-v-61f14fc6] {\n  z-index: 50;\n}\n#publicMap[data-v-61f14fc6] {\n  z-index: 1;\n  height: 100%;\n}\n#footer[data-v-61f14fc6] {\n  z-index: 25;\n}\n.flexFooterPosition[data-v-61f14fc6] {\n  justify-content: center;\n  /* if need to get it at start position : */\n  /* justify-content: flex-start; */\n}\n.flexCenter[data-v-61f14fc6] {\n  justify-content: center;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 89 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(88);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(3)("6aeadfc4", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"id\":\"data-v-61f14fc6\",\"scoped\":true,\"hasInlineConfig\":true}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./App.vue", function() {
+     var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"id\":\"data-v-61f14fc6\",\"scoped\":true,\"hasInlineConfig\":true}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./App.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
 
 /***/ })
 /******/ ]);
