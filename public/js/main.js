@@ -22734,7 +22734,6 @@ var L = window.L;
           points.forEach(function (point) {
 
             if (point["fk_reference_id"] == pointsDisplayed[i]["id"]) {
-
               marker = L.marker([point["longitude"], point["lattitude"]]).bindPopup(point["link"]);
               layers[i].addLayer(marker);
             }
@@ -22742,7 +22741,6 @@ var L = window.L;
 
           _this3.map.addLayer(layers[i]);
         } else if (pointsDisplayed[i]["isToBeDisplayed"] != storagePointsDisplayed[i]["isToBeDisplayed"] && pointsDisplayed[i]["isToBeDisplayed"] == false) {
-          console.log("remove points");
           _this3.map.removeLayer(layers[i]);
         }
       };

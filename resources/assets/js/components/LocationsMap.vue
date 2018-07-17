@@ -182,7 +182,6 @@ export default {
             points.forEach(point => {
 
               if (point["fk_reference_id"] == pointsDisplayed[i]["id"]) {
-
                   marker = L.marker([point["longitude"], point["lattitude"]]).bindPopup(point["link"]);
                   layers[i].addLayer(marker);
               }
@@ -192,7 +191,6 @@ export default {
 
           }
           else if(pointsDisplayed[i]["isToBeDisplayed"] != storagePointsDisplayed[i]["isToBeDisplayed"] && pointsDisplayed[i]["isToBeDisplayed"] == false){
-            console.log("remove points");
             this.map.removeLayer(layers[i]);
           }
         }
