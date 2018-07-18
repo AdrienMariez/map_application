@@ -12776,7 +12776,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 __webpack_require__(16);
 __webpack_require__(15);
-__webpack_require__(14);
+// require('../../../node_modules/geoportal-extensions-leaflet/dist/GpPluginLeaflet.css')
 
 __webpack_require__(37);
 
@@ -22482,6 +22482,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 
 
@@ -22492,6 +22493,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     return {
       drawerCallBack: true,
       pointsDisplayed: [],
+      language: 0,
       sender: false
     };
   },
@@ -22503,6 +22505,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     displayPoints: function displayPoints(referenceClicked, actionSender) {
       this.pointsDisplayed = referenceClicked;
       this.sender = actionSender;
+    },
+    emitLanguage: function emitLanguage(languageSelected) {
+      this.language = languageSelected;
     }
   },
   components: {
@@ -22603,7 +22608,7 @@ __webpack_require__(14);
 var L = window.L;
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['pointsDisplayed', 'sender'],
+  props: ['pointsDisplayed', 'sender', 'language'],
   data: function data() {
     return {
       map: [],
@@ -22776,12 +22781,12 @@ var L = window.L;
                   // console.log(pointsDisplayed[i]["id"]);
                   // console.log(this.references[x]["id"]);
 
-                  console.log(pointsDisplayed[i]["catColor"]);
+                  // console.log(pointsDisplayed[i]["catColor"]);
 
                   var text = "";
                   pointsNames.forEach(function (name) {
-                    if (name["fk_point_id"] == point["id"]) {
-                      console.log(name["id"] + " - " + name["text"]);
+                    if (name["fk_point_id"] == point["id"] && name["fk_language_id"] == _this4.language) {
+                      // console.log(name["id"] +" - "+ name["text"]);
                       text += name["text"];
                     }
                   });
@@ -23225,6 +23230,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 //Needed for promises to work
 function Language(_ref) {
@@ -23307,10 +23315,9 @@ function Point(_ref6) {
         return {
             drawer: true,
             mini: false,
-            fr: true,
+            showAllForms: null,
             points: [],
             languages: [],
-            // TO CHANGE : languageSelected basic value should be 1- french OR 2- client language. If 1-, set to 0,if 2-,ask google how.
             languageSelected: 0,
             categories: [],
             categoriesNames: [],
@@ -23322,24 +23329,112 @@ function Point(_ref6) {
         };
     },
 
+    watch: {
+        languageSelected: function languageSelected(val, oldVal) {
+            this.languageSelected = val;
+            this.emitLanguage();
+        }
+    },
     methods: {
         drawerMethod: function drawerMethod() {
             this.$emit('drawerMethod', this.drawer);
         },
         displayReferencePoints: function displayReferencePoints(refId, catColor) {
-            var referenceDisplayed = JSON.parse(JSON.stringify(this.referenceDisplayed));
             //loop over the table as the order isn't by id, or else we end up with the wrong categories and errors in the point display mechanic
-            for (var i = 0; i < referenceDisplayed.length; i++) {
-                if (referenceDisplayed[i]["id"] == refId) {
+            for (var i = 0; i < this.referenceDisplayed.length; i++) {
+                if (this.referenceDisplayed[i]["id"] == refId) {
                     if (this.referenceDisplayed[i]["isToBeDisplayed"] == true) {
                         this.referenceDisplayed[i]["isToBeDisplayed"] = false;
                     } else {
                         this.referenceDisplayed[i]["isToBeDisplayed"] = true;
                     }
+                    //convert colors for the icons
+                    var color;
+                    switch (catColor) {
+                        case "#B71C1C":
+                            //red darken-4
+                            color = "red";
+                            break;
+
+                        case "#F4511E":
+                            //deep-orange darken-4
+                            color = "orange-dark";
+                            break;
+
+                        case "#FFA726":
+                            //orange lighten-1
+                            color = "orange";
+                            break;
+
+                        case "#FFC400":
+                            //amber accent-3
+                            color = "yellow";
+                            break;
+
+                        case "#006064":
+                            //cyan darken-4
+                            color = "blue-dark";
+                            break;
+
+                        case "#01579B":
+                            //light-blue darken-4
+                            color = "blue";
+                            break;
+
+                        case "#1E88E5":
+                            //blue darken-1
+                            color = "cyan";
+                            break;
+
+                        case "#4A148C":
+                            //purple darken-4
+                            color = "purple";
+                            break;
+
+                        case "#880E4F":
+                            //pink darken-4
+                            color = "violet";
+                            break;
+
+                        case "#F50057":
+                            //pink accent-3
+                            color = "pink";
+                            break;
+
+                        case "#1B5E20":
+                            //green darken-4
+                            color = "green-dark";
+                            break;
+
+                        case "#388E3C":
+                            //green darken-2
+                            color = "green";
+                            break;
+
+                        case "#4CAF50":
+                            //green
+                            color = "green-light";
+                            break;
+
+                        default:
+                            color = catColor;
+                    }
+                    this.referenceDisplayed[i]["catColor"] = color;
                 }
-                this.referenceDisplayed[i]["catColor"] = catColor;
+            }
+
+            this.actionSender = !this.actionSender;
+            this.$emit('displayPoints', this.referenceDisplayed, this.actionSender);
+        },
+        emitLanguage: function emitLanguage() {
+            for (var i = 0; i < this.referenceDisplayed.length; i++) {
+                if (this.referenceDisplayed[i]["isToBeDisplayed"] == true) {
+                    this.referenceDisplayed[i]["isToBeDisplayed"] = false;
+                }
             }
             this.actionSender = !this.actionSender;
+
+            this.$emit('emitLanguage', this.languageSelected);
             this.$emit('displayPoints', this.referenceDisplayed, this.actionSender);
         },
 
@@ -45711,7 +45806,14 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       key: i,
       staticClass: "green lighten-4",
       attrs: {
+        "value": _vm.showAllForms,
         "color": "green lighten-4"
+      },
+      on: {
+        "click": function($event) {
+          $event.stopPropagation();
+          _vm.showAllForms = null
+        }
       }
     }, [_c('div', {
       attrs: {
@@ -45760,6 +45862,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     })], 2)
   }))], 1), _vm._v(" "), _c('v-toolbar', {
     attrs: {
+      "id": "toolbar",
       "color": "white",
       "fixed": "",
       "app": "",
@@ -45902,13 +46005,15 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     },
     on: {
       "drawerMethod": _vm.drawerMethod,
-      "displayPoints": _vm.displayPoints
+      "displayPoints": _vm.displayPoints,
+      "emitLanguage": _vm.emitLanguage
     }
   }), _vm._v(" "), _c('locations-map', {
     attrs: {
       "id": "publicMap",
       "sender": _vm.sender,
-      "pointsDisplayed": _vm.pointsDisplayed
+      "pointsDisplayed": _vm.pointsDisplayed,
+      "language": _vm.language
     }
   }), _vm._v(" "), _c('v-footer', {
     staticClass: "text-xs-center flexFooterPosition",

@@ -59,7 +59,7 @@ import PointDisplayComponent from './PointDisplay.vue';
 const L = window.L;
 
 export default {
-  props: ['pointsDisplayed','sender'],
+  props: ['pointsDisplayed','sender','language'],
   data() {
     return {
       map: [],
@@ -215,12 +215,12 @@ export default {
                     // console.log(pointsDisplayed[i]["id"]);
                     // console.log(this.references[x]["id"]);
                     
-                    console.log(pointsDisplayed[i]["catColor"]);
+                    // console.log(pointsDisplayed[i]["catColor"]);
                     
                     var text = "";
                     pointsNames.forEach(name => {
-                      if (name["fk_point_id"] == point["id"]) {
-                        console.log(name["id"] +" - "+ name["text"]);
+                      if (name["fk_point_id"] == point["id"] && name["fk_language_id"] == this.language) {
+                        // console.log(name["id"] +" - "+ name["text"]);
                         text += name["text"];
                       }
                     });

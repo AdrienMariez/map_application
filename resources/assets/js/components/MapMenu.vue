@@ -100,6 +100,8 @@
                     <v-expansion-panel-content
                     v-for="(category,i) in categories"
                     :key="i"
+                    :value="showAllForms"
+                    @click.stop="showAllForms = null"
                     color="green lighten-4"
                     class="green lighten-4">
 
@@ -112,7 +114,7 @@
                                     <!-- class="shadow" -->
                                     <v-icon
                                         large
-                                        v-bind:style="{ color: category.color}">
+                                        v-bind:style="{ color: category.color }">
                                         fa-{{category.icon}}
                                     </v-icon>
                                 </v-list-tile-action>
@@ -149,7 +151,7 @@
                                 <!-- class="shadow" -->
                                 <v-icon
                                     large
-                                    v-bind:style="{ color: category.color}">
+                                    v-bind:style="{ color: category.color }">
                                     fa-{{reference.icon}}
                                 </v-icon>
                             </v-list-tile-action>
@@ -192,6 +194,7 @@
 
         <!-- top header -->
         <v-toolbar
+            id="toolbar"
             color="white"
             fixed
             app
@@ -244,8 +247,8 @@
                 <!-- select language -->
                     <v-select
                         :items="languages"
-                        v-model="languageSelected"
                         prepend-icon="map"
+                        v-model="languageSelected"
                         single-line
                         class="mr-3 input-group--focused selectTop"
                         item-value=id
@@ -322,10 +325,9 @@
       return {
         drawer: true,
         mini: false,
-        fr: true,
+        showAllForms: null,
         points: [],
         languages: [],
-        // TO CHANGE : languageSelected basic value should be 1- french OR 2- client language. If 1-, set to 0,if 2-,ask google how.
         languageSelected: 0,
         categories: [],
         categoriesNames: [],
@@ -336,25 +338,113 @@
         actionSender: false,
       }
     },
+    watch: {
+        languageSelected(val, oldVal) {
+            this.languageSelected = val
+            this.emitLanguage();
+        }
+    },
     methods: {
         drawerMethod() {
             this.$emit('drawerMethod', this.drawer);
         },
         displayReferencePoints(refId, catColor){
-            var referenceDisplayed = JSON.parse(JSON.stringify(this.referenceDisplayed));
             //loop over the table as the order isn't by id, or else we end up with the wrong categories and errors in the point display mechanic
-            for (let i = 0; i < referenceDisplayed.length; i++) {
-                if (referenceDisplayed[i]["id"] == refId) {
+            for (let i = 0; i < this.referenceDisplayed.length; i++) {
+                if (this.referenceDisplayed[i]["id"] == refId) {
                     if (this.referenceDisplayed[i]["isToBeDisplayed"] == true){
                         this.referenceDisplayed[i]["isToBeDisplayed"] = false;
                     }
                     else{
                         this.referenceDisplayed[i]["isToBeDisplayed"] = true;
                     }
+                    //convert colors for the icons
+                    var color;
+                    switch (catColor) {
+                        case "#B71C1C":
+                            //red darken-4
+                            color = "red";
+                            break;
+
+                        case "#F4511E":
+                            //deep-orange darken-4
+                            color = "orange-dark";
+                            break;
+
+                        case "#FFA726":
+                            //orange lighten-1
+                            color = "orange";
+                            break;
+
+                        case "#FFC400":
+                            //amber accent-3
+                            color = "yellow";
+                            break;
+
+                        case "#006064":
+                            //cyan darken-4
+                            color = "blue-dark";
+                            break;
+
+                        case "#01579B":
+                            //light-blue darken-4
+                            color = "blue";
+                            break;
+
+                        case "#1E88E5":
+                            //blue darken-1
+                            color = "cyan";
+                            break;
+
+                        case "#4A148C":
+                            //purple darken-4
+                            color = "purple";
+                            break;
+
+                        case "#880E4F":
+                            //pink darken-4
+                            color = "violet";
+                            break;
+
+                        case "#F50057":
+                            //pink accent-3
+                            color = "pink";
+                            break;
+
+                        case "#1B5E20":
+                            //green darken-4
+                            color = "green-dark";
+                            break;
+
+                        case "#388E3C":
+                            //green darken-2
+                            color = "green";
+                            break;
+
+                        case "#4CAF50":
+                            //green
+                            color = "green-light";
+                            break;
+
+                        default:
+                            color = catColor;
+                    }
+                    this.referenceDisplayed[i]["catColor"] = color;
                 }
-                this.referenceDisplayed[i]["catColor"] = catColor;
             }
-            this.actionSender = !this.actionSender
+
+            this.actionSender = !this.actionSender;
+            this.$emit('displayPoints', this.referenceDisplayed, this.actionSender);
+        },
+        emitLanguage(){
+            for (let i = 0; i < this.referenceDisplayed.length; i++) {
+                if (this.referenceDisplayed[i]["isToBeDisplayed"] == true){
+                    this.referenceDisplayed[i]["isToBeDisplayed"] = false;
+                }
+            }
+            this.actionSender = !this.actionSender;
+            
+            this.$emit('emitLanguage', this.languageSelected);
             this.$emit('displayPoints', this.referenceDisplayed, this.actionSender);
         },
         //inspired from vue-laravel-crud

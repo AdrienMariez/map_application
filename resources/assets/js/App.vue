@@ -1,12 +1,13 @@
 <template>
   <v-app id="inspire">
  
-    <map-menu id="publicMenu" @drawerMethod="drawerMethod" @displayPoints="displayPoints"></map-menu>
+    <map-menu id="publicMenu" @drawerMethod="drawerMethod" @displayPoints="displayPoints" @emitLanguage="emitLanguage"></map-menu>
 
     <locations-map
       id="publicMap"
       v-bind:sender="sender"
-      v-bind:pointsDisplayed="pointsDisplayed">
+      v-bind:pointsDisplayed="pointsDisplayed"
+      v-bind:language="language">
     </locations-map>
 
     <v-footer
@@ -44,16 +45,20 @@ export default {
     return {
       drawerCallBack: true,
       pointsDisplayed: [],
+      language: 0,
       sender: false,
     };
   },
   methods: {
-    drawerMethod(updatedDrawer) {
+    drawerMethod(updatedDrawer){
       this.drawerCallBack = updatedDrawer;
     },
-    displayPoints(referenceClicked, actionSender) {
+    displayPoints(referenceClicked, actionSender){
       this.pointsDisplayed = referenceClicked;
       this.sender = actionSender;
+    },
+    emitLanguage(languageSelected){
+      this.language = languageSelected;
     }
   },
   components: {
