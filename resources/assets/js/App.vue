@@ -5,7 +5,7 @@
 
     <locations-map
       id="publicMap"
-      v-bind:counter="counter"
+      v-bind:sender="sender"
       v-bind:pointsDisplayed="pointsDisplayed">
     </locations-map>
 
@@ -44,16 +44,16 @@ export default {
     return {
       drawerCallBack: true,
       pointsDisplayed: [],
-      counter: 0,
+      sender: false,
     };
   },
   methods: {
     drawerMethod(updatedDrawer) {
       this.drawerCallBack = updatedDrawer;
     },
-    displayPoints(referenceClicked, actionCounter) {
+    displayPoints(referenceClicked, actionSender) {
       this.pointsDisplayed = referenceClicked;
-      this.counter = actionCounter;
+      this.sender = actionSender;
     }
   },
   components: {

@@ -59,7 +59,7 @@ import PointDisplayComponent from './PointDisplay.vue';
 const L = window.L;
 
 export default {
-  props: ['pointsDisplayed','counter'],
+  props: ['pointsDisplayed','sender'],
   data() {
     return {
       map: [],
@@ -97,7 +97,7 @@ export default {
       this.map.setView([location.lat, location.lng], location.zoom)
     },
 
-    counter(val, oldVal) {
+    sender(val, oldVal) {
       this.createMarkers();
     },
   },
@@ -196,8 +196,6 @@ export default {
         var markers = this.pointsMarkers;
         var layers = this.pointsLayers;
         var marker;
-
-        console.log(pointsNames);
         
 
         for (let i = 0; i < pointsDisplayed.length; i++) {
@@ -217,6 +215,8 @@ export default {
                     // console.log(pointsDisplayed[i]["id"]);
                     // console.log(this.references[x]["id"]);
                     
+                    console.log(pointsDisplayed[i]["catColor"]);
+                    
                     var text = "";
                     pointsNames.forEach(name => {
                       if (name["fk_point_id"] == point["id"]) {
@@ -226,8 +226,8 @@ export default {
                     });
 
                     var currentMarker = L.ExtraMarkers.icon({
-                      icon: 'fa-'+this.references[x]["icon"],
-                      markerColor: this.references[x]["color"],
+                      icon: 'fa-'+references[x]["icon"],
+                      markerColor: pointsDisplayed[i]["catColor"],
                       shape: 'circle',
                       prefix: 'fa'
                     });

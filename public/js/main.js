@@ -22492,7 +22492,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     return {
       drawerCallBack: true,
       pointsDisplayed: [],
-      counter: 0
+      sender: false
     };
   },
 
@@ -22500,9 +22500,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     drawerMethod: function drawerMethod(updatedDrawer) {
       this.drawerCallBack = updatedDrawer;
     },
-    displayPoints: function displayPoints(referenceClicked, actionCounter) {
+    displayPoints: function displayPoints(referenceClicked, actionSender) {
       this.pointsDisplayed = referenceClicked;
-      this.counter = actionCounter;
+      this.sender = actionSender;
     }
   },
   components: {
@@ -22603,7 +22603,7 @@ __webpack_require__(14);
 var L = window.L;
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['pointsDisplayed', 'counter'],
+  props: ['pointsDisplayed', 'sender'],
   data: function data() {
     return {
       map: [],
@@ -22641,7 +22641,7 @@ var L = window.L;
     center: function center(location) {
       this.map.setView([location.lat, location.lng], location.zoom);
     },
-    counter: function counter(val, oldVal) {
+    sender: function sender(val, oldVal) {
       this.createMarkers();
     }
   },
@@ -22759,8 +22759,6 @@ var L = window.L;
       var layers = this.pointsLayers;
       var marker;
 
-      console.log(pointsNames);
-
       var _loop = function _loop(i) {
 
         if (pointsDisplayed[i]["isToBeDisplayed"] != storagePointsDisplayed[i]["isToBeDisplayed"] && pointsDisplayed[i]["isToBeDisplayed"] == true) {
@@ -22778,6 +22776,8 @@ var L = window.L;
                   // console.log(pointsDisplayed[i]["id"]);
                   // console.log(this.references[x]["id"]);
 
+                  console.log(pointsDisplayed[i]["catColor"]);
+
                   var text = "";
                   pointsNames.forEach(function (name) {
                     if (name["fk_point_id"] == point["id"]) {
@@ -22787,8 +22787,8 @@ var L = window.L;
                   });
 
                   var currentMarker = L.ExtraMarkers.icon({
-                    icon: 'fa-' + _this4.references[x]["icon"],
-                    markerColor: _this4.references[x]["color"],
+                    icon: 'fa-' + references[x]["icon"],
+                    markerColor: pointsDisplayed[i]["catColor"],
                     shape: 'circle',
                     prefix: 'fa'
                   });
@@ -23224,6 +23224,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 //Needed for promises to work
 function Language(_ref) {
@@ -23317,7 +23318,7 @@ function Point(_ref6) {
             referenceNames: [],
             referenceDisplayed: [],
             working: false,
-            actionCounter: 0
+            actionSender: false
         };
     },
 
@@ -23325,7 +23326,7 @@ function Point(_ref6) {
         drawerMethod: function drawerMethod() {
             this.$emit('drawerMethod', this.drawer);
         },
-        displayReferencePoints: function displayReferencePoints(refId) {
+        displayReferencePoints: function displayReferencePoints(refId, catColor) {
             var referenceDisplayed = JSON.parse(JSON.stringify(this.referenceDisplayed));
             //loop over the table as the order isn't by id, or else we end up with the wrong categories and errors in the point display mechanic
             for (var i = 0; i < referenceDisplayed.length; i++) {
@@ -23336,10 +23337,10 @@ function Point(_ref6) {
                         this.referenceDisplayed[i]["isToBeDisplayed"] = true;
                     }
                 }
+                this.referenceDisplayed[i]["catColor"] = catColor;
             }
-
-            this.actionCounter++;
-            this.$emit('displayPoints', this.referenceDisplayed, this.actionCounter);
+            this.actionSender = !this.actionSender;
+            this.$emit('displayPoints', this.referenceDisplayed, this.actionSender);
         },
 
         //inspired from vue-laravel-crud
@@ -23431,6 +23432,7 @@ function Point(_ref6) {
                     var obj = {};
                     obj["id"] = reference.id;
                     obj["isToBeDisplayed"] = false;
+                    obj["catColor"] = "";
                     _this5.referenceDisplayed.push(obj);
                     // this.referenceDisplayed.push(false);
                 });
@@ -23810,7 +23812,20 @@ exports.push([module.i, "\n#mapContainer[data-v-4308d8b3]{\n  height: 100%;\n  w
 
 
 /***/ }),
-/* 54 */,
+/* 54 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(1)();
+// imports
+
+
+// module
+exports.push([module.i, "\na[data-v-61f14fc6] {\n  color: rgb(146, 221, 123) !important;\n  text-decoration: inherit;\n}\n#publicMenu[data-v-61f14fc6] {\n  z-index: 50;\n}\n#publicMap[data-v-61f14fc6] {\n  z-index: 1;\n  height: 100%;\n}\n#footer[data-v-61f14fc6] {\n  z-index: 25;\n}\n.flexFooterPosition[data-v-61f14fc6] {\n  justify-content: center;\n  /* if need to get it at start position : */\n  /* justify-content: flex-start; */\n}\n.flexCenter[data-v-61f14fc6] {\n  justify-content: center;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
 /* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -45348,7 +45363,7 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
 
 
 /* styles */
-__webpack_require__(89)
+__webpack_require__(80)
 
 var Component = __webpack_require__(2)(
   /* script */
@@ -45727,13 +45742,16 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         on: {
           "click": function($event) {
             $event.stopPropagation();
-            _vm.displayReferencePoints(reference.id)
+            _vm.displayReferencePoints(reference.id, category.color)
           }
         }
       }, [_c('v-list-tile-action', [_c('v-icon', {
         style: ({
-          color: reference.color
-        })
+          color: category.color
+        }),
+        attrs: {
+          "large": ""
+        }
       }, [_vm._v("\n                                fa-" + _vm._s(reference.icon) + "\n                            ")])], 1), _vm._v(" "), _c('v-list-tile-action', _vm._l((_vm.referenceNames), function(refName, b) {
         return (refName.fk_language_id == _vm.languageSelected && refName.fk_reference_id == reference.id) ? _c('v-list-tile-content', {
           key: b
@@ -45889,7 +45907,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }), _vm._v(" "), _c('locations-map', {
     attrs: {
       "id": "publicMap",
-      "counter": _vm.counter,
+      "sender": _vm.sender,
       "pointsDisplayed": _vm.pointsDisplayed
     }
   }), _vm._v(" "), _c('v-footer', {
@@ -46074,7 +46092,32 @@ if(false) {
 }
 
 /***/ }),
-/* 80 */,
+/* 80 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(54);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(3)("6aeadfc4", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"id\":\"data-v-61f14fc6\",\"scoped\":true,\"hasInlineConfig\":true}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./App.vue", function() {
+     var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"id\":\"data-v-61f14fc6\",\"scoped\":true,\"hasInlineConfig\":true}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./App.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
 /* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -69674,46 +69717,6 @@ module.exports = function(module) {
 
 module.exports = __webpack_require__(18);
 
-
-/***/ }),
-/* 88 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(1)();
-// imports
-
-
-// module
-exports.push([module.i, "\na[data-v-61f14fc6] {\n  color: rgb(146, 221, 123) !important;\n  text-decoration: inherit;\n}\n#publicMenu[data-v-61f14fc6] {\n  z-index: 50;\n}\n#publicMap[data-v-61f14fc6] {\n  z-index: 1;\n  height: 100%;\n}\n#footer[data-v-61f14fc6] {\n  z-index: 25;\n}\n.flexFooterPosition[data-v-61f14fc6] {\n  justify-content: center;\n  /* if need to get it at start position : */\n  /* justify-content: flex-start; */\n}\n.flexCenter[data-v-61f14fc6] {\n  justify-content: center;\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 89 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(88);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(3)("6aeadfc4", content, false);
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"id\":\"data-v-61f14fc6\",\"scoped\":true,\"hasInlineConfig\":true}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./App.vue", function() {
-     var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"id\":\"data-v-61f14fc6\",\"scoped\":true,\"hasInlineConfig\":true}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./App.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
 
 /***/ })
 /******/ ]);

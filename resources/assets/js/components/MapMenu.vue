@@ -144,11 +144,12 @@
                         v-if="reference.fk_category_id == category.id"
                         :key="y"
                         color="white">
-                        <v-list-tile @click.stop="displayReferencePoints(reference.id)">
+                        <v-list-tile @click.stop="displayReferencePoints(reference.id, category.color)">
                             <v-list-tile-action>
                                 <!-- class="shadow" -->
                                 <v-icon
-                                    v-bind:style="{ color: reference.color}">
+                                    large
+                                    v-bind:style="{ color: category.color}">
                                     fa-{{reference.icon}}
                                 </v-icon>
                             </v-list-tile-action>
@@ -332,14 +333,14 @@
         referenceNames: [],
         referenceDisplayed: [],
         working: false,
-        actionCounter: 0,
+        actionSender: false,
       }
     },
     methods: {
         drawerMethod() {
             this.$emit('drawerMethod', this.drawer);
         },
-        displayReferencePoints(refId){
+        displayReferencePoints(refId, catColor){
             var referenceDisplayed = JSON.parse(JSON.stringify(this.referenceDisplayed));
             //loop over the table as the order isn't by id, or else we end up with the wrong categories and errors in the point display mechanic
             for (let i = 0; i < referenceDisplayed.length; i++) {
@@ -351,10 +352,10 @@
                         this.referenceDisplayed[i]["isToBeDisplayed"] = true;
                     }
                 }
+                this.referenceDisplayed[i]["catColor"] = catColor;
             }
-
-            this.actionCounter++
-            this.$emit('displayPoints', this.referenceDisplayed, this.actionCounter);
+            this.actionSender = !this.actionSender
+            this.$emit('displayPoints', this.referenceDisplayed, this.actionSender);
         },
         //inspired from vue-laravel-crud
         //POINTS CRUD NEED READ ONLY
@@ -418,6 +419,7 @@
                     var obj = {};
                     obj["id"] = reference.id;
                     obj["isToBeDisplayed"] = false;
+                    obj["catColor"] = "";
                     this.referenceDisplayed.push(obj);
                     // this.referenceDisplayed.push(false);
                 });
