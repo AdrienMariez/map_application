@@ -22,11 +22,13 @@
     this.image_path = image_path;
     this.fk_reference_id = fk_reference_id;
   }
-  function PointName({ id, fk_point_id, fk_language_id, text}) {
+  function PointName({ id, fk_point_id, fk_language_id, title, description, linkalias}) {
     this.id = id;
     this.fk_point_id = fk_point_id;
     this.fk_language_id = fk_language_id;
-    this.text = text;
+    this.title = title;
+    this.description = description;
+    this.linkalias = linkalias;
   }
   function Reference({ id, icon, color, weight, fk_category_id}) {
     this.id = id;
@@ -36,14 +38,14 @@
     this.fk_category_id = fk_category_id;
   }
 
-// import 'leaflet'
-// import 'leaflet.markercluster'
-require('../../../../node_modules/leaflet/dist/leaflet.css')
-require('../../../../node_modules/leaflet.markercluster/dist/MarkerCluster.css')
-require('../../../../node_modules/geoportal-extensions-leaflet/dist/GpPluginLeaflet.css')
+  //IMPORTS
+    require('../../../../node_modules/leaflet/dist/leaflet.css')
+    require('../../../../node_modules/leaflet.markercluster/dist/MarkerCluster.css')
+    require('../../../../node_modules/geoportal-extensions-leaflet/dist/GpPluginLeaflet.css')
 
-import MapControls from './MapControls.vue'
-// import PointDisplayComponent from './PointDisplay.vue';
+    import MapControls from './MapControls.vue'
+    // import PointDisplayComponent from './PointDisplay.vue';
+  //END IMPORTS
 
 const L = window.L;
 
@@ -56,7 +58,7 @@ export default {
       zoom: 14,
       zoomLevel: 14,
       points: [],
-      pointsNames: [],
+      pointsContents: [],
       pointsCount: 0,
       references: [],
       storagePointsDisplayed: [],
@@ -146,17 +148,20 @@ export default {
           this.mute = false;
         });
       },
-    //POINTS NAMES READ
-      readPointsNames() {
+    //POINTS POPUP CONTENT READ
+      readPointsPopupContent() {
         this.mute = true;
         
         window.axios.get('/api/pointsnames').then(({ data }) => {
-          data.forEach(pointname => {
-            this.pointsNames.push(new PointName(pointname));
+          data.forEach(pointContent => {
+            console.log(pointContent);
+            
+            this.pointsContents.push(new PointName(pointContent));
           });
           this.mute = false;
         });
       },
+
     //REFERENCES READ
       readReferences() {
         window.axios.get('/api/references').then(({ data }) => {
@@ -180,13 +185,12 @@ export default {
 
         var points = JSON.parse(JSON.stringify(this.points));
 
-        var pointsNames = JSON.parse(JSON.stringify(this.pointsNames));
+        var pointsContents = JSON.parse(JSON.stringify(this.pointsContents));
 
         var markers = this.pointsMarkers;
         var layers = this.pointsLayers;
         var marker;
         
-
         for (let i = 0; i < pointsDisplayed.length; i++) {
           
           if(pointsDisplayed[i]["isToBeDisplayed"] != storagePointsDisplayed[i]["isToBeDisplayed"] && pointsDisplayed[i]["isToBeDisplayed"] == true){
@@ -200,19 +204,30 @@ export default {
                 for (let x = 0; x < this.references.length; x++) {
 
                   if (references[x]["id"] == pointsDisplayed[i]["id"]) {
-
-                    // console.log(pointsDisplayed[i]["id"]);
-                    // console.log(this.references[x]["id"]);
-                    
-                    // console.log(pointsDisplayed[i]["catColor"]);
-                    
-                    var text = "";
-                    pointsNames.forEach(name => {
-                      if (name["fk_point_id"] == point["id"] && name["fk_language_id"] == this.language) {
-                        // console.log(name["id"] +" - "+ name["text"]);
-                        text += name["text"];
+                    var title = "";
+                    var desc = "";
+                    var link = "";
+                    var popup = "";
+                    pointsContents.forEach(content => {
+                      if (content["fk_point_id"] == point["id"] && content["fk_language_id"] == this.language) {
+                        title +="<b>"
+                        title += content["title"];
+                        title +="</b>"
+                        if (content["description"].length >= 1) {
+                          desc += "<br/>";
+                          desc += content["description"];
+                        }
+                        if (content["linkalias"].length >= 1) {
+                          link += "<br/>";
+                          link += "<a>"
+                          link += content["linkalias"];
+                          link += "</a>"
+                        }
                       }
                     });
+                    popup += title;
+                    popup += desc;
+                    popup += link;
 
                     var currentMarker = L.ExtraMarkers.icon({
                       icon: 'fa-'+references[x]["icon"],
@@ -220,8 +235,7 @@ export default {
                       shape: 'circle',
                       prefix: 'fa'
                     });
-
-                    marker = L.marker([point["longitude"], point["lattitude"]], {icon: currentMarker}).bindPopup(text);
+                    marker = L.marker([point["longitude"], point["lattitude"]], {icon: currentMarker}).bindPopup(popup);
 
                     // marker = L.marker([point["longitude"], point["lattitude"]]).bindPopup(point["link"]);
 
@@ -284,7 +298,7 @@ export default {
   mounted() {
     this.readMap();
     this.readPoints();
-    this.readPointsNames();
+    this.readPointsPopupContent();
     this.readReferences();
   },
   created() {
