@@ -13,7 +13,7 @@
 
             <!-- deploy full nav when miniaturized -->
             <v-list-tile v-if="mini" @click.stop="mini = !mini">
-                <v-list-tile-action>
+                <v-list-tile-action class="cursorAction">
                     <v-icon>chevron_right</v-icon>
                 </v-list-tile-action>
             </v-list-tile>
@@ -28,7 +28,7 @@
                             align-center
                             justify-center
                             @click.stop="mini = !mini"
-                            class="text-xs-center flexCenter">
+                            class="text-xs-center flexCenter cursorAction">
                             <v-icon>
                                 chevron_left
                             </v-icon>
@@ -53,7 +53,7 @@
                             justify-center
                             v-on:click="drawerMethod()"
                             @click.stop="drawer = !drawer"
-                            class="text-xs-center flexCenter">
+                            class="text-xs-center flexCenter cursorAction">
                             <v-icon>
                                 close
                             </v-icon>
@@ -243,25 +243,26 @@
                 </v-flex> -->
 
                 <v-flex>
-                <v-layout align-space-around justify-end row fill-height>
-                <!-- select language -->
-                    <v-select
-                        :items="languages"
-                        prepend-icon="map"
-                        v-model="languageSelected"
-                        single-line
-                        class="mr-3 input-group--focused selectTop"
-                        item-value=id
-                        item-text=name
-                    >
-                    </v-select>
-                </v-layout>
+                    <v-layout align-center justify-end row fill-height>
+                    <!-- select language -->
+                        <v-select
+                            :items="languages"
+                            prepend-icon="map"
+                            v-model="languageSelected"
+                            align-center
+                            single-line
+                            class="mr-3 input-group--focused selectTop"
+                            item-value=id
+                            item-text=name
+                        >
+                        </v-select>
+                    </v-layout>
                 </v-flex>
             </v-layout>
         </v-toolbar>
 
         <!-- contact button -->
-        <v-card-text class="buttonContact">
+        <!-- <v-card-text class="buttonContact">
             <v-btn
                 absolute
                 dark
@@ -270,7 +271,12 @@
             >
                 <div class="linkColor">Contact</div>
             </v-btn>
-        </v-card-text>
+        </v-card-text> -->
+
+
+        <contact-form v-if="languageSelected == 0" class="buttonContact"></contact-form>
+
+        <contact-form-en v-if="languageSelected == 1" class="buttonContact"></contact-form-en>
 
     </div>
 
@@ -318,8 +324,12 @@
             this.image_path = image_path;
         }
     //END Needed for promises to work
-    import MapControls from './MapControls.vue'
-    import PointListComponent from './PointList.vue';
+    // import MapControls from './MapControls.vue'
+    // import PointListComponent from './PointList.vue';
+
+  import ContactForm from './ContactForm.vue'
+  import ContactFormEn from './ContactFormEn.vue'
+
   export default {
     data () {
       return {
@@ -605,8 +615,10 @@
             // console.log(this.languageSelected);
     },
     components: {
-        MapControls,
-        PointListComponent
+        // MapControls,
+        // PointListComponent,
+        ContactForm,
+        ContactFormEn
     }
   }
 </script>
@@ -615,20 +627,10 @@
     .noPaddingLeft{
         margin-left: -15% !important;
     }
-    .buttonContact{
-        height: 60px;
-        width: 100px;
-        position: absolute;
-        right: 0;
-        bottom: 0;
-        z-index: 1;
-    }
-    .buttonContact > button{
-        right: 5px;
-    }
     .selectTop{
         z-index: 200;
         max-width: 100px;
+        margin-top: 10px;
     }
     /* .shadow{
         text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
@@ -650,6 +652,9 @@
     }
     .flexCenter {
         justify-content: center;
+    }
+    .cursorAction{
+        cursor: pointer;
     }
     a{
         color: rgb(24, 53, 17) !important;

@@ -44,3 +44,7 @@ Route::resource('/categories', 'CategoriesController', [
 Route::resource('/categoriesnames', 'CategoriesnamesController', [
     'except' => ['edit', 'show', 'store']
 ]);
+
+Route::resource('/contactform', 'ContactformController', [
+    'except' => ['edit', 'show', 'store']
+]);

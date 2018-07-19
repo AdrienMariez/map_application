@@ -6,17 +6,6 @@
 
     <map-controls id="controls" v-model="zoomLevel" @input="input"></map-controls>
 
-    <!-- TEST NAV -->
-          <!-- @displayPoints="displayPoints" -->
-        <!-- <point-display-component
-          v-for="point in points"
-          v-bind="point"
-          :key="point.id"
-          @displayPoints="displayPoints"
-        >
-        </point-display-component> -->
-    <!-- END TEST NAV -->
-
   </v-card>
 </template>
 
@@ -54,7 +43,7 @@ require('../../../../node_modules/leaflet.markercluster/dist/MarkerCluster.css')
 require('../../../../node_modules/geoportal-extensions-leaflet/dist/GpPluginLeaflet.css')
 
 import MapControls from './MapControls.vue'
-import PointDisplayComponent from './PointDisplay.vue';
+// import PointDisplayComponent from './PointDisplay.vue';
 
 const L = window.L;
 
@@ -305,7 +294,7 @@ export default {
   },
   components: {
     MapControls,
-    PointDisplayComponent
+    // PointDisplayComponent
   }
 }
 </script>

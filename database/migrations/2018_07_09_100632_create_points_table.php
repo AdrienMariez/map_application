@@ -16,8 +16,6 @@ class CreatePointsTable extends Migration
         Schema::create('points', function (Blueprint $table) {
             $table->primary('id')->unique();
             $table->string('link');
-            $table->string('icon');
-            $table->string('color');
             $table->float('longitude', 8, 2);
             $table->float('lattitude', 8, 2);
             $table->boolean('uses_image');

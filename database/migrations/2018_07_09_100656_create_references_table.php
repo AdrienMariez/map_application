@@ -16,7 +16,6 @@ class CreateReferencesTable extends Migration
         Schema::create('references', function (Blueprint $table) {
             $table->primary('id')->unique();
             $table->string('icon');
-            $table->string('color');
             $table->integer('weight');
             $table->integer('fk_category_id');
         });
