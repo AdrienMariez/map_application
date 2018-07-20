@@ -89,12 +89,10 @@ export default {
     sender(val, oldVal) {
       this.createMarkers();
     },
-    language(val, oldVal) {
-      console.log("language change :");
-      console.log("old : "+oldVal+" new : "+ val);
-      
-      
-    },
+    // language(val, oldVal) {
+    //   console.log("language change :");
+    //   console.log("old : "+oldVal+" new : "+ val);
+    // },
   },
   methods: {
     //TO REMOVE
@@ -211,19 +209,35 @@ export default {
                     var desc = "";
                     var link = "";
                     var imgCtnr = "";
-                    var popup;
+                    var popup = document.createElement("div");
+                    popup.setAttribute("style", "text-align:center;");
+
                     pointsContents.forEach(content => {
                       if (content["fk_point_id"] == point["id"] && content["fk_language_id"] == this.language) {
                         title = document.createElement("h3");
                         var titleHtml = document.createTextNode(content["title"]);
                         title.appendChild(titleHtml);
+                        popup.appendChild(title);
 
+                        if (point["image_path"].length >= 1) {
+                          imgCtnr = document.createElement("div");
+                          imgCtnr.setAttribute("style", "width:150px; height:auto;");
+                          var img = document.createElement("img");
+                          img.setAttribute("style", "width:100%; height:100%;");
+                          img.setAttribute("alt", "image");
+                          img.setAttribute("src", point["image_path"]);
+                          imgCtnr.appendChild(img);
+                          
+                          popup.appendChild(imgCtnr);
+                        }
                         if (content["description"].length >= 1) {
                           desc = document.createElement("div");
                           var descHtml = document.createTextNode(content["description"]);
                           desc.appendChild(descHtml);
+
+                          popup.appendChild(desc);
                         }
-                        if (point["link"].length >= 1) {
+                        if (point["link"].length >= 1) {    
                           link = document.createElement("a");
                           link.setAttribute("target", "_blank");
                           link.setAttribute("rel", "noopener noreferrer");
@@ -238,24 +252,14 @@ export default {
                             // link += point["link"];
                           }
                           link.appendChild(linkHtml);
-                        }
-                        if (point["image_path"].length >= 1) {
-                          imgCtnr = document.createElement("div");
-                          imgCtnr.setAttribute("style", "width:150px; height:auto;");
-                          var img = document.createElement("img");
-                          img.setAttribute("style", "width:100%; height:100%;");
-                          img.setAttribute("alt", "image");
-                          img.setAttribute("src", point["image_path"]);
-                          imgCtnr.appendChild(img);
+
+                          popup.appendChild(link);
                         }
                       }
                     });
-                    popup = document.createElement("div");
-                    popup.setAttribute("style", "text-align:center;");
-                    popup.appendChild(title);
-                    popup.appendChild(imgCtnr);
-                    popup.appendChild(desc);
-                    popup.appendChild(link);
+
+                    
+                    
 
                     var currentMarker = L.ExtraMarkers.icon({
                       icon: 'fa-'+references[x]["icon"],
