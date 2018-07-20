@@ -22809,7 +22809,6 @@ function Point(_ref) {
       color = _ref.color,
       longitude = _ref.longitude,
       lattitude = _ref.lattitude,
-      uses_image = _ref.uses_image,
       image_path = _ref.image_path,
       fk_reference_id = _ref.fk_reference_id;
 
@@ -22819,7 +22818,6 @@ function Point(_ref) {
   this.color = color;
   this.longitude = longitude;
   this.lattitude = lattitude;
-  this.uses_image = uses_image;
   this.image_path = image_path;
   this.fk_reference_id = fk_reference_id;
 }
@@ -22904,6 +22902,10 @@ var L = window.L;
     },
     sender: function sender(val, oldVal) {
       this.createMarkers();
+    },
+    language: function language(val, oldVal) {
+      console.log("language change :");
+      console.log("old : " + oldVal + " new : " + val);
     }
   },
   methods: {
@@ -22978,8 +22980,6 @@ var L = window.L;
         var data = _ref5.data;
 
         data.forEach(function (pointContent) {
-          console.log(pointContent);
-
           _this2.pointsContents.push(new PointName(pointContent));
         });
         _this2.mute = false;
@@ -23029,37 +23029,62 @@ var L = window.L;
 
           layers[i] = new L.layerGroup();
 
+          //for each layer to display, create the points
           points.forEach(function (point) {
 
             if (point["fk_reference_id"] == pointsDisplayed[i]["id"]) {
 
-              for (var x = 0; x < _this4.references.length; x++) {
+              for (var x = 0; x < references.length; x++) {
 
                 if (references[x]["id"] == pointsDisplayed[i]["id"]) {
-                  var title = "";
+                  var title;
                   var desc = "";
                   var link = "";
-                  var popup = "";
+                  var imgCtnr = "";
+                  var popup;
                   pointsContents.forEach(function (content) {
                     if (content["fk_point_id"] == point["id"] && content["fk_language_id"] == _this4.language) {
-                      title += "<b>";
-                      title += content["title"];
-                      title += "</b>";
+                      title = document.createElement("h3");
+                      var titleHtml = document.createTextNode(content["title"]);
+                      title.appendChild(titleHtml);
+
                       if (content["description"].length >= 1) {
-                        desc += "<br/>";
-                        desc += content["description"];
+                        desc = document.createElement("div");
+                        var descHtml = document.createTextNode(content["description"]);
+                        desc.appendChild(descHtml);
                       }
-                      if (content["linkalias"].length >= 1) {
-                        link += "<br/>";
-                        link += "<a>";
-                        link += content["linkalias"];
-                        link += "</a>";
+                      if (point["link"].length >= 1) {
+                        link = document.createElement("a");
+                        link.setAttribute("target", "_blank");
+                        link.setAttribute("rel", "noopener noreferrer");
+                        link.setAttribute("href", point["link"]);
+                        var linkHtml;
+                        if (content["linkalias"].length >= 1) {
+                          var linkHtml = document.createTextNode(content["linkalias"]);
+                          // link += content["linkalias"];
+                        } else {
+                          var linkHtml = document.createTextNode(point["link"]);
+                          // link += point["link"];
+                        }
+                        link.appendChild(linkHtml);
+                      }
+                      if (point["image_path"].length >= 1) {
+                        imgCtnr = document.createElement("div");
+                        imgCtnr.setAttribute("style", "width:150px; height:auto;");
+                        var img = document.createElement("img");
+                        img.setAttribute("style", "width:100%; height:100%;");
+                        img.setAttribute("alt", "image");
+                        img.setAttribute("src", point["image_path"]);
+                        imgCtnr.appendChild(img);
                       }
                     }
                   });
-                  popup += title;
-                  popup += desc;
-                  popup += link;
+                  popup = document.createElement("div");
+                  popup.setAttribute("style", "text-align:center;");
+                  popup.appendChild(title);
+                  popup.appendChild(imgCtnr);
+                  popup.appendChild(desc);
+                  popup.appendChild(link);
 
                   var currentMarker = L.ExtraMarkers.icon({
                     icon: 'fa-' + references[x]["icon"],
@@ -24020,7 +24045,7 @@ exports = module.exports = __webpack_require__(1)();
 
 
 // module
-exports.push([module.i, "\n#mapContainer[data-v-4308d8b3]{\n  height: 100%;\n  width: 100%;\n  position: relative;\n}\n#controls[data-v-4308d8b3]{\n  width: 100px;\n  height: 100px;\n  position: absolute;\n  top: 50px;\n  z-index: 150;\n  right: 10px;\n}\n#map[data-v-4308d8b3]{\n  /* left as comment to remember NOT to try to use it */\n  /* position: initial !important; */\n  height: 100%;\n  width: 100%;\n  z-index: 1;\n}\n.leaflet-bottom .leaflet-control .leaflet-control-zoom .leaflet-bar .leaflet-control[data-v-4308d8b3]{\n  margin-bottom: 40px !important;\n}\n.flexCenter[data-v-4308d8b3] {\n  justify-content: center;\n}\n", ""]);
+exports.push([module.i, "\n#mapContainer[data-v-4308d8b3]{\n  height: 100%;\n  width: 100%;\n  position: relative;\n}\n#controls[data-v-4308d8b3]{\n  width: 100px;\n  height: 100px;\n  position: absolute;\n  top: 50px;\n  z-index: 150;\n  right: 10px;\n}\n#map[data-v-4308d8b3]{\n  /* left as comment to remember NOT to try to use it */\n  /* position: initial !important; */\n  height: 100%;\n  width: 100%;\n  z-index: 1;\n}\n.leaflet-bottom .leaflet-control .leaflet-control-zoom .leaflet-bar .leaflet-control[data-v-4308d8b3]{\n  margin-bottom: 40px !important;\n}\n.leaflet-popup .leaflet-popup-content[data-v-4308d8b3]{\n  text-align: center !important;\n}\n.flexCenter[data-v-4308d8b3] {\n  justify-content: center;\n}\n", ""]);
 
 // exports
 

@@ -11,14 +11,13 @@
 
 <script>
 
-  function Point({ id, link, icon, color, longitude, lattitude, uses_image, image_path, fk_reference_id}) {
+  function Point({ id, link, icon, color, longitude, lattitude, image_path, fk_reference_id}) {
     this.id = id;
     this.link = link;
     this.icon = icon;
     this.color = color;
     this.longitude = longitude;
     this.lattitude = lattitude;
-    this.uses_image = uses_image;
     this.image_path = image_path;
     this.fk_reference_id = fk_reference_id;
   }
@@ -87,9 +86,14 @@ export default {
     center(location) {
       this.map.setView([location.lat, location.lng], location.zoom)
     },
-
     sender(val, oldVal) {
       this.createMarkers();
+    },
+    language(val, oldVal) {
+      console.log("language change :");
+      console.log("old : "+oldVal+" new : "+ val);
+      
+      
     },
   },
   methods: {
@@ -154,8 +158,6 @@ export default {
         
         window.axios.get('/api/pointsnames').then(({ data }) => {
           data.forEach(pointContent => {
-            console.log(pointContent);
-            
             this.pointsContents.push(new PointName(pointContent));
           });
           this.mute = false;
@@ -194,40 +196,66 @@ export default {
         for (let i = 0; i < pointsDisplayed.length; i++) {
           
           if(pointsDisplayed[i]["isToBeDisplayed"] != storagePointsDisplayed[i]["isToBeDisplayed"] && pointsDisplayed[i]["isToBeDisplayed"] == true){
-
+            
             layers[i] = new L.layerGroup();
 
+            //for each layer to display, create the points
             points.forEach(point => {
 
               if (point["fk_reference_id"] == pointsDisplayed[i]["id"]) {
 
-                for (let x = 0; x < this.references.length; x++) {
+                for (let x = 0; x < references.length; x++) {
 
                   if (references[x]["id"] == pointsDisplayed[i]["id"]) {
-                    var title = "";
+                    var title;
                     var desc = "";
                     var link = "";
-                    var popup = "";
+                    var imgCtnr = "";
+                    var popup;
                     pointsContents.forEach(content => {
                       if (content["fk_point_id"] == point["id"] && content["fk_language_id"] == this.language) {
-                        title +="<b>"
-                        title += content["title"];
-                        title +="</b>"
+                        title = document.createElement("h3");
+                        var titleHtml = document.createTextNode(content["title"]);
+                        title.appendChild(titleHtml);
+
                         if (content["description"].length >= 1) {
-                          desc += "<br/>";
-                          desc += content["description"];
+                          desc = document.createElement("div");
+                          var descHtml = document.createTextNode(content["description"]);
+                          desc.appendChild(descHtml);
                         }
-                        if (content["linkalias"].length >= 1) {
-                          link += "<br/>";
-                          link += "<a>"
-                          link += content["linkalias"];
-                          link += "</a>"
+                        if (point["link"].length >= 1) {
+                          link = document.createElement("a");
+                          link.setAttribute("target", "_blank");
+                          link.setAttribute("rel", "noopener noreferrer");
+                          link.setAttribute("href", point["link"]);
+                          var linkHtml;
+                          if (content["linkalias"].length >= 1) {
+                            var linkHtml = document.createTextNode(content["linkalias"]);
+                            // link += content["linkalias"];
+                          }
+                          else{
+                            var linkHtml = document.createTextNode(point["link"]);
+                            // link += point["link"];
+                          }
+                          link.appendChild(linkHtml);
+                        }
+                        if (point["image_path"].length >= 1) {
+                          imgCtnr = document.createElement("div");
+                          imgCtnr.setAttribute("style", "width:150px; height:auto;");
+                          var img = document.createElement("img");
+                          img.setAttribute("style", "width:100%; height:100%;");
+                          img.setAttribute("alt", "image");
+                          img.setAttribute("src", point["image_path"]);
+                          imgCtnr.appendChild(img);
                         }
                       }
                     });
-                    popup += title;
-                    popup += desc;
-                    popup += link;
+                    popup = document.createElement("div");
+                    popup.setAttribute("style", "text-align:center;");
+                    popup.appendChild(title);
+                    popup.appendChild(imgCtnr);
+                    popup.appendChild(desc);
+                    popup.appendChild(link);
 
                     var currentMarker = L.ExtraMarkers.icon({
                       icon: 'fa-'+references[x]["icon"],
@@ -336,6 +364,9 @@ export default {
   }
   .leaflet-bottom .leaflet-control .leaflet-control-zoom .leaflet-bar .leaflet-control{
     margin-bottom: 40px !important;
+  }
+  .leaflet-popup .leaflet-popup-content{
+    text-align: center !important;
   }
   .flexCenter {
     justify-content: center;

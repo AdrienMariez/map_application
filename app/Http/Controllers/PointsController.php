@@ -27,7 +27,6 @@ class PointsController extends Controller
         $point->color = $faker->boolean ? 'red' : 'green';
         $point->longitude = $faker->boolean ? '2' : '4';
         $point->lattitude = $faker->boolean ? '1' : '3';
-        $point->uses_image = $faker->boolean ? 'true' : 'false';
         $point->image_path = $faker->lexify('????????');
         $point->save();
 
@@ -42,7 +41,6 @@ class PointsController extends Controller
         $point->color = $request->color;
         $point->longitude = $request->longitude;
         $point->lattitude = $request->lattitude;
-        $point->uses_image = $request->uses_image;
         $point->image_path = $request->image_path;
         $point->save();
 
