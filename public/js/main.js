@@ -14060,6 +14060,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
 
 
 function Point(_ref) {
@@ -14127,6 +14131,8 @@ var L = window.L;
     return {
       map: [],
       markers: null,
+      mapLat: 44.5040577,
+      mapLong: 1.1874496,
       zoom: 14,
       zoomLevel: 14,
       points: [],
@@ -14152,35 +14158,9 @@ var L = window.L;
     }
   },
   methods: {
-    //TO REMOVE
-    // addPlaces(places) {
-    //   // TO REMOVE all comments here are to disable marker cluster
-    //   if(!this.map) return;
-    //   const map = this.map
-    //   // const markers = L.markerClusterGroup();
-    //   const store = this.$store;
-
-    //   places.forEach( (place) => {
-    //     let marker = L.marker([place.location.lat, place.location.lng])
-    //         .on('click', (el) => {
-    //           store.commit('locationsMap_center', el.latlng)
-    //         })
-    //         .bindPopup(`<b> ${place.id} </b> ${place.name}`)
-    //     map.addLayer(marker)
-    //     // .on('click', (el) => alert(el.target))
-    //   })
-
-    //   // map.addLayer(markers)
-    //   // this.markers = markers
-    // },
-    // removePlaces() {
-    //   this.map.removeLayer(this.marker)
-    //   this.marker = null
-    // },
-    //END TO REMOVE
     //CREATION OF MAP
     readMap: function readMap() {
-      var map = L.map('map').setView([44.5040577, 1.1874496], this.zoom);
+      var map = L.map('map').setView([this.mapLat, this.mapLong], this.zoom);
 
       L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
         minZoom: 10,
@@ -14475,7 +14455,7 @@ var L = window.L;
     },
 
     //GET ZOOM
-    input: function input(newValue) {
+    zoomValue: function zoomValue(newValue) {
       // ALGO : 
       //I need to watch so that the user can still scroll to zoom in, meaning that the current zoom (x) must be modified, no the value saved (y).
       // aside source :
@@ -14502,11 +14482,20 @@ var L = window.L;
 
       // following value of x : (x = y)
 
+      //END ALGO
+
       this.zoomLevel = this.map.getZoom();
 
       this.zoomLevel += newValue;
 
       this.map.setZoom(this.zoomLevel);
+    },
+
+    //SET BACK TO HOME POSITION
+    setHomePosition: function setHomePosition() {
+      this.zoomLevel = this.map.getZoom();
+
+      this.map.setView(new L.LatLng(this.mapLat, this.mapLong), this.zoom);
     }
   },
   mounted: function mounted() {
@@ -14563,10 +14552,21 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['value'],
+    props: ['zoomValue'],
     data: function data() {
         return {
             zoomIn: 1,
@@ -14578,14 +14578,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         functionName: function functionName() {}
     },
     methods: {
-        zoomingIn: function zoomingIn(value) {
+        zoomingIn: function zoomingIn() {
             // var newValue = parseInt(value) + 1;
             //if input is changed, the value does not load properly...
-            this.$emit('input', 1);
+            this.$emit('zoomValue', 1);
         },
-        zoomingOut: function zoomingOut(value) {
+        zoomingOut: function zoomingOut() {
             // var newValue = parseInt(value) - 1;
-            this.$emit('input', -1);
+            this.$emit('zoomValue', -1);
+        },
+        setHomePosition: function setHomePosition() {
+            this.$emit('setHomePosition');
         }
     }
 });
@@ -14999,44 +15002,54 @@ function Point(_ref6) {
         }
     },
     methods: {
+        //ON START FIND OUT THE USER BROWSER LANGUAGE
         lookForUserLanguage: function lookForUserLanguage() {
-            //HOW TO
-            //https://stackoverflow.com/questions/1043339/javascript-for-detecting-browser-language-preference
-            // console.log(navigator.language);
-            //is FireFox and all other browser.
-            // console.log(window.navigator.userLanguage);
-            //is IE only and it's the language set in Windows Control Panel - Regional Options and NOT browser language
-            // https://en.wikipedia.org/wiki/Language_localisation
-            //END HOW TO
 
-            var languageCode = window.navigator.userLanguage || window.navigator.language;
-            // var languageCode = "de-AT";
-            var language = languageCode.substring(0, 2);
-            var languages = JSON.parse(JSON.stringify(this.languages));
-            var languageSelected = null;
-            var languageEnglish = null;
+            if (localStorage.getItem("languageSelected") !== null) {
+                var localLanguage = localStorage.getItem("languageSelected");
+                this.languageSelected = JSON.parse(localLanguage);
+            } else {
+                //HOW TO
+                //https://stackoverflow.com/questions/1043339/javascript-for-detecting-browser-language-preference
+                // console.log(navigator.language);
+                //is FireFox and all other browser.
+                // console.log(window.navigator.userLanguage);
+                //is IE only and it's the language set in Windows Control Panel - Regional Options and NOT browser language
+                // https://en.wikipedia.org/wiki/Language_localisation
+                //END HOW TO
+                var languageCode = window.navigator.userLanguage || window.navigator.language;
+                // var languageCode = "de-AT";
+                var language = languageCode.substring(0, 2);
+                var languages = JSON.parse(JSON.stringify(this.languages));
+                var languageSelected = null;
+                var languageEnglish = null;
 
-            languages.forEach(function (lang) {
+                languages.forEach(function (lang) {
 
-                if (lang["code"] == language) {
-                    // console.log("language recognized : "+lang["code"]);
-                    languageSelected = lang["id"];
+                    if (lang["code"] == language) {
+                        // console.log("language recognized : "+lang["code"]);
+                        languageSelected = lang["id"];
+                    }
+                    if (lang["code"] == "en") {
+                        languageEnglish = lang["id"];
+                        // console.log("english found");
+                    }
+                });
+                if (languageSelected == null) {
+                    // console.log("language not recognized ! Set in english by default !");  
+                    languageSelected = languageEnglish;
                 }
-                if (lang["code"] == "en") {
-                    languageEnglish = lang["id"];
-                    // console.log("english found");
-                }
-            });
-            if (languageSelected == null) {
-                // console.log("language not recognized ! Set in english by default !");  
-                languageSelected = languageEnglish;
+
+                this.languageSelected = languageSelected;
             }
-
-            this.languageSelected = languageSelected;
         },
+
+        //DRAWER EMIT
         drawerMethod: function drawerMethod() {
             this.$emit('drawerMethod', this.drawer);
         },
+
+        //ON POINT CLICK EMIT NEW REFERENCES TO DISPLAY/HIDE
         displayReferencePoints: function displayReferencePoints(refId, catColor) {
             //loop over the table as the order isn't by id, or else we end up with the wrong categories and errors in the point display mechanic
 
@@ -15129,19 +15142,28 @@ function Point(_ref6) {
             this.referenceDisplayed = referenceDisplayed;
             localStorage.setItem('referencesDisplayed', JSON.stringify(referenceDisplayed));
         },
+
+        //ON LANGUAGE SELECT EMIT LANGUAGE
         emitLanguage: function emitLanguage() {
-            for (var i = 0; i < this.referenceDisplayed.length; i++) {
-                if (this.referenceDisplayed[i]["isToBeDisplayed"] == true) {
-                    this.referenceDisplayed[i]["isToBeDisplayed"] = false;
+            var referenceDisplayed = JSON.parse(JSON.stringify(this.referenceDisplayed));
+            for (var i = 0; i < referenceDisplayed.length; i++) {
+                if (referenceDisplayed[i]["isToBeDisplayed"] == true) {
+                    referenceDisplayed[i]["isToBeDisplayed"] = false;
                 }
             }
             this.actionSender = !this.actionSender;
 
+            this.$emit('displayPoints', referenceDisplayed, this.actionSender);
             this.$emit('emitLanguage', this.languageSelected);
-            this.$emit('displayPoints', this.referenceDisplayed, this.actionSender);
+            this.referenceDisplayed = referenceDisplayed;
+            var languageSelected = JSON.parse(JSON.stringify(this.languageSelected));
+            localStorage.setItem('languageSelected', languageSelected);
+            console.log(languageSelected);
         },
 
+        //
         //inspired from vue-laravel-crud
+
         //POINTS CRUD NEED READ ONLY
         //methods other than read() are useless, but kept for the moment until I can remove them and not break anything in the process.
         create: function create() {
@@ -15412,7 +15434,7 @@ exports = module.exports = __webpack_require__(1)();
 
 
 // module
-exports.push([module.i, "\n.buttonFly[data-v-2504d62d]{\n    height: 100px;\n    width: 100px;\n    /* top: 10vh; */\n    right: 0;\n}\n.buttonFly > button[data-v-2504d62d]{\n    right: 5px;\n}\n", ""]);
+exports.push([module.i, "\n.buttonFly[data-v-2504d62d]{\n    height: 80px;\n    width: 80px;\n    /* top: 10vh; */\n    right: 0;\n}\n.buttonFly > button[data-v-2504d62d]{\n    right: 5px;\n}\n", ""]);
 
 // exports
 
@@ -37465,8 +37487,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "dark": "",
       "fab": "",
       "center": "",
-      "color": "green lighten-1",
-      "value": _vm.value
+      "color": "green lighten-1"
     },
     on: {
       "click": function($event) {
@@ -37481,15 +37502,29 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "dark": "",
       "fab": "",
       "center": "",
-      "color": "green lighten-1",
-      "value": _vm.value
+      "color": "green lighten-1"
     },
     on: {
       "click": function($event) {
-        _vm.zoomingOut($event.target.value)
+        _vm.zoomingOut()
       }
     }
-  }, [_c('v-icon', [_vm._v("zoom_out")])], 1)], 1)], 1)
+  }, [_c('v-icon', [_vm._v("zoom_out")])], 1)], 1), _vm._v(" "), _c('v-card-text', {
+    staticClass: "buttonFly"
+  }, [_c('v-btn', {
+    attrs: {
+      "absolute": "",
+      "dark": "",
+      "fab": "",
+      "center": "",
+      "color": "green lighten-1"
+    },
+    on: {
+      "click": function($event) {
+        _vm.setHomePosition()
+      }
+    }
+  }, [_c('v-icon', [_vm._v("home")])], 1)], 1)], 1)
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
@@ -37760,7 +37795,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "id": "controls"
     },
     on: {
-      "input": _vm.input
+      "zoomValue": _vm.zoomValue,
+      "setHomePosition": _vm.setHomePosition
     },
     model: {
       value: (_vm.zoomLevel),

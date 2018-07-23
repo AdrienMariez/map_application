@@ -4,7 +4,11 @@
     <div id="map">
     </div>
 
-    <map-controls id="controls" v-model="zoomLevel" @input="input"></map-controls>
+    <map-controls id="controls"
+      v-model="zoomLevel"
+      @zoomValue="zoomValue"
+      @setHomePosition="setHomePosition">
+    </map-controls>
 
   </v-card>
 </template>
@@ -54,6 +58,8 @@ export default {
     return {
       map: [],
       markers: null,
+      mapLat: 44.5040577,
+      mapLong: 1.1874496,
       zoom: 14,
       zoomLevel: 14,
       points: [],
@@ -78,35 +84,9 @@ export default {
     },
   },
   methods: {
-    //TO REMOVE
-      // addPlaces(places) {
-      //   // TO REMOVE all comments here are to disable marker cluster
-      //   if(!this.map) return;
-      //   const map = this.map
-      //   // const markers = L.markerClusterGroup();
-      //   const store = this.$store;
-
-      //   places.forEach( (place) => {
-      //     let marker = L.marker([place.location.lat, place.location.lng])
-      //         .on('click', (el) => {
-      //           store.commit('locationsMap_center', el.latlng)
-      //         })
-      //         .bindPopup(`<b> ${place.id} </b> ${place.name}`)
-      //     map.addLayer(marker)
-      //     // .on('click', (el) => alert(el.target))
-      //   })
-
-      //   // map.addLayer(markers)
-      //   // this.markers = markers
-      // },
-      // removePlaces() {
-      //   this.map.removeLayer(this.marker)
-      //   this.marker = null
-      // },
-    //END TO REMOVE
     //CREATION OF MAP
       readMap(){
-        const map = L.map('map').setView([44.5040577, 1.1874496], this.zoom);
+        const map = L.map('map').setView([this.mapLat,this.mapLong], this.zoom);
 
         L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
             minZoom: 10,
@@ -386,7 +366,7 @@ export default {
         this.storagePointsDisplayed = pointsDisplayed;
       },
     //GET ZOOM
-      input(newValue) {
+      zoomValue(newValue) {
         // ALGO : 
           //I need to watch so that the user can still scroll to zoom in, meaning that the current zoom (x) must be modified, no the value saved (y).
           // aside source :
@@ -413,11 +393,19 @@ export default {
 
           // following value of x : (x = y)
 
+        //END ALGO
+
         this.zoomLevel = this.map.getZoom();
 
         this.zoomLevel+=newValue;
 
         this.map.setZoom(this.zoomLevel);   
+      },
+    //SET BACK TO HOME POSITION
+      setHomePosition() {
+        this.zoomLevel = this.map.getZoom();
+
+        this.map.setView(new L.LatLng(this.mapLat,this.mapLong), this.zoom);
       },
   },
   mounted() {

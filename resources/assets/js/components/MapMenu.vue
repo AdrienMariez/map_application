@@ -362,151 +362,171 @@
         }
     },
     methods: {
-        lookForUserLanguage() {
-            //HOW TO
-                //https://stackoverflow.com/questions/1043339/javascript-for-detecting-browser-language-preference
-                // console.log(navigator.language);
-                //is FireFox and all other browser.
-                // console.log(window.navigator.userLanguage);
-                //is IE only and it's the language set in Windows Control Panel - Regional Options and NOT browser language
-                // https://en.wikipedia.org/wiki/Language_localisation
-            //END HOW TO
+        //ON START FIND OUT THE USER BROWSER LANGUAGE
+            lookForUserLanguage() {
 
-            var languageCode = window.navigator.userLanguage || window.navigator.language;
-            // var languageCode = "de-AT";
-            var language = languageCode.substring(0,2);
-            var languages = JSON.parse(JSON.stringify(this.languages));
-            var languageSelected = null;
-            var languageEnglish = null;
 
-            languages.forEach(lang => {
+                if (localStorage.getItem("languageSelected") !== null){
+                    var localLanguage = localStorage.getItem("languageSelected");
+                    this.languageSelected = JSON.parse(localLanguage);
+
+                }
+                else{
+                    //HOW TO
+                        //https://stackoverflow.com/questions/1043339/javascript-for-detecting-browser-language-preference
+                        // console.log(navigator.language);
+                        //is FireFox and all other browser.
+                        // console.log(window.navigator.userLanguage);
+                        //is IE only and it's the language set in Windows Control Panel - Regional Options and NOT browser language
+                        // https://en.wikipedia.org/wiki/Language_localisation
+                    //END HOW TO
+                    var languageCode = window.navigator.userLanguage || window.navigator.language;
+                    // var languageCode = "de-AT";
+                    var language = languageCode.substring(0,2);
+                    var languages = JSON.parse(JSON.stringify(this.languages));
+                    var languageSelected = null;
+                    var languageEnglish = null;
+
+                    languages.forEach(lang => {
+                        
+                        if (lang["code"] == language) {
+                            // console.log("language recognized : "+lang["code"]);
+                            languageSelected = lang["id"];
+                            
+                        }
+                        if (lang["code"] == "en") {
+                            languageEnglish = lang["id"];
+                            // console.log("english found");
+                            
+                        }
+                    });
+                    if (languageSelected == null) {
+                        // console.log("language not recognized ! Set in english by default !");  
+                        languageSelected = languageEnglish;
+                    }
+                    
+                    this.languageSelected = languageSelected;
+                }
+            },
+        //DRAWER EMIT
+            drawerMethod() {
+                this.$emit('drawerMethod', this.drawer);
+            },
+        //ON POINT CLICK EMIT NEW REFERENCES TO DISPLAY/HIDE
+            displayReferencePoints(refId, catColor){
+                //loop over the table as the order isn't by id, or else we end up with the wrong categories and errors in the point display mechanic
+
+                var referenceDisplayed = JSON.parse(JSON.stringify(this.referenceDisplayed));
                 
-                if (lang["code"] == language) {
-                    // console.log("language recognized : "+lang["code"]);
-                    languageSelected = lang["id"];
-                    
-                }
-                if (lang["code"] == "en") {
-                    languageEnglish = lang["id"];
-                    // console.log("english found");
-                    
-                }
-            });
-            if (languageSelected == null) {
-                // console.log("language not recognized ! Set in english by default !");  
-                languageSelected = languageEnglish;
-            }
-            
-            this.languageSelected = languageSelected;
-        },
-        drawerMethod() {
-            this.$emit('drawerMethod', this.drawer);
-        },
-        displayReferencePoints(refId, catColor){
-            //loop over the table as the order isn't by id, or else we end up with the wrong categories and errors in the point display mechanic
+                for (let i = 0; i < referenceDisplayed.length; i++) {
+                    if (referenceDisplayed[i]["id"] == refId) {
+                        if (referenceDisplayed[i]["isToBeDisplayed"] == true){
+                            referenceDisplayed[i]["isToBeDisplayed"] = false;
+                        }
+                        else{
+                            referenceDisplayed[i]["isToBeDisplayed"] = true;
+                        }
+                        //convert colors for the icons
+                        var color;
+                        switch (catColor) {
+                            case "#B71C1C":
+                                //red darken-4
+                                color = "red";
+                                break;
 
-            var referenceDisplayed = JSON.parse(JSON.stringify(this.referenceDisplayed));
-            
-            for (let i = 0; i < referenceDisplayed.length; i++) {
-                if (referenceDisplayed[i]["id"] == refId) {
+                            case "#F4511E":
+                                //deep-orange darken-4
+                                color = "orange-dark";
+                                break;
+
+                            case "#FFA726":
+                                //orange lighten-1
+                                color = "orange";
+                                break;
+
+                            case "#FFC400":
+                                //amber accent-3
+                                color = "yellow";
+                                break;
+
+                            case "#006064":
+                                //cyan darken-4
+                                color = "blue-dark";
+                                break;
+
+                            case "#01579B":
+                                //light-blue darken-4
+                                color = "blue";
+                                break;
+
+                            case "#1E88E5":
+                                //blue darken-1
+                                color = "cyan";
+                                break;
+
+                            case "#4A148C":
+                                //purple darken-4
+                                color = "purple";
+                                break;
+
+                            case "#880E4F":
+                                //pink darken-4
+                                color = "violet";
+                                break;
+
+                            case "#F50057":
+                                //pink accent-3
+                                color = "pink";
+                                break;
+
+                            case "#1B5E20":
+                                //green darken-4
+                                color = "green-dark";
+                                break;
+
+                            case "#388E3C":
+                                //green darken-2
+                                color = "green";
+                                break;
+
+                            case "#4CAF50":
+                                //green
+                                color = "green-light";
+                                break;
+
+                            default:
+                                color = catColor;
+                        }
+                        referenceDisplayed[i]["catColor"] = color;
+                    }
+                }
+
+                this.actionSender = !this.actionSender;
+                this.$emit('displayPoints', referenceDisplayed, this.actionSender);
+                this.referenceDisplayed = referenceDisplayed;
+                localStorage.setItem('referencesDisplayed', JSON.stringify(referenceDisplayed));
+            },
+        //ON LANGUAGE SELECT EMIT LANGUAGE
+            emitLanguage(){
+                var referenceDisplayed = JSON.parse(JSON.stringify(this.referenceDisplayed));
+                for (let i = 0; i < referenceDisplayed.length; i++) {
                     if (referenceDisplayed[i]["isToBeDisplayed"] == true){
                         referenceDisplayed[i]["isToBeDisplayed"] = false;
                     }
-                    else{
-                        referenceDisplayed[i]["isToBeDisplayed"] = true;
-                    }
-                    //convert colors for the icons
-                    var color;
-                    switch (catColor) {
-                        case "#B71C1C":
-                            //red darken-4
-                            color = "red";
-                            break;
-
-                        case "#F4511E":
-                            //deep-orange darken-4
-                            color = "orange-dark";
-                            break;
-
-                        case "#FFA726":
-                            //orange lighten-1
-                            color = "orange";
-                            break;
-
-                        case "#FFC400":
-                            //amber accent-3
-                            color = "yellow";
-                            break;
-
-                        case "#006064":
-                            //cyan darken-4
-                            color = "blue-dark";
-                            break;
-
-                        case "#01579B":
-                            //light-blue darken-4
-                            color = "blue";
-                            break;
-
-                        case "#1E88E5":
-                            //blue darken-1
-                            color = "cyan";
-                            break;
-
-                        case "#4A148C":
-                            //purple darken-4
-                            color = "purple";
-                            break;
-
-                        case "#880E4F":
-                            //pink darken-4
-                            color = "violet";
-                            break;
-
-                        case "#F50057":
-                            //pink accent-3
-                            color = "pink";
-                            break;
-
-                        case "#1B5E20":
-                            //green darken-4
-                            color = "green-dark";
-                            break;
-
-                        case "#388E3C":
-                            //green darken-2
-                            color = "green";
-                            break;
-
-                        case "#4CAF50":
-                            //green
-                            color = "green-light";
-                            break;
-
-                        default:
-                            color = catColor;
-                    }
-                    referenceDisplayed[i]["catColor"] = color;
                 }
-            }
-
-            this.actionSender = !this.actionSender;
-            this.$emit('displayPoints', referenceDisplayed, this.actionSender);
-            this.referenceDisplayed = referenceDisplayed;
-            localStorage.setItem('referencesDisplayed', JSON.stringify(referenceDisplayed));
-        },
-        emitLanguage(){
-            for (let i = 0; i < this.referenceDisplayed.length; i++) {
-                if (this.referenceDisplayed[i]["isToBeDisplayed"] == true){
-                    this.referenceDisplayed[i]["isToBeDisplayed"] = false;
-                }
-            }
-            this.actionSender = !this.actionSender;
-            
-            this.$emit('emitLanguage', this.languageSelected);
-            this.$emit('displayPoints', this.referenceDisplayed, this.actionSender);
-        },
+                this.actionSender = !this.actionSender;
+                
+                this.$emit('displayPoints', referenceDisplayed, this.actionSender);
+                this.$emit('emitLanguage', this.languageSelected);
+                this.referenceDisplayed = referenceDisplayed;
+                var languageSelected = JSON.parse(JSON.stringify(this.languageSelected));
+                localStorage.setItem('languageSelected', languageSelected);
+                console.log(languageSelected);
+                
+            },
+        //
         //inspired from vue-laravel-crud
+        
         //POINTS CRUD NEED READ ONLY
             //methods other than read() are useless, but kept for the moment until I can remove them and not break anything in the process.
             create() {

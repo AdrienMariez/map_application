@@ -7,7 +7,6 @@
                 fab
                 center
                 color="green lighten-1"
-                v-bind:value=value
                 v-on:click="zoomingIn($event.target.value)"
             >
                 <v-icon>zoom_in</v-icon>
@@ -23,10 +22,22 @@
                 fab
                 center
                 color="green lighten-1"
-                v-bind:value=value
-                v-on:click="zoomingOut($event.target.value)"
+                v-on:click="zoomingOut()"
             >
                 <v-icon>zoom_out</v-icon>
+            </v-btn>
+        </v-card-text>
+
+        <v-card-text class="buttonFly">
+            <v-btn
+                absolute
+                dark
+                fab
+                center
+                color="green lighten-1"
+                v-on:click="setHomePosition()"
+            >
+                <v-icon>home</v-icon>
             </v-btn>
         </v-card-text>
     </div>
@@ -35,7 +46,7 @@
 <script>
 
 export default {
-    props: ['value'],
+    props: ['zoomValue'],
     data () {
       return {
           zoomIn: 1,
@@ -48,23 +59,26 @@ export default {
       }
     },
     methods: {
-        zoomingIn(value) {
+        zoomingIn() {
             // var newValue = parseInt(value) + 1;
             //if input is changed, the value does not load properly...
-            this.$emit('input', 1);
+            this.$emit('zoomValue', 1);
         },
-        zoomingOut(value){
+        zoomingOut(){
             // var newValue = parseInt(value) - 1;
-            this.$emit('input', -1);
-        }
+            this.$emit('zoomValue', -1);
+        },
+        setHomePosition(){
+            this.$emit('setHomePosition');
+        },
     }
 }
 </script>
 
 <style scoped>
     .buttonFly{
-        height: 100px;
-        width: 100px;
+        height: 80px;
+        width: 80px;
         /* top: 10vh; */
         right: 0;
     }
