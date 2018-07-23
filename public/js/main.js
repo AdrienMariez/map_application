@@ -22414,6 +22414,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 
@@ -22424,6 +22429,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     return {
       drawerCallBack: true,
       pointsDisplayed: [],
+      localStoragePointsDisplayed: [],
       language: 0,
       sender: false
     };
@@ -22434,14 +22440,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       this.drawerCallBack = updatedDrawer;
     },
     displayPoints: function displayPoints(referenceClicked, actionSender) {
-      console.log("displayPoints");
-
       this.pointsDisplayed = referenceClicked;
       this.sender = actionSender;
     },
     emitLanguage: function emitLanguage(languageSelected) {
-      console.log("emitLanguage");
       this.language = languageSelected;
+    },
+    emitLocalStorage: function emitLocalStorage(localStoragePointsDisplayed) {
+      this.localStoragePointsDisplayed = localStoragePointsDisplayed;
     }
   },
   components: {
@@ -22878,7 +22884,8 @@ var L = window.L;
       references: [],
       storagePointsDisplayed: [],
       pointsMarkers: [],
-      pointsLayers: []
+      pointsLayers: [],
+      initialization: true
     };
   },
 
@@ -22904,12 +22911,10 @@ var L = window.L;
       this.map.setView([location.lat, location.lng], location.zoom);
     },
     sender: function sender(val, oldVal) {
-      var storagePointsDisplayed = JSON.parse(JSON.stringify(this.storagePointsDisplayed));
-      console.log(storagePointsDisplayed);
-
-      if (this.storagePointsDisplayed.length >= 1) {
-        this.createMarkers(this.storagePointsDisplayed);
-      } else {}
+      this.middleman();
+    },
+    references: function references(val, oldVal) {
+      this.middleman();
     }
   },
   methods: {
@@ -23004,21 +23009,102 @@ var L = window.L;
           var obj = {};
           obj["id"] = reference.id;
           obj["isToBeDisplayed"] = false;
+          obj["catColor"] = "";
           _this3.storagePointsDisplayed.push(obj);
         });
       });
     },
 
+    //MIDDLEMAN
+    middleman: function middleman() {
+      var pointsDisplayed = JSON.parse(JSON.stringify(this.pointsDisplayed));
+      var storagePointsDisplayed = JSON.parse(JSON.stringify(this.storagePointsDisplayed));
+      var references = JSON.parse(JSON.stringify(this.references));
+
+      // console.log("pointsDisplayed");
+      // console.log(pointsDisplayed);
+
+      // console.log("storagePointsDisplayed");
+      // console.log(storagePointsDisplayed);
+
+      // console.log("storagePointsDisplayed.length : "+storagePointsDisplayed.length);
+      // console.log("references.length : "+ references.length);
+
+      if (storagePointsDisplayed.length >= 1 && references.length >= 1) {
+
+        if (this.initialization === true) {
+          // console.log("get local storage");
+          this.getLocalStorage();
+        } else {
+          console.log("e");
+          // console.log("point was clicked");
+          this.createMarkers(pointsDisplayed, storagePointsDisplayed);
+        }
+      }
+      // else if(storagePointsDisplayed.length == 0 && references.length >= 1){
+      //   if (localStorage.getItem("referencesDisplayed") !== null){
+      // console.log("localstorage was initialized");
+      // var localStorageReferenceDisplayed = JSON.parse(localStorage.getItem("referencesDisplayed"));
+      // console.log("localStorageReferenceDisplayed.length");
+      // console.log(localStorageReferenceDisplayed.length);
+      // console.log("this.references.length");
+      // console.log(this.references.length);
+
+
+      // if (localStorageReferenceDisplayed.length == references.length) {
+      //   console.log("ok");
+      // }
+      // else{
+      //   console.log("localStorage emptied");
+      //   localStorage.removeItem("referencesDisplayed");
+      // }
+      //   }
+      // }
+      else {
+          // console.log("nothing useful was found");
+        }
+    },
+
+    //GET LOCAL STORAGE
+    getLocalStorage: function getLocalStorage() {
+      // console.log("getLocalStorage");
+      if (localStorage.getItem("referencesDisplayed") !== null) {
+        var storagePointsDisplayed = JSON.parse(JSON.stringify(this.storagePointsDisplayed));
+
+        var localStorageReferenceDisplayed = JSON.parse(localStorage.getItem("referencesDisplayed"));
+        if (localStorageReferenceDisplayed.length === storagePointsDisplayed.length) {
+
+          this.createMarkers(localStorageReferenceDisplayed, storagePointsDisplayed);
+
+          var str = JSON.parse(JSON.stringify(localStorageReferenceDisplayed));
+
+          this.$emit('emitLocalStorage', localStorageReferenceDisplayed);
+        } else {
+          localStorage.removeItem("referencesDisplayed");
+        }
+      } else {
+        console.log("j");
+        var emptyInitialReferences = [];
+        this.references.forEach(function (reference) {
+          var obj = {};
+          obj["id"] = reference.id;
+          obj["isToBeDisplayed"] = false;
+          obj["catColor"] = "";
+          emptyInitialReferences.push(obj);
+        });
+        this.$emit('emitLocalStorage', emptyInitialReferences);
+      }
+      this.initialization = false;
+    },
+
     //CREATE MARKERS
-    createMarkers: function createMarkers(storagePointsDisplayed) {
+    createMarkers: function createMarkers(pointsDisplayed, storagePointsDisplayed) {
       var _this4 = this;
 
-      console.log("createMarkers");
+      var dp = JSON.parse(JSON.stringify(pointsDisplayed));
+      // console.log(storagePointsDisplayed);
 
-      var pointsDisplayed = JSON.parse(JSON.stringify(this.pointsDisplayed));
-
-      // var storagePointsDisplayed = JSON.parse(JSON.stringify(this.storagePointsDisplayed));
-
+      // var pointsDisplayed = JSON.parse(JSON.stringify(this.pointsDisplayed));
 
       var references = JSON.parse(JSON.stringify(this.references));
 
@@ -23125,6 +23211,14 @@ var L = window.L;
       //stock values
       this.pointsMarkers = markers;
       this.pointsLayers = layers;
+
+      var current = JSON.parse(JSON.stringify(pointsDisplayed));
+      var str = JSON.parse(JSON.stringify(storagePointsDisplayed));
+
+      // console.log("current : ");
+      // console.log(current);
+      // console.log("stored :");
+      // console.log(str);
 
       this.storagePointsDisplayed = pointsDisplayed;
     },
@@ -23542,7 +23636,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
 
 //Needed for promises to work
 function Language(_ref) {
@@ -23627,6 +23720,7 @@ function Point(_ref6) {
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+    props: ['localStoragePointsDisplayed'],
     data: function data() {
         return {
             drawer: true,
@@ -23650,10 +23744,15 @@ function Point(_ref6) {
             this.lookForUserLanguage();
         },
         languageSelected: function languageSelected(val, oldVal) {
-            console.log(val, oldVal);
-
             this.languageSelected = val;
             this.emitLanguage();
+        },
+        localStoragePointsDisplayed: function localStoragePointsDisplayed(val, oldVal) {
+            this.referenceDisplayed = val;
+
+            var str = JSON.parse(JSON.stringify(this.referenceDisplayed));
+            console.log("references ready to fire : ");
+            console.log(str);
         }
     },
     methods: {
@@ -23697,12 +23796,15 @@ function Point(_ref6) {
         },
         displayReferencePoints: function displayReferencePoints(refId, catColor) {
             //loop over the table as the order isn't by id, or else we end up with the wrong categories and errors in the point display mechanic
-            for (var i = 0; i < this.referenceDisplayed.length; i++) {
-                if (this.referenceDisplayed[i]["id"] == refId) {
-                    if (this.referenceDisplayed[i]["isToBeDisplayed"] == true) {
-                        this.referenceDisplayed[i]["isToBeDisplayed"] = false;
+
+            var referenceDisplayed = JSON.parse(JSON.stringify(this.referenceDisplayed));
+
+            for (var i = 0; i < referenceDisplayed.length; i++) {
+                if (referenceDisplayed[i]["id"] == refId) {
+                    if (referenceDisplayed[i]["isToBeDisplayed"] == true) {
+                        referenceDisplayed[i]["isToBeDisplayed"] = false;
                     } else {
-                        this.referenceDisplayed[i]["isToBeDisplayed"] = true;
+                        referenceDisplayed[i]["isToBeDisplayed"] = true;
                     }
                     //convert colors for the icons
                     var color;
@@ -23775,12 +23877,14 @@ function Point(_ref6) {
                         default:
                             color = catColor;
                     }
-                    this.referenceDisplayed[i]["catColor"] = color;
+                    referenceDisplayed[i]["catColor"] = color;
                 }
             }
 
             this.actionSender = !this.actionSender;
-            this.$emit('displayPoints', this.referenceDisplayed, this.actionSender);
+            this.$emit('displayPoints', referenceDisplayed, this.actionSender);
+            this.referenceDisplayed = referenceDisplayed;
+            localStorage.setItem('referencesDisplayed', JSON.stringify(referenceDisplayed));
         },
         emitLanguage: function emitLanguage() {
             for (var i = 0; i < this.referenceDisplayed.length; i++) {
@@ -23880,12 +23984,11 @@ function Point(_ref6) {
                     // console.log("reference :");
                     // console.log(reference);
                     _this5.references.push(new Reference(reference));
-                    var obj = {};
-                    obj["id"] = reference.id;
-                    obj["isToBeDisplayed"] = false;
-                    obj["catColor"] = "";
-                    _this5.referenceDisplayed.push(obj);
-                    // this.referenceDisplayed.push(false);
+                    // var obj = {};
+                    // obj["id"] = reference.id;
+                    // obj["isToBeDisplayed"] = false;
+                    // obj["catColor"] = "";
+                    // this.referenceDisplayed.push(obj);
                 });
                 _this5.mute = false;
             });
@@ -46447,7 +46550,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_c('map-menu', {
     attrs: {
-      "id": "publicMenu"
+      "id": "publicMenu",
+      "localStoragePointsDisplayed": _vm.localStoragePointsDisplayed
     },
     on: {
       "drawerMethod": _vm.drawerMethod,
@@ -46460,6 +46564,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "sender": _vm.sender,
       "pointsDisplayed": _vm.pointsDisplayed,
       "language": _vm.language
+    },
+    on: {
+      "emitLocalStorage": _vm.emitLocalStorage
     }
   }), _vm._v(" "), _c('v-footer', {
     staticClass: "text-xs-center flexFooterPosition",

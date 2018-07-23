@@ -63,7 +63,6 @@
             </v-list-tile>
 
             <v-divider></v-divider>
-
             <v-spacer></v-spacer>
 
             <!-- OBSOLETE language switch -->
@@ -332,6 +331,7 @@
   import ContactFormEn from './ContactFormEn.vue'
 
   export default {
+    props: ['localStoragePointsDisplayed'],
     data () {
       return {
         drawer: true,
@@ -354,10 +354,15 @@
             this.lookForUserLanguage();
         },
         languageSelected(val, oldVal) {
-            console.log(val, oldVal);
-            
             this.languageSelected = val
             this.emitLanguage();
+        },
+        localStoragePointsDisplayed(val, oldVal){
+            this.referenceDisplayed = val;
+
+            var str = JSON.parse(JSON.stringify(this.referenceDisplayed));
+            console.log("references ready to fire : ");
+            console.log(str);
         }
     },
     methods: {
@@ -403,13 +408,16 @@
         },
         displayReferencePoints(refId, catColor){
             //loop over the table as the order isn't by id, or else we end up with the wrong categories and errors in the point display mechanic
-            for (let i = 0; i < this.referenceDisplayed.length; i++) {
-                if (this.referenceDisplayed[i]["id"] == refId) {
-                    if (this.referenceDisplayed[i]["isToBeDisplayed"] == true){
-                        this.referenceDisplayed[i]["isToBeDisplayed"] = false;
+
+            var referenceDisplayed = JSON.parse(JSON.stringify(this.referenceDisplayed));
+            
+            for (let i = 0; i < referenceDisplayed.length; i++) {
+                if (referenceDisplayed[i]["id"] == refId) {
+                    if (referenceDisplayed[i]["isToBeDisplayed"] == true){
+                        referenceDisplayed[i]["isToBeDisplayed"] = false;
                     }
                     else{
-                        this.referenceDisplayed[i]["isToBeDisplayed"] = true;
+                        referenceDisplayed[i]["isToBeDisplayed"] = true;
                     }
                     //convert colors for the icons
                     var color;
@@ -482,12 +490,14 @@
                         default:
                             color = catColor;
                     }
-                    this.referenceDisplayed[i]["catColor"] = color;
+                    referenceDisplayed[i]["catColor"] = color;
                 }
             }
 
             this.actionSender = !this.actionSender;
-            this.$emit('displayPoints', this.referenceDisplayed, this.actionSender);
+            this.$emit('displayPoints', referenceDisplayed, this.actionSender);
+            this.referenceDisplayed = referenceDisplayed;
+            localStorage.setItem('referencesDisplayed', JSON.stringify(referenceDisplayed));
         },
         emitLanguage(){
             for (let i = 0; i < this.referenceDisplayed.length; i++) {
@@ -559,12 +569,11 @@
                     // console.log("reference :");
                     // console.log(reference);
                     this.references.push(new Reference(reference));
-                    var obj = {};
-                    obj["id"] = reference.id;
-                    obj["isToBeDisplayed"] = false;
-                    obj["catColor"] = "";
-                    this.referenceDisplayed.push(obj);
-                    // this.referenceDisplayed.push(false);
+                    // var obj = {};
+                    // obj["id"] = reference.id;
+                    // obj["isToBeDisplayed"] = false;
+                    // obj["catColor"] = "";
+                    // this.referenceDisplayed.push(obj);
                 });
                 this.mute = false;
                 });

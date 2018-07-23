@@ -1,13 +1,18 @@
 <template>
   <v-app id="inspire">
  
-    <map-menu id="publicMenu" @drawerMethod="drawerMethod" @displayPoints="displayPoints" @emitLanguage="emitLanguage"></map-menu>
+    <map-menu id="publicMenu"
+      v-bind:localStoragePointsDisplayed="localStoragePointsDisplayed"
+      @drawerMethod="drawerMethod"
+      @displayPoints="displayPoints"
+      @emitLanguage="emitLanguage"></map-menu>
 
     <locations-map
       id="publicMap"
       v-bind:sender="sender"
       v-bind:pointsDisplayed="pointsDisplayed"
-      v-bind:language="language">
+      v-bind:language="language"
+      @emitLocalStorage="emitLocalStorage">
     </locations-map>
 
     <v-footer
@@ -45,6 +50,7 @@ export default {
     return {
       drawerCallBack: true,
       pointsDisplayed: [],
+      localStoragePointsDisplayed: [],
       language: 0,
       sender: false,
     };
@@ -54,14 +60,14 @@ export default {
       this.drawerCallBack = updatedDrawer;
     },
     displayPoints(referenceClicked, actionSender){
-      console.log("displayPoints");
-      
       this.pointsDisplayed = referenceClicked;
       this.sender = actionSender;
     },
     emitLanguage(languageSelected){
-      console.log("emitLanguage");
       this.language = languageSelected;
+    },
+    emitLocalStorage(localStoragePointsDisplayed){
+      this.localStoragePointsDisplayed = localStoragePointsDisplayed;
     }
   },
   components: {

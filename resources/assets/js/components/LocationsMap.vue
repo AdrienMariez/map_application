@@ -63,6 +63,7 @@ export default {
       storagePointsDisplayed: [],
       pointsMarkers: [],
       pointsLayers: [],
+      initialization: true,
     }
   },
   computed: {
@@ -87,15 +88,10 @@ export default {
       this.map.setView([location.lat, location.lng], location.zoom)
     },
     sender(val, oldVal) {
-      var storagePointsDisplayed = JSON.parse(JSON.stringify(this.storagePointsDisplayed));
-      console.log(storagePointsDisplayed);
-      
-      if (this.storagePointsDisplayed.length >= 1){
-        this.createMarkers(this.storagePointsDisplayed);
-      }
-      else{
-        
-      }
+      this.middleman();
+    },
+    references(val, oldVal) {
+      this.middleman();
     },
     // language(val, oldVal) {
     //   console.log("language change :");
@@ -179,18 +175,99 @@ export default {
             var obj = {};
             obj["id"] = reference.id;
             obj["isToBeDisplayed"] = false;
+            obj["catColor"] = "";
             this.storagePointsDisplayed.push(obj);
           });
         });
       },
-    //CREATE MARKERS
-      createMarkers(storagePointsDisplayed) {
-        console.log("createMarkers");
-
+    //MIDDLEMAN
+      middleman(){
         var pointsDisplayed = JSON.parse(JSON.stringify(this.pointsDisplayed));
+        var storagePointsDisplayed = JSON.parse(JSON.stringify(this.storagePointsDisplayed));
+        var references = JSON.parse(JSON.stringify(this.references));
 
-        // var storagePointsDisplayed = JSON.parse(JSON.stringify(this.storagePointsDisplayed));
-        
+        // console.log("pointsDisplayed");
+        // console.log(pointsDisplayed);
+          
+        // console.log("storagePointsDisplayed");
+        // console.log(storagePointsDisplayed);
+          
+        // console.log("storagePointsDisplayed.length : "+storagePointsDisplayed.length);
+        // console.log("references.length : "+ references.length);
+
+        if (storagePointsDisplayed.length >= 1 && references.length >= 1){
+
+          if (this.initialization === true ) {
+            // console.log("get local storage");
+            this.getLocalStorage()
+          }
+          else{
+            console.log("e");
+            // console.log("point was clicked");
+            this.createMarkers(pointsDisplayed, storagePointsDisplayed);
+          }
+        }
+        // else if(storagePointsDisplayed.length == 0 && references.length >= 1){
+        //   if (localStorage.getItem("referencesDisplayed") !== null){
+            // console.log("localstorage was initialized");
+            // var localStorageReferenceDisplayed = JSON.parse(localStorage.getItem("referencesDisplayed"));
+            // console.log("localStorageReferenceDisplayed.length");
+            // console.log(localStorageReferenceDisplayed.length);
+            // console.log("this.references.length");
+            // console.log(this.references.length);
+            
+            
+            // if (localStorageReferenceDisplayed.length == references.length) {
+            //   console.log("ok");
+            // }
+            // else{
+            //   console.log("localStorage emptied");
+            //   localStorage.removeItem("referencesDisplayed");
+            // }
+        //   }
+        // }
+        else{
+          // console.log("nothing useful was found");
+        }
+      },
+    //GET LOCAL STORAGE
+      getLocalStorage(){
+        // console.log("getLocalStorage");
+        if (localStorage.getItem("referencesDisplayed") !== null){
+          var storagePointsDisplayed = JSON.parse(JSON.stringify(this.storagePointsDisplayed));
+
+          var localStorageReferenceDisplayed = JSON.parse(localStorage.getItem("referencesDisplayed"));
+          if (localStorageReferenceDisplayed.length === storagePointsDisplayed.length) {
+
+            this.createMarkers(localStorageReferenceDisplayed, storagePointsDisplayed);
+
+            var str = JSON.parse(JSON.stringify(localStorageReferenceDisplayed));
+
+            this.$emit('emitLocalStorage', localStorageReferenceDisplayed);
+          }else{
+            localStorage.removeItem("referencesDisplayed");
+          }
+        }
+        else{
+          console.log("j");
+          var emptyInitialReferences = [];
+          this.references.forEach(reference => {
+            var obj = {};
+            obj["id"] = reference.id;
+            obj["isToBeDisplayed"] = false;
+            obj["catColor"] = "";
+            emptyInitialReferences.push(obj);
+          });
+          this.$emit('emitLocalStorage', emptyInitialReferences);
+        }
+        this.initialization = false;
+      },
+    //CREATE MARKERS
+      createMarkers(pointsDisplayed, storagePointsDisplayed) {
+        var dp = JSON.parse(JSON.stringify(pointsDisplayed));
+        // console.log(storagePointsDisplayed);
+           
+        // var pointsDisplayed = JSON.parse(JSON.stringify(this.pointsDisplayed));
 
         var references = JSON.parse(JSON.stringify(this.references));
 
@@ -301,6 +378,14 @@ export default {
         this.pointsMarkers = markers;
         this.pointsLayers = layers;
 
+        var current = JSON.parse(JSON.stringify(pointsDisplayed));
+        var str = JSON.parse(JSON.stringify(storagePointsDisplayed));
+
+        // console.log("current : ");
+        // console.log(current);
+        // console.log("stored :");
+        // console.log(str);
+        
         this.storagePointsDisplayed = pointsDisplayed;
       },
     //GET ZOOM
