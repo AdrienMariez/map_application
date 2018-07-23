@@ -12,13 +12,11 @@ require('../../../node_modules/leaflet.markercluster/dist/MarkerCluster.css')
 require('./bootstrap');
 
 import App from './App.vue'
-import { store } from './store'
 
 Vue.use(Vuetify)
 Vue.use(VueRouter)
 
 new Vue({
   el: '#app',
-  store,
   render: h => h(App)
 })

@@ -629,10 +629,6 @@
                 });
             },
     },
-    computed: {
-        functionName: function() {
-        }
-    },
     created() {
         //each line calls for the function responsible for the api returns
         this.readReferenceNames();

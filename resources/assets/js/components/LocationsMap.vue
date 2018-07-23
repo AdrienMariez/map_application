@@ -66,23 +66,6 @@ export default {
       initialization: true,
     }
   },
-  computed: {
-    places() {
-      return this.$store.state.places
-    },
-    center() {
-      return this.$store.state.locationsMap.center
-    },
-    setZoomPosition() {
-      var mapHalfHeight = map.getSize().y / 2,
-          container = map.zoomControl.getContainer(),
-          containerHalfHeight = parseInt(container.offsetHeight / 2),
-          containerTop = mapHalfHeight - containerHalfHeight + 'px';
-      
-      container.style.position = 'absolute';
-      container.style.top = containerTop;
-    }
-  },
   watch: {
     center(location) {
       this.map.setView([location.lat, location.lng], location.zoom)
@@ -93,10 +76,6 @@ export default {
     references(val, oldVal) {
       this.middlemanCreateMarkers();
     },
-    // language(val, oldVal) {
-    //   console.log("language change :");
-    //   console.log("old : "+oldVal+" new : "+ val);
-    // },
   },
   methods: {
     //TO REMOVE
@@ -448,9 +427,6 @@ export default {
     this.readReferences();
   },
   created() {
-    // this.createMarkers();
-    // console.log("created = storagePointsDisplayed"); 
-    // console.log(this.storagePointsDisplayed); 
   },
   components: {
     MapControls,
