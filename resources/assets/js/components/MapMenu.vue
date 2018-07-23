@@ -284,9 +284,10 @@
 
 <script>
     //Needed for promises to work
-        function Language({ id, name}) {
+        function Language({ id, name, code}) {
             this.id = id;
             this.name = name;
+            this.code = code;
         }
         function Category({ id, icon, color, weight}) {
             this.id = id;
@@ -349,12 +350,54 @@
       }
     },
     watch: {
+        languages(val, oldVal){
+            this.lookForUserLanguage();
+        },
         languageSelected(val, oldVal) {
+            console.log(val, oldVal);
+            
             this.languageSelected = val
             this.emitLanguage();
         }
     },
     methods: {
+        lookForUserLanguage() {
+            //HOW TO
+                //https://stackoverflow.com/questions/1043339/javascript-for-detecting-browser-language-preference
+                // console.log(navigator.language);
+                //is FireFox and all other browser.
+                // console.log(window.navigator.userLanguage);
+                //is IE only and it's the language set in Windows Control Panel - Regional Options and NOT browser language
+                // https://en.wikipedia.org/wiki/Language_localisation
+            //END HOW TO
+
+            var languageCode = window.navigator.userLanguage || window.navigator.language;
+            // var languageCode = "de-AT";
+            var language = languageCode.substring(0,2);
+            var languages = JSON.parse(JSON.stringify(this.languages));
+            var languageSelected = null;
+            var languageEnglish = null;
+
+            languages.forEach(lang => {
+                
+                if (lang["code"] == language) {
+                    // console.log("language recognized : "+lang["code"]);
+                    languageSelected = lang["id"];
+                    
+                }
+                if (lang["code"] == "en") {
+                    languageEnglish = lang["id"];
+                    // console.log("english found");
+                    
+                }
+            });
+            if (languageSelected == null) {
+                // console.log("language not recognized ! Set in english by default !");  
+                languageSelected = languageEnglish;
+            }
+            
+            this.languageSelected = languageSelected;
+        },
         drawerMethod() {
             this.$emit('drawerMethod', this.drawer);
         },

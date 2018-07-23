@@ -22434,10 +22434,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       this.drawerCallBack = updatedDrawer;
     },
     displayPoints: function displayPoints(referenceClicked, actionSender) {
+      console.log("displayPoints");
+
       this.pointsDisplayed = referenceClicked;
       this.sender = actionSender;
     },
     emitLanguage: function emitLanguage(languageSelected) {
+      console.log("emitLanguage");
       this.language = languageSelected;
     }
   },
@@ -22901,7 +22904,12 @@ var L = window.L;
       this.map.setView([location.lat, location.lng], location.zoom);
     },
     sender: function sender(val, oldVal) {
-      this.createMarkers();
+      var storagePointsDisplayed = JSON.parse(JSON.stringify(this.storagePointsDisplayed));
+      console.log(storagePointsDisplayed);
+
+      if (this.storagePointsDisplayed.length >= 1) {
+        this.createMarkers(this.storagePointsDisplayed);
+      } else {}
     }
   },
   methods: {
@@ -23002,12 +23010,15 @@ var L = window.L;
     },
 
     //CREATE MARKERS
-    createMarkers: function createMarkers() {
+    createMarkers: function createMarkers(storagePointsDisplayed) {
       var _this4 = this;
+
+      console.log("createMarkers");
 
       var pointsDisplayed = JSON.parse(JSON.stringify(this.pointsDisplayed));
 
-      var storagePointsDisplayed = JSON.parse(JSON.stringify(this.storagePointsDisplayed));
+      // var storagePointsDisplayed = JSON.parse(JSON.stringify(this.storagePointsDisplayed));
+
 
       var references = JSON.parse(JSON.stringify(this.references));
 
@@ -23536,10 +23547,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //Needed for promises to work
 function Language(_ref) {
     var id = _ref.id,
-        name = _ref.name;
+        name = _ref.name,
+        code = _ref.code;
 
     this.id = id;
     this.name = name;
+    this.code = code;
 }
 function Category(_ref2) {
     var id = _ref2.id,
@@ -23633,12 +23646,52 @@ function Point(_ref6) {
     },
 
     watch: {
+        languages: function languages(val, oldVal) {
+            this.lookForUserLanguage();
+        },
         languageSelected: function languageSelected(val, oldVal) {
+            console.log(val, oldVal);
+
             this.languageSelected = val;
             this.emitLanguage();
         }
     },
     methods: {
+        lookForUserLanguage: function lookForUserLanguage() {
+            //HOW TO
+            //https://stackoverflow.com/questions/1043339/javascript-for-detecting-browser-language-preference
+            // console.log(navigator.language);
+            //is FireFox and all other browser.
+            // console.log(window.navigator.userLanguage);
+            //is IE only and it's the language set in Windows Control Panel - Regional Options and NOT browser language
+            // https://en.wikipedia.org/wiki/Language_localisation
+            //END HOW TO
+
+            var languageCode = window.navigator.userLanguage || window.navigator.language;
+            // var languageCode = "de-AT";
+            var language = languageCode.substring(0, 2);
+            var languages = JSON.parse(JSON.stringify(this.languages));
+            var languageSelected = null;
+            var languageEnglish = null;
+
+            languages.forEach(function (lang) {
+
+                if (lang["code"] == language) {
+                    // console.log("language recognized : "+lang["code"]);
+                    languageSelected = lang["id"];
+                }
+                if (lang["code"] == "en") {
+                    languageEnglish = lang["id"];
+                    // console.log("english found");
+                }
+            });
+            if (languageSelected == null) {
+                // console.log("language not recognized ! Set in english by default !");  
+                languageSelected = languageEnglish;
+            }
+
+            this.languageSelected = languageSelected;
+        },
         drawerMethod: function drawerMethod() {
             this.$emit('drawerMethod', this.drawer);
         },

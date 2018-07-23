@@ -87,7 +87,15 @@ export default {
       this.map.setView([location.lat, location.lng], location.zoom)
     },
     sender(val, oldVal) {
-      this.createMarkers();
+      var storagePointsDisplayed = JSON.parse(JSON.stringify(this.storagePointsDisplayed));
+      console.log(storagePointsDisplayed);
+      
+      if (this.storagePointsDisplayed.length >= 1){
+        this.createMarkers(this.storagePointsDisplayed);
+      }
+      else{
+        
+      }
     },
     // language(val, oldVal) {
     //   console.log("language change :");
@@ -176,10 +184,13 @@ export default {
         });
       },
     //CREATE MARKERS
-      createMarkers() {
+      createMarkers(storagePointsDisplayed) {
+        console.log("createMarkers");
+
         var pointsDisplayed = JSON.parse(JSON.stringify(this.pointsDisplayed));
 
-        var storagePointsDisplayed = JSON.parse(JSON.stringify(this.storagePointsDisplayed));
+        // var storagePointsDisplayed = JSON.parse(JSON.stringify(this.storagePointsDisplayed));
+        
 
         var references = JSON.parse(JSON.stringify(this.references));
 

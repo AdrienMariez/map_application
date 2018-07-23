@@ -54,10 +54,13 @@ export default {
       this.drawerCallBack = updatedDrawer;
     },
     displayPoints(referenceClicked, actionSender){
+      console.log("displayPoints");
+      
       this.pointsDisplayed = referenceClicked;
       this.sender = actionSender;
     },
     emitLanguage(languageSelected){
+      console.log("emitLanguage");
       this.language = languageSelected;
     }
   },
