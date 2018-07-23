@@ -88,10 +88,10 @@ export default {
       this.map.setView([location.lat, location.lng], location.zoom)
     },
     sender(val, oldVal) {
-      this.middleman();
+      this.middlemanCreateMarkers();
     },
     references(val, oldVal) {
-      this.middleman();
+      this.middlemanCreateMarkers();
     },
     // language(val, oldVal) {
     //   console.log("language change :");
@@ -181,7 +181,7 @@ export default {
         });
       },
     //MIDDLEMAN
-      middleman(){
+      middlemanCreateMarkers(){
         var pointsDisplayed = JSON.parse(JSON.stringify(this.pointsDisplayed));
         var storagePointsDisplayed = JSON.parse(JSON.stringify(this.storagePointsDisplayed));
         var references = JSON.parse(JSON.stringify(this.references));
@@ -202,7 +202,6 @@ export default {
             this.getLocalStorage()
           }
           else{
-            console.log("e");
             // console.log("point was clicked");
             this.createMarkers(pointsDisplayed, storagePointsDisplayed);
           }
@@ -235,32 +234,51 @@ export default {
         // console.log("getLocalStorage");
         if (localStorage.getItem("referencesDisplayed") !== null){
           var storagePointsDisplayed = JSON.parse(JSON.stringify(this.storagePointsDisplayed));
-
           var localStorageReferenceDisplayed = JSON.parse(localStorage.getItem("referencesDisplayed"));
+
           if (localStorageReferenceDisplayed.length === storagePointsDisplayed.length) {
 
-            this.createMarkers(localStorageReferenceDisplayed, storagePointsDisplayed);
+            var localStorageCheck = true;
+            for (let i = 0; i < storagePointsDisplayed.length; i++) {
 
-            var str = JSON.parse(JSON.stringify(localStorageReferenceDisplayed));
+              if (storagePointsDisplayed[i]["id"] !== localStorageReferenceDisplayed[i]["id"]) {
+                localStorageCheck = false;
+              }
+            }
+            
+            if (localStorageCheck === false) {
+              localStorage.removeItem("referencesDisplayed");
+              this.sendDummyInfo();
+            }
+            else{
+              this.createMarkers(localStorageReferenceDisplayed, storagePointsDisplayed);
 
-            this.$emit('emitLocalStorage', localStorageReferenceDisplayed);
-          }else{
+              var str = JSON.parse(JSON.stringify(localStorageReferenceDisplayed));
+
+              this.$emit('emitLocalStorage', localStorageReferenceDisplayed);
+            }
+          }
+          else{
             localStorage.removeItem("referencesDisplayed");
+            this.sendDummyInfo();
           }
         }
         else{
-          console.log("j");
-          var emptyInitialReferences = [];
-          this.references.forEach(reference => {
-            var obj = {};
-            obj["id"] = reference.id;
-            obj["isToBeDisplayed"] = false;
-            obj["catColor"] = "";
-            emptyInitialReferences.push(obj);
-          });
-          this.$emit('emitLocalStorage', emptyInitialReferences);
+          this.sendDummyInfo();
         }
         this.initialization = false;
+      },
+    //SENT EMPTY INFO
+      sendDummyInfo(){
+        var emptyInitialReferences = [];
+        this.references.forEach(reference => {
+          var obj = {};
+          obj["id"] = reference.id;
+          obj["isToBeDisplayed"] = false;
+          obj["catColor"] = "";
+          emptyInitialReferences.push(obj);
+        });
+        this.$emit('emitLocalStorage', emptyInitialReferences);
       },
     //CREATE MARKERS
       createMarkers(pointsDisplayed, storagePointsDisplayed) {

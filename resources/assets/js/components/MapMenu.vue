@@ -359,10 +359,6 @@
         },
         localStoragePointsDisplayed(val, oldVal){
             this.referenceDisplayed = val;
-
-            var str = JSON.parse(JSON.stringify(this.referenceDisplayed));
-            console.log("references ready to fire : ");
-            console.log(str);
         }
     },
     methods: {
