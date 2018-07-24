@@ -297,6 +297,7 @@ export default {
                         }
                         if (content["description"].length >= 1) {
                           desc = document.createElement("div");
+                          desc.setAttribute("style", "width:150px;");
                           var descHtml = document.createTextNode(content["description"]);
                           desc.appendChild(descHtml);
 

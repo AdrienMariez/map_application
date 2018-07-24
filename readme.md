@@ -77,6 +77,12 @@ Sources :
         https://www.toptal.com/laravel/restful-laravel-api-tutorial
         https://medium.com/js-dojo/the-ultimate-vue-js-laravel-crud-tutorial-3640baf7eda0
 
+    Tutorial for auth :
+        https://codeburst.io/api-authentication-in-laravel-vue-spa-using-jwt-auth-d8251b3632e0
+            npm install --save-dev vue-axios
+            npm install @websanova/vue-auth
+            composer require tymon/jwt-auth
+
 Good reads :
     Vuejs :
         https://medium.com/@Pier/vue-js-the-good-the-meh-and-the-ugly-82800bbe6684

@@ -120,6 +120,7 @@
                                 <v-list-tile-action>
                                     <!-- loop on names in categories & translations -->
                                     <v-list-tile-content
+                                        class="list-title"
                                         v-for="(catName,a) in categoriesNames"
                                         v-if="catName.fk_language_id == languageSelected && catName.fk_category_id == category.id"
                                         :key="a">
@@ -724,6 +725,41 @@
         color: rgb(24, 53, 17) !important;
         text-decoration: inherit;
     }
+
+    .v-expansion-panel{
+       text-align: right !important; 
+    }
+    .v-list__tile__action--stack{
+        align-items: flex-start !important;
+        max-width: 120px !important;
+        padding-top: 6px !important;
+    }
+    @media only screen and (min-width: 960px) {
+    /* desktop only: */
+        .v-list__tile__action--stack{
+            padding-top: 16px !important;
+        }
+    }
+    .v-list__tile__content{
+        width: 180px;
+        font-size: 15px !important;
+        overflow-x: scroll !important;
+        overflow-y: -moz-hidden-unscrollable !important;
+        overflow-y: hidden !important;
+    }
+    .list-title{
+        font-weight: 500 !important;
+    }
+
+    /* .v-expansion-panel__header > :not(.v-expansion-panel__header__icon){
+        text-align: right;
+    }
+    .v-list__tile__action--stack{
+        max-width: 190px;
+    }
+    .v-list__tile__content{
+        width: 190px;
+    } */
   /* #publicMapControls{
     float: right;
     border: 5px;
