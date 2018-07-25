@@ -1,12 +1,14 @@
 import Vue from 'vue'
+import Vuetify from 'vuetify'
 import VueRouter from 'vue-router'
-import store from './store'
 
+Vue.use(Vuetify)
 Vue.use(VueRouter)
 
-import DashboardComponent from './components/AdminDashboardComponent'
-import LoginComponent from './components/AdminLoginComponent'
-import LogoutComponent from './components/AdminLogoutComponent'
+import DashboardComponent from './components/DashboardComponent'
+import LoginComponent from './components/LoginComponent'
+import LogoutComponent from './components/LogoutComponent'
+import store from './store'
 
 const routes = [
     {
@@ -17,7 +19,7 @@ const routes = [
         path: '/dashboard',
         name: 'dashboard',
         component: DashboardComponent,
-        meta: { requiresAuth: true }  // add this
+        meta: { requiresAuth: true }
     },
     {
         path: '/login',
@@ -51,6 +53,6 @@ router.beforeEach((to, from, next) => {
     }
 
     next()
-})
+});
 
 export default router

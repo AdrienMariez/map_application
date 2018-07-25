@@ -14,8 +14,9 @@
 // -------------------[USER]-------------------
 
 //  [PUBLIC MAP]
+
 Route::get('/', function () {
-    return view('home');
+    return view('public');
 });
 
 //  [CONTACT]
@@ -26,6 +27,10 @@ Route::get('/', function () {
 
 
 // -------------------[ADMIN]-------------------
+
+Route::get('/admin', function () {
+    return view('admin');
+});
 
 //  [CONNEXION]
 

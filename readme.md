@@ -77,6 +77,14 @@ Sources :
         https://www.toptal.com/laravel/restful-laravel-api-tutorial
         https://medium.com/js-dojo/the-ultimate-vue-js-laravel-crud-tutorial-3640baf7eda0
 
+    CORS
+        https://stackoverflow.com/questions/39429462/adding-access-control-allow-origin-header-response-in-laravel-5-3-passport
+
+    Auth
+        https://blog.peterplucinski.com/setting-up-jwt-authentication-with-laravel-and-vue-part-1/
+        https://github.com/PeterPlucinski/laravel-vue-jwt
+
+
 Good reads :
     Vuejs :
         https://medium.com/@Pier/vue-js-the-good-the-meh-and-the-ugly-82800bbe6684

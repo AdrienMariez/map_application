@@ -13,38 +13,62 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+//ADMIN
 
-Route::resource('/points', 'PointsController', [
-    'except' => ['edit', 'show', 'store']
-]);
+    Route::middleware('auth:api')->get('/user', function (Request $request) {
+        return $request->user();
+    });
 
-Route::resource('/pointsnames', 'PointsnamesController', [
-    'except' => ['edit', 'show', 'store']
-]);
+    Route::middleware('auth:api')->group(function () {
+        Route::get('dashboard', function () {
+            return response()->json(['data' => 'Test Data']);
+        });
+    });
 
-Route::resource('/languages', 'LanguagesController', [
-    'except' => ['edit', 'show', 'store']
-]);
+    Route::group([
 
-Route::resource('/references', 'ReferencesController', [
-    'except' => ['edit', 'show', 'store']
-]);
+        'middleware' => 'api',
+        'prefix' => 'auth'
 
-Route::resource('/referencesnames', 'ReferencesnamesController', [
-    'except' => ['edit', 'show', 'store']
-]);
+    ], function ($router) {
 
-Route::resource('/categories', 'CategoriesController', [
-    'except' => ['edit', 'show', 'store']
-]);
+        Route::post('login', 'AuthController@login');
+        Route::post('logout', 'AuthController@logout');
+        Route::post('refresh', 'AuthController@refresh');
+        Route::post('me', 'AuthController@me');
 
-Route::resource('/categoriesnames', 'CategoriesnamesController', [
-    'except' => ['edit', 'show', 'store']
-]);
+    });
 
-Route::resource('/contactform', 'ContactformController', [
-    'except' => ['edit', 'show', 'store']
-]);
+//USER
+
+    Route::resource('/points', 'PointsController', [
+        'except' => ['edit', 'show', 'store']
+    ]);
+
+    Route::resource('/pointsnames', 'PointsnamesController', [
+        'except' => ['edit', 'show', 'store']
+    ]);
+
+    Route::resource('/languages', 'LanguagesController', [
+        'except' => ['edit', 'show', 'store']
+    ]);
+
+    Route::resource('/references', 'ReferencesController', [
+        'except' => ['edit', 'show', 'store']
+    ]);
+
+    Route::resource('/referencesnames', 'ReferencesnamesController', [
+        'except' => ['edit', 'show', 'store']
+    ]);
+
+    Route::resource('/categories', 'CategoriesController', [
+        'except' => ['edit', 'show', 'store']
+    ]);
+
+    Route::resource('/categoriesnames', 'CategoriesnamesController', [
+        'except' => ['edit', 'show', 'store']
+    ]);
+
+    Route::resource('/contactform', 'ContactformController', [
+        'except' => ['edit', 'show', 'store']
+    ]);
