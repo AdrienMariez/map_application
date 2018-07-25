@@ -16,7 +16,7 @@ require('./bootstrap');
 
 import App from './App.vue';
 import AdminApp from './AdminApp.vue';
-import Home from './components/AdminHome.vue';
+// import Home from './components/AdminHome.vue';
 import Register from './components/AdminRegister.vue';
 import Login from './components/AdminLogin.vue';
 import Dashboard from './components/AdminDashboard.vue';
@@ -34,13 +34,13 @@ const routes = [
     name: 'admin',
     component: AdminApp
   },
-  { path: '/home', 
-    name: 'homemade',
-    component: Home,
-    meta: {
-      auth: true
-    }
-  },
+  // { path: '/home', 
+  //   name: 'homemade',
+  //   component: Home,
+  //   meta: {
+  //     auth: true
+  //   }
+  // },
   { path: '/register',
     name: 'register',
     component: Register,
@@ -63,6 +63,7 @@ const routes = [
     }
   }
 ]
+
 const router = new VueRouter({
   routes: routes // short for `routes: routes`
 });
@@ -85,6 +86,7 @@ Vue.use(require('@websanova/vue-auth'), {
 //   router,
 //   routes
 // }).$mount('#app')
+
 
 const app = new Vue({
   router,
