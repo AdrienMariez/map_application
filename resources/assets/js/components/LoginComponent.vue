@@ -29,22 +29,16 @@
         },
         methods: {
             submitLogin() {
-                console.log("submitted");
-                
                 this.loginError = false;
                 axios.post('/api/auth/login', {
                     email: this.email,
                     password: this.password
                 }).then(response => {
-                    console.log("response");
-                    console.log(response);
                     // login user, store the token and redirect to dashboard
                     store.commit('loginUser')
                     localStorage.setItem('token', response.data.access_token)
                     this.$router.push({ name: 'dashboard' })
                 }).catch(error => {
-                    console.log("error");
-                    console.log(error);
                     this.loginError = true
                 });
             }

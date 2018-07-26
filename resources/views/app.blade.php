@@ -1,12 +1,14 @@
-<!DOCTYPE html>
-<html lang="{{ app()->getLocale() }}">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="csrf-token" content="{{ csrf_token() }}">
-        <!-- <title>{{ config('app.name', 'Carte de Prayssac') }}</title> -->
-        <title>Prayssac carte</title>
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    <title>Prayssac carte</title>
+
+    <!-- Styles & scripts -->
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
         <!-- Material Icons -->
             <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
         <!-- Font Awesome -->
@@ -29,15 +31,15 @@
             <!-- https://github.com/coryasilva/Leaflet.ExtraMarkers -->
             <link rel="stylesheet" href="css/leaflet.extra-markers.min.css">
             <script src="js/leaflet.extra-markers.min.js"></script>
-    </head>
-    <body>
-        
-        <div id="app">
-            <home title="{{ config('app.name', 'Carte de Prayssac') }}" :items="routes">
-                <router-view></router-view>
-            </home>
-        </div>
-        
-        <script src="{{ asset('js/main.js') }}"></script>
-    </body>
+    <!-- END Styles & scripts -->
+</head>
+<body>
+    <div id="app">
+        <app-component></app-component>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="js/app.js"></script>
+</body>
 </html>

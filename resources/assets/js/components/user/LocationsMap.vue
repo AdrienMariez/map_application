@@ -42,9 +42,10 @@
   }
 
   //IMPORTS
-    require('../../../../node_modules/leaflet/dist/leaflet.css')
-    require('../../../../node_modules/leaflet.markercluster/dist/MarkerCluster.css')
-    require('../../../../node_modules/geoportal-extensions-leaflet/dist/GpPluginLeaflet.css')
+    //TEST : are those import really necessary ?
+    require('../../../../../node_modules/leaflet/dist/leaflet.css')
+    require('../../../../../node_modules/leaflet.markercluster/dist/MarkerCluster.css')
+    // require('../../../../../node_modules/geoportal-extensions-leaflet/dist/GpPluginLeaflet.css')
 
     import MapControls from './MapControls.vue'
     // import PointDisplayComponent from './PointDisplay.vue';

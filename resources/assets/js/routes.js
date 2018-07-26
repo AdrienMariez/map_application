@@ -1,19 +1,19 @@
 import Vue from 'vue'
-import Vuetify from 'vuetify'
 import VueRouter from 'vue-router'
 
-Vue.use(Vuetify)
 Vue.use(VueRouter)
 
 import DashboardComponent from './components/DashboardComponent'
 import LoginComponent from './components/LoginComponent'
 import LogoutComponent from './components/LogoutComponent'
+import MapComponent from './components/MapComponent'
 import store from './store'
 
 const routes = [
     {
         path: '/',
-        redirect: { name: 'login' }
+        name: 'map',
+        component: MapComponent
     },
     {
         path: '/dashboard',

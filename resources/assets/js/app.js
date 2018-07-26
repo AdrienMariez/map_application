@@ -5,7 +5,14 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
+import Vuetify from 'vuetify'
+
 require('./bootstrap');
+
+// import 'leaflet/dist/leaflet.css';
+// import 'leaflet.markercluster/dist/MarkerCluster.css';
+require('../../../node_modules/leaflet/dist/leaflet.css')
+require('../../../node_modules/leaflet.markercluster/dist/MarkerCluster.css')
 
 window.Vue = require('vue');
 
@@ -17,6 +24,8 @@ window.Vue = require('vue');
 
 import router from './routes.js';
 import AppComponent from './components/AppComponent'
+
+Vue.use(Vuetify)
 
 const app = new Vue({
     components: { AppComponent },

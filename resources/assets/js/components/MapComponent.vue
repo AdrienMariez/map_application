@@ -41,18 +41,19 @@
 </template>
 
 <script>
-import MapMenu from "./components/MapMenu.vue";
-import LocationsMap from "./components/LocationsMap.vue";
+import MapMenu from "./user/MapMenu.vue";
+import LocationsMap from "./user/LocationsMap.vue";
 
 export default {
   name: "app",
   data() {
     return {
-      drawerCallBack: true,
-      pointsDisplayed: [],
-      localStoragePointsDisplayed: [],
-      language: 0,
-      sender: false,
+        data: 'nothing',
+        drawerCallBack: true,
+        pointsDisplayed: [],
+        localStoragePointsDisplayed: [],
+        language: 0,
+        sender: false,
     };
   },
   methods: {
