@@ -16,7 +16,7 @@ const routes = [
         component: MapComponent
     },
     {
-        path: '/dashboard',
+        path: '/admin',
         name: 'dashboard',
         component: DashboardComponent,
         meta: { requiresAuth: true }

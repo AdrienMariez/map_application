@@ -5,6 +5,7 @@ Dev use :
     php artisan serve
 
     npm run watch
+    npm run watch-poll
 
 In case of troubles with the watch :
     php artisan cache:clear
@@ -38,6 +39,18 @@ Generate application key:
 Run migration table:
 
     php artisan migrate
+
+Set auth:
+
+    php artisan jwt:secret
+
+    npm install
+
+
+Create user:
+
+    php artisan tinker
+    >   App\User::create(['name' => 'User', 'email' => 'user@email.com', 'password' => Hash::make('UserPass')])
 
 -------------------
 Models :

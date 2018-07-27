@@ -43,7 +43,6 @@
 <script>
 import MapMenu from "./user/MapMenu.vue";
 import LocationsMap from "./user/LocationsMap.vue";
-
 export default {
   name: "app",
   data() {

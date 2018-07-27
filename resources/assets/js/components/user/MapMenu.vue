@@ -528,6 +528,7 @@
         //inspired from vue-laravel-crud
         
         //POINTS CRUD NEED READ ONLY
+            // TO REMOVE
             //methods other than read() are useless, but kept for the moment until I can remove them and not break anything in the process.
             create() {
                 this.mute = true;
