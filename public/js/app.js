@@ -67872,12 +67872,28 @@ function Point(_ref6) {
     this.image_path = image_path;
     this.fk_reference_id = fk_reference_id;
 }
+function PointName(_ref7) {
+    var id = _ref7.id,
+        fk_point_id = _ref7.fk_point_id,
+        fk_language_id = _ref7.fk_language_id,
+        title = _ref7.title,
+        description = _ref7.description,
+        linkalias = _ref7.linkalias;
+
+    this.id = id;
+    this.fk_point_id = fk_point_id;
+    this.fk_language_id = fk_language_id;
+    this.title = title;
+    this.description = description;
+    this.linkalias = linkalias;
+}
 //END Needed for promises to work
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
             points: [],
+            pointsContents: [],
             languages: [],
             languageSelected: 0,
             categories: [],
@@ -67932,13 +67948,13 @@ function Point(_ref6) {
             this.languageSelected = languageFrench;
         },
 
-        //POINTS CRUD READ
+        //POINTS READ
         readPoints: function readPoints() {
             var _this = this;
 
             this.mute = true;
-            window.axios.get('/api/points').then(function (_ref7) {
-                var data = _ref7.data;
+            window.axios.get('/api/points').then(function (_ref8) {
+                var data = _ref8.data;
 
                 data.forEach(function (point) {
                     //loops over each point in db
@@ -67950,98 +67966,114 @@ function Point(_ref6) {
             });
         },
 
-        //REFERENCES READ
-        readReferences: function readReferences() {
+        //POINTS CONTENTS READ
+        readPointsPopupContent: function readPointsPopupContent() {
             var _this2 = this;
 
             this.mute = true;
-            window.axios.get('/api/references').then(function (_ref8) {
-                var data = _ref8.data;
+
+            window.axios.get('/api/pointsnames').then(function (_ref9) {
+                var data = _ref9.data;
+
+                data.forEach(function (pointContent) {
+                    _this2.pointsContents.push(new PointName(pointContent));
+                });
+                _this2.mute = false;
+            });
+        },
+
+        //REFERENCES READ
+        readReferences: function readReferences() {
+            var _this3 = this;
+
+            this.mute = true;
+            window.axios.get('/api/references').then(function (_ref10) {
+                var data = _ref10.data;
 
                 data.forEach(function (reference) {
                     //loops over each reference in db
                     // console.log("reference :");
                     // console.log(reference);
-                    _this2.references.push(new Reference(reference));
+                    _this3.references.push(new Reference(reference));
                     // var obj = {};
                     // obj["id"] = reference.id;
                     // obj["isToBeDisplayed"] = false;
                     // obj["catColor"] = "";
                     // this.referenceDisplayed.push(obj);
                 });
-                _this2.mute = false;
+                _this3.mute = false;
             });
         },
 
         //REFERENCE NAMES READ
         readReferenceNames: function readReferenceNames() {
-            var _this3 = this;
+            var _this4 = this;
 
             this.mute = true;
-            window.axios.get('/api/referencesnames').then(function (_ref9) {
-                var data = _ref9.data;
+            window.axios.get('/api/referencesnames').then(function (_ref11) {
+                var data = _ref11.data;
 
                 data.forEach(function (referenceName) {
                     //loops over each reference name in db
                     // console.log("reference name :");
                     // console.log(referenceName);
-                    _this3.referenceNames.push(new ReferenceName(referenceName));
-                });
-                _this3.mute = false;
-            });
-        },
-
-        //CATEGORIES READ
-        readCategories: function readCategories() {
-            var _this4 = this;
-
-            this.mute = true;
-            window.axios.get('/api/categories').then(function (_ref10) {
-                var data = _ref10.data;
-
-                data.forEach(function (category) {
-                    //loops over each category in db
-                    // console.log("category :");
-                    // console.log(category);
-                    _this4.categories.push(new Category(category));
+                    _this4.referenceNames.push(new ReferenceName(referenceName));
                 });
                 _this4.mute = false;
             });
         },
 
-        //CATEGORIES NAMES READ
-        readCategoriesNames: function readCategoriesNames() {
+        //CATEGORIES READ
+        readCategories: function readCategories() {
             var _this5 = this;
 
             this.mute = true;
-            window.axios.get('/api/categoriesnames').then(function (_ref11) {
-                var data = _ref11.data;
+            window.axios.get('/api/categories').then(function (_ref12) {
+                var data = _ref12.data;
 
-                data.forEach(function (categoryName) {
-                    //loops over each category name in db
-                    // console.log("category name :");
-                    // console.log(categoryName);
-                    _this5.categoriesNames.push(new CategoryName(categoryName));
+                data.forEach(function (category) {
+                    //loops over each category in db
+                    // console.log("category :");
+                    // console.log(category);
+                    _this5.categories.push(new Category(category));
                 });
                 _this5.mute = false;
             });
         },
 
-        //LANGUAGES READ
-        readLanguages: function readLanguages() {
+        //CATEGORIES NAMES READ
+        readCategoriesNames: function readCategoriesNames() {
             var _this6 = this;
 
             this.mute = true;
-            window.axios.get('/api/languages').then(function (_ref12) {
-                var data = _ref12.data;
+            window.axios.get('/api/categoriesnames').then(function (_ref13) {
+                var data = _ref13.data;
+
+                data.forEach(function (categoryName) {
+                    //loops over each category name in db
+                    // console.log("category name :");
+                    // console.log(categoryName);
+                    _this6.categoriesNames.push(new CategoryName(categoryName));
+                });
+                _this6.mute = false;
+            });
+        },
+
+        //LANGUAGES READ
+        readLanguages: function readLanguages() {
+            var _this7 = this;
+
+            this.mute = true;
+            window.axios.get('/api/languages').then(function (_ref14) {
+                var data = _ref14.data;
 
                 data.forEach(function (language) {
                     //loops over each language in db
                     // console.log("language :");
                     // console.log(language);
-                    _this6.languages.push(new Language(language));
+                    _this7.languages.push(new Language(language));
                 });
-                _this6.mute = false;
+                _this7.mute = false;
             });
         },
 
@@ -68053,7 +68085,6 @@ function Point(_ref6) {
 
         //DELETE CATEGORIES
         deleteCategory: function deleteCategory(idCategory) {
-            console.log("go delete category " + idCategory);
             var referencesCorresponding = 0;
             //create empty var
             for (var i = 0; i < this.references.length; i++) {
@@ -68092,8 +68123,34 @@ function Point(_ref6) {
         },
 
         //DELETE REFERENCE
-        deleteReference: function deleteReference(id) {
-            console.log("go delete reference " + id);
+        deleteReference: function deleteReference(idReference) {
+            var pointsCorresponding = 0;
+            //create empty var
+            for (var i = 0; i < this.points.length; i++) {
+                if (this.points[i]["fk_reference_id"] == idReference) {
+                    pointsCorresponding++;
+                    //increment var each time a child is found
+                }
+            }
+            var idName = '';
+            for (var y = 0; y < this.referenceNames.length; y++) {
+                if (this.referenceNames[y]["fk_reference_id"] == idReference && this.referenceNames[y]["fk_language_id"] == this.languageSelected) {
+                    idName = this.referenceNames[y]["text"];
+                }
+            }
+            if (idName.length == 0) {
+                idName = "[Pas de nom référencé pour cet élément]";
+            }
+
+            if (pointsCorresponding == 0) {
+                //if no child found, can remove
+                this.dialogId = idReference, this.dialogType = 'reference',
+                //TO CHANGE too much info in dialogText
+                this.dialogText = 'Veuillez confirmer la suppression de ' + idName + ' with id: ' + this.dialogId + ' of type: ' + this.dialogType, this.dialog = true;
+            } else {
+                //if child found, prevent remove
+                this.snackText = 'Impossible de supprimer la référence ' + idName + ' tant que des éléments y sont inclus.', this.snackbar = true;
+            }
         },
 
         //CREATE POINT
@@ -68107,8 +68164,19 @@ function Point(_ref6) {
         },
 
         //DELETE POINT
-        deletePoint: function deletePoint(id) {
-            console.log("go delete point " + id);
+        deletePoint: function deletePoint(idPoint) {
+            var idName = '';
+            for (var y = 0; y < this.pointsContents.length; y++) {
+                if (this.pointsContents[y]["fk_point_id"] == idPoint && this.pointsContents[y]["fk_language_id"] == this.languageSelected) {
+                    idName = this.pointsContents[y]["title"];
+                }
+            }
+            if (idName.length == 0) {
+                idName = "[Pas de nom référencé pour cet élément]";
+            }
+
+            //if no child found, can remove
+            this.dialogId = idPoint, this.dialogType = 'point', this.dialogText = 'Veuillez confirmer la suppression de ' + idName + ' with id: ' + this.dialogId + ' of type: ' + this.dialogType, this.dialog = true;
         },
 
         //DESTROY HUB
@@ -68141,6 +68209,7 @@ function Point(_ref6) {
     created: function created() {
         this.readReferenceNames();
         this.readPoints();
+        this.readPointsPopupContent();
         this.readReferences();
         this.readCategories();
         this.readLanguages();
@@ -68743,15 +68812,15 @@ var render = function() {
                 [
                   _c("v-card-title", { staticClass: "headline" }, [
                     _vm._v(
-                      "\n                    " +
+                      "\n                            " +
                         _vm._s(_vm.dialogText) +
-                        "\n                "
+                        "\n                        "
                     )
                   ]),
                   _vm._v(" "),
                   _c("v-card-text", [
                     _vm._v(
-                      "\n                    Cette suppression sera irreversible à partir de l'acceptation de cette boîte de dialogue.\n                "
+                      "\n                            Cette suppression sera irreversible à partir de l'acceptation de cette boîte de dialogue.\n                        "
                     )
                   ]),
                   _vm._v(" "),
@@ -68774,7 +68843,7 @@ var render = function() {
                         },
                         [
                           _vm._v(
-                            "\n                        Annuler\n                    "
+                            "\n                                Annuler\n                            "
                           )
                         ]
                       ),
@@ -68794,7 +68863,7 @@ var render = function() {
                         },
                         [
                           _vm._v(
-                            "\n                        Supprimer\n                    "
+                            "\n                                Supprimer\n                            "
                           )
                         ]
                       )

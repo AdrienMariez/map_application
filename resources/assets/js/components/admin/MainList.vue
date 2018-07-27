@@ -219,34 +219,34 @@
         <v-layout row justify-center>
             <v-dialog v-model="dialog" persistent max-width="290">
                 <v-card>
-                    <v-card-title class="headline">
-                        {{dialogText}}
-                    </v-card-title>
-                    <v-card-text>
-                        Cette suppression sera irreversible à partir de l'acceptation de cette boîte de dialogue.
-                    </v-card-text>
-                    <v-card-actions>
-                        <v-spacer></v-spacer>
-                        <v-btn
-                            color="green darken-1"
-                            flat
-                            @click.native="
-                                dialog = false,
-                                dialogId = null,
-                                dialogType = ''">
-                            Annuler
-                        </v-btn>
-                        <v-btn
-                            color="green darken-1"
-                            flat
-                            @click.native="
-                                destroy(dialogType,dialogId)
-                                dialog = false,
-                                dialogId = null,
-                                dialogType = ''">
-                            Supprimer
-                        </v-btn>
-                    </v-card-actions>
+                            <v-card-title class="headline">
+                                {{dialogText}}
+                            </v-card-title>
+                            <v-card-text>
+                                Cette suppression sera irreversible à partir de l'acceptation de cette boîte de dialogue.
+                            </v-card-text>
+                            <v-card-actions>
+                                <v-spacer></v-spacer>
+                                <v-btn
+                                    color="green darken-1"
+                                    flat
+                                    @click.native="
+                                        dialog = false,
+                                        dialogId = null,
+                                        dialogType = ''">
+                                    Annuler
+                                </v-btn>
+                                <v-btn
+                                    color="green darken-1"
+                                    flat
+                                    @click.native="
+                                        destroy(dialogType,dialogId)
+                                        dialog = false,
+                                        dialogId = null,
+                                        dialogType = ''">
+                                    Supprimer
+                                </v-btn>
+                            </v-card-actions>
                 </v-card>
             </v-dialog>
         </v-layout>
@@ -313,12 +313,21 @@
             this.image_path = image_path;
             this.fk_reference_id = fk_reference_id;
         }
+        function PointName({ id, fk_point_id, fk_language_id, title, description, linkalias}) {
+            this.id = id;
+            this.fk_point_id = fk_point_id;
+            this.fk_language_id = fk_language_id;
+            this.title = title;
+            this.description = description;
+            this.linkalias = linkalias;
+        }
     //END Needed for promises to work
 
   export default {
     data () {
       return {
         points: [],
+        pointsContents: [],
         languages: [],
         languageSelected: 0,
         categories: [],
@@ -372,7 +381,7 @@
                     
                 this.languageSelected = languageFrench;
             },
-        //POINTS CRUD READ
+        //POINTS READ
             readPoints() {
                 this.mute = true;
                 window.axios.get('/api/points').then(({ data }) => {
@@ -381,6 +390,17 @@
                     // console.log("point :");
                     // console.log(point);
                     this.points.push(new Point(point));
+                });
+                this.mute = false;
+                });
+            },
+        //POINTS CONTENTS READ
+            readPointsPopupContent() {
+                this.mute = true;
+                
+                window.axios.get('/api/pointsnames').then(({ data }) => {
+                data.forEach(pointContent => {
+                    this.pointsContents.push(new PointName(pointContent));
                 });
                 this.mute = false;
                 });
@@ -464,7 +484,6 @@
             },
         //DELETE CATEGORIES
             deleteCategory(idCategory){
-                console.log("go delete category "+ idCategory);
                 var referencesCorresponding = 0;
                 //create empty var
                 for (let i = 0; i < this.references.length; i++) {
@@ -505,8 +524,38 @@
                 console.log("go edit reference "+ id);
             },
         //DELETE REFERENCE
-            deleteReference(id){
-                console.log("go delete reference "+ id);
+            deleteReference(idReference){
+                var pointsCorresponding = 0;
+                //create empty var
+                for (let i = 0; i < this.points.length; i++) {
+                    if (this.points[i]["fk_reference_id"] == idReference){
+                        pointsCorresponding++;
+                        //increment var each time a child is found
+                    }
+                }
+                var idName = '';
+                for (let y = 0; y < this.referenceNames.length; y++) {
+                    if (this.referenceNames[y]["fk_reference_id"] == idReference && this.referenceNames[y]["fk_language_id"] == this.languageSelected) {
+                        idName = this.referenceNames[y]["text"]
+                    }
+                }
+                if (idName.length == 0) {
+                    idName = "[Pas de nom référencé pour cet élément]";
+                }
+
+                if (pointsCorresponding == 0) {
+                    //if no child found, can remove
+                    this.dialogId = idReference,
+                    this.dialogType = 'reference',
+                    //TO CHANGE too much info in dialogText
+                    this.dialogText = 'Veuillez confirmer la suppression de '+idName+' with id: '+this.dialogId+' of type: '+this.dialogType,
+                    this.dialog = true;
+                }
+                else{
+                    //if child found, prevent remove
+                    this.snackText = 'Impossible de supprimer la référence '+idName+' tant que des éléments y sont inclus.',
+                    this.snackbar = true;
+                }
             },
         //CREATE POINT
             createPoint(id){
@@ -517,8 +566,22 @@
                 console.log("go edit point "+ id);
             },
         //DELETE POINT
-            deletePoint(id){
-                console.log("go delete point "+ id);
+            deletePoint(idPoint){
+                var idName = '';
+                for (let y = 0; y < this.pointsContents.length; y++) {
+                    if (this.pointsContents[y]["fk_point_id"] == idPoint && this.pointsContents[y]["fk_language_id"] == this.languageSelected) {
+                        idName = this.pointsContents[y]["title"]
+                    }
+                }
+                if (idName.length == 0) {
+                    idName = "[Pas de nom référencé pour cet élément]";
+                }
+
+                    //if no child found, can remove
+                    this.dialogId = idPoint,
+                    this.dialogType = 'point',
+                    this.dialogText = 'Veuillez confirmer la suppression de '+idName+' with id: '+this.dialogId+' of type: '+this.dialogType,
+                    this.dialog = true;
             },
         //DESTROY HUB
             destroy(type,id){
@@ -540,17 +603,16 @@
         //DESTROY REFERENCE
             destroyReference(id){
                 console.log("destroyReference");
-                
             },
         //DESTROY POINT
             destroyPoint(id){
                 console.log("destroyPoint");
-                
             },
     },
     created() {
         this.readReferenceNames();
         this.readPoints();
+        this.readPointsPopupContent();
         this.readReferences();
         this.readCategories();
         this.readLanguages();
