@@ -3,22 +3,22 @@ import VueRouter from 'vue-router'
 
 Vue.use(VueRouter)
 
-import DashboardComponent from './components/DashboardComponent'
+import AdminComponent from './components/AdminComponent'
 import LoginComponent from './components/LoginComponent'
 import LogoutComponent from './components/LogoutComponent'
-import MapComponent from './components/MapComponent'
+import PublicComponent from './components/PublicComponent'
 import store from './store'
 
 const routes = [
     {
         path: '/',
-        name: 'map',
-        component: MapComponent
+        name: 'public',
+        component: PublicComponent
     },
     {
         path: '/admin',
-        name: 'dashboard',
-        component: DashboardComponent,
+        name: 'admin',
+        component: AdminComponent,
         meta: { requiresAuth: true }
     },
     {
@@ -46,9 +46,9 @@ router.beforeEach((to, from, next) => {
         return
     }
 
-    // if logged in redirect to dashboard
+    // if logged in redirect to admin page
     if(to.path === '/login' && store.state.isLoggedIn) {
-        next({ name: 'dashboard' })
+        next({ name: 'admin' })
         return
     }
 

@@ -37,7 +37,7 @@
                     // login user, store the token and redirect to dashboard
                     store.commit('loginUser')
                     localStorage.setItem('token', response.data.access_token)
-                    this.$router.push({ name: 'dashboard' })
+                    this.$router.push({ name: 'admin' })
                 }).catch(error => {
                     this.loginError = true
                 });

@@ -1,11 +1,32 @@
 <template>
   <v-app id="inspire">
  
-    <top-nav id="topNav">
+    <top-nav
+        @pageToShow="pageToShow"
+        id="topNav">
     </top-nav>
 
-    <main-list id="adminList">
+    <main-list
+        v-if="page == ''"
+        @pageToShow="pageToShow"
+        class="adminPage">
     </main-list>
+
+    <edit-category
+        v-bind:idSelected="idSelected"
+        v-if="page == 'category'"
+        class="adminPage">
+    </edit-category>
+
+    <edit-reference
+        v-if="page == 'reference'"
+        class="adminPage">
+    </edit-reference>
+
+    <edit-point
+        v-if="page == 'point'"
+        class="adminPage">
+    </edit-point>
 
     <v-footer
       app
@@ -30,19 +51,27 @@
 </template>
 
 <script>
-// import MapMenu from "./user/MapMenu.vue";
-// import LocationsMap from "./user/LocationsMap.vue";
 import TopNav from "./admin/TopNav.vue";
 import MainList from "./admin/MainList.vue";
+import EditCategory from "./admin/EditCategory.vue";
+import EditReference from "./admin/EditReference.vue";
+import EditPoint from "./admin/EditPoint.vue";
 
 export default {
       name: "app",
     data() {
         return {
             data: 'nothing',
+            page: '',
+            idSelected: null,
         };
     },
     methods: {
+        //CHANGE PAGE
+            pageToShow(newValue, newId) {
+                this.page = newValue;
+                this.idSelected = newId;
+            },  
     },
     mounted() {
             axios.get('/api/dashboard', {
@@ -57,10 +86,11 @@ export default {
             })
     },
     components: {
-        // LocationsMap,
-        // MapMenu,
         TopNav,
-        MainList
+        MainList,
+        EditCategory,
+        EditReference,
+        EditPoint
     }
 };
 </script>
@@ -76,7 +106,7 @@ export default {
         top: 0;
         width: 100%; */
     }
-    #adminList {
+    .adminList {
         z-index: 1;
     }
     #footer {

@@ -598,15 +598,15 @@
             },
         //DESTROY CATEGORY
             destroyCategory(id){
-                console.log("destroyCategory");
+                this.$emit('pageToShow', "category", id);
             },
         //DESTROY REFERENCE
             destroyReference(id){
-                console.log("destroyReference");
+                this.$emit('pageToShow', "reference", id);
             },
         //DESTROY POINT
             destroyPoint(id){
-                console.log("destroyPoint");
+                this.$emit('pageToShow', "point", id);
             },
     },
     created() {

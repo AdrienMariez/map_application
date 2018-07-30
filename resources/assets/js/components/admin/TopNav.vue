@@ -100,8 +100,8 @@
         languages: [],
         languageSelected: 0,
         links: [
-            { title: "Retour à la carte", page: "map" },
-            { title: "Retourner au menu d'administration principal", page: "dashboard" },
+            { title: "Retour à la carte", page: "public" },
+            { title: "Retourner au menu d'administration principal", page: "admin" },
             { title: "Se déconnecter", page: "logout" }
         ]
       }
@@ -142,10 +142,11 @@
                 this.languageSelected = languageFrench;
             },
 
-        //Method
+        //REDIRECTION
             redirect(link){
                 console.log(link);
                 this.$router.push({ name: link })
+                this.$emit('pageToShow', "", null);
             },
         //LANGUAGES READ
             readLanguages() {
