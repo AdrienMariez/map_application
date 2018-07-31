@@ -5,7 +5,8 @@
       v-bind:localStoragePointsDisplayed="localStoragePointsDisplayed"
       @drawerMethod="drawerMethod"
       @displayPoints="displayPoints"
-      @emitLanguage="emitLanguage"></map-menu>
+      @emitLanguage="emitLanguage">
+    </map-menu>
 
     <locations-map
       id="publicMap"
@@ -29,7 +30,7 @@
         row
         justify-start
         v-if="drawerCallBack"
-        class="">
+        class="pl-3">
         <div class="hidden-xs-only">
           &copy; 2018 - {{new Date().getFullYear()}} - 
         </div>

@@ -1,13 +1,15 @@
 <template>
     <div>
-        <div v-if="idSelected != null">
-            Can edit categories here
-        </div>
-        <div v-if="idSelected == null">
-            Can create categories here
-            {{this.idSelected}}
-            {{idSelected}}
-        </div>
+        <!-- EDIT -->
+            <div v-if="idSelected != null">
+                Can edit categories here
+            </div>
+
+        <!-- CREATE -->
+            <div v-if="idSelected == null">
+                Can create categories here
+                
+            </div>
     </div>
 
 </template>
@@ -21,7 +23,7 @@
     },
     watch: {
         idSelected(val, oldVal){
-            console.log("id changed THIS IS NOT SUPPOSED TO HAPPEN.");console.log("Previous value : "+val+" New value : "+oldVal);
+            console.log("id changed in category THIS IS NOT SUPPOSED TO HAPPEN.");console.log("Previous value : "+val+" New value : "+oldVal);
         }
     },
     methods: {

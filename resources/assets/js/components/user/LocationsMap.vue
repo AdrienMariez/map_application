@@ -25,10 +25,10 @@
     this.image_path = image_path;
     this.fk_reference_id = fk_reference_id;
   }
-  function PointName({ id, fk_point_id, fk_language_id, title, description, linkalias}) {
+  function PointName({ id, fk_point_id, fk_language_code, title, description, linkalias}) {
     this.id = id;
     this.fk_point_id = fk_point_id;
-    this.fk_language_id = fk_language_id;
+    this.fk_language_code = fk_language_code;
     this.title = title;
     this.description = description;
     this.linkalias = linkalias;
@@ -279,7 +279,7 @@ export default {
                     popup.setAttribute("style", "text-align:center;");
 
                     pointsContents.forEach(content => {
-                      if (content["fk_point_id"] == point["id"] && content["fk_language_id"] == this.language) {
+                      if (content["fk_point_id"] == point["id"] && content["fk_language_code"] == this.language) {
                         title = document.createElement("h3");
                         var titleHtml = document.createTextNode(content["title"]);
                         title.appendChild(titleHtml);

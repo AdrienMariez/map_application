@@ -1,14 +1,11 @@
 <template>
     <div>
-        <!-- Prayssac_logo.png -->
-
-        <!-- <map-controls></map-controls> -->
-
+    <!-- Main aside -->
         <v-navigation-drawer
             v-model="drawer"
             :mini-variant="mini"
             color="white"
-            class="white"
+            class="white asideDrawer"
             app>
 
             <!-- deploy full nav when miniaturized -->
@@ -65,25 +62,7 @@
             <v-divider></v-divider>
             <v-spacer></v-spacer>
 
-            <!-- OBSOLETE language switch -->
-                <!-- <v-list-tile @click.stop="fr = !fr">
-                    <v-list-tile-action>
-                        <v-icon>language</v-icon>
-                    </v-list-tile-action>
-                    <v-list-tile-action class="white--text">
-                        <v-list-tile-content v-if="fr">
-                            English
-                        </v-list-tile-content>
-                        <v-list-tile-content v-if="!fr">
-                            Français
-                        </v-list-tile-content>
-                    </v-list-tile-action>
-                </v-list-tile> -->
-            <!-- END OBSOLETE language switch -->
-
-            <!-- sends back the current language id -->
-            <!-- <div>{{ languageSelected }}</div> -->
-            
+     
             <!-- logo Prayssac desktop -->
                 <div
                     v-if="!mini"
@@ -121,7 +100,7 @@
                                     <!-- loop on names in categories & translations -->
                                     <v-list-tile-content
                                         v-for="(catName,a) in categoriesNames"
-                                        v-if="catName.fk_language_id == languageSelected && catName.fk_category_id == category.id"
+                                        v-if="catName.fk_language_code == languageSelected && catName.fk_category_id == category.id"
                                         :key="a">
                                         <!-- {{catName.fk_category_id}} -  -->
                                         {{catName.text}}
@@ -158,7 +137,7 @@
                                 <!-- loop on names in references & translations -->
                                 <v-list-tile-content
                                     v-for="(refName,b) in referenceNames"
-                                    v-if="refName.fk_language_id == languageSelected && refName.fk_reference_id == reference.id"
+                                    v-if="refName.fk_language_code == languageSelected && refName.fk_reference_id == reference.id"
                                     :key="b">
                                     {{refName.fk_reference_id}} - 
                                     {{refName.text}}
@@ -178,107 +157,23 @@
                 </v-expansion-panel>
             <!-- NAVIGATION MENU -->
 
-            <!-- OBSOLETE TEST NAV -->
-                <!-- <point-list-component
-                    v-for="category in categories"
-                    v-bind="category"
-                    :key="category.id"
-                    @update="update"
-                    @delete="del"
-                >
-                </point-list-component> -->
-            <!-- END OBSOLETE TEST NAV -->
-
         </v-navigation-drawer>
 
-        <!-- top header -->
-        <v-toolbar
-            id="toolbar"
-            color="white"
-            fixed
-            app
-            dense>
-            <v-layout align-center justify-space-around row fill-height>
-                <v-flex>
-                    <v-layout align-center row fill-height>
-                    <!-- show the menu if hidden -->
-                        <v-toolbar-side-icon
-                            v-if="!drawer"
-                            v-on:click="drawerMethod()"
-                            @click.stop="drawer = !drawer"
-                            color="green lighten-1"
-                            class="white--text">
-                        </v-toolbar-side-icon>
-
-                    <!-- logo Prayssac -->
-                        <v-layout
-                            align-center
-                            row
-                            v-if="!drawer || mini"
-                            class="logoContainerMini">
-                            <img :src="'/images/Prayssac_logo.png'" >
-                            <v-toolbar-title
-                                class="hidden-xs-only">
-                                Carte interactive de Prayssac
-                            </v-toolbar-title>
-                        </v-layout>
-                    </v-layout>
-                </v-flex>
-
-                <!-- title -->
-                <!-- <v-flex>
-                <v-toolbar-title>
-                    Carte interactive de Prayssac
-                </v-toolbar-title>
-                </v-flex> -->
-            
-                <!-- logo Prayssac -->
-                <!-- <v-flex>
-                    <div
-                        v-if="!drawer"
-                        class="logoContainerMini">
-                        <img :src="'/images/Prayssac_logo.png'" >
-                    </div>
-                </v-flex> -->
-
-                <v-flex>
-                    <v-layout align-center justify-end row fill-height>
-                    <!-- select language -->
-                        <v-select
-                            :items="languages"
-                            prepend-icon="map"
-                            v-model="languageSelected"
-                            align-center
-                            single-line
-                            class="mr-3 input-group--focused selectTop"
-                            item-value=id
-                            item-text=name
-                        >
-                        </v-select>
-                    </v-layout>
-                </v-flex>
-            </v-layout>
-        </v-toolbar>
-
-        <!-- contact button -->
-        <!-- <v-card-text class="buttonContact">
-            <v-btn
-                absolute
-                dark
-                center
-                color="green lighten-1"
-            >
-                <div class="linkColor">Contact</div>
-            </v-btn>
-        </v-card-text> -->
-
-
-        <contact-form v-if="languageSelected == 0" class="buttonContact"></contact-form>
-
-        <contact-form-en v-if="languageSelected == 1" class="buttonContact"></contact-form-en>
+    <!-- Top header -->
+        <top-toolbar
+            v-bind:languageSelected="languageSelected"
+            v-bind:drawer="drawer"
+            v-bind:mini="mini"
+            @emitLanguageSelected="emitLanguageSelected"
+            @emitDrawer="emitDrawer">
+        </top-toolbar>
+    <!-- Contact form -->
+        <contact-form
+            v-if="languageSelected == 'fr' || languageSelected == 'en'"
+            class="buttonContact">
+        </contact-form>
 
     </div>
-
 </template>
 
 <script>
@@ -294,10 +189,10 @@
             this.color = color;
             this.weight = weight;
         }
-        function CategoryName({ id, fk_category_id, fk_language_id, text}) {
+        function CategoryName({ id, fk_category_id, fk_language_code, text}) {
             this.id = id;
             this.fk_category_id = fk_category_id;
-            this.fk_language_id = fk_language_id;
+            this.fk_language_code = fk_language_code;
             this.text = text;
         }
         function Reference({ id, icon, color, weight, fk_category_id}) {
@@ -307,10 +202,10 @@
             this.weight = weight;
             this.fk_category_id = fk_category_id;
         }
-        function ReferenceName({ id, fk_reference_id, fk_language_id, text}) {
+        function ReferenceName({ id, fk_reference_id, fk_language_code, text}) {
             this.id = id;
             this.fk_reference_id = fk_reference_id;
-            this.fk_language_id = fk_language_id;
+            this.fk_language_code = fk_language_code;
             this.text = text;
         }
         function Point({ id, link, icon, color, longitude, lattitude, uses_image, image_path}) {
@@ -324,11 +219,8 @@
             this.image_path = image_path;
         }
     //END Needed for promises to work
-    // import MapControls from './MapControls.vue'
-    // import PointListComponent from './PointList.vue';
-
+  import TopToolbar from './TopToolbar.vue'
   import ContactForm from './ContactForm.vue'
-  import ContactFormEn from './ContactFormEn.vue'
 
   export default {
     props: ['localStoragePointsDisplayed'],
@@ -339,7 +231,7 @@
         showAllForms: null,
         points: [],
         languages: [],
-        languageSelected: 0,
+        languageSelected: '',
         categories: [],
         categoriesNames: [],
         references: [],
@@ -356,6 +248,7 @@
         languageSelected(val, oldVal) {
             this.languageSelected = val
             this.emitLanguage();
+            this.$i18n.locale = this.languageSelected
         },
         localStoragePointsDisplayed(val, oldVal){
             this.referenceDisplayed = val;
@@ -364,12 +257,10 @@
     methods: {
         //ON START FIND OUT THE USER BROWSER LANGUAGE
             lookForUserLanguage() {
-
-
                 if (localStorage.getItem("languageSelected") !== null){
                     var localLanguage = localStorage.getItem("languageSelected");
-                    this.languageSelected = JSON.parse(localLanguage);
-
+                    
+                    this.languageSelected = localLanguage;
                 }
                 else{
                     //HOW TO
@@ -384,20 +275,18 @@
                     // var languageCode = "de-AT";
                     var language = languageCode.substring(0,2);
                     var languages = JSON.parse(JSON.stringify(this.languages));
+                    
                     var languageSelected = null;
                     var languageEnglish = null;
 
                     languages.forEach(lang => {
-                        
                         if (lang["code"] == language) {
                             // console.log("language recognized : "+lang["code"]);
-                            languageSelected = lang["id"];
-                            
+                            languageSelected = lang["code"];
                         }
                         if (lang["code"] == "en") {
-                            languageEnglish = lang["id"];
+                            languageEnglish = lang["code"];
                             // console.log("english found");
-                            
                         }
                     });
                     if (languageSelected == null) {
@@ -406,9 +295,17 @@
                     }
                     
                     this.languageSelected = languageSelected;
+                    this.$locale = this.languageSelected
                 }
+                // $i18n.locale = this.languageSelected
+                this.$i18n.locale = this.languageSelected
+                // this.$locale = this.languageSelected    
+                // this.$root.i18n.locale  = this.languageSelected
             },
         //DRAWER EMIT
+            emitDrawer(newDrawer){
+                this.drawer = newDrawer;
+            },
             drawerMethod() {
                 this.$emit('drawerMethod', this.drawer);
             },
@@ -507,6 +404,9 @@
                 localStorage.setItem('referencesDisplayed', JSON.stringify(referenceDisplayed));
             },
         //ON LANGUAGE SELECT EMIT LANGUAGE
+            emitLanguageSelected(newLanguage){
+                this.languageSelected = newLanguage;
+            },
             emitLanguage(){
                 var referenceDisplayed = JSON.parse(JSON.stringify(this.referenceDisplayed));
                 for (let i = 0; i < referenceDisplayed.length; i++) {
@@ -521,35 +421,12 @@
                 this.referenceDisplayed = referenceDisplayed;
                 var languageSelected = JSON.parse(JSON.stringify(this.languageSelected));
                 localStorage.setItem('languageSelected', languageSelected);
-                console.log(languageSelected);
                 
             },
         //
         //inspired from vue-laravel-crud
         
-        //POINTS CRUD NEED READ ONLY
-            // TO REMOVE
-            //methods other than read() are useless, but kept for the moment until I can remove them and not break anything in the process.
-            create() {
-                this.mute = true;
-                
-                window.axios.get('/api/points/create').then(({ data }) => {
-                this.points.push(new Point(data));
-                this.mute = false;
-                });
-                window.axios.get('/api/languages/create').then(({ data }) => {
-                this.languages.push(new Language(data));
-                this.mute = false;
-                });
-                window.axios.get('/api/categories/create').then(({ data }) => {
-                this.categories.push(new Category(data));
-                this.mute = false;
-                });
-                window.axios.get('/api/references/create').then(({ data }) => {
-                this.references.push(new Reference(data));
-                this.mute = false;
-                });
-            },
+        //POINTS READ
             readPoints() {
                 this.mute = true;
                 window.axios.get('/api/points').then(({ data }) => {
@@ -559,21 +436,6 @@
                     // console.log(point);
                     this.points.push(new Point(point));
                 });
-                this.mute = false;
-                });
-            },
-            update(id, color) {
-                this.mute = true;
-                window.axios.put(`/api/points/${id}`, { color }).then(() => {
-                this.points.find(point => point.id === id).color = color;
-                this.mute = false;
-                });
-            },
-            del(id) {
-                this.mute = true;
-                window.axios.delete(`/api/points/${id}`).then(() => {
-                let index = this.points.findIndex(point => point.id === id);
-                this.points.splice(index, 1);
                 this.mute = false;
                 });
             },
@@ -651,17 +513,12 @@
             },
     },
     created() {
-        //each line calls for the function responsible for the api returns
         this.readReferenceNames();
         this.readPoints();
         this.readReferences();
         this.readCategories();
         this.readLanguages();
         this.readCategoriesNames();
-        // The table is emitted at initialization so the map can work directly.
-        // this.$emit('displayPoints', this.referenceDisplayed);
-        // this.$emit('displayPoints', this.referenceDisplayed);
-        //logs for api returns
             // console.log("points"); 
             // console.log(this.points); 
             // console.log("references"); 
@@ -680,15 +537,16 @@
             // console.log(this.languageSelected);
     },
     components: {
-        // MapControls,
-        // PointListComponent,
+        TopToolbar,
         ContactForm,
-        ContactFormEn
     }
   }
 </script>
 
 <style scoped>
+    .asideDrawer{
+        max-height: 100% !important;
+    }
     .noPaddingLeft{
         margin-left: -15% !important;
     }

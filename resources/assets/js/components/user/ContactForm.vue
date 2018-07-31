@@ -1,5 +1,4 @@
 <template>
-
     <v-layout row justify-left>
         <v-dialog v-model="dialog" persistent max-width="500px" transition="dialog-bottom-transition">
             <v-btn
@@ -8,16 +7,20 @@
                 dark
                 center
                 color="green lighten-1">
-                <div class="linkColor">Contact</div>
+                <div class="linkColor">{{ $t("message.contact") }}</div>
             </v-btn>
             <v-card>
                 <v-card-title>
-                    <v-layout row wrap justify-space-between>
+                    <v-layout wrap justify-space-between>
                         <v-flex xs6 align-left>
-                            <span class="headline text-xs-left">Contactez-nous</span>
+                            <span class="headline text-xs-left">{{ $t("message.contact_us") }}</span>
                         </v-flex>
                         <v-flex xs2 align-right>
-                            <v-list-tile @click.native="dialog = false"  class="text-xs-right">
+                            <v-list-tile
+                                @click.native="dialog = false"  
+                                @click="clear"
+                                class="text-xs-right"
+                                >
                                 <v-list-tile-action class="cursorAction">
                                     <v-icon>close</v-icon>
                                 </v-list-tile-action>
@@ -30,17 +33,17 @@
                         <v-container grid-list-md>
                             <v-layout wrap>
                                 <v-flex xs12>
-                                    <span>Envoyez nous vos impressions ou vous questions !</span>
+                                    <span>{{ $t("message.contact_desc") }}Envoyez nous vos impressions ou vous questions !</span>
                                 </v-flex>
                                 <v-flex xs12>
-                                    <small>(Français ou Anglais uniquement)</small>
+                                    <small>{{ $t("message.contact_fr_or_en_only") }}</small>
                                 </v-flex>
                                 <v-flex xs12>
                                     <v-text-field
                                         v-model="name"
                                         :rules="nameRules"
-                                        label="Votre nom *"
-                                        hint="La saisie de votre nom est obligatoire"
+                                        :label="$t('message.contact_name_label')"
+                                        :hint="$t('message.contact_name_hint')"
                                         required
                                         :counter="100"
                                     ></v-text-field>
@@ -49,8 +52,8 @@
                                     <v-text-field
                                         v-model="title"
                                         :rules="titleRules"
-                                        label="Titre *"
-                                        hint="La saisie du titre du message est obligatoire"
+                                        :label="$t('message.contact_title_label')"
+                                        :hint="$t('message.contact_title_hint')"
                                         required
                                         :counter="100"
                                     ></v-text-field>
@@ -59,8 +62,8 @@
                                     <v-text-field
                                         v-model="email"
                                         :rules="emailRules"
-                                        label="Votre courriel"
-                                        hint="Ne remplissez ce champ que si vous souhaitez être recontactés."
+                                        :label="$t('message.contact_email_label')"
+                                        :hint="$t('message.contact_email_hint')"
                                         required
                                         :counter="100"
                                     ></v-text-field>
@@ -68,14 +71,14 @@
                                         v-model="text"
                                         :rules="textRules"
                                         outline
-                                        label="Texte *"
-                                        hint="La saisie du contenu du message est obligatoire"
+                                        :label="$t('message.contact_text_label')"
+                                        :hint="$t('message.contact_text_hint')"
                                         :counter="1000"
                                     ></v-textarea>
                                 </v-flex>
                             </v-layout>
                         </v-container>
-                        <small>* indique un champ obligatoire</small>
+                        <small>{{ $t("message.contact_required_fields") }}</small>
                     </v-card-text>
                     <v-card-actions>
                         <v-layout row wrap justify-space-between>
@@ -105,20 +108,19 @@
 
 <script>
     export default {
-        // props: ['value'],
         data () {
             return {
                 dialog: false,
                 valid: true,
                 name: '',
                 nameRules: [
-                    v => !!v || 'La saisie de votre nom est obligatoire',
-                    v => (v && v.length <= 100) || 'Trop long'
+                    v => !!v || this.$t('message.contact_nameRules_required'),
+                    v => (v && v.length <= 100) || this.$t('message.contact_too_long')
                 ],
                 title: '',
                 titleRules: [
-                    v => !!v || 'La saisie du titre du message est obligatoire',
-                    v => (v && v.length <= 100) || 'Trop long'
+                    v => !!v || this.$t('message.contact_titleRules_required'),
+                    v => (v && v.length <= 100) || this.$t('message.contact_too_long')
                 ],
                 email: '',
                 emailRules: [
@@ -126,8 +128,8 @@
                 ],
                 text: '',
                 textRules: [
-                    v => !!v || 'La saisie du contenu du message est obligatoire',
-                    v => (v && v.length <= 1000) || 'Trop long'
+                    v => !!v || this.$t('message.contact_textRules_required'),
+                    v => (v && v.length <= 1000) || this.$t('message.contact_too_long')
                 ],
             }
         },
@@ -135,7 +137,7 @@
             submit () {
                 if (this.$refs.form.validate()) {
                 // Native form submission is not yet supported
-                    optionnalMail ='Courriel non renseigné';
+                    optionnalMail =this.$t('message.contact_optionnal_mail');
                     if (this.email.length > 0) {
                         optionnalMail = this.email;
                     }
@@ -147,6 +149,21 @@
                     })
                     this.dialog = false;
                 }
+
+                // if (this.$refs.form.validate()) {
+                // // Native form submission is not yet supported
+                //     optionnalMail ='Courriel non renseigné';
+                //     if (this.email.length > 0) {
+                //         optionnalMail = this.email;
+                //     }
+                //     axios.post('/api/contactform', {
+                //         name: this.name,
+                //         title: this.title,
+                //         email: optionnalMail,
+                //         text: this.text
+                //     })
+                //     this.dialog = false;
+                // }
             },
             clear () {
                 this.$refs.form.reset()
@@ -161,7 +178,7 @@
         height: 45px;
         width: 100px;
         position: absolute;
-        right: 0;
+        right: 20px;
         bottom: 0px;
         z-index: 1;
     }

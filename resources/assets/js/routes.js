@@ -4,6 +4,7 @@ import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 
 import AdminComponent from './components/AdminComponent'
+import LanguagesAdminComponent from './components/LanguageAdministration'
 import LoginComponent from './components/LoginComponent'
 import LogoutComponent from './components/LogoutComponent'
 import PublicComponent from './components/PublicComponent'
@@ -19,6 +20,12 @@ const routes = [
         path: '/admin',
         name: 'admin',
         component: AdminComponent,
+        meta: { requiresAuth: true }
+    },
+    {
+        path: '/languages',
+        name: 'languages',
+        component: LanguagesAdminComponent,
         meta: { requiresAuth: true }
     },
     {

@@ -1,5 +1,16 @@
 <template>
     <div>
+    <!-- Create new category button -->
+        <v-list>
+            <v-btn
+                color="success"
+                @click="editCategory(null)">
+                <!-- editCategory is used as the result is exactly the same. -->
+                <v-icon>add</v-icon> Ajouter catégorie
+            </v-btn> 
+        </v-list>
+
+    <!-- Main list -->
         <v-expansion-panel
             expand>
             <!-- loop on categories -->
@@ -10,39 +21,11 @@
                 class="green lighten-3">
 
                 <!-- category header -->
-                <div slot="header">
+                <div class="headerCategories" slot="header">
                     <v-list
                         color="transparent"
                         class="transparent">
                             <v-list-tile>
-                                <v-menu
-                                        right
-                                        class="hidden-md-and-up">
-                                        <v-btn
-                                            slot="activator"
-                                            icon>
-                                            <v-icon>build</v-icon>
-                                        </v-btn>
-                            
-                                        <v-list>
-                                            <v-btn
-                                                color="success"
-                                                @click="createReference(category.id)">
-                                                ajouter réference
-                                            </v-btn>  
-                                            <v-btn
-                                                color="warning"
-                                                @click="editCategory(category.id)">
-                                                modifier
-                                            </v-btn>
-                                            <v-btn
-                                                color="error"
-                                                @click="deleteCategory(category.id)">
-                                                supprimer
-                                            </v-btn>
-                                        </v-list>
-                                </v-menu>
-
                                 <v-list-tile-action>
                                     <v-icon
                                         v-bind:style="{ color: category.color }">
@@ -54,7 +37,7 @@
                                     <!-- loop on names in categories & translations -->
                                     <v-list-tile-content
                                         v-for="(catName,a) in categoriesNames"
-                                        v-if="catName.fk_language_id == languageSelected && catName.fk_category_id == category.id"
+                                        v-if="catName.fk_language_code == languageSelected && catName.fk_category_id == category.id"
                                         :key="a">
                                         {{catName.text}}
                                     </v-list-tile-content>
@@ -63,26 +46,80 @@
                     </v-list>
                 </div>
 
-                <!-- category desktop buttons -->
+                <!-- categories desktop buttons -->
                 <v-list
+                    xs12
                     color="green lighten-3"
                     class="hidden-sm-and-down green lighten-3">
-                    <v-btn
-                        color="success"
-                        @click="createReference(category.id)">
-                        ajouter référence
-                    </v-btn>   
-                    <v-btn
-                        color="warning"
-                        @click="editCategory(category.id)">
-                        modifier
-                    </v-btn>
-                    <v-btn
-                        color="error"
-                        @click="deleteCategory(category.id)">
-                       supprimer
-                    </v-btn>
+                    <v-layout align-center justify-space-around>
+                        <v-btn
+                            color="success"
+                            @click="createReference(category.id)">
+                            ajouter référence
+                        </v-btn>   
+                        <v-btn
+                            color="warning"
+                            @click="editCategory(category.id)">
+                            modifier
+                        </v-btn>
+                        <v-btn
+                            color="error"
+                            @click="deleteCategory(category.id)">
+                            supprimer
+                        </v-btn>
+                    </v-layout>
                 </v-list>
+
+                <!-- categories responsive buttons -->
+                        <v-list
+                            color="green lighten-3"
+                            class="hidden-md-and-up green lighten-3">
+                            <v-layout align-center justify-space-around>
+                                <v-btn
+                                    color="success"
+                                    @click="createReference(category.id)">
+                                    <v-icon>add</v-icon>
+                                </v-btn>
+                                <v-btn
+                                    color="warning"
+                                    @click="editCategory(category.id)">
+                                    <v-icon>build</v-icon>
+                                 </v-btn>
+                                <v-btn
+                                    color="error"
+                                    @click="deleteCategory(category.id)">
+                                     <v-icon>delete</v-icon>
+                                </v-btn>
+                            </v-layout>
+                        </v-list>
+                <!-- <v-menu
+                    right
+                    class="hidden-md-and-up"
+                    v-model="readonly">
+                    <v-btn
+                        slot="activator"
+                        icon>
+                        <v-icon>build</v-icon>
+                    </v-btn>
+        
+                    <v-list>
+                        <v-btn
+                            color="success"
+                            @click="createReference(category.id)">
+                            ajouter réference
+                        </v-btn>  
+                        <v-btn
+                            color="warning"
+                            @click="editCategory(category.id)">
+                            modifier
+                        </v-btn>
+                        <v-btn
+                            color="error"
+                            @click="deleteCategory(category.id)">
+                            supprimer
+                        </v-btn>
+                    </v-list>
+                </v-menu> -->
 
                 <!-- loop on references in categories -->
                 <v-expansion-panel
@@ -96,39 +133,11 @@
                         class="green lighten-4">
 
                         <!-- reference header -->
-                        <div slot="header">
+                        <div  class="headerReferences" slot="header">
                             <v-list
                                 color="transparent"
                                 class="transparent">
                                     <v-list-tile>
-                                        <v-menu
-                                                right
-                                                class="hidden-md-and-up">
-                                                <v-btn
-                                                    slot="activator"
-                                                    icon>
-                                                    <v-icon>build</v-icon>
-                                                </v-btn>
-                                    
-                                                <v-list>
-                                                    <v-btn
-                                                        color="success"
-                                                        @click="createPoint(reference.id)">
-                                                        ajouter point
-                                                    </v-btn>
-                                                    <v-btn
-                                                        color="warning"
-                                                        @click="editReference(reference.id)">
-                                                        modifier
-                                                    </v-btn>
-                                                    <v-btn
-                                                        color="error"
-                                                        @click="deleteReference(reference.id)">
-                                                        supprimer
-                                                    </v-btn>
-                                                </v-list>
-                                        </v-menu>
-
                                         <v-list-tile-action>
                                             <v-icon
                                                 v-bind:style="{ color: category.color }">
@@ -140,7 +149,7 @@
                                             <!-- loop on names in references & translations -->
                                             <v-list-tile-content
                                                 v-for="(refName,b) in referenceNames"
-                                                v-if="refName.fk_language_id == languageSelected && refName.fk_reference_id == reference.id"
+                                                v-if="refName.fk_language_code == languageSelected && refName.fk_reference_id == reference.id"
                                                 :key="b">
                                                 {{refName.fk_reference_id}} - 
                                                 {{refName.text}}
@@ -150,25 +159,76 @@
                             </v-list>
                         </div>
 
-                        <!-- reference desktop buttons -->
+                        <!-- references desktop buttons -->
                         <v-list
                             color="green lighten-4"
                             class="hidden-sm-and-down green lighten-4">
-                            <v-btn
-                                color="success"
-                                @click="createPoint(reference.id)">
-                                ajouter point
-                            </v-btn>                                       <v-btn
-                                color="warning"
-                                @click="editReference(reference.id)">
-                                modifier
-                            </v-btn>
-                            <v-btn
-                                color="error"
-                                @click="deleteReference(reference.id)">
-                                supprimer
-                            </v-btn>
+                            <v-layout align-center justify-space-around>
+                                <v-btn
+                                    color="success"
+                                    @click="createPoint(reference.id)">
+                                    ajouter point
+                                </v-btn>                                 <v-btn
+                                    color="warning"
+                                    @click="editReference(reference.id)">
+                                    modifier
+                                </v-btn>
+                                <v-btn
+                                    color="error"
+                                    @click="deleteReference(reference.id)">
+                                    supprimer
+                                </v-btn>
+                            </v-layout>
                         </v-list>
+
+                        <!-- references responsive button -->
+                        <v-list
+                            color="green lighten-4"
+                            class="hidden-md-and-up green lighten-4">
+                            <v-layout align-center justify-space-around>
+                                <v-btn
+                                    color="success"
+                                    @click="createPoint(reference.id)">
+                                    <v-icon>add</v-icon>
+                                </v-btn>                                       <v-btn
+                                    color="warning"
+                                    @click="editReference(reference.id)">
+                                    <v-icon>build</v-icon>
+                                </v-btn>
+                                <v-btn
+                                    color="error"
+                                    @click="deleteReference(reference.id)">
+                                    <v-icon>delete</v-icon>
+                                </v-btn>
+                            </v-layout>
+                        </v-list>
+                        <!-- <v-menu
+                             right
+                             class="hidden-md-and-up">
+                            <v-btn
+                                slot="activator"
+                                icon>
+                                <v-icon>build</v-icon>
+                            </v-btn>
+                                    
+                             <v-list>
+                                 <v-btn
+                                    color="success"
+                                     @click="createPoint(reference.id)">
+                                    ajouter point
+                                </v-btn>
+                                <v-btn
+                                    color="warning"
+                                    @click="editReference(reference.id)">
+                                    modifier
+                                </v-btn>
+                                <v-btn
+                                    color="error"
+                                    @click="deleteReference(reference.id)">
+                                    supprimer
+                                </v-btn>
+                            </v-list>
+                        </v-menu> -->
 
                         <!-- loop on points in references -->
                         <v-list
@@ -176,7 +236,7 @@
                             v-if="point.fk_reference_id == reference.id"
                             :key="z"
                             color="white"
-                            class="white">
+                            class="white pointsListElement">
                             <v-list-tile>
                                 <v-list-tile-action>
                                             <v-menu right>
@@ -216,6 +276,7 @@
             </v-expansion-panel-content>
         </v-expansion-panel>
 
+    <!-- Alert in case of imminent destroy -->
         <v-layout row justify-center>
             <v-dialog v-model="dialog" persistent max-width="290">
                 <v-card>
@@ -251,6 +312,7 @@
             </v-dialog>
         </v-layout>
 
+    <!-- Message in case of impossible action -->
         <v-snackbar
             v-model="snackbar"
             :bottom="snackY === 'bottom'"
@@ -273,21 +335,16 @@
 
 <script>
     //Needed for promises to work
-        function Language({ id, name, code}) {
-            this.id = id;
-            this.name = name;
-            this.code = code;
-        }
         function Category({ id, icon, color, weight}) {
             this.id = id;
             this.icon = icon;
             this.color = color;
             this.weight = weight;
         }
-        function CategoryName({ id, fk_category_id, fk_language_id, text}) {
+        function CategoryName({ id, fk_category_id, fk_language_code, text}) {
             this.id = id;
             this.fk_category_id = fk_category_id;
-            this.fk_language_id = fk_language_id;
+            this.fk_language_code = fk_language_code;
             this.text = text;
         }
         function Reference({ id, icon, color, weight, fk_category_id}) {
@@ -297,10 +354,10 @@
             this.weight = weight;
             this.fk_category_id = fk_category_id;
         }
-        function ReferenceName({ id, fk_reference_id, fk_language_id, text}) {
+        function ReferenceName({ id, fk_reference_id, fk_language_code, text}) {
             this.id = id;
             this.fk_reference_id = fk_reference_id;
-            this.fk_language_id = fk_language_id;
+            this.fk_language_code = fk_language_code;
             this.text = text;
         }
         function Point({ id, link, icon, color, longitude, lattitude, image_path, fk_reference_id}) {
@@ -313,10 +370,10 @@
             this.image_path = image_path;
             this.fk_reference_id = fk_reference_id;
         }
-        function PointName({ id, fk_point_id, fk_language_id, title, description, linkalias}) {
+        function PointName({ id, fk_point_id, fk_language_code, title, description, linkalias}) {
             this.id = id;
             this.fk_point_id = fk_point_id;
-            this.fk_language_id = fk_language_id;
+            this.fk_language_code = fk_language_code;
             this.title = title;
             this.description = description;
             this.linkalias = linkalias;
@@ -328,8 +385,7 @@
       return {
         points: [],
         pointsContents: [],
-        languages: [],
-        languageSelected: 0,
+        languageSelected: 'fr',
         categories: [],
         categoriesNames: [],
         references: [],
@@ -345,42 +401,12 @@
         dialogId: null,
         dialogType: '',
         working: false,
+        readonly: false,
       }
     },
     watch: {
-        languages(val, oldVal){
-            this.SetAdminLanguage();
-        },
-        languageSelected(val, oldVal) {
-            this.languageSelected = val
-            this.emitLanguage();
-        }
     },
     methods: {
-        //ON START FIND FRENCH LANGUAGE
-            SetAdminLanguage() {
-                var languageCode = window.navigator.userLanguage || window.navigator.language;
-                // var languageCode = "de-AT";
-                var language = languageCode.substring(0,2);
-                var languages = JSON.parse(JSON.stringify(this.languages));
-                var languageFrench = null;
-                var languageBackup = null;
-
-                languages.forEach(lang => {   
-                        if (lang["code"] == "fr") {
-                            languageFrench = lang["id"];
-                        }
-                        else{
-                            languageBackup = lang["id"];
-                        }
-                });
-                if (languageFrench == null) {
-                        // if french isn't found, fall back to any other language last created.
-                        languageFrench = languageBackup;
-                }
-                    
-                this.languageSelected = languageFrench;
-            },
         //POINTS READ
             readPoints() {
                 this.mute = true;
@@ -411,14 +437,7 @@
                 window.axios.get('/api/references').then(({ data }) => {
                 data.forEach(reference => {
                     //loops over each reference in db
-                    // console.log("reference :");
-                    // console.log(reference);
                     this.references.push(new Reference(reference));
-                    // var obj = {};
-                    // obj["id"] = reference.id;
-                    // obj["isToBeDisplayed"] = false;
-                    // obj["catColor"] = "";
-                    // this.referenceDisplayed.push(obj);
                 });
                 this.mute = false;
                 });
@@ -463,24 +482,10 @@
                 this.mute = false;
                 });
             },
-        //LANGUAGES READ
-            readLanguages() {
-                this.mute = true;
-                window.axios.get('/api/languages').then(({ data }) => {
-                data.forEach(language => {
-                    //loops over each language in db
-                    // console.log("language :");
-                    // console.log(language);
-                    this.languages.push(new Language(language));
-                    
-                });
-                this.mute = false;
-                });
-            },
         //
         //EDIT CATEGORIES
             editCategory(id){
-                console.log("go edit category "+ id);
+                this.$emit('pageToShow', "category", id);
             },
         //DELETE CATEGORIES
             deleteCategory(idCategory){
@@ -494,7 +499,7 @@
                 }
                 var idName = '';
                 for (let y = 0; y < this.categoriesNames.length; y++) {
-                    if (this.categoriesNames[y]["fk_category_id"] == idCategory && this.categoriesNames[y]["fk_language_id"] == this.languageSelected) {
+                    if (this.categoriesNames[y]["fk_category_id"] == idCategory && this.categoriesNames[y]["fk_language_code"] == this.languageSelected) {
                         idName = this.categoriesNames[y]["text"]
                     }
                 }
@@ -517,11 +522,11 @@
             },
         //CREATE REFERENCE
             createReference(id){
-                console.log("go create reference under category "+ id);
+                this.$emit('pageToShow', "referenceParent", id);
             },
         //EDIT REFERENCE
             editReference(id){
-                console.log("go edit reference "+ id);
+                this.$emit('pageToShow', "reference", id);
             },
         //DELETE REFERENCE
             deleteReference(idReference){
@@ -535,7 +540,7 @@
                 }
                 var idName = '';
                 for (let y = 0; y < this.referenceNames.length; y++) {
-                    if (this.referenceNames[y]["fk_reference_id"] == idReference && this.referenceNames[y]["fk_language_id"] == this.languageSelected) {
+                    if (this.referenceNames[y]["fk_reference_id"] == idReference && this.referenceNames[y]["fk_language_code"] == this.languageSelected) {
                         idName = this.referenceNames[y]["text"]
                     }
                 }
@@ -559,17 +564,17 @@
             },
         //CREATE POINT
             createPoint(id){
-                console.log("go create point under reference "+ id);
+                this.$emit('pageToShow', "pointParent", id);
             },
         //EDIT POINT
             editPoint(id){
-                console.log("go edit point "+ id);
+                this.$emit('pageToShow', "point", id);
             },
         //DELETE POINT
             deletePoint(idPoint){
                 var idName = '';
                 for (let y = 0; y < this.pointsContents.length; y++) {
-                    if (this.pointsContents[y]["fk_point_id"] == idPoint && this.pointsContents[y]["fk_language_id"] == this.languageSelected) {
+                    if (this.pointsContents[y]["fk_point_id"] == idPoint && this.pointsContents[y]["fk_language_code"] == this.languageSelected) {
                         idName = this.pointsContents[y]["title"]
                     }
                 }
@@ -598,15 +603,15 @@
             },
         //DESTROY CATEGORY
             destroyCategory(id){
-                this.$emit('pageToShow', "category", id);
+                // this.$emit('pageToShow', "category", id);
             },
         //DESTROY REFERENCE
             destroyReference(id){
-                this.$emit('pageToShow', "reference", id);
+                // this.$emit('pageToShow', "reference", id);
             },
         //DESTROY POINT
             destroyPoint(id){
-                this.$emit('pageToShow', "point", id);
+                // this.$emit('pageToShow', "point", id);
             },
     },
     created() {
@@ -615,7 +620,6 @@
         this.readPointsPopupContent();
         this.readReferences();
         this.readCategories();
-        this.readLanguages();
         this.readCategoriesNames();
     },
   }
@@ -625,7 +629,22 @@
     .v-expansion-panel__container{
         border-top: none !important;
     }
-    .v-snack--bottom{
-        bottom: 50px;
+    .headerCategories{
+        padding-left: 0px;
     }
+    .headerReferences{
+        padding-left: 10px;
+    }
+    @media screen and (min-width: 600px) {
+        .headerReferences{
+            padding-left: 30px;
+        }
+    }
+    .pointsListElement{
+        padding-left: 80px;        
+    }
+
+    /* .v-snack--bottom{
+        bottom: 50px;
+    } */
 </style>

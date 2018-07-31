@@ -19,7 +19,7 @@ class PointsnamesController extends Controller
         $pointName = new Pointsnames();
         $pointName->text = $faker->lexify('????????');
         $pointName->fk_point_id = $faker->boolean ? '2' : '4';
-        $pointName->fk_language_id = $faker->boolean ? '2' : '4';
+        $pointName->fk_language_code = $faker->boolean ? '2' : '4';
         $pointName->save();
 
         return response($pointName->jsonSerialize(), Response::HTTP_CREATED);
@@ -30,7 +30,7 @@ class PointsnamesController extends Controller
         $pointName = Pointsnames::findOrFail($id);
         $pointName->text = $request->text;
         $pointName->$fk_reference_id = $request->fk_reference_id;
-        $pointName->fk_language_id = $request->fk_language_id;
+        $pointName->fk_language_code = $request->fk_language_code;
         $pointName->save();
 
         return response(null, Response::HTTP_OK);

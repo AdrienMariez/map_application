@@ -17,7 +17,7 @@ class CategoriesnamesController extends Controller
     public function create(Generator $faker)
     {
         $categoryName = new Categoriesnames();
-        $categoryName->fk_language_id = $faker->boolean ? '1' : '2';
+        $categoryName->fk_language_code = $faker->boolean ? '1' : '2';
         $categoryName->text = $faker->lexify('????????');
         $categoryName->save();
 
@@ -27,7 +27,7 @@ class CategoriesnamesController extends Controller
     public function update(Request $request, $id)
     {
         $categoryName = Categoriesnames::findOrFail($id);
-        $categoryName->$request->fk_language_id;
+        $categoryName->$request->fk_language_code;
         $categoryName->text = $request->text;
         $categoryName->save();
 

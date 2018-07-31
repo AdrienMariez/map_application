@@ -1,10 +1,10 @@
 <template>
   <v-app id="inspire">
  
-    <top-nav
+    <admin-header
         @pageToShow="pageToShow"
-        id="topNav">
-    </top-nav>
+        id="adminHeader">
+    </admin-header>
 
     <main-list
         v-if="page == ''"
@@ -19,16 +19,20 @@
     </edit-category>
 
     <edit-reference
-        v-if="page == 'reference'"
+        v-bind:idSelected="idSelected"
+        v-bind:page="page"
+        v-if="page == 'reference' || page == 'referenceParent'"
         class="adminPage">
     </edit-reference>
 
     <edit-point
-        v-if="page == 'point'"
+        v-bind:idSelected="idSelected"
+        v-bind:page="page"
+        v-if="page == 'point' || page == 'pointParent'"
         class="adminPage">
     </edit-point>
 
-    <v-footer
+    <!-- <v-footer
       app
       text-xs-center
       align-center
@@ -45,13 +49,13 @@
         </div>
         <a target="_blank" rel="noopener noreferrer" href="http://www.prayssac.fr/">Mairie de Prayssac</a>
       </v-layout>
-    </v-footer>
+    </v-footer> -->
 
   </v-app>
 </template>
 
 <script>
-import TopNav from "./admin/TopNav.vue";
+import AdminHeader from "./admin/AdminHeader.vue";
 import MainList from "./admin/MainList.vue";
 import EditCategory from "./admin/EditCategory.vue";
 import EditReference from "./admin/EditReference.vue";
@@ -68,7 +72,7 @@ export default {
     },
     methods: {
         //CHANGE PAGE
-            pageToShow(newValue, newId) {
+            pageToShow(newValue, newId) {           
                 this.page = newValue;
                 this.idSelected = newId;
             },  
@@ -86,7 +90,7 @@ export default {
             })
     },
     components: {
-        TopNav,
+        AdminHeader,
         MainList,
         EditCategory,
         EditReference,
@@ -99,8 +103,9 @@ export default {
     a {
         color: rgb(146, 221, 123) !important;
         text-decoration: inherit;
+        margin-left: 4px;
     }
-    #topNav {
+    #adminHeader {
         z-index: 3;
         /* position: fixed;
         top: 0;
@@ -109,9 +114,9 @@ export default {
     .adminList {
         z-index: 1;
     }
-    #footer {
+    /* #footer {
         z-index: 2;
-    }
+    } */
     .flexFooterPosition {
         justify-content: center;
         /* if need to get it at start position : */
