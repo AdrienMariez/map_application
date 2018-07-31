@@ -180,7 +180,7 @@
         position: absolute;
         right: 20px;
         bottom: 0px;
-        z-index: 1;
+        z-index: 50;
     }
     .buttonContact > button{
         right: 5px;

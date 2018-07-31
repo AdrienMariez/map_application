@@ -16,6 +16,12 @@
       @emitLocalStorage="emitLocalStorage">
     </locations-map>
 
+    <!-- Contact form -->
+        <contact-form
+            v-if="language == 'fr' || language == 'en'"
+            class="buttonContact">
+        </contact-form>
+
     <v-footer
       app
       text-xs-center
@@ -44,6 +50,7 @@
 <script>
 import MapMenu from "./user/MapMenu.vue";
 import LocationsMap from "./user/LocationsMap.vue";
+import ContactForm from './user/ContactForm.vue'
 export default {
   name: "app",
   data() {
@@ -52,7 +59,7 @@ export default {
         drawerCallBack: true,
         pointsDisplayed: [],
         localStoragePointsDisplayed: [],
-        language: 0,
+        language: '',
         sender: false,
     };
   },
@@ -73,7 +80,8 @@ export default {
   },
   components: {
     LocationsMap,
-    MapMenu
+    MapMenu,
+    ContactForm,
   }
 };
 </script>

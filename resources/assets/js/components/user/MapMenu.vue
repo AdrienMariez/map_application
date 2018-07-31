@@ -167,11 +167,7 @@
             @emitLanguageSelected="emitLanguageSelected"
             @emitDrawer="emitDrawer">
         </top-toolbar>
-    <!-- Contact form -->
-        <contact-form
-            v-if="languageSelected == 'fr' || languageSelected == 'en'"
-            class="buttonContact">
-        </contact-form>
+
 
     </div>
 </template>

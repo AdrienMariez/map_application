@@ -73855,6 +73855,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__user_MapMenu_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__user_MapMenu_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__user_LocationsMap_vue__ = __webpack_require__(130);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__user_LocationsMap_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__user_LocationsMap_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__user_ContactForm_vue__ = __webpack_require__(119);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__user_ContactForm_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__user_ContactForm_vue__);
 //
 //
 //
@@ -73898,6 +73900,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+
 
 
 
@@ -73909,7 +73918,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       drawerCallBack: true,
       pointsDisplayed: [],
       localStoragePointsDisplayed: [],
-      language: 0,
+      language: '',
       sender: false
     };
   },
@@ -73931,7 +73940,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   },
   components: {
     LocationsMap: __WEBPACK_IMPORTED_MODULE_1__user_LocationsMap_vue___default.a,
-    MapMenu: __WEBPACK_IMPORTED_MODULE_0__user_MapMenu_vue___default.a
+    MapMenu: __WEBPACK_IMPORTED_MODULE_0__user_MapMenu_vue___default.a,
+    ContactForm: __WEBPACK_IMPORTED_MODULE_2__user_ContactForm_vue___default.a
   }
 });
 
@@ -74036,10 +74046,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__TopToolbar_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__TopToolbar_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ContactForm_vue__ = __webpack_require__(119);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ContactForm_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__ContactForm_vue__);
-//
-//
-//
-//
 //
 //
 //
@@ -74730,7 +74736,7 @@ exports = module.exports = __webpack_require__(0)(false);
 
 
 // module
-exports.push([module.i, "\n.buttonContact[data-v-3f2012b7]{\n    height: 45px;\n    width: 100px;\n    position: absolute;\n    right: 20px;\n    bottom: 0px;\n    z-index: 1;\n}\n.buttonContact > button[data-v-3f2012b7]{\n    right: 5px;\n}\n.linkColor[data-v-3f2012b7]{\n    color: rgb(245, 255, 153);\n}\n.logoContainerMini[data-v-3f2012b7]{\n    height: 100%;\n}\n.logoContainerMini > img[data-v-3f2012b7]{\n    width: 48px;\n    height: 48px;\n}\n.cursorAction[data-v-3f2012b7]{\n    cursor: pointer;\n}\na[data-v-3f2012b7]{\n    color: rgb(146, 221, 123) !important;\n    text-decoration: inherit;\n}\n", ""]);
+exports.push([module.i, "\n.buttonContact[data-v-3f2012b7]{\n    height: 45px;\n    width: 100px;\n    position: absolute;\n    right: 20px;\n    bottom: 0px;\n    z-index: 50;\n}\n.buttonContact > button[data-v-3f2012b7]{\n    right: 5px;\n}\n.linkColor[data-v-3f2012b7]{\n    color: rgb(245, 255, 153);\n}\n.logoContainerMini[data-v-3f2012b7]{\n    height: 100%;\n}\n.logoContainerMini > img[data-v-3f2012b7]{\n    width: 48px;\n    height: 48px;\n}\n.cursorAction[data-v-3f2012b7]{\n    cursor: pointer;\n}\na[data-v-3f2012b7]{\n    color: rgb(146, 221, 123) !important;\n    text-decoration: inherit;\n}\n", ""]);
 
 // exports
 
@@ -75618,11 +75624,7 @@ var render = function() {
           emitLanguageSelected: _vm.emitLanguageSelected,
           emitDrawer: _vm.emitDrawer
         }
-      }),
-      _vm._v(" "),
-      _vm.languageSelected == "fr" || _vm.languageSelected == "en"
-        ? _c("contact-form", { staticClass: "buttonContact" })
-        : _vm._e()
+      })
     ],
     1
   )
@@ -76549,6 +76551,10 @@ var render = function() {
         },
         on: { emitLocalStorage: _vm.emitLocalStorage }
       }),
+      _vm._v(" "),
+      _vm.language == "fr" || _vm.language == "en"
+        ? _c("contact-form", { staticClass: "buttonContact" })
+        : _vm._e(),
       _vm._v(" "),
       _c(
         "v-footer",
