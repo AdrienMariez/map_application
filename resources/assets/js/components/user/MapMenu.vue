@@ -215,10 +215,11 @@
             this.image_path = image_path;
         }
     //END Needed for promises to work
-  import TopToolbar from './TopToolbar.vue'
-  import ContactForm from './ContactForm.vue'
+import TopToolbar from './TopToolbar.vue'
+import ContactForm from './ContactForm.vue'
+import ApiCalls from './ApiCalls'
 
-  export default {
+export default {
     props: ['localStoragePointsDisplayed'],
     data () {
       return {
@@ -421,7 +422,12 @@
             },
         //
         //inspired from vue-laravel-crud
-        
+        //
+        //API CALLS
+            apicalls() {
+                this.references = ApiCalls.readReferences();
+            },            
+        //
         //POINTS READ
             readPoints() {
                 this.mute = true;
@@ -437,21 +443,7 @@
             },
         //REFERENCES READ
             readReferences() {
-                this.mute = true;
-                window.axios.get('/api/references').then(({ data }) => {
-                data.forEach(reference => {
-                    //loops over each reference in db
-                    // console.log("reference :");
-                    // console.log(reference);
-                    this.references.push(new Reference(reference));
-                    // var obj = {};
-                    // obj["id"] = reference.id;
-                    // obj["isToBeDisplayed"] = false;
-                    // obj["catColor"] = "";
-                    // this.referenceDisplayed.push(obj);
-                });
-                this.mute = false;
-                });
+                this.references = ApiCalls.readReferences();
             },
         //REFERENCE NAMES READ
             readReferenceNames() {
@@ -509,6 +501,7 @@
             },
     },
     created() {
+        // this.apicalls();
         this.readReferenceNames();
         this.readPoints();
         this.readReferences();

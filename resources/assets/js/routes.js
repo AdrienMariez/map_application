@@ -5,8 +5,8 @@ Vue.use(VueRouter)
 
 import AdminComponent from './components/AdminComponent'
 import LanguagesAdminComponent from './components/LanguageAdministration'
-import LoginComponent from './components/LoginComponent'
-import LogoutComponent from './components/LogoutComponent'
+import LoginComponent from './components/auth/LoginComponent'
+import LogoutComponent from './components/auth/LogoutComponent'
 import PublicComponent from './components/PublicComponent'
 import store from './store'
 

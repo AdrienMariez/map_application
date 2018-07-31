@@ -43,8 +43,8 @@
 </template>
 
 <script>
-    import store from '../store'
-    import AdminHeader from "./admin/AdminHeaderNoNav.vue";
+    import store from '../../store'
+    import AdminHeader from "./AdminHeaderNoNav.vue";
 
     export default {
         data() {
