@@ -94,7 +94,7 @@
                                     <v-icon
                                         large
                                         v-bind:style="{ color: category.color }">
-                                        fa-{{category.icon}}
+                                        {{category.icon}}
                                     </v-icon>
                                 </v-list-tile-action>
                                 <v-list-tile-action v-if="!mini">
@@ -131,7 +131,7 @@
                                 <v-icon
                                     large
                                     v-bind:style="{ color: category.color }">
-                                    fa-{{reference.icon}}
+                                    {{reference.icon}}
                                 </v-icon>
                             </v-list-tile-action>
                             <v-list-tile-action>
@@ -167,51 +167,12 @@
 </template>
 
 <script>
-    //Needed for promises to work
-        function Language({ id, name, code}) {
-            this.id = id;
-            this.name = name;
-            this.code = code;
-        }
-        function Category({ id, icon, color, weight}) {
-            this.id = id;
-            this.icon = icon;
-            this.color = color;
-            this.weight = weight;
-        }
-        function CategoryName({ id, fk_category_id, fk_language_code, text}) {
-            this.id = id;
-            this.fk_category_id = fk_category_id;
-            this.fk_language_code = fk_language_code;
-            this.text = text;
-        }
-        function Reference({ id, icon, color, weight, fk_category_id}) {
-            this.id = id;
-            this.icon = icon;
-            this.color = color;
-            this.weight = weight;
-            this.fk_category_id = fk_category_id;
-        }
-        function ReferenceName({ id, fk_reference_id, fk_language_code, text}) {
-            this.id = id;
-            this.fk_reference_id = fk_reference_id;
-            this.fk_language_code = fk_language_code;
-            this.text = text;
-        }
-        function Point({ id, link, icon, color, longitude, lattitude, uses_image, image_path}) {
-            this.id = id;
-            this.link = link;
-            this.icon = icon;
-            this.color = color;
-            this.longitude = longitude;
-            this.lattitude = lattitude;
-            this.uses_image = uses_image;
-            this.image_path = image_path;
-        }
-    //END Needed for promises to work
 import TopToolbar from './TopToolbar.vue'
 import ContactForm from './ContactForm.vue'
-import methods from './../MethodsApi'
+import pointsMethods from './../../services/points.js'
+import categoriesMethods from './../../services/categories.js'
+import referencesMethods from './../../services/references.js'
+import languagesMethods from './../../services/languages.js'
 
 export default {
     props: ['localStoragePointsDisplayed'],
@@ -415,98 +376,18 @@ export default {
                 
             },
         //
-        //inspired from vue-laravel-crud
-        //
         //API CALLS
             methodsApiCalls() {
-                this.categories = methods.readCategories();
-                this.categoriesNames = methods.readCategoriesNames();
-                this.references = methods.readReferences();
-                this.referenceNames = methods.readReferenceNames();
-                this.points = methods.readPoints();
-                this.languages = methods.readLanguages();
-            },            
-        //
-        //POINTS READ
-            readPoints() {
-                this.mute = true;
-                window.axios.get('/api/points').then(({ data }) => {
-                data.forEach(point => {
-                    //loops over each point in db
-                    // console.log("point :");
-                    // console.log(point);
-                    this.points.push(new Point(point));
-                });
-                this.mute = false;
-                });
-            },
-        //REFERENCES READ
-            readReferences() {
-                this.references = MethodsApi.readReferences();
-            },
-        //REFERENCE NAMES READ
-            readReferenceNames() {
-                this.mute = true;
-                window.axios.get('/api/referencesnames').then(({ data }) => {
-                data.forEach(referenceName => {
-                    //loops over each reference name in db
-                    // console.log("reference name :");
-                    // console.log(referenceName);
-                    this.referenceNames.push(new ReferenceName(referenceName));
-                });
-                this.mute = false;
-                });
-            },
-        // CATEGORIES READ
-            readCategories() {
-                this.mute = true;
-                window.axios.get('/api/categories').then(({ data }) => {
-                data.forEach(category => {
-                    //loops over each category in db
-                    // console.log("category :");
-                    // console.log(category);
-                    this.categories.push(new Category(category));
-                });
-                this.mute = false;
-                });
-            },
-        //CATEGORIES NAMES READ
-            readCategoriesNames() {
-                this.mute = true;
-                window.axios.get('/api/categoriesnames').then(({ data }) => {
-                data.forEach(categoryName => {
-                    //loops over each category name in db
-                    // console.log("category name :");
-                    // console.log(categoryName);
-                    this.categoriesNames.push(new CategoryName(categoryName));
-                    
-                });
-                this.mute = false;
-                });
-            },
-        //LANGUAGES READ
-            readLanguages() {
-                this.mute = true;
-                window.axios.get('/api/languages').then(({ data }) => {
-                data.forEach(language => {
-                    //loops over each language in db
-                    // console.log("language :");
-                    // console.log(language);
-                    this.languages.push(new Language(language));
-                    
-                });
-                this.mute = false;
-                });
+                this.categories = categoriesMethods.readCategories();
+                this.categoriesNames = categoriesMethods.readCategoriesNames();
+                this.references = referencesMethods.readReferences();
+                this.referenceNames = referencesMethods.readReferenceNames();
+                this.points = pointsMethods.readPoints();
+                this.languages = languagesMethods.readLanguages();
             },
     },
     created() {
         this.methodsApiCalls();
-        // this.readReferenceNames();
-        // this.readPoints();
-        // this.readReferences();
-        // this.readCategories();
-        // this.readLanguages();
-        // this.readCategoriesNames();
     },
     components: {
         TopToolbar,
@@ -518,9 +399,6 @@ export default {
 <style scoped>
     .asideDrawer{
         max-height: 100% !important;
-    }
-    .noPaddingLeftRight:first-child{
-        padding: 0px 0px !important;
     }
     .v-list__tile__action--stack{
         padding-top: 0 !important;

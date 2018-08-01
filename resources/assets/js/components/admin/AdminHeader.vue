@@ -153,8 +153,6 @@
   export default {
     data () {
       return {
-        languages: [],
-        languageSelected: 0,
         links: [
             { title: "Retour à la carte", page: "public", icon: "map" },
             { title: "Retourner au menu d'administration principal", page: "admin", icon: "list" },
@@ -163,42 +161,7 @@
         ]
       }
     },
-    watch: {
-        languages(val, oldVal){
-            this.SetAdminLanguage();
-        },
-        languageSelected(val, oldVal) {
-            this.languageSelected = val
-            this.emitLanguage();
-        }
-    },
     methods: {
-        //ON START FIND FRENCH LANGUAGE
-            SetAdminLanguage() {
-
-                var languageCode = window.navigator.userLanguage || window.navigator.language;
-                // var languageCode = "de-AT";
-                var language = languageCode.substring(0,2);
-                var languages = JSON.parse(JSON.stringify(this.languages));
-                var languageFrench = null;
-                var languageBackup = null;
-
-                languages.forEach(lang => {   
-                        if (lang["code"] == "fr") {
-                            languageFrench = lang["id"];
-                        }
-                        else{
-                            languageBackup = lang["id"];
-                        }
-                });
-                if (languageFrench == null) {
-                        // if french isn't found, fall back to any other language last created.
-                        languageFrench = languageBackup;
-                }
-                    
-                this.languageSelected = languageFrench;
-            },
-
         //REDIRECTION
             redirect(link){
                 this.$router.push({ name: link })
@@ -219,10 +182,6 @@
                 });
             },
     },
-    created() {
-    },
-    components: {
-    }
   }
 </script>
 

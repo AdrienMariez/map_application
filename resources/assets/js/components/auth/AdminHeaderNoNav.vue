@@ -34,71 +34,11 @@
 </template>
 
 <script>
-    //Needed for promises to work
-        function Language({ id, name, code}) {
-            this.id = id;
-            this.name = name;
-            this.code = code;
-        }
-    //END Needed for promises to work
-
 
   export default {
     data () {
       return {
-        languages: [],
-        languageSelected: 0
       }
-    },
-    watch: {
-        languages(val, oldVal){
-            this.SetAdminLanguage();
-        },
-        languageSelected(val, oldVal) {
-            this.languageSelected = val
-            this.emitLanguage();
-        }
-    },
-    methods: {
-        //ON START FIND FRENCH LANGUAGE
-            SetAdminLanguage() {
-
-                var languageCode = window.navigator.userLanguage || window.navigator.language;
-                // var languageCode = "de-AT";
-                var language = languageCode.substring(0,2);
-                var languages = JSON.parse(JSON.stringify(this.languages));
-                var languageFrench = null;
-                var languageBackup = null;
-
-                languages.forEach(lang => {   
-                        if (lang["code"] == "fr") {
-                            languageFrench = lang["id"];
-                        }
-                        else{
-                            languageBackup = lang["id"];
-                        }
-                });
-                if (languageFrench == null) {
-                        // if french isn't found, fall back to any other language last created.
-                        languageFrench = languageBackup;
-                }
-                    
-                this.languageSelected = languageFrench;
-            },
-        //LANGUAGES READ
-            readLanguages() {
-                this.mute = true;
-                window.axios.get('/api/languages').then(({ data }) => {
-                data.forEach(language => {
-                    //loops over each language in db
-                    // console.log("language :");
-                    // console.log(language);
-                    this.languages.push(new Language(language));
-                    
-                });
-                this.mute = false;
-                });
-            },
     },
   }
 </script>

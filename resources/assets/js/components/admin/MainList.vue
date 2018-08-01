@@ -29,7 +29,7 @@
                                 <v-list-tile-action>
                                     <v-icon
                                         v-bind:style="{ color: category.color }">
-                                        fa-{{category.icon}}
+                                        {{category.icon}}
                                     </v-icon>
                                 </v-list-tile-action>
 
@@ -92,34 +92,6 @@
                                 </v-btn>
                             </v-layout>
                         </v-list>
-                <!-- <v-menu
-                    right
-                    class="hidden-md-and-up"
-                    v-model="readonly">
-                    <v-btn
-                        slot="activator"
-                        icon>
-                        <v-icon>build</v-icon>
-                    </v-btn>
-        
-                    <v-list>
-                        <v-btn
-                            color="success"
-                            @click="createReference(category.id)">
-                            ajouter réference
-                        </v-btn>  
-                        <v-btn
-                            color="warning"
-                            @click="editCategory(category.id)">
-                            modifier
-                        </v-btn>
-                        <v-btn
-                            color="error"
-                            @click="deleteCategory(category.id)">
-                            supprimer
-                        </v-btn>
-                    </v-list>
-                </v-menu> -->
 
                 <!-- loop on references in categories -->
                 <v-expansion-panel
@@ -141,7 +113,7 @@
                                         <v-list-tile-action>
                                             <v-icon
                                                 v-bind:style="{ color: category.color }">
-                                                fa-{{reference.icon}}
+                                                {{reference.icon}}
                                             </v-icon>
                                         </v-list-tile-action>
 
@@ -334,51 +306,9 @@
 </template>
 
 <script>
-    //Needed for promises to work
-        function Category({ id, icon, color, weight}) {
-            this.id = id;
-            this.icon = icon;
-            this.color = color;
-            this.weight = weight;
-        }
-        function CategoryName({ id, fk_category_id, fk_language_code, text}) {
-            this.id = id;
-            this.fk_category_id = fk_category_id;
-            this.fk_language_code = fk_language_code;
-            this.text = text;
-        }
-        function Reference({ id, icon, color, weight, fk_category_id}) {
-            this.id = id;
-            this.icon = icon;
-            this.color = color;
-            this.weight = weight;
-            this.fk_category_id = fk_category_id;
-        }
-        function ReferenceName({ id, fk_reference_id, fk_language_code, text}) {
-            this.id = id;
-            this.fk_reference_id = fk_reference_id;
-            this.fk_language_code = fk_language_code;
-            this.text = text;
-        }
-        function Point({ id, link, icon, color, longitude, lattitude, image_path, fk_reference_id}) {
-            this.id = id;
-            this.link = link;
-            this.icon = icon;
-            this.color = color;
-            this.longitude = longitude;
-            this.lattitude = lattitude;
-            this.image_path = image_path;
-            this.fk_reference_id = fk_reference_id;
-        }
-        function PointName({ id, fk_point_id, fk_language_code, title, description, linkalias}) {
-            this.id = id;
-            this.fk_point_id = fk_point_id;
-            this.fk_language_code = fk_language_code;
-            this.title = title;
-            this.description = description;
-            this.linkalias = linkalias;
-        }
-    //END Needed for promises to work
+    import pointsMethods from './../../services/points.js'
+    import categoriesMethods from './../../services/categories.js'
+    import referencesMethods from './../../services/references.js'
 
   export default {
     data () {
@@ -407,80 +337,14 @@
     watch: {
     },
     methods: {
-        //POINTS READ
-            readPoints() {
-                this.mute = true;
-                window.axios.get('/api/points').then(({ data }) => {
-                data.forEach(point => {
-                    //loops over each point in db
-                    // console.log("point :");
-                    // console.log(point);
-                    this.points.push(new Point(point));
-                });
-                this.mute = false;
-                });
-            },
-        //POINTS CONTENTS READ
-            readPointsPopupContent() {
-                this.mute = true;
-                
-                window.axios.get('/api/pointsnames').then(({ data }) => {
-                data.forEach(pointContent => {
-                    this.pointsContents.push(new PointName(pointContent));
-                });
-                this.mute = false;
-                });
-            },
-        //REFERENCES READ
-            readReferences() {
-                this.mute = true;
-                window.axios.get('/api/references').then(({ data }) => {
-                data.forEach(reference => {
-                    //loops over each reference in db
-                    this.references.push(new Reference(reference));
-                });
-                this.mute = false;
-                });
-            },
-        //REFERENCE NAMES READ
-            readReferenceNames() {
-                this.mute = true;
-                window.axios.get('/api/referencesnames').then(({ data }) => {
-                data.forEach(referenceName => {
-                    //loops over each reference name in db
-                    // console.log("reference name :");
-                    // console.log(referenceName);
-                    this.referenceNames.push(new ReferenceName(referenceName));
-                });
-                this.mute = false;
-                });
-            },
-        //CATEGORIES READ
-            readCategories() {
-                this.mute = true;
-                window.axios.get('/api/categories').then(({ data }) => {
-                data.forEach(category => {
-                    //loops over each category in db
-                    // console.log("category :");
-                    // console.log(category);
-                    this.categories.push(new Category(category));
-                });
-                this.mute = false;
-                });
-            },
-        //CATEGORIES NAMES READ
-            readCategoriesNames() {
-                this.mute = true;
-                window.axios.get('/api/categoriesnames').then(({ data }) => {
-                data.forEach(categoryName => {
-                    //loops over each category name in db
-                    // console.log("category name :");
-                    // console.log(categoryName);
-                    this.categoriesNames.push(new CategoryName(categoryName));
-                    
-                });
-                this.mute = false;
-                });
+        //API CALLS
+            methodsApiCalls() {
+                this.categories = categoriesMethods.readCategories();
+                this.categoriesNames = categoriesMethods.readCategoriesNames();
+                this.references = referencesMethods.readReferences();
+                this.referenceNames = referencesMethods.readReferenceNames();
+                this.points = pointsMethods.readPoints();
+                this.pointsContents = pointsMethods.readPointsPopupContent();
             },
         //
         //EDIT CATEGORIES
@@ -590,37 +454,19 @@
             },
         //DESTROY HUB
             destroy(type,id){
-                console.log("type :"+type+"/ id :"+id);
                 if (type == "category") {
-                    this.destroyCategory(id);
+                    categoriesMethods.destroyCategory(id);
                 }
                 else if (type == "reference") {
-                    this.destroyReference(id);
+                    referencesMethods.destroyReference(id);
                 }
                 else if (type == "point") {
-                    this.destroyPoint(id);
+                    pointsMethods.destroyPoint(id);
                 }else{}
-            },
-        //DESTROY CATEGORY
-            destroyCategory(id){
-                // this.$emit('pageToShow', "category", id);
-            },
-        //DESTROY REFERENCE
-            destroyReference(id){
-                // this.$emit('pageToShow', "reference", id);
-            },
-        //DESTROY POINT
-            destroyPoint(id){
-                // this.$emit('pageToShow', "point", id);
             },
     },
     created() {
-        this.readReferenceNames();
-        this.readPoints();
-        this.readPointsPopupContent();
-        this.readReferences();
-        this.readCategories();
-        this.readCategoriesNames();
+        this.methodsApiCalls();
     },
   }
 </script>

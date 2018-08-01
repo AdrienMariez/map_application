@@ -15,40 +15,13 @@
 
 <script>
 
-  function Point({ id, link, icon, color, longitude, lattitude, image_path, fk_reference_id}) {
-    this.id = id;
-    this.link = link;
-    this.icon = icon;
-    this.color = color;
-    this.longitude = longitude;
-    this.lattitude = lattitude;
-    this.image_path = image_path;
-    this.fk_reference_id = fk_reference_id;
-  }
-  function PointName({ id, fk_point_id, fk_language_code, title, description, linkalias}) {
-    this.id = id;
-    this.fk_point_id = fk_point_id;
-    this.fk_language_code = fk_language_code;
-    this.title = title;
-    this.description = description;
-    this.linkalias = linkalias;
-  }
-  function Reference({ id, icon, color, weight, fk_category_id}) {
-    this.id = id;
-    this.icon = icon;
-    this.color = color;
-    this.weight = weight;
-    this.fk_category_id = fk_category_id;
-  }
-  
-
   //IMPORTS
     //TEST : are those import really necessary ?
     require('../../../../../node_modules/leaflet/dist/leaflet.css')
     require('../../../../../node_modules/leaflet.markercluster/dist/MarkerCluster.css')
 
     import MapControls from './MapControls.vue'
-    import methods from './../MethodsApi'
+    import pointsMethods from './../../services/points.js'
   //END IMPORTS
 
 const L = window.L;
@@ -103,52 +76,13 @@ export default {
     //
     //API CALLS
       methodsApiCalls() {
-        this.points = methods.readPoints();
-        this.pointsContents = methods.readPointsPopupContent();
+        this.points = pointsMethods.readPoints();
+        this.pointsContents = pointsMethods.readPointsPopupContent();
 
         // This method is outside the file as 2 tables are pushed, and if I move the this.references.push(reference); the whole app stops working.
         window.axios.get('/api/references').then(({ data }) => {
           data.forEach(reference => {
             this.references.push(reference);
-            var obj = {};
-            obj["id"] = reference.id;
-            obj["isToBeDisplayed"] = false;
-            obj["catColor"] = "";
-            this.storagePointsDisplayed.push(obj);
-          });
-        });
-      },            
-    //
-    //POINTS READ
-      readPoints() {
-        this.mute = true;
-        
-        window.axios.get('/api/points').then(({ data }) => {
-          data.forEach(point => {
-            //looping for each object "point"        
-            this.points.push(new Point(point));
-          });
-          this.mute = false;
-        });
-      },
-    //POINTS POPUP CONTENT READ
-      readPointsPopupContent() {
-        this.mute = true;
-        
-        window.axios.get('/api/pointsnames').then(({ data }) => {
-          data.forEach(pointContent => {
-            this.pointsContents.push(new PointName(pointContent));
-          });
-          this.mute = false;
-        });
-      },
-
-    //REFERENCES READ
-      readReferences() {
-        window.axios.get('/api/references').then(({ data }) => {
-          
-          data.forEach(reference => {
-            this.references.push(new Reference(reference));
             var obj = {};
             obj["id"] = reference.id;
             obj["isToBeDisplayed"] = false;
@@ -163,15 +97,6 @@ export default {
         var storagePointsDisplayed = JSON.parse(JSON.stringify(this.storagePointsDisplayed));
         var references = JSON.parse(JSON.stringify(this.references));
 
-        // console.log("pointsDisplayed");
-        // console.log(pointsDisplayed);
-          
-        // console.log("storagePointsDisplayed");
-        // console.log(storagePointsDisplayed);
-          
-        // console.log("storagePointsDisplayed.length : "+storagePointsDisplayed.length);
-        // console.log("references.length : "+ references.length);
-
         if (storagePointsDisplayed.length >= 1 && references.length >= 1){
 
           if (this.initialization === true ) {
@@ -183,25 +108,6 @@ export default {
             this.createMarkers(pointsDisplayed, storagePointsDisplayed);
           }
         }
-        // else if(storagePointsDisplayed.length == 0 && references.length >= 1){
-        //   if (localStorage.getItem("referencesDisplayed") !== null){
-            // console.log("localstorage was initialized");
-            // var localStorageReferenceDisplayed = JSON.parse(localStorage.getItem("referencesDisplayed"));
-            // console.log("localStorageReferenceDisplayed.length");
-            // console.log(localStorageReferenceDisplayed.length);
-            // console.log("this.references.length");
-            // console.log(this.references.length);
-            
-            
-            // if (localStorageReferenceDisplayed.length == references.length) {
-            //   console.log("ok");
-            // }
-            // else{
-            //   console.log("localStorage emptied");
-            //   localStorage.removeItem("referencesDisplayed");
-            // }
-        //   }
-        // }
         else{
           // console.log("nothing useful was found");
         }
@@ -245,7 +151,7 @@ export default {
         }
         this.initialization = false;
       },
-    //SENT EMPTY INFO
+    //SEND EMPTY INFO
       sendDummyInfo(){
         var emptyInitialReferences = [];
         this.references.forEach(reference => {
@@ -345,7 +251,7 @@ export default {
                     
 
                     var currentMarker = L.ExtraMarkers.icon({
-                      icon: 'fa-'+references[x]["icon"],
+                      icon: references[x]["icon"],
                       markerColor: pointsDisplayed[i]["catColor"],
                       shape: 'circle',
                       prefix: 'fa'
@@ -429,9 +335,6 @@ export default {
   mounted() {
     this.readMap();
     this.methodsApiCalls();
-    // this.readPoints();
-    // this.readPointsPopupContent();
-    // this.readReferences();
   },
   components: {
     MapControls,

@@ -51,15 +51,7 @@
 </template>
 
 <script>
-    //Needed for promises to work
-        function Language({ id, name, code}) {
-            this.id = id;
-            this.name = name;
-            this.code = code;
-        }
-    //END Needed for promises to work
-
-    import methods from './../MethodsApi'
+import languagesMethods from './../../services/languages.js'
 
   export default {
     props: ['languageSelected','drawer','mini'],
@@ -98,27 +90,11 @@
         //
         //API CALLS
             methodsApiCalls() {
-                this.languages = methods.readLanguages();
+                this.languages = languagesMethods.readLanguages();
             },            
-        //
-        //LANGUAGES READ
-            readLanguages() {
-                this.mute = true;
-                window.axios.get('/api/languages').then(({ data }) => {
-                data.forEach(language => {
-                    //loops over each language in db
-                    // console.log("language :");
-                    // console.log(language);
-                    this.languages.push(new Language(language));
-                    
-                });
-                this.mute = false;
-                });
-            },
     },
     created() {
         this.methodsApiCalls();
-        // this.readLanguages();
     }
   }
 </script>
