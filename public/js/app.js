@@ -74082,7 +74082,7 @@ exports = module.exports = __webpack_require__(0)(false);
 
 
 // module
-exports.push([module.i, "\n.asideDrawer[data-v-ff68bee4]{\n      max-height: 100% !important;\n}\n.noPaddingLeft[data-v-ff68bee4]{\n      margin-left: -15% !important;\n}\n.selectTop[data-v-ff68bee4]{\n      z-index: 200;\n      max-width: 100px;\n      margin-top: 10px;\n}\n  /* .shadow{\n      text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;\n  } */\n.logoContainer > img[data-v-ff68bee4]{\n      width: 200px;\n      height: 200px;\n}\n.logoContainerMedium > img[data-v-ff68bee4]{\n      width: 80px;\n      height: 80px;\n}\n.logoContainerMini[data-v-ff68bee4]{\n      height: 100%;\n}\n.logoContainerMini > img[data-v-ff68bee4]{\n      width: 48px;\n      height: 48px;\n}\n.flexCenter[data-v-ff68bee4] {\n      -webkit-box-pack: center;\n          -ms-flex-pack: center;\n              justify-content: center;\n}\n.cursorAction[data-v-ff68bee4]{\n      cursor: pointer;\n}\na[data-v-ff68bee4]{\n      color: rgb(24, 53, 17) !important;\n      text-decoration: inherit;\n}\n/* #publicMapControls{\n  float: right;\n  border: 5px;\n  border-color: brown;\n  border-style: solid;\n  z-index: 100;\n} */\n", ""]);
+exports.push([module.i, "\n.asideDrawer[data-v-ff68bee4]{\n      max-height: 100% !important;\n}\n.noPaddingLeftRight[data-v-ff68bee4]:first-child{\n      padding: 0px 0px !important;\n}\n.v-list__tile__action--stack[data-v-ff68bee4]{\n      padding-top: 0 !important;\n      padding-bottom: 0 !important;\n      white-space: unset !important;\n}\n.selectTop[data-v-ff68bee4]{\n      z-index: 200;\n      max-width: 100px;\n      margin-top: 10px;\n}\n  /* .shadow{\n      text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;\n  } */\n.logoContainer > img[data-v-ff68bee4]{\n      width: 200px;\n      height: 200px;\n}\n.logoContainerMedium > img[data-v-ff68bee4]{\n      width: 80px;\n      height: 80px;\n}\n.logoContainerMini[data-v-ff68bee4]{\n      height: 100%;\n}\n.logoContainerMini > img[data-v-ff68bee4]{\n      width: 48px;\n      height: 48px;\n}\n.flexCenter[data-v-ff68bee4] {\n      -webkit-box-pack: center;\n          -ms-flex-pack: center;\n              justify-content: center;\n}\n.cursorAction[data-v-ff68bee4]{\n      cursor: pointer;\n}\na[data-v-ff68bee4]{\n      color: rgb(24, 53, 17) !important;\n      text-decoration: inherit;\n}\n/* #publicMapControls{\n  float: right;\n  border: 5px;\n  border-color: brown;\n  border-style: solid;\n  z-index: 100;\n} */\n", ""]);
 
 // exports
 
@@ -74097,13 +74097,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__TopToolbar_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__TopToolbar_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ContactForm_vue__ = __webpack_require__(18);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ContactForm_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__ContactForm_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ApiCalls__ = __webpack_require__(152);
-//
-//
-//
-//
-//
-//
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__MethodsApi__ = __webpack_require__(153);
 //
 //
 //
@@ -74560,8 +74554,13 @@ function Point(_ref6) {
         //inspired from vue-laravel-crud
         //
         //API CALLS
-        apicalls: function apicalls() {
-            this.references = __WEBPACK_IMPORTED_MODULE_2__ApiCalls__["a" /* default */].readReferences();
+        methodsApiCalls: function methodsApiCalls() {
+            this.categories = __WEBPACK_IMPORTED_MODULE_2__MethodsApi__["a" /* default */].readCategories();
+            this.categoriesNames = __WEBPACK_IMPORTED_MODULE_2__MethodsApi__["a" /* default */].readCategoriesNames();
+            this.references = __WEBPACK_IMPORTED_MODULE_2__MethodsApi__["a" /* default */].readReferences();
+            this.referenceNames = __WEBPACK_IMPORTED_MODULE_2__MethodsApi__["a" /* default */].readReferenceNames();
+            this.points = __WEBPACK_IMPORTED_MODULE_2__MethodsApi__["a" /* default */].readPoints();
+            this.languages = __WEBPACK_IMPORTED_MODULE_2__MethodsApi__["a" /* default */].readLanguages();
         },
 
         //
@@ -74585,7 +74584,7 @@ function Point(_ref6) {
 
         //REFERENCES READ
         readReferences: function readReferences() {
-            this.references = __WEBPACK_IMPORTED_MODULE_2__ApiCalls__["a" /* default */].readReferences();
+            this.references = MethodsApi.readReferences();
         },
 
         //REFERENCE NAMES READ
@@ -74606,7 +74605,7 @@ function Point(_ref6) {
             });
         },
 
-        //CATEGORIES READ
+        // CATEGORIES READ
         readCategories: function readCategories() {
             var _this3 = this;
 
@@ -74661,29 +74660,13 @@ function Point(_ref6) {
         }
     },
     created: function created() {
-        // this.apicalls();
-        this.readReferenceNames();
-        this.readPoints();
-        this.readReferences();
-        this.readCategories();
-        this.readLanguages();
-        this.readCategoriesNames();
-        // console.log("points"); 
-        // console.log(this.points); 
-        // console.log("references"); 
-        // console.log(this.references); 
-        // console.log("referencenames"); 
-        // console.log(this.referenceNames); 
-        // console.log("referencedisplayed"); 
-        // console.log(this.referenceDisplayed); 
-        // console.log("categories"); 
-        // console.log(this.categories); 
-        // console.log("categoriesnames"); 
-        // console.log(this.categoriesNames); 
-        // console.log("languages :"); 
-        // console.log(this.languages); 
-        // console.log("language selected :"); 
-        // console.log(this.languageSelected);
+        this.methodsApiCalls();
+        // this.readReferenceNames();
+        // this.readPoints();
+        // this.readReferences();
+        // this.readCategories();
+        // this.readLanguages();
+        // this.readCategoriesNames();
     },
 
     components: {
@@ -74789,6 +74772,7 @@ exports.push([module.i, "\n.noPaddingLeft[data-v-3e31bb83]{\n    margin-left: -1
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__MethodsApi__ = __webpack_require__(153);
 //
 //
 //
@@ -74854,6 +74838,8 @@ function Language(_ref) {
 }
 //END Needed for promises to work
 
+
+
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: ['languageSelected', 'drawer', 'mini'],
     data: function data() {
@@ -74892,6 +74878,12 @@ function Language(_ref) {
         },
 
         //
+        //API CALLS
+        methodsApiCalls: function methodsApiCalls() {
+            this.languages = __WEBPACK_IMPORTED_MODULE_0__MethodsApi__["a" /* default */].readLanguages();
+        },
+
+        //
         //LANGUAGES READ
         readLanguages: function readLanguages() {
             var _this = this;
@@ -74911,7 +74903,8 @@ function Language(_ref) {
         }
     },
     created: function created() {
-        this.readLanguages();
+        this.methodsApiCalls();
+        // this.readLanguages();
     }
 });
 
@@ -75799,7 +75792,7 @@ var render = function() {
                 "v-expansion-panel-content",
                 {
                   key: i,
-                  staticClass: "green lighten-4",
+                  staticClass: "green lighten-4 noPaddingLeftRight",
                   attrs: { value: _vm.showAllForms, color: "green lighten-4" },
                   on: {
                     click: function($event) {
@@ -75811,14 +75804,18 @@ var render = function() {
                 [
                   _c(
                     "div",
-                    { attrs: { slot: "header" }, slot: "header" },
+                    {
+                      staticClass: "pl-0",
+                      attrs: { slot: "header" },
+                      slot: "header"
+                    },
                     [
                       _c(
                         "v-list",
-                        { staticClass: "noPaddingLeft" },
                         [
                           _c(
                             "v-list-tile",
+                            { staticClass: "noPaddingLeftRight" },
                             [
                               _c(
                                 "v-list-tile-action",
@@ -75841,25 +75838,31 @@ var render = function() {
                                 1
                               ),
                               _vm._v(" "),
-                              _c(
-                                "v-list-tile-action",
-                                _vm._l(_vm.categoriesNames, function(
-                                  catName,
-                                  a
-                                ) {
-                                  return catName.fk_language_code ==
-                                    _vm.languageSelected &&
-                                    catName.fk_category_id == category.id
-                                    ? _c("v-list-tile-content", { key: a }, [
-                                        _vm._v(
-                                          "\n                                    " +
-                                            _vm._s(catName.text) +
-                                            "\n                                "
-                                        )
-                                      ])
-                                    : _vm._e()
-                                })
-                              )
+                              !_vm.mini
+                                ? _c(
+                                    "v-list-tile-action",
+                                    _vm._l(_vm.categoriesNames, function(
+                                      catName,
+                                      a
+                                    ) {
+                                      return catName.fk_language_code ==
+                                        _vm.languageSelected &&
+                                        catName.fk_category_id == category.id
+                                        ? _c(
+                                            "v-list-tile-content",
+                                            { key: a },
+                                            [
+                                              _vm._v(
+                                                "\n                                    " +
+                                                  _vm._s(catName.text) +
+                                                  "\n                                "
+                                              )
+                                            ]
+                                          )
+                                        : _vm._e()
+                                    })
+                                  )
+                                : _vm._e()
                             ],
                             1
                           )
@@ -76077,6 +76080,7 @@ exports.push([module.i, "\n#mapContainer[data-v-ee564a0a]{\n  height: 100%;\n  w
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__MapControls_vue__ = __webpack_require__(135);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__MapControls_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__MapControls_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__MethodsApi__ = __webpack_require__(153);
 //
 //
 //
@@ -76146,10 +76150,9 @@ function Reference(_ref3) {
 //TEST : are those import really necessary ?
 __webpack_require__(14);
 __webpack_require__(16);
-// require('../../../../../node_modules/geoportal-extensions-leaflet/dist/GpPluginLeaflet.css')
 
 
-// import PointDisplayComponent from './PointDisplay.vue';
+
 //END IMPORTS
 
 var L = window.L;
@@ -76166,7 +76169,6 @@ var L = window.L;
       zoomLevel: 14,
       points: [],
       pointsContents: [],
-      pointsCount: 0,
       references: [],
       storagePointsDisplayed: [],
       pointsMarkers: [],
@@ -76204,56 +76206,79 @@ var L = window.L;
       map.zoomControl.remove();
     },
 
+    //
+    //API CALLS
+    methodsApiCalls: function methodsApiCalls() {
+      var _this = this;
+
+      this.points = __WEBPACK_IMPORTED_MODULE_1__MethodsApi__["a" /* default */].readPoints();
+      this.pointsContents = __WEBPACK_IMPORTED_MODULE_1__MethodsApi__["a" /* default */].readPointsPopupContent();
+
+      // This method is outside the file as 2 tables are pushed, and if I move the this.references.push(reference); the whole app stops working.
+      window.axios.get('/api/references').then(function (_ref4) {
+        var data = _ref4.data;
+
+        data.forEach(function (reference) {
+          _this.references.push(reference);
+          var obj = {};
+          obj["id"] = reference.id;
+          obj["isToBeDisplayed"] = false;
+          obj["catColor"] = "";
+          _this.storagePointsDisplayed.push(obj);
+        });
+      });
+    },
+
+    //
     //POINTS READ
     readPoints: function readPoints() {
-      var _this = this;
+      var _this2 = this;
 
       this.mute = true;
 
-      window.axios.get('/api/points').then(function (_ref4) {
-        var data = _ref4.data;
+      window.axios.get('/api/points').then(function (_ref5) {
+        var data = _ref5.data;
 
         data.forEach(function (point) {
           //looping for each object "point"        
-          _this.points.push(new Point(point));
-          _this.pointsCount++;
+          _this2.points.push(new Point(point));
         });
-        _this.mute = false;
+        _this2.mute = false;
       });
     },
 
     //POINTS POPUP CONTENT READ
     readPointsPopupContent: function readPointsPopupContent() {
-      var _this2 = this;
+      var _this3 = this;
 
       this.mute = true;
 
-      window.axios.get('/api/pointsnames').then(function (_ref5) {
-        var data = _ref5.data;
+      window.axios.get('/api/pointsnames').then(function (_ref6) {
+        var data = _ref6.data;
 
         data.forEach(function (pointContent) {
-          _this2.pointsContents.push(new PointName(pointContent));
+          _this3.pointsContents.push(new PointName(pointContent));
         });
-        _this2.mute = false;
+        _this3.mute = false;
       });
     },
 
 
     //REFERENCES READ
     readReferences: function readReferences() {
-      var _this3 = this;
+      var _this4 = this;
 
-      window.axios.get('/api/references').then(function (_ref6) {
-        var data = _ref6.data;
+      window.axios.get('/api/references').then(function (_ref7) {
+        var data = _ref7.data;
 
 
         data.forEach(function (reference) {
-          _this3.references.push(new Reference(reference));
+          _this4.references.push(new Reference(reference));
           var obj = {};
           obj["id"] = reference.id;
           obj["isToBeDisplayed"] = false;
           obj["catColor"] = "";
-          _this3.storagePointsDisplayed.push(obj);
+          _this4.storagePointsDisplayed.push(obj);
         });
       });
     },
@@ -76359,7 +76384,7 @@ var L = window.L;
 
     //CREATE MARKERS
     createMarkers: function createMarkers(pointsDisplayed, storagePointsDisplayed) {
-      var _this4 = this;
+      var _this5 = this;
 
       var dp = JSON.parse(JSON.stringify(pointsDisplayed));
       // console.log(storagePointsDisplayed);
@@ -76398,7 +76423,7 @@ var L = window.L;
                   popup.setAttribute("style", "text-align:center;");
 
                   pointsContents.forEach(function (content) {
-                    if (content["fk_point_id"] == point["id"] && content["fk_language_code"] == _this4.language) {
+                    if (content["fk_point_id"] == point["id"] && content["fk_language_code"] == _this5.language) {
                       title = document.createElement("h3");
                       var titleHtml = document.createTextNode(content["title"]);
                       title.appendChild(titleHtml);
@@ -76458,9 +76483,9 @@ var L = window.L;
             }
           });
 
-          _this4.map.addLayer(layers[i]);
+          _this5.map.addLayer(layers[i]);
         } else if (pointsDisplayed[i]["isToBeDisplayed"] != storagePointsDisplayed[i]["isToBeDisplayed"] && pointsDisplayed[i]["isToBeDisplayed"] == false) {
-          _this4.map.removeLayer(layers[i]);
+          _this5.map.removeLayer(layers[i]);
         }
       };
 
@@ -76529,11 +76554,11 @@ var L = window.L;
   },
   mounted: function mounted() {
     this.readMap();
-    this.readPoints();
-    this.readPointsPopupContent();
-    this.readReferences();
+    this.methodsApiCalls();
+    // this.readPoints();
+    // this.readPointsPopupContent();
+    // this.readReferences();
   },
-  created: function created() {},
 
   components: {
     MapControls: __WEBPACK_IMPORTED_MODULE_0__MapControls_vue___default.a
@@ -77050,22 +77075,88 @@ if (false) {
 /* 149 */,
 /* 150 */,
 /* 151 */,
-/* 152 */
+/* 152 */,
+/* 153 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 var methods = {
-    readReferences: function readReferences() {
-        var references = [];
-        window.axios.get('/api/references').then(function (_ref) {
+    readCategories: function readCategories() {
+        var categories = [];
+        window.axios.get('/api/categories').then(function (_ref) {
             var data = _ref.data;
 
-            data.forEach(function (reference) {
+            data.forEach(function (category) {
+                categories.push(category);
+            });
+        });
+        return categories;
+    },
+    readCategoriesNames: function readCategoriesNames() {
+        var categoriesnames = [];
+        window.axios.get('/api/categoriesnames').then(function (_ref2) {
+            var data = _ref2.data;
 
+            data.forEach(function (categoryName) {
+                categoriesnames.push(categoryName);
+            });
+        });
+        return categoriesnames;
+    },
+    readReferences: function readReferences() {
+        var references = [];
+        window.axios.get('/api/references').then(function (_ref3) {
+            var data = _ref3.data;
+
+            data.forEach(function (reference) {
                 references.push(reference);
             });
         });
         return references;
+    },
+    readReferenceNames: function readReferenceNames() {
+        var referencesNames = [];
+        window.axios.get('/api/referencesnames').then(function (_ref4) {
+            var data = _ref4.data;
+
+            data.forEach(function (referenceName) {
+                referencesNames.push(referenceName);
+            });
+        });
+        return referencesNames;
+    },
+    readPoints: function readPoints() {
+        var points = [];
+        window.axios.get('/api/points').then(function (_ref5) {
+            var data = _ref5.data;
+
+            data.forEach(function (point) {
+                points.push(point);
+            });
+        });
+        return points;
+    },
+    readPointsPopupContent: function readPointsPopupContent() {
+        var pointsnames = [];
+        window.axios.get('/api/pointsnames').then(function (_ref6) {
+            var data = _ref6.data;
+
+            data.forEach(function (pointContent) {
+                pointsnames.push(pointContent);
+            });
+        });
+        return pointsnames;
+    },
+    readLanguages: function readLanguages() {
+        var languages = [];
+        window.axios.get('/api/languages').then(function (_ref7) {
+            var data = _ref7.data;
+
+            data.forEach(function (language) {
+                languages.push(language);
+            });
+        });
+        return languages;
     }
 };
 

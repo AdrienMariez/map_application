@@ -40,15 +40,15 @@
     this.weight = weight;
     this.fk_category_id = fk_category_id;
   }
+  
 
   //IMPORTS
     //TEST : are those import really necessary ?
     require('../../../../../node_modules/leaflet/dist/leaflet.css')
     require('../../../../../node_modules/leaflet.markercluster/dist/MarkerCluster.css')
-    // require('../../../../../node_modules/geoportal-extensions-leaflet/dist/GpPluginLeaflet.css')
 
     import MapControls from './MapControls.vue'
-    // import PointDisplayComponent from './PointDisplay.vue';
+    import methods from './../MethodsApi'
   //END IMPORTS
 
 const L = window.L;
@@ -65,7 +65,6 @@ export default {
       zoomLevel: 14,
       points: [],
       pointsContents: [],
-      pointsCount: 0,
       references: [],
       storagePointsDisplayed: [],
       pointsMarkers: [],
@@ -101,6 +100,25 @@ export default {
 
         map.zoomControl.remove();
       },
+    //
+    //API CALLS
+      methodsApiCalls() {
+        this.points = methods.readPoints();
+        this.pointsContents = methods.readPointsPopupContent();
+
+        // This method is outside the file as 2 tables are pushed, and if I move the this.references.push(reference); the whole app stops working.
+        window.axios.get('/api/references').then(({ data }) => {
+          data.forEach(reference => {
+            this.references.push(reference);
+            var obj = {};
+            obj["id"] = reference.id;
+            obj["isToBeDisplayed"] = false;
+            obj["catColor"] = "";
+            this.storagePointsDisplayed.push(obj);
+          });
+        });
+      },            
+    //
     //POINTS READ
       readPoints() {
         this.mute = true;
@@ -109,7 +127,6 @@ export default {
           data.forEach(point => {
             //looping for each object "point"        
             this.points.push(new Point(point));
-            this.pointsCount++;
           });
           this.mute = false;
         });
@@ -411,11 +428,10 @@ export default {
   },
   mounted() {
     this.readMap();
-    this.readPoints();
-    this.readPointsPopupContent();
-    this.readReferences();
-  },
-  created() {
+    this.methodsApiCalls();
+    // this.readPoints();
+    // this.readPointsPopupContent();
+    // this.readReferences();
   },
   components: {
     MapControls,

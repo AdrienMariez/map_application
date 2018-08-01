@@ -81,13 +81,14 @@
                     :value="showAllForms"
                     @click.stop="showAllForms = null"
                     color="green lighten-4"
-                    class="green lighten-4">
+                    class="green lighten-4 noPaddingLeftRight">
 
                     <!-- header -->
                     <div 
-                        slot="header">
-                        <v-list class="noPaddingLeft">
-                            <v-list-tile>
+                        slot="header"
+                        class="pl-0">
+                        <v-list>
+                            <v-list-tile class="noPaddingLeftRight">
                                 <v-list-tile-action>
                                     <!-- class="shadow" -->
                                     <v-icon
@@ -96,7 +97,7 @@
                                         fa-{{category.icon}}
                                     </v-icon>
                                 </v-list-tile-action>
-                                <v-list-tile-action>
+                                <v-list-tile-action v-if="!mini">
                                     <!-- loop on names in categories & translations -->
                                     <v-list-tile-content
                                         v-for="(catName,a) in categoriesNames"
@@ -142,13 +143,6 @@
                                     {{refName.fk_reference_id}} - 
                                     {{refName.text}}
                                 </v-list-tile-content>
-                                <!-- OBSOLETE old language switch -->
-                                    <!-- <v-list-tile-content v-if="fr">
-                                        {{reference.icon}} - {{reference.weight}}
-                                    </v-list-tile-content>
-                                    <v-list-tile-content v-if="!fr">
-                                        {{reference.id}} - {{reference.weight}}
-                                    </v-list-tile-content> -->
                             </v-list-tile-action>
                         </v-list-tile>
                     </v-list>
@@ -217,7 +211,7 @@
     //END Needed for promises to work
 import TopToolbar from './TopToolbar.vue'
 import ContactForm from './ContactForm.vue'
-import ApiCalls from './ApiCalls'
+import methods from './../MethodsApi'
 
 export default {
     props: ['localStoragePointsDisplayed'],
@@ -424,8 +418,13 @@ export default {
         //inspired from vue-laravel-crud
         //
         //API CALLS
-            apicalls() {
-                this.references = ApiCalls.readReferences();
+            methodsApiCalls() {
+                this.categories = methods.readCategories();
+                this.categoriesNames = methods.readCategoriesNames();
+                this.references = methods.readReferences();
+                this.referenceNames = methods.readReferenceNames();
+                this.points = methods.readPoints();
+                this.languages = methods.readLanguages();
             },            
         //
         //POINTS READ
@@ -443,7 +442,7 @@ export default {
             },
         //REFERENCES READ
             readReferences() {
-                this.references = ApiCalls.readReferences();
+                this.references = MethodsApi.readReferences();
             },
         //REFERENCE NAMES READ
             readReferenceNames() {
@@ -458,7 +457,7 @@ export default {
                 this.mute = false;
                 });
             },
-        //CATEGORIES READ
+        // CATEGORIES READ
             readCategories() {
                 this.mute = true;
                 window.axios.get('/api/categories').then(({ data }) => {
@@ -501,29 +500,13 @@ export default {
             },
     },
     created() {
-        // this.apicalls();
-        this.readReferenceNames();
-        this.readPoints();
-        this.readReferences();
-        this.readCategories();
-        this.readLanguages();
-        this.readCategoriesNames();
-            // console.log("points"); 
-            // console.log(this.points); 
-            // console.log("references"); 
-            // console.log(this.references); 
-            // console.log("referencenames"); 
-            // console.log(this.referenceNames); 
-            // console.log("referencedisplayed"); 
-            // console.log(this.referenceDisplayed); 
-            // console.log("categories"); 
-            // console.log(this.categories); 
-            // console.log("categoriesnames"); 
-            // console.log(this.categoriesNames); 
-            // console.log("languages :"); 
-            // console.log(this.languages); 
-            // console.log("language selected :"); 
-            // console.log(this.languageSelected);
+        this.methodsApiCalls();
+        // this.readReferenceNames();
+        // this.readPoints();
+        // this.readReferences();
+        // this.readCategories();
+        // this.readLanguages();
+        // this.readCategoriesNames();
     },
     components: {
         TopToolbar,
@@ -536,8 +519,13 @@ export default {
     .asideDrawer{
         max-height: 100% !important;
     }
-    .noPaddingLeft{
-        margin-left: -15% !important;
+    .noPaddingLeftRight:first-child{
+        padding: 0px 0px !important;
+    }
+    .v-list__tile__action--stack{
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+        white-space: unset !important;
     }
     .selectTop{
         z-index: 200;

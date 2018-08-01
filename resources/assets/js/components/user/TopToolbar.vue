@@ -59,6 +59,8 @@
         }
     //END Needed for promises to work
 
+    import methods from './../MethodsApi'
+
   export default {
     props: ['languageSelected','drawer','mini'],
     data () {
@@ -94,6 +96,11 @@
                 this.$emit('emitLanguageSelected', this.languageSelectedLocal);
             },
         //
+        //API CALLS
+            methodsApiCalls() {
+                this.languages = methods.readLanguages();
+            },            
+        //
         //LANGUAGES READ
             readLanguages() {
                 this.mute = true;
@@ -110,7 +117,8 @@
             },
     },
     created() {
-        this.readLanguages();
+        this.methodsApiCalls();
+        // this.readLanguages();
     }
   }
 </script>
