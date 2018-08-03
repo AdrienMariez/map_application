@@ -16,16 +16,31 @@ class CategoriesController extends Controller
         // return response(Category::all()->jsonSerialize(), Response::HTTP_OK);
     }
 
-    public function create(Generator $faker)
+
+    public function store(Request $request)
     {
         $category = new Category();
-        $category->icon = $faker->lexify('????????');
-        $category->color = $faker->boolean ? 'red' : 'green';
-        $category->weight = $faker->boolean ? '2' : '4';
+        $category->id = $request->id;
+        $category->icon = $request->icon;
+        $category->color = $request->color;
+        $category->weight = $request->weight;
+        $category->updated_at = $request->created_at;
+        $category->created_at = $request->created_at;
         $category->save();
 
         return response($category->jsonSerialize(), Response::HTTP_CREATED);
     }
+
+    // public function update(Request $request, $id)
+    // {
+    //     $category = Category::findOrFail($id);
+    //     $category->icon = $request->icon;
+    //     $category->color = $request->color;
+    //     $category->weight = $request->weight;
+    //     $category->save();
+
+    //     return response(null, Response::HTTP_OK);
+    // }
 
     public function update(Request $request, $id)
     {
@@ -33,6 +48,7 @@ class CategoriesController extends Controller
         $category->icon = $request->icon;
         $category->color = $request->color;
         $category->weight = $request->weight;
+        $category->updated_at = $request->updated_at;
         $category->save();
 
         return response(null, Response::HTTP_OK);

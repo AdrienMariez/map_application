@@ -61,13 +61,12 @@ use Illuminate\Http\Request;
         'except' => ['edit', 'show', 'store']
     ]);
 
-    Route::resource('/categories', 'CategoriesController', [
-        'except' => ['edit', 'show', 'store']
-    ]);
+    // Route::resource('/categories', 'CategoriesController', [
+    //     'except' => ['edit', 'show', 'store']
+    // ]);
+    Route::resource('/categories', 'CategoriesController');
 
-    Route::resource('/categoriesnames', 'CategoriesnamesController', [
-        'except' => ['edit', 'show', 'store']
-    ]);
+    Route::resource('/categoriesnames', 'CategoriesnamesController');
 
     Route::resource('/contactform', 'ContactformController', [
         'except' => ['edit', 'show', 'store']

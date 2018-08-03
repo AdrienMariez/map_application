@@ -66,8 +66,8 @@
             update(id, color) {
                 this.mute = true;
                 window.axios.put(`/api/points/${id}`, { color }).then(() => {
-                this.points.find(point => point.id === id).color = color;
-                this.mute = false;
+                    this.points.find(point => point.id === id).color = color;
+                    this.mute = false;
                 });
             },
             del(id) {

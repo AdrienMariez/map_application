@@ -15,6 +15,7 @@
     <edit-category
         v-bind:idSelected="idSelected"
         v-if="page == 'category'"
+        @pageToShow="pageToShow"
         class="adminPage">
     </edit-category>
 

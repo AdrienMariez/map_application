@@ -68816,6 +68816,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 
 
@@ -70775,12 +70776,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     props: ['idSelected'],
     data: function data() {
         return {
+            mute: false,
+            loading: true,
             categories: [],
             categoriesNames: [],
             languages: [],
-            valid: true,
+            valid: false,
             namesInitial: [],
+            fk_id: [],
             names: [],
+            codes: [],
             nameRules: [function (v) {
                 return !!v || "Invalide ! ";
             }, function (v) {
@@ -70796,7 +70801,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 return v && v.length <= 40 || "Trop long !";
             }],
             colors: [{ text: 'Rouge', code: '#B71C1C' }, { text: 'Orange sombre', code: '#F4511E' }, { text: 'Orange', code: '#FFA726' }, { text: 'Jaune', code: '#FFC400' }, { text: 'Cyan', code: '#006064' }, { text: 'Bleu', code: '#01579B' }, { text: 'Bleu clair', code: '#1E88E5' }, { text: 'Violet', code: '#4A148C' }, { text: 'Bordeaux', code: '#880E4F' }, { text: 'Rose', code: '#F50057' }, { text: 'Vert sombre', code: '#1B5E20' }, { text: 'Vert', code: '#388E3C' }, { text: 'Vert clair', code: '#4CAF50' }],
-            selectedColor: ""
+            selectedColor: "",
+            category: {
+                id: null,
+                icon: '',
+                color: '',
+                weight: null
+            }
         };
     },
 
@@ -70809,6 +70820,23 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         selectedColor: function selectedColor(val, oldVal) {
             document.getElementById('coloredDiv').style.backgroundColor = val;
+        },
+        valid: function valid(val, oldVal) {
+            for (var i = 0; i < this.names.length; i++) {
+                if (this.names[i].length == 0 || this.names[i].length > 50) {
+                    this.valid = false;
+                }
+            }
+            if (this.icon.length == 0 || this.icon.length > 40) {
+                this.valid = false;
+            }
+            if (this.selectedColor.length == 0) {
+                this.valid = false;
+            }
+            // console.log("names "+this.names);
+            // console.log("icon "+this.icon);
+            // console.log("selectedColor "+this.selectedColor);
+            // console.log("valid "+this.valid);
         }
     },
     methods: {
@@ -70819,7 +70847,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     if (this.idSelected == this.categoriesNames[i]["fk_category_id"]) {
                         for (var y = 0; y < this.languages.length; y++) {
                             if (this.categoriesNames[i]["fk_language_code"] == this.languages[y]["code"]) {
+                                this.fk_id[y] = this.categoriesNames[i]["id"];
+
                                 this.names[y] = this.categoriesNames[i]["text"];
+
+                                this.codes[y] = this.categoriesNames[i]["fk_language_code"];
                             }
                         }
                     }
@@ -70845,22 +70877,128 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 this.selectedPrefix = "";
                 this.icon = "";
                 this.selectedColor = "";
+                this.valid = false;
             }
         },
         submit: function submit() {
             if (this.$refs.form.validate()) {
+                // console.log("names "+this.names);
+                // console.log("icon "+this.iconTotal);
+                // console.log("selectedColor "+this.selectedColor);
+                var icon = this.selectedPrefix + "" + this.icon;
+
+                if (this.idSelected === null) {
+                    this.createCategory(icon, this.selectedColor);
+                } else {
+                    this.updateCategory(this.idSelected, icon, this.selectedColor);
+                    this.updateCategoryNames(this.fk_id, this.idSelected, this.codes, this.names);
+                }
                 // Native form submission is not yet supported
-                // axios.post('/api/contactform', {
+                // axios.post('/api/category', {
                 //     name: this.name,
                 //     icon: this.icon,
                 //     color: this.color
                 // })
             }
         },
+        createCategory: function createCategory(icon, color) {
+            var _this = this;
+
+            var id = 0;
+            for (var i = 0; i < this.categories.length; i++) {
+                if (this.categories[i]["id"] >= id) {
+                    id = this.categories[i]["id"] + 1;
+                }
+            }
+            var weight = 0;
+            for (var _i = 0; _i < this.categories.length; _i++) {
+                if (this.categories[_i]["weight"] >= weight) {
+                    weight = this.categories[_i]["weight"] + 1;
+                }
+            }
+            this.category.icon = icon;
+            this.category.color = color;
+            this.category.weight = weight;
+            var newCategory = this.category;
+
+            axios.post('/api/categories', newCategory).then(function (resp) {
+                return Promise.all([resp, _this.createCategoryNames(resp.data.id, _this.names)]);
+            }).then(function (resp) {
+                // console.log("in cat create");
+
+                // console.log(resp.data.id);
+            }).catch(function (error) {
+                console.log(error.response.data);
+
+                alert("Un problème est survenu lors de la création.");
+            });
+        },
+        updateCategory: function updateCategory(id, icon, color) {
+            var weight = 0;
+            for (var i = 0; i < this.categories.length; i++) {
+                if (this.categories[i]["id"] == this.idSelected) {
+                    weight = this.categories[i]["weight"];
+                }
+            }
+            //
+            // this.mute = true;
+            // window.axios.put(`/api/categories/${id}`, { icon }, { color }, { weight }).then(() => {
+            //     console.log("in axios ?");
+            //     this.categories.find(category => category.id === id).icon = icon;
+            //     this.mute = false;
+            // });
+            //
+            this.category.icon = icon;
+            this.category.color = color;
+            this.category.weight = weight;
+            var newCategory = this.category;
+
+            axios.patch('/api/categories/' + id, newCategory).then(function (resp) {}).catch(function (error) {
+                console.log(error.response.data);
+
+                alert("Un problème est survenu lors de la mise à jour.");
+            });
+            this.$emit('pageToShow', "", null);
+        },
+        createCategoryNames: function createCategoryNames(id, names) {
+
+            for (var i = 0; i < names.length; i++) {
+                var newCategoryName = {
+                    "fk_category_id": id,
+                    "fk_language_code": this.languages[i]["code"],
+                    "text": names[i]
+                };
+
+                axios.post('/api/categoriesnames', newCategoryName).then(function (resp) {}).catch(function (error) {
+                    console.log(error.response.data);
+
+                    alert("Un problème est survenu lors de la création.");
+                });
+            }
+
+            this.$emit('pageToShow', "", null);
+        },
+        updateCategoryNames: function updateCategoryNames(id, fk_id, codes, names) {
+            for (var i = 0; i < names.length; i++) {
+                //TO CHANGE
+                var newCategoryName = {
+                    "fk_category_id": fk_id,
+                    "fk_language_code": codes[i],
+                    "text": names[i]
+                };
+
+                axios.patch('/api/categoriesnames/' + id[i], newCategoryName).then(function (resp) {}).catch(function (error) {
+                    console.log(error.response.data);
+
+                    alert("Un problème est survenu lors de la mise à jour.");
+                });
+            }
+            this.$emit('pageToShow', "", null);
+        },
 
         //API CALLS
         methodsApiCalls: function methodsApiCalls() {
-            var _this = this;
+            var _this2 = this;
 
             this.categories = __WEBPACK_IMPORTED_MODULE_0__services_categories_js__["a" /* default */].readCategories();
             this.categoriesNames = __WEBPACK_IMPORTED_MODULE_0__services_categories_js__["a" /* default */].readCategoriesNames();
@@ -70871,9 +71009,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 var data = _ref.data;
 
                 data.forEach(function (language) {
-                    _this.names.push("");
-                    _this.namesInitial.push("");
+                    _this2.names.push("");
+                    _this2.namesInitial.push("");
                 });
+                _this2.loading = false;
             });
         }
     },
@@ -70925,7 +71064,7 @@ var render = function() {
                           [
                             _c("div", [
                               _vm._v(
-                                "Nom de la catégorie dans chaque langue : "
+                                "Nom de la catégorie dans chaque langue *: "
                               )
                             ]),
                             _vm._v(" "),
@@ -70982,7 +71121,7 @@ var render = function() {
                             _c("v-text-field", {
                               attrs: {
                                 rules: _vm.iconRules,
-                                label: "icone",
+                                label: "icone *",
                                 hint: "icone utilisée par la catégorie",
                                 required: "",
                                 counter: 40
@@ -71034,7 +71173,7 @@ var render = function() {
                           { staticClass: "my-5", attrs: { xs12: "" } },
                           [
                             _c("div", [
-                              _vm._v("Couleur de l'icone de la catégorie : ")
+                              _vm._v("Couleur de l'icone de la catégorie *: ")
                             ]),
                             _vm._v(" "),
                             _c("v-select", {
@@ -71836,7 +71975,8 @@ var render = function() {
       _vm.page == "category"
         ? _c("edit-category", {
             staticClass: "adminPage",
-            attrs: { idSelected: _vm.idSelected }
+            attrs: { idSelected: _vm.idSelected },
+            on: { pageToShow: _vm.pageToShow }
           })
         : _vm._e(),
       _vm._v(" "),
