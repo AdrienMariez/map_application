@@ -16,7 +16,6 @@ class CategoriesController extends Controller
         // return response(Category::all()->jsonSerialize(), Response::HTTP_OK);
     }
 
-
     public function store(Request $request)
     {
         $category = new Category();
@@ -30,17 +29,6 @@ class CategoriesController extends Controller
 
         return response($category->jsonSerialize(), Response::HTTP_CREATED);
     }
-
-    // public function update(Request $request, $id)
-    // {
-    //     $category = Category::findOrFail($id);
-    //     $category->icon = $request->icon;
-    //     $category->color = $request->color;
-    //     $category->weight = $request->weight;
-    //     $category->save();
-
-    //     return response(null, Response::HTTP_OK);
-    // }
 
     public function update(Request $request, $id)
     {

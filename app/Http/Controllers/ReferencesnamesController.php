@@ -14,12 +14,14 @@ class ReferencesnamesController extends Controller
         return response(Referencesnames::all()->jsonSerialize(), Response::HTTP_OK);
     }
 
-    public function create(Generator $faker)
+    public function store(Request $Referencesnames)
     {
         $referenceName = new Referencesnames();
-        $referenceName->text = $faker->lexify('????????');
-        $categoryName->fk_category_id = $faker->boolean ? '1' : '2';
-        $referenceName->fk_language_code = $faker->boolean ? '2' : '4';
+        $referenceName->fk_reference_id = $request->fk_reference_id;
+        $referenceName->fk_language_code = $request->fk_language_code;
+        $referenceName->text = $request->text;
+        $referenceName->updated_at = $request->created_at;
+        $referenceName->created_at = $request->created_at;
         $referenceName->save();
 
         return response($referenceName->jsonSerialize(), Response::HTTP_CREATED);
@@ -28,9 +30,10 @@ class ReferencesnamesController extends Controller
     public function update(Request $request, $id)
     {
         $referenceName = Referencesnames::findOrFail($id);
-        $referenceName->text = $request->text;
-        $referenceName->fk_category_id = $request->fk_category_id;
+        $referenceName->fk_reference_id = $request->fk_reference_id;
         $referenceName->fk_language_code = $request->fk_language_code;
+        $referenceName->text = $request->text;
+        $referenceName->updated_at = $request->updated_at;
         $referenceName->save();
 
         return response(null, Response::HTTP_OK);

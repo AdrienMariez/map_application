@@ -14,12 +14,15 @@ class PointsnamesController extends Controller
         return response(Pointsnames::all()->jsonSerialize(), Response::HTTP_OK);
     }
 
-    public function create(Generator $faker)
+    public function store(Request $request)
     {
         $pointName = new Pointsnames();
-        $pointName->text = $faker->lexify('????????');
-        $pointName->fk_point_id = $faker->boolean ? '2' : '4';
-        $pointName->fk_language_code = $faker->boolean ? '2' : '4';
+        $pointName->id = $request->id;
+        $pointName->$fk_point_id = $request->fk_point_id;
+        $pointName->fk_language_code = $request->fk_language_code;
+        $pointName->title = $request->title;
+        $pointName->description = $request->description;
+        $pointName->linkalias = $request->linkalias;
         $pointName->save();
 
         return response($pointName->jsonSerialize(), Response::HTTP_CREATED);
@@ -28,9 +31,11 @@ class PointsnamesController extends Controller
     public function update(Request $request, $id)
     {
         $pointName = Pointsnames::findOrFail($id);
-        $pointName->text = $request->text;
-        $pointName->$fk_reference_id = $request->fk_reference_id;
+        $pointName->$fk_point_id = $request->fk_point_id;
         $pointName->fk_language_code = $request->fk_language_code;
+        $pointName->title = $request->title;
+        $pointName->description = $request->description;
+        $pointName->linkalias = $request->linkalias;
         $pointName->save();
 
         return response(null, Response::HTTP_OK);

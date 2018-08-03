@@ -13,21 +13,23 @@ class PointsController extends Controller
     
     // By default, Eloquent expects created_at and updated_at columns to exist on your tables. If you do not wish to have these columns automatically managed by Eloquent, set the $timestamps property on your model to false
     //public $timestamps = false;
+    //except that brings other problems later, so you should stick to keep the columns in the first place and stick with it.
 
     public function index()
     {
         return response(Point::all()->jsonSerialize(), Response::HTTP_OK);
     }
 
-    public function create(Generator $faker)
+    public function store(Request $request)
     {
         $point = new Point();
-        $point->link = $faker->lexify('????????');
-        $point->icon = $faker->lexify('????????');
-        $point->color = $faker->boolean ? 'red' : 'green';
-        $point->longitude = $faker->boolean ? '2' : '4';
-        $point->lattitude = $faker->boolean ? '1' : '3';
-        $point->image_path = $faker->lexify('????????');
+        $point->id = $request->id;
+        $point->link = $request->link;
+        $point->longitude = $request->longitude;
+        $point->lattitude = $request->lattitude;
+        $point->image_path = $request->image_path;
+        $point->updated_at = $request->created_at;
+        $point->created_at = $request->created_at;
         $point->save();
 
         return response($point->jsonSerialize(), Response::HTTP_CREATED);
@@ -42,6 +44,7 @@ class PointsController extends Controller
         $point->longitude = $request->longitude;
         $point->lattitude = $request->lattitude;
         $point->image_path = $request->image_path;
+        $point->updated_at = $request->updated_at;
         $point->save();
 
         return response(null, Response::HTTP_OK);

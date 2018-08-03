@@ -167,7 +167,6 @@
                 // console.log("icon "+this.icon);
                 // console.log("selectedColor "+this.selectedColor);
                 // console.log("valid "+this.valid);
-                
             },
         },
         methods: {

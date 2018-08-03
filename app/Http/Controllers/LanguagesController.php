@@ -14,10 +14,12 @@ class LanguagesController extends Controller
         return response(Language::all()->jsonSerialize(), Response::HTTP_OK);
     }
 
-    public function create(Generator $faker)
+    public function store(Request $request)
     {
         $language = new Language();
-        $language->name = $faker->lexify('????????');
+        $language->id = $request->id;
+        $language->name = $request->name;
+        $language->code = $request->code;
         $language->save();
 
         return response($Language->jsonSerialize(), Response::HTTP_CREATED);
@@ -27,6 +29,7 @@ class LanguagesController extends Controller
     {
         $language = Language::findOrFail($id);
         $language->name = $request->name;
+        $language->code = $request->code;
         $language->save();
 
         return response(null, Response::HTTP_OK);

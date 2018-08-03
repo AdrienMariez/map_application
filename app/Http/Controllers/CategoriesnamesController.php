@@ -39,16 +39,6 @@ class CategoriesnamesController extends Controller
         return response(null, Response::HTTP_OK);
     }
 
-    // public function update(Request $request, $id)
-    // {
-    //     $categoryName = Categoriesnames::findOrFail($id);
-    //     $categoryName->$request->fk_language_code;
-    //     $categoryName->text = $request->text;
-    //     $categoryName->save();
-
-    //     return response(null, Response::HTTP_OK);
-    // }
-
     public function destroy($id)
     {
         Categoriesnames::destroy($id);
