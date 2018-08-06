@@ -13,7 +13,6 @@
                                         v-model=names[i]
                                         :rules="nameRules"
                                         :label= language.name
-                                        hint="Nom de la catégorie dans chaque langue"
                                         value= names[i]
                                         required
                                         :counter="50"
@@ -236,12 +235,6 @@
                 }
             },
             createCategory(icon, color) {
-                var id = 0;
-                for (let i = 0; i < this.categories.length; i++) {
-                    if (this.categories[i]["id"] >= id) {
-                        id = this.categories[i]["id"] + 1;
-                    }
-                }
                 var weight = 0;
                 for (let i = 0; i < this.categories.length; i++) {
                     if (this.categories[i]["weight"] >= weight) {
@@ -262,14 +255,11 @@
                         ])   
                     )
                     .then(function (resp) {
-                        // console.log("in cat create");
-                        
-                        // console.log(resp.data.id);
                     })
                     .catch(function (error) {
                         console.log(error.response.data);
                         
-                        alert("Un problème est survenu lors de la création.");
+                        alert("Un problème est survenu lors de la création. Error located in EditCategory.vue !");
                     });
             },
             updateCategory(id, icon, color) {
@@ -299,7 +289,7 @@
                     .catch(function (error) {
                         console.log(error.response.data);
                         
-                        alert("Un problème est survenu lors de la mise à jour.");
+                        alert("Un problème est survenu lors de la mise à jour. Error located in EditCategory.vue !");
                     });
                 this.$emit('pageToShow', "", null);
                 
@@ -319,7 +309,7 @@
                         .catch(function (error) {
                             console.log(error.response.data);
                             
-                            alert("Un problème est survenu lors de la création.");
+                            alert("Un problème est survenu lors de la création. Error located in EditCategory.vue !");
                         });
                 }
 
@@ -340,7 +330,7 @@
                         .catch(function (error) {
                             console.log(error.response.data);
                             
-                            alert("Un problème est survenu lors de la mise à jour.");
+                            alert("Un problème est survenu lors de la mise à jour. Error located in EditCategory.vue !");
                         });
                 }
                 this.$emit('pageToShow', "", null);

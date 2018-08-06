@@ -22,6 +22,7 @@
     <edit-reference
         v-bind:idSelected="idSelected"
         v-bind:page="page"
+        @pageToShow="pageToShow"
         v-if="page == 'reference' || page == 'referenceParent'"
         class="adminPage">
     </edit-reference>
@@ -29,6 +30,7 @@
     <edit-point
         v-bind:idSelected="idSelected"
         v-bind:page="page"
+        @pageToShow="pageToShow"
         v-if="page == 'point' || page == 'pointParent'"
         class="adminPage">
     </edit-point>

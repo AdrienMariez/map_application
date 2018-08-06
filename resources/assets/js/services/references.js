@@ -17,8 +17,36 @@ var referencesMethods = {
         });
         return referencesNames;
     },
+    readReferenceNamesFrOnly() {
+        var referencesNames = [];
+        window.axios.get('/api/referencesnames').then(({ data }) => {
+            data.forEach(referenceName => {
+                if (referenceName["fk_language_code"] == "fr") {
+                    referencesNames.push(referenceName);
+                }
+            });
+        });
+        return referencesNames;
+    },
     destroyReference(id){
-        console.log("Reference destruction done : "+ id);
+        axios.delete(`/api/references/${id}`)
+            .then(function (resp) {
+            })
+            .catch(function (error) {
+                console.log(error.response.data);
+                
+                alert("Un problème est survenu lors de la suppression. Error located in MainList.vue !");
+            });
+    },
+    destroyReferenceName(id){
+        axios.delete(`/api/referencesnames/${id}`)
+            .then(function (resp) {
+            })
+            .catch(function (error) {
+                console.log(error.response.data);
+                
+                alert("Un problème est survenu lors de la suppression. Error located in MainList.vue !");
+            });
     },
   }
   

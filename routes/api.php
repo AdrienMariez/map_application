@@ -41,29 +41,20 @@ use Illuminate\Http\Request;
 
 //USER
 
-    Route::resource('/points', 'PointsController', [
-        'except' => ['edit', 'show', 'store']
-    ]);
+    Route::resource('/points', 'PointsController');
 
-    Route::resource('/pointsnames', 'PointsnamesController', [
-        'except' => ['edit', 'show', 'store']
-    ]);
+    Route::resource('/pointsnames', 'PointsnamesController');
 
-    Route::resource('/languages', 'LanguagesController', [
-        'except' => ['edit', 'show', 'store']
-    ]);
+    Route::resource('/languages', 'LanguagesController');
 
-    Route::resource('/references', 'ReferencesController', [
-        'except' => ['edit', 'show', 'store']
-    ]);
+    Route::resource('/references', 'ReferencesController');
 
-    Route::resource('/referencesnames', 'ReferencesnamesController', [
-        'except' => ['edit', 'show', 'store']
-    ]);
+    Route::resource('/referencesnames', 'ReferencesnamesController');
 
     // Route::resource('/categories', 'CategoriesController', [
     //     'except' => ['edit', 'show', 'store']
     // ]);
+
     Route::resource('/categories', 'CategoriesController');
 
     Route::resource('/categoriesnames', 'CategoriesnamesController');

@@ -14,7 +14,7 @@ class ReferencesnamesController extends Controller
         return response(Referencesnames::all()->jsonSerialize(), Response::HTTP_OK);
     }
 
-    public function store(Request $Referencesnames)
+    public function store(Request $request)
     {
         $referenceName = new Referencesnames();
         $referenceName->fk_reference_id = $request->fk_reference_id;

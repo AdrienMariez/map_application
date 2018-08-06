@@ -122,9 +122,7 @@
                                             <v-list-tile-content
                                                 v-for="(refName,b) in referenceNames"
                                                 v-if="refName.fk_language_code == languageSelected && refName.fk_reference_id == reference.id"
-                                                :key="b">
-                                                {{refName.fk_reference_id}} - 
-                                                {{refName.text}}
+                                                :key="b">{{refName.text}}
                                             </v-list-tile-content>
                                         </v-list-tile-action>
                                     </v-list-tile>
@@ -235,9 +233,11 @@
 
                                 <v-list-tile-action>
                                             <!-- loop on names in points & translations -->
-                                            <v-list-tile-content>
-                                                {{point.id}} - 
-                                                {{point.icon}}
+                                            <v-list-tile-content
+                                                v-for="(pointName,c) in pointsContents"
+                                                v-if="pointName.fk_language_code == languageSelected && pointName.fk_point_id == point.id"
+                                                :key="c">
+                                                {{pointName.title}}
                                             </v-list-tile-content>
                                 </v-list-tile-action>
                             </v-list-tile>
@@ -456,13 +456,42 @@
             destroy(type,id){
                 if (type == "category") {
                     categoriesMethods.destroyCategory(id);
+                    for (let i = 0; i < this.categoriesNames.length; i++) {
+                        
+                        if (this.categoriesNames[i]["fk_category_id"] == id) {
+
+                            categoriesMethods.destroyCategoryName(this.categoriesNames[i]["id"]);
+                        }
+                    }
+                    //reload categories list
+                    //mimics a reload
+                    this.categories = [];
+                    this.categories = categoriesMethods.readCategories();
+                    this.categoriesNames = [];
+                    this.categoriesNames = categoriesMethods.readCategoriesNames();
                 }
                 else if (type == "reference") {
                     referencesMethods.destroyReference(id);
+                    for (let i = 0; i < this.referenceNames.length; i++) {
+                        
+                        if (this.referenceNames[i]["fk_reference_id"] == id) {
+
+                            referencesMethods.destroyReferenceName(this.referenceNames[i]["id"]);
+                        }
+                    }
+                    //reload references list
+                    //mimics a reload
+                    this.references = [];
+                    this.references = referencesMethods.readReferences();
+                    this.referenceNames = [];
+                    this.referenceNames = referencesMethods.readReferenceNames();
                 }
                 else if (type == "point") {
                     pointsMethods.destroyPoint(id);
-                }else{}
+                }else{
+                    console.log("If we get here, we are in trouble as the method does not know what it is supposed to remove.");
+                    alert("Un problème est survenu lors de la suppression. Error located in MainList.vue !");
+                }
             },
     },
     created() {

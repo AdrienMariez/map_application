@@ -21,7 +21,6 @@ class ReferencesController extends Controller
         $reference = new Reference();
         $reference->id = $request->id;
         $reference->icon = $request->icon;
-        $reference->color = $request->color;
         $reference->weight = $request->weight;
         $reference->fk_category_id = $request->fk_category_id;
         $reference->updated_at = $request->created_at;
@@ -35,7 +34,6 @@ class ReferencesController extends Controller
     {
         $reference = Reference::findOrFail($id);
         $reference->icon = $request->icon;
-        $reference->color = $request->color;
         $reference->weight = $request->weight;
         $reference->fk_category_id = $request->fk_category_id;
         $reference->updated_at = $request->updated_at;

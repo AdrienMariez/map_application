@@ -489,7 +489,7 @@ function applyToTag (styleElement, obj) {
 "use strict";
 
 
-var bind = __webpack_require__(12);
+var bind = __webpack_require__(13);
 var isBuffer = __webpack_require__(36);
 
 /*global toString:true*/
@@ -11638,6 +11638,86 @@ module.exports = g;
 
 /***/ }),
 /* 6 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var categoriesMethods = {
+    readCategories: function readCategories() {
+        var categories = [];
+        window.axios.get('/api/categories').then(function (_ref) {
+            var data = _ref.data;
+
+            data.forEach(function (category) {
+                categories.push(category);
+            });
+        });
+        return categories;
+    },
+    readCategoriesNames: function readCategoriesNames() {
+        var categoriesnames = [];
+        window.axios.get('/api/categoriesnames').then(function (_ref2) {
+            var data = _ref2.data;
+
+            data.forEach(function (categoryName) {
+                categoriesnames.push(categoryName);
+            });
+        });
+        return categoriesnames;
+    },
+    readCategoriesNamesFrOnly: function readCategoriesNamesFrOnly() {
+        var categoriesnames = [];
+        window.axios.get('/api/categoriesnames').then(function (_ref3) {
+            var data = _ref3.data;
+
+            data.forEach(function (categoryName) {
+                if (categoryName["fk_language_code"] == "fr") {
+                    categoriesnames.push(categoryName);
+                }
+            });
+        });
+        return categoriesnames;
+    },
+    destroyCategory: function destroyCategory(id) {
+        axios.delete('/api/categories/' + id).then(function (resp) {}).catch(function (error) {
+            console.log(error.response.data);
+
+            alert("Un problème est survenu lors de la suppression. Error located in MainList.vue !");
+        });
+    },
+    destroyCategoryName: function destroyCategoryName(id) {
+        axios.delete('/api/categoriesnames/' + id).then(function (resp) {}).catch(function (error) {
+            console.log(error.response.data);
+
+            alert("Un problème est survenu lors de la suppression. Error located in MainList.vue !");
+        });
+    }
+};
+
+/* harmony default export */ __webpack_exports__["a"] = (categoriesMethods);
+
+/***/ }),
+/* 7 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var languagesMethods = {
+    readLanguages: function readLanguages() {
+        var languages = [];
+        window.axios.get('/api/languages').then(function (_ref) {
+            var data = _ref.data;
+
+            data.forEach(function (language) {
+                languages.push(language);
+            });
+        });
+        return languages;
+    }
+};
+
+/* harmony default export */ __webpack_exports__["a"] = (languagesMethods);
+
+/***/ }),
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11660,10 +11740,10 @@ function getDefaultAdapter() {
   var adapter;
   if (typeof XMLHttpRequest !== 'undefined') {
     // For browsers use XHR adapter
-    adapter = __webpack_require__(13);
+    adapter = __webpack_require__(14);
   } else if (typeof process !== 'undefined') {
     // For node use HTTP adapter
-    adapter = __webpack_require__(13);
+    adapter = __webpack_require__(14);
   }
   return adapter;
 }
@@ -11734,10 +11814,10 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 
 module.exports = defaults;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(11)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(12)))
 
 /***/ }),
-/* 7 */
+/* 9 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -11772,63 +11852,66 @@ var pointsMethods = {
 /* harmony default export */ __webpack_exports__["a"] = (pointsMethods);
 
 /***/ }),
-/* 8 */
+/* 10 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-var categoriesMethods = {
-    readCategories: function readCategories() {
-        var categories = [];
-        window.axios.get('/api/categories').then(function (_ref) {
+var referencesMethods = {
+    readReferences: function readReferences() {
+        var references = [];
+        window.axios.get('/api/references').then(function (_ref) {
             var data = _ref.data;
 
-            data.forEach(function (category) {
-                categories.push(category);
+            data.forEach(function (reference) {
+                references.push(reference);
             });
         });
-        return categories;
+        return references;
     },
-    readCategoriesNames: function readCategoriesNames() {
-        var categoriesnames = [];
-        window.axios.get('/api/categoriesnames').then(function (_ref2) {
+    readReferenceNames: function readReferenceNames() {
+        var referencesNames = [];
+        window.axios.get('/api/referencesnames').then(function (_ref2) {
             var data = _ref2.data;
 
-            data.forEach(function (categoryName) {
-                categoriesnames.push(categoryName);
+            data.forEach(function (referenceName) {
+                referencesNames.push(referenceName);
             });
         });
-        return categoriesnames;
+        return referencesNames;
     },
-    destroyCategory: function destroyCategory(id) {
-        console.log("Category destruction done : " + id);
-    }
-};
+    readReferenceNamesFrOnly: function readReferenceNamesFrOnly() {
+        var referencesNames = [];
+        window.axios.get('/api/referencesnames').then(function (_ref3) {
+            var data = _ref3.data;
 
-/* harmony default export */ __webpack_exports__["a"] = (categoriesMethods);
-
-/***/ }),
-/* 9 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-var languagesMethods = {
-    readLanguages: function readLanguages() {
-        var languages = [];
-        window.axios.get('/api/languages').then(function (_ref) {
-            var data = _ref.data;
-
-            data.forEach(function (language) {
-                languages.push(language);
+            data.forEach(function (referenceName) {
+                if (referenceName["fk_language_code"] == "fr") {
+                    referencesNames.push(referenceName);
+                }
             });
         });
-        return languages;
+        return referencesNames;
+    },
+    destroyReference: function destroyReference(id) {
+        axios.delete('/api/references/' + id).then(function (resp) {}).catch(function (error) {
+            console.log(error.response.data);
+
+            alert("Un problème est survenu lors de la suppression. Error located in MainList.vue !");
+        });
+    },
+    destroyReferenceName: function destroyReferenceName(id) {
+        axios.delete('/api/referencesnames/' + id).then(function (resp) {}).catch(function (error) {
+            console.log(error.response.data);
+
+            alert("Un problème est survenu lors de la suppression. Error located in MainList.vue !");
+        });
     }
 };
 
-/* harmony default export */ __webpack_exports__["a"] = (languagesMethods);
+/* harmony default export */ __webpack_exports__["a"] = (referencesMethods);
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -11855,7 +11938,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vuex
 }));
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -12045,7 +12128,7 @@ process.umask = function() { return 0; };
 
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12063,7 +12146,7 @@ module.exports = function bind(fn, thisArg) {
 
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12074,7 +12157,7 @@ var settle = __webpack_require__(39);
 var buildURL = __webpack_require__(41);
 var parseHeaders = __webpack_require__(42);
 var isURLSameOrigin = __webpack_require__(43);
-var createError = __webpack_require__(14);
+var createError = __webpack_require__(15);
 var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || __webpack_require__(44);
 
 module.exports = function xhrAdapter(config) {
@@ -12250,7 +12333,7 @@ module.exports = function xhrAdapter(config) {
 
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12275,7 +12358,7 @@ module.exports = function createError(message, config, code, request, response) 
 
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12287,7 +12370,7 @@ module.exports = function isCancel(value) {
 
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12313,7 +12396,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
@@ -12327,7 +12410,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(18)(content, options);
+var update = __webpack_require__(19)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -12344,7 +12427,7 @@ if(false) {
 }
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -12703,7 +12786,7 @@ function updateLink (link, options, obj) {
 
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
@@ -12717,7 +12800,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(18)(content, options);
+var update = __webpack_require__(19)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -12734,7 +12817,7 @@ if(false) {
 }
 
 /***/ }),
-/* 20 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
@@ -12783,41 +12866,6 @@ if (false) {(function () {
 
 module.exports = Component.exports
 
-
-/***/ }),
-/* 21 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-var referencesMethods = {
-    readReferences: function readReferences() {
-        var references = [];
-        window.axios.get('/api/references').then(function (_ref) {
-            var data = _ref.data;
-
-            data.forEach(function (reference) {
-                references.push(reference);
-            });
-        });
-        return references;
-    },
-    readReferenceNames: function readReferenceNames() {
-        var referencesNames = [];
-        window.axios.get('/api/referencesnames').then(function (_ref2) {
-            var data = _ref2.data;
-
-            data.forEach(function (referenceName) {
-                referencesNames.push(referenceName);
-            });
-        });
-        return referencesNames;
-    },
-    destroyReference: function destroyReference(id) {
-        console.log("Reference destruction done : " + id);
-    }
-};
-
-/* harmony default export */ __webpack_exports__["a"] = (referencesMethods);
 
 /***/ }),
 /* 22 */
@@ -12907,8 +12955,8 @@ __webpack_require__(29);
 
 // import 'leaflet/dist/leaflet.css';
 // import 'leaflet.markercluster/dist/MarkerCluster.css';
-__webpack_require__(17);
-__webpack_require__(19);
+__webpack_require__(18);
+__webpack_require__(20);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -13239,7 +13287,7 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
     attachTo.clearImmediate = clearImmediate;
 }(typeof self === "undefined" ? typeof global === "undefined" ? this : global : self));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5), __webpack_require__(11)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5), __webpack_require__(12)))
 
 /***/ }),
 /* 27 */
@@ -64869,9 +64917,9 @@ module.exports = __webpack_require__(35);
 
 
 var utils = __webpack_require__(3);
-var bind = __webpack_require__(12);
+var bind = __webpack_require__(13);
 var Axios = __webpack_require__(37);
-var defaults = __webpack_require__(6);
+var defaults = __webpack_require__(8);
 
 /**
  * Create an instance of Axios
@@ -64904,9 +64952,9 @@ axios.create = function create(instanceConfig) {
 };
 
 // Expose Cancel & CancelToken
-axios.Cancel = __webpack_require__(16);
+axios.Cancel = __webpack_require__(17);
 axios.CancelToken = __webpack_require__(51);
-axios.isCancel = __webpack_require__(15);
+axios.isCancel = __webpack_require__(16);
 
 // Expose all/spread
 axios.all = function all(promises) {
@@ -64954,7 +65002,7 @@ function isSlowBuffer (obj) {
 "use strict";
 
 
-var defaults = __webpack_require__(6);
+var defaults = __webpack_require__(8);
 var utils = __webpack_require__(3);
 var InterceptorManager = __webpack_require__(46);
 var dispatchRequest = __webpack_require__(47);
@@ -65059,7 +65107,7 @@ module.exports = function normalizeHeaderName(headers, normalizedName) {
 "use strict";
 
 
-var createError = __webpack_require__(14);
+var createError = __webpack_require__(15);
 
 /**
  * Resolve or reject a Promise based on response status.
@@ -65494,8 +65542,8 @@ module.exports = InterceptorManager;
 
 var utils = __webpack_require__(3);
 var transformData = __webpack_require__(48);
-var isCancel = __webpack_require__(15);
-var defaults = __webpack_require__(6);
+var isCancel = __webpack_require__(16);
+var defaults = __webpack_require__(8);
 var isAbsoluteURL = __webpack_require__(49);
 var combineURLs = __webpack_require__(50);
 
@@ -65654,7 +65702,7 @@ module.exports = function combineURLs(baseURL, relativeURL) {
 "use strict";
 
 
-var Cancel = __webpack_require__(16);
+var Cancel = __webpack_require__(17);
 
 /**
  * A `CancelToken` is an object that can be used to request cancellation of an operation.
@@ -65927,7 +65975,7 @@ exports.push([module.i, ".leaflet-cluster-anim .leaflet-marker-icon, .leaflet-cl
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_auth_LogoutComponent___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__components_auth_LogoutComponent__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_PublicComponent__ = __webpack_require__(116);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_PublicComponent___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__components_PublicComponent__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__store__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__store__ = __webpack_require__(11);
 
 
 
@@ -68750,7 +68798,7 @@ module.exports = function listToStyles (parentId, list) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__admin_AdminHeader_vue__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__admin_AdminHeader_vue__ = __webpack_require__(21);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__admin_AdminHeader_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__admin_AdminHeader_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__admin_MainList_vue__ = __webpack_require__(71);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__admin_MainList_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__admin_MainList_vue__);
@@ -68760,6 +68808,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__admin_EditReference_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__admin_EditReference_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__admin_EditPoint_vue__ = __webpack_require__(86);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__admin_EditPoint_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__admin_EditPoint_vue__);
+//
+//
 //
 //
 //
@@ -69381,9 +69431,9 @@ exports.push([module.i, "\n.v-expansion-panel__container[data-v-52d311a4]{\n    
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__services_points_js__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_categories_js__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_references_js__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__services_points_js__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_categories_js__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_references_js__ = __webpack_require__(10);
 //
 //
 //
@@ -69839,11 +69889,40 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         destroy: function destroy(type, id) {
             if (type == "category") {
                 __WEBPACK_IMPORTED_MODULE_1__services_categories_js__["a" /* default */].destroyCategory(id);
+                for (var i = 0; i < this.categoriesNames.length; i++) {
+
+                    if (this.categoriesNames[i]["fk_category_id"] == id) {
+
+                        __WEBPACK_IMPORTED_MODULE_1__services_categories_js__["a" /* default */].destroyCategoryName(this.categoriesNames[i]["id"]);
+                    }
+                }
+                //reload categories list
+                //mimics a reload
+                this.categories = [];
+                this.categories = __WEBPACK_IMPORTED_MODULE_1__services_categories_js__["a" /* default */].readCategories();
+                this.categoriesNames = [];
+                this.categoriesNames = __WEBPACK_IMPORTED_MODULE_1__services_categories_js__["a" /* default */].readCategoriesNames();
             } else if (type == "reference") {
                 __WEBPACK_IMPORTED_MODULE_2__services_references_js__["a" /* default */].destroyReference(id);
+                for (var _i = 0; _i < this.referenceNames.length; _i++) {
+
+                    if (this.referenceNames[_i]["fk_reference_id"] == id) {
+
+                        __WEBPACK_IMPORTED_MODULE_2__services_references_js__["a" /* default */].destroyReferenceName(this.referenceNames[_i]["id"]);
+                    }
+                }
+                //reload references list
+                //mimics a reload
+                this.references = [];
+                this.references = __WEBPACK_IMPORTED_MODULE_2__services_references_js__["a" /* default */].readReferences();
+                this.referenceNames = [];
+                this.referenceNames = __WEBPACK_IMPORTED_MODULE_2__services_references_js__["a" /* default */].readReferenceNames();
             } else if (type == "point") {
                 __WEBPACK_IMPORTED_MODULE_0__services_points_js__["a" /* default */].destroyPoint(id);
-            } else {}
+            } else {
+                console.log("If we get here, we are in trouble as the method does not know what it is supposed to remove.");
+                alert("Un problème est survenu lors de la suppression. Error located in MainList.vue !");
+            }
         }
     },
     created: function created() {
@@ -70156,12 +70235,7 @@ var render = function() {
                                                 { key: b },
                                                 [
                                                   _vm._v(
-                                                    "\n                                            " +
-                                                      _vm._s(
-                                                        refName.fk_reference_id
-                                                      ) +
-                                                      " - \n                                            " +
-                                                      _vm._s(refName.text) +
+                                                    _vm._s(refName.text) +
                                                       "\n                                        "
                                                   )
                                                 ]
@@ -70413,18 +70487,28 @@ var render = function() {
                                         _vm._v(" "),
                                         _c(
                                           "v-list-tile-action",
-                                          [
-                                            _c("v-list-tile-content", [
-                                              _vm._v(
-                                                "\n                                            " +
-                                                  _vm._s(point.id) +
-                                                  " - \n                                            " +
-                                                  _vm._s(point.icon) +
-                                                  "\n                                        "
-                                              )
-                                            ])
-                                          ],
-                                          1
+                                          _vm._l(_vm.pointsContents, function(
+                                            pointName,
+                                            c
+                                          ) {
+                                            return pointName.fk_language_code ==
+                                              _vm.languageSelected &&
+                                              pointName.fk_point_id == point.id
+                                              ? _c(
+                                                  "v-list-tile-content",
+                                                  { key: c },
+                                                  [
+                                                    _vm._v(
+                                                      "\n                                            " +
+                                                        _vm._s(
+                                                          pointName.title
+                                                        ) +
+                                                        "\n                                        "
+                                                    )
+                                                  ]
+                                                )
+                                              : _vm._e()
+                                          })
                                         )
                                       ],
                                       1
@@ -70681,9 +70765,8 @@ exports.push([module.i, "\n#coloredDiv[data-v-7426e342]{\n    width: 50%;\n    h
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__services_categories_js__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_languages_js__ = __webpack_require__(9);
-//
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__services_categories_js__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_languages_js__ = __webpack_require__(7);
 //
 //
 //
@@ -70904,16 +70987,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         createCategory: function createCategory(icon, color) {
             var _this = this;
 
-            var id = 0;
-            for (var i = 0; i < this.categories.length; i++) {
-                if (this.categories[i]["id"] >= id) {
-                    id = this.categories[i]["id"] + 1;
-                }
-            }
             var weight = 0;
-            for (var _i = 0; _i < this.categories.length; _i++) {
-                if (this.categories[_i]["weight"] >= weight) {
-                    weight = this.categories[_i]["weight"] + 1;
+            for (var i = 0; i < this.categories.length; i++) {
+                if (this.categories[i]["weight"] >= weight) {
+                    weight = this.categories[i]["weight"] + 1;
                 }
             }
             this.category.icon = icon;
@@ -70923,14 +71000,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             axios.post('/api/categories', newCategory).then(function (resp) {
                 return Promise.all([resp, _this.createCategoryNames(resp.data.id, _this.names)]);
-            }).then(function (resp) {
-                // console.log("in cat create");
-
-                // console.log(resp.data.id);
-            }).catch(function (error) {
+            }).then(function (resp) {}).catch(function (error) {
                 console.log(error.response.data);
 
-                alert("Un problème est survenu lors de la création.");
+                alert("Un problème est survenu lors de la création. Error located in EditCategory.vue !");
             });
         },
         updateCategory: function updateCategory(id, icon, color) {
@@ -70956,7 +71029,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             axios.patch('/api/categories/' + id, newCategory).then(function (resp) {}).catch(function (error) {
                 console.log(error.response.data);
 
-                alert("Un problème est survenu lors de la mise à jour.");
+                alert("Un problème est survenu lors de la mise à jour. Error located in EditCategory.vue !");
             });
             this.$emit('pageToShow', "", null);
         },
@@ -70972,7 +71045,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 axios.post('/api/categoriesnames', newCategoryName).then(function (resp) {}).catch(function (error) {
                     console.log(error.response.data);
 
-                    alert("Un problème est survenu lors de la création.");
+                    alert("Un problème est survenu lors de la création. Error located in EditCategory.vue !");
                 });
             }
 
@@ -70990,7 +71063,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 axios.patch('/api/categoriesnames/' + id[i], newCategoryName).then(function (resp) {}).catch(function (error) {
                     console.log(error.response.data);
 
-                    alert("Un problème est survenu lors de la mise à jour.");
+                    alert("Un problème est survenu lors de la mise à jour. Error located in EditCategory.vue !");
                 });
             }
             this.$emit('pageToShow', "", null);
@@ -71075,8 +71148,6 @@ var render = function() {
                                 attrs: {
                                   rules: _vm.nameRules,
                                   label: language.name,
-                                  hint:
-                                    "Nom de la catégorie dans chaque langue",
                                   value: "names[i]",
                                   required: "",
                                   counter: 50
@@ -71359,7 +71430,7 @@ exports = module.exports = __webpack_require__(0)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n#coloredDiv[data-v-457f3fba]{\n    width: 50%;\n    height: 20px;\n    border-radius: 5px;\n}\n", ""]);
 
 // exports
 
@@ -71370,6 +71441,81 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__services_references_js__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_categories_js__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_languages_js__ = __webpack_require__(7);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -71383,199 +71529,288 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 
+
+
+
+
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: ['idSelected', 'page'],
     data: function data() {
-        return {};
+        return {
+            mute: false,
+            loading: true,
+            references: [],
+            referenceNames: [],
+            categories: [],
+            categoriesNames: [],
+            languages: [],
+            valid: false,
+            namesInitial: [],
+            fk_cat: null,
+            categoryList: [],
+            selectedCategory: null,
+            selectedCategoryId: null,
+            selectedColor: "",
+            fk_id: [],
+            names: [],
+            codes: [],
+            nameRules: [function (v) {
+                return !!v || "Invalide ! ";
+            }, function (v) {
+                return v && v.length <= 50 || "Trop long !";
+            }],
+            iconsPrefix: [{ text: 'Material', code: '' }, { text: 'Font Awesome', code: 'fa-' }],
+            selectedPrefix: "",
+            icon: '',
+            iconTotal: '',
+            iconRules: [function (v) {
+                return !!v || "Invalide ! ";
+            }, function (v) {
+                return v && v.length <= 40 || "Trop long !";
+            }],
+            colors: [{ text: 'Rouge', code: '#B71C1C' }, { text: 'Orange sombre', code: '#F4511E' }, { text: 'Orange', code: '#FFA726' }, { text: 'Jaune', code: '#FFC400' }, { text: 'Cyan', code: '#006064' }, { text: 'Bleu', code: '#01579B' }, { text: 'Bleu clair', code: '#1E88E5' }, { text: 'Violet', code: '#4A148C' }, { text: 'Bordeaux', code: '#880E4F' }, { text: 'Rose', code: '#F50057' }, { text: 'Vert sombre', code: '#1B5E20' }, { text: 'Vert', code: '#388E3C' }, { text: 'Vert clair', code: '#4CAF50' }],
+            reference: {
+                id: null,
+                fk_category_id: null,
+                icon: '',
+                weight: null
+            }
+        };
     },
 
     watch: {
         idSelected: function idSelected(val, oldVal) {
             console.log("id changed in reference THIS IS NOT SUPPOSED TO HAPPEN.");console.log("Previous value : " + val + " New value : " + oldVal);
+        },
+        namesInitial: function namesInitial(val, oldVal) {
+            this.pageInit();
+        },
+        selectedCategory: function selectedCategory(val, oldVal) {
+            this.setIconColor(val);
+        },
+        valid: function valid(val, oldVal) {
+            //front validation
+            for (var i = 0; i < this.names.length; i++) {
+                if (this.names[i].length == 0 || this.names[i].length > 50) {
+                    this.valid = false;
+                }
+            }
+            if (this.icon.length == 0 || this.icon.length > 40) {
+                this.valid = false;
+            }
+            if (this.selectedCategory === null) {
+                this.valid = false;
+            }
+            // console.log("names "+this.names);
+            // console.log("icon "+this.icon);
+            // console.log("selectedColor "+this.selectedColor);
+            // console.log("valid "+this.valid);
         }
     },
     methods: {
+        pageInit: function pageInit() {
+            //baking category list
+            for (var a = 0; a < this.categories.length; a++) {
+                for (var b = 0; b < this.categoriesNames.length; b++) {
+                    if (this.categories[a]["id"] === this.categoriesNames[b]["fk_category_id"]) {
+                        var catListObjet = {
+                            "id": this.categories[a]["id"],
+                            "text": this.categoriesNames[b]["text"]
+                        };
+                        this.categoryList.push(catListObjet);
+                    }
+                }
+            }
+            //In edit mode
+            if (this.page == "reference") {
+                this.editMode();
+            }
+            //In create mode
+            else if (this.page == "referenceParent") {
+                    this.createMode();
+                }
+                //in error mode, I suppose
+                else {
+                        console.log("error with the parameters of the page located in EditReference.vue !");
+                        alert("Un problème est survenu lors de l'affichage de la page, veuillez recharger.");
+                    }
+        },
+        editMode: function editMode() {
+            //set name(s) :
+            for (var i = 0; i < this.referenceNames.length; i++) {
+                if (this.idSelected == this.referenceNames[i]["fk_reference_id"]) {
+                    for (var y = 0; y < this.languages.length; y++) {
+                        if (this.referenceNames[i]["fk_language_code"] == this.languages[y]["code"]) {
+                            this.fk_id[y] = this.referenceNames[i]["id"];
 
-        //POINTS CRUD NEED READ ONLY
-        // TO REMOVE
-        //methods other than read() are useless, but kept for the moment until I can remove them and not break anything in the process.
-        create: function create() {
+                            this.names[y] = this.referenceNames[i]["text"];
+
+                            this.codes[y] = this.referenceNames[i]["fk_language_code"];
+                        }
+                    }
+                }
+            }
+            var icon;
+            //search for fk_category_id & icon :
+            for (var x = 0; x < this.references.length; x++) {
+                if (this.idSelected == this.references[x]["id"]) {
+                    this.fk_cat = this.references[x]["fk_category_id"];
+                    icon = this.references[x]["icon"];
+                }
+            }
+            //set icon
+            var prefix = icon.substring(0, 3);
+            if (prefix == "fa-" || prefix == "mdi-") {
+                this.selectedPrefix = prefix;
+                this.icon = icon.substring(3);
+            } else {
+                this.icon = icon;
+            }
+            //set object selectedCategory
+            for (var _y = 0; _y < this.categories.length; _y++) {
+                if (this.fk_cat == this.categories[_y]["id"]) {
+                    this.selectedCategory = this.categories[_y]["id"];
+                }
+            }
+        },
+        createMode: function createMode() {
+            this.fk_cat = this.idSelected;
+            this.selectedPrefix = "";
+            this.icon = "";
+            this.valid = false;
+            //set object selectedCategory
+            for (var y = 0; y < this.categories.length; y++) {
+                if (this.fk_cat == this.categories[y]["id"]) {
+                    this.selectedCategory = this.categories[y]["id"];
+                }
+            }
+        },
+        setIconColor: function setIconColor(id) {
+            for (var i = 0; i < this.categories.length; i++) {
+                if (this.categories[i]["id"] == id) {
+
+                    this.selectedColor = this.categories[i]["color"];
+                }
+            }
+            document.getElementById('coloredDiv').style.backgroundColor = this.selectedColor;
+        },
+        submit: function submit() {
+            if (this.$refs.form.validate()) {
+                var icon = this.selectedPrefix + "" + this.icon;
+                //In create mode
+                if (this.page == "referenceParent") {
+                    this.createReference(this.selectedCategory, icon);
+                }
+                //In edit mode
+                else if (this.page == "reference") {
+                        this.updateReference(this.idSelected, this.selectedCategory, icon);
+                        this.updateReferenceNames(this.fk_id, this.idSelected, this.codes, this.names);
+                    } else {
+                        alert("Un problème est survenu lors de l'execution. Error located in EditReference.vue !");
+                    };
+            }
+        },
+        createReference: function createReference(fk_category_id, icon) {
             var _this = this;
 
-            this.mute = true;
+            var weight = 0;
+            for (var i = 0; i < this.references.length; i++) {
+                if (this.references[i]["weight"] >= weight) {
+                    weight = this.references[i]["weight"] + 1;
+                }
+            }
+            this.reference.fk_category_id = fk_category_id;
+            this.reference.icon = icon;
+            this.reference.weight = weight;
+            var newReference = this.reference;
 
-            window.axios.get('/api/points/create').then(function (_ref) {
-                var data = _ref.data;
+            axios.post('/api/references', newReference).then(function (resp) {
+                return Promise.all([resp, _this.createReferenceNames(resp.data.id, _this.names)]);
+            }).catch(function (error) {
+                console.log(error.response.data);
 
-                _this.points.push(new Point(data));
-                _this.mute = false;
-            });
-            window.axios.get('/api/languages/create').then(function (_ref2) {
-                var data = _ref2.data;
-
-                _this.languages.push(new Language(data));
-                _this.mute = false;
-            });
-            window.axios.get('/api/categories/create').then(function (_ref3) {
-                var data = _ref3.data;
-
-                _this.categories.push(new Category(data));
-                _this.mute = false;
-            });
-            window.axios.get('/api/references/create').then(function (_ref4) {
-                var data = _ref4.data;
-
-                _this.references.push(new Reference(data));
-                _this.mute = false;
+                alert("Un problème est survenu lors de la création. Error located in EditReference.vue !");
             });
         },
-        readPoints: function readPoints() {
+        updateReference: function updateReference(id, fk_category_id, icon) {
+            var weight = 0;
+            for (var i = 0; i < this.references.length; i++) {
+                if (this.references[i]["id"] == this.idSelected) {
+                    weight = this.references[i]["weight"];
+                }
+            }
+
+            this.reference.fk_category_id = fk_category_id;
+            this.reference.icon = icon;
+            this.reference.weight = weight;
+            var newReference = this.reference;
+
+            axios.patch('/api/references/' + id, newReference).then(function (resp) {}).catch(function (error) {
+                console.log(error.response.data);
+
+                alert("Un problème est survenu lors de la mise à jour. Error located in EditReference.vue !");
+            });
+            this.$emit('pageToShow', "", null);
+        },
+        createReferenceNames: function createReferenceNames(id, names) {
+
+            for (var i = 0; i < names.length; i++) {
+                var newReferenceName = {
+                    "fk_reference_id": id,
+                    "fk_language_code": this.languages[i]["code"],
+                    "text": names[i]
+                };
+
+                axios.post('/api/referencesnames', newReferenceName).then(function (resp) {}).catch(function (error) {
+                    console.log(error.response.data);
+
+                    alert("Un problème est survenu lors de la création. Error located in EditReference.vue !");
+                });
+            }
+            this.$emit('pageToShow', "", null);
+        },
+        updateReferenceNames: function updateReferenceNames(id, fk_reference_id, codes, names) {
+            for (var i = 0; i < names.length; i++) {
+                //TO CHANGE
+                var newReferenceName = {
+                    "fk_reference_id": fk_reference_id,
+                    "fk_language_code": codes[i],
+                    "text": names[i]
+                };
+
+                axios.patch('/api/referencesnames/' + id[i], newReferenceName).then(function (resp) {}).catch(function (error) {
+                    console.log(error.response.data);
+
+                    alert("Un problème est survenu lors de la mise à jour.");
+                });
+            }
+            this.$emit('pageToShow', "", null);
+        },
+
+        //API CALLS
+        methodsApiCalls: function methodsApiCalls() {
             var _this2 = this;
 
-            console.log("value of id :");
+            this.references = __WEBPACK_IMPORTED_MODULE_0__services_references_js__["a" /* default */].readReferences();
+            this.referenceNames = __WEBPACK_IMPORTED_MODULE_0__services_references_js__["a" /* default */].readReferenceNames();
+            this.categories = __WEBPACK_IMPORTED_MODULE_1__services_categories_js__["a" /* default */].readCategories();
+            this.categoriesNames = __WEBPACK_IMPORTED_MODULE_1__services_categories_js__["a" /* default */].readCategoriesNamesFrOnly();
+            this.languages = __WEBPACK_IMPORTED_MODULE_2__services_languages_js__["a" /* default */].readLanguages();
 
-            console.log(this.idSelected);
-
-            this.mute = true;
-            window.axios.get('/api/points').then(function (_ref5) {
-                var data = _ref5.data;
-
-                data.forEach(function (point) {
-                    //loops over each point in db
-                    // console.log("point :");
-                    // console.log(point);
-                    _this2.points.push(new Point(point));
-                });
-                _this2.mute = false;
-            });
-        },
-        update: function update(id, color) {
-            var _this3 = this;
-
-            this.mute = true;
-            window.axios.put('/api/points/' + id, { color: color }).then(function () {
-                _this3.points.find(function (point) {
-                    return point.id === id;
-                }).color = color;
-                _this3.mute = false;
-            });
-        },
-        del: function del(id) {
-            var _this4 = this;
-
-            this.mute = true;
-            window.axios.delete('/api/points/' + id).then(function () {
-                var index = _this4.points.findIndex(function (point) {
-                    return point.id === id;
-                });
-                _this4.points.splice(index, 1);
-                _this4.mute = false;
-            });
-        },
-
-        //REFERENCES READ
-        readReferences: function readReferences() {
-            var _this5 = this;
-
-            this.mute = true;
-            window.axios.get('/api/references').then(function (_ref6) {
-                var data = _ref6.data;
-
-                data.forEach(function (reference) {
-                    //loops over each reference in db
-                    // console.log("reference :");
-                    // console.log(reference);
-                    _this5.references.push(new Reference(reference));
-                    // var obj = {};
-                    // obj["id"] = reference.id;
-                    // obj["isToBeDisplayed"] = false;
-                    // obj["catColor"] = "";
-                    // this.referenceDisplayed.push(obj);
-                });
-                _this5.mute = false;
-            });
-        },
-
-        //REFERENCE NAMES READ
-        readReferenceNames: function readReferenceNames() {
-            var _this6 = this;
-
-            this.mute = true;
-            window.axios.get('/api/referencesnames').then(function (_ref7) {
-                var data = _ref7.data;
-
-                data.forEach(function (referenceName) {
-                    //loops over each reference name in db
-                    // console.log("reference name :");
-                    // console.log(referenceName);
-                    _this6.referenceNames.push(new ReferenceName(referenceName));
-                });
-                _this6.mute = false;
-            });
-        },
-
-        //CATEGORIES READ
-        readCategories: function readCategories() {
-            var _this7 = this;
-
-            this.mute = true;
-            window.axios.get('/api/categories').then(function (_ref8) {
-                var data = _ref8.data;
-
-                data.forEach(function (category) {
-                    //loops over each category in db
-                    // console.log("category :");
-                    // console.log(category);
-                    _this7.categories.push(new Category(category));
-                });
-                _this7.mute = false;
-            });
-        },
-
-        //CATEGORIES NAMES READ
-        readCategoriesNames: function readCategoriesNames() {
-            var _this8 = this;
-
-            this.mute = true;
-            window.axios.get('/api/categoriesnames').then(function (_ref9) {
-                var data = _ref9.data;
-
-                data.forEach(function (categoryName) {
-                    //loops over each category name in db
-                    // console.log("category name :");
-                    // console.log(categoryName);
-                    _this8.categoriesNames.push(new CategoryName(categoryName));
-                });
-                _this8.mute = false;
-            });
-        },
-
-        //LANGUAGES READ
-        readLanguages: function readLanguages() {
-            var _this9 = this;
-
-            this.mute = true;
-            window.axios.get('/api/languages').then(function (_ref10) {
-                var data = _ref10.data;
+            //setting initial empty names
+            window.axios.get('/api/languages').then(function (_ref) {
+                var data = _ref.data;
 
                 data.forEach(function (language) {
-                    //loops over each language in db
-                    // console.log("language :");
-                    // console.log(language);
-                    _this9.languages.push(new Language(language));
+                    _this2.names.push("");
+                    _this2.namesInitial.push("");
                 });
-                _this9.mute = false;
+                _this2.loading = false;
             });
         }
     },
     created: function created() {
-        //each line calls for the function responsible for the api returns
-        this.readReferenceNames();
-        this.readPoints();
-        this.readReferences();
-        this.readCategories();
-        this.readLanguages();
-        this.readCategoriesNames();
+        this.methodsApiCalls();
     }
 });
 
@@ -71588,15 +71823,233 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _vm.page == "reference"
-      ? _c("div", [_vm._v("\n        Can edit existing reference here\n    ")])
-      : _vm._e(),
-    _vm._v(" "),
-    _vm.page == "referenceParent"
-      ? _c("div", [
-          _vm._v("\n        Can create new reference here under parent\n    ")
-        ])
-      : _vm._e()
+    _c(
+      "div",
+      [
+        _c(
+          "v-form",
+          {
+            ref: "form",
+            attrs: { "lazy-validation": "" },
+            model: {
+              value: _vm.valid,
+              callback: function($$v) {
+                _vm.valid = $$v
+              },
+              expression: "valid"
+            }
+          },
+          [
+            _c(
+              "v-card-text",
+              [
+                _c(
+                  "v-container",
+                  { attrs: { "grid-list-md": "" } },
+                  [
+                    _c(
+                      "v-layout",
+                      { attrs: { wrap: "" } },
+                      [
+                        _c(
+                          "v-flex",
+                          { staticClass: "my-5", attrs: { xs12: "" } },
+                          [
+                            _c("div", [_vm._v("Catégorie parent *: ")]),
+                            _vm._v(" "),
+                            _c("v-select", {
+                              attrs: {
+                                "item-text": "text",
+                                "item-value": "id",
+                                items: _vm.categoryList,
+                                required: ""
+                              },
+                              model: {
+                                value: _vm.selectedCategory,
+                                callback: function($$v) {
+                                  _vm.selectedCategory = $$v
+                                },
+                                expression: "selectedCategory"
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("div", { attrs: { id: "coloredDiv" } })
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "v-flex",
+                          { staticClass: "my-5", attrs: { xs12: "" } },
+                          [
+                            _c("div", [_vm._v("Icone utilisée : ")]),
+                            _vm._v(" "),
+                            _c("v-select", {
+                              staticClass: "mb-2",
+                              attrs: {
+                                label: "origine de l'icone :",
+                                "item-text": "text",
+                                "item-value": "code",
+                                items: _vm.iconsPrefix,
+                                required: ""
+                              },
+                              model: {
+                                value: _vm.selectedPrefix,
+                                callback: function($$v) {
+                                  _vm.selectedPrefix = $$v
+                                },
+                                expression: "selectedPrefix"
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("v-text-field", {
+                              attrs: {
+                                rules: _vm.iconRules,
+                                label: "icone *",
+                                hint: "icone utilisée par la catégorie",
+                                required: "",
+                                counter: 40
+                              },
+                              model: {
+                                value: _vm.icon,
+                                callback: function($$v) {
+                                  _vm.icon = $$v
+                                },
+                                expression: "icon"
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              [
+                                _vm._v(
+                                  "Aperçu de " +
+                                    _vm._s(_vm.selectedPrefix) +
+                                    _vm._s(_vm.icon) +
+                                    " :\n                                    "
+                                ),
+                                _c(
+                                  "v-icon",
+                                  {
+                                    style: { color: _vm.selectedColor },
+                                    attrs: { "x-large": "" }
+                                  },
+                                  [
+                                    _vm._v(
+                                      "\n                                        " +
+                                        _vm._s(_vm.selectedPrefix) +
+                                        _vm._s(_vm.icon) +
+                                        "\n                                    "
+                                    )
+                                  ]
+                                )
+                              ],
+                              1
+                            )
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "v-flex",
+                          { staticClass: "my-5", attrs: { xs12: "" } },
+                          [
+                            _c("div", [
+                              _vm._v(
+                                "Nom de la réference dans chaque langue *: "
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _vm._l(_vm.languages, function(language, i) {
+                              return _c("v-text-field", {
+                                key: i,
+                                staticClass: "mb-2",
+                                attrs: {
+                                  rules: _vm.nameRules,
+                                  label: language.name,
+                                  value: "names[i]",
+                                  required: "",
+                                  counter: 50
+                                },
+                                model: {
+                                  value: _vm.names[i],
+                                  callback: function($$v) {
+                                    _vm.$set(_vm.names, i, $$v)
+                                  },
+                                  expression: "names[i]"
+                                }
+                              })
+                            })
+                          ],
+                          2
+                        ),
+                        _vm._v(" "),
+                        _c("v-divider")
+                      ],
+                      1
+                    )
+                  ],
+                  1
+                )
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c(
+              "v-card-actions",
+              [
+                _c(
+                  "v-layout",
+                  { attrs: { row: "", wrap: "", "justify-space-between": "" } },
+                  [
+                    _c(
+                      "v-flex",
+                      { attrs: { xs2: "", "align-right": "" } },
+                      [
+                        _c(
+                          "v-list-tile",
+                          [
+                            _c(
+                              "v-list-tile-action",
+                              [
+                                _c(
+                                  "v-btn",
+                                  {
+                                    attrs: {
+                                      disabled: !_vm.valid,
+                                      color: "success"
+                                    },
+                                    on: { click: _vm.submit }
+                                  },
+                                  [
+                                    _c("v-icon", [_vm._v("add")]),
+                                    _vm._v(
+                                      " Valider\n                                    "
+                                    )
+                                  ],
+                                  1
+                                )
+                              ],
+                              1
+                            )
+                          ],
+                          1
+                        )
+                      ],
+                      1
+                    )
+                  ],
+                  1
+                )
+              ],
+              1
+            )
+          ],
+          1
+        )
+      ],
+      1
+    )
   ])
 }
 var staticRenderFns = []
@@ -71695,7 +72148,7 @@ exports = module.exports = __webpack_require__(0)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n#coloredDiv[data-v-01c4eeff]{\n    width: 50%;\n    height: 20px;\n    border-radius: 5px;\n}\n", ""]);
 
 // exports
 
@@ -71706,6 +72159,10 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__services_points_js__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_references_js__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_categories_js__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_languages_js__ = __webpack_require__(7);
 //
 //
 //
@@ -71718,203 +72175,393 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: ['idSelected', 'page'],
     data: function data() {
-        return {};
+        return {
+            mute: false,
+            loading: true,
+            points: [],
+            pointsContents: [],
+            references: [],
+            referenceNames: [],
+            categories: [],
+            categoriesNames: [],
+            languages: [],
+            valid: false,
+            fk_cat: null,
+            fk_ref: null,
+            referenceList: [],
+            selectedReference: null,
+            selectedReferenceId: null,
+            selectedColor: "",
+            fk_id: [],
+            titles: [],
+            titlesInitial: [],
+            desc: [],
+            linkAlias: [],
+            codes: [],
+            link: "",
+            nameRules: [function (v) {
+                return !!v || "Invalide ! ";
+            }, function (v) {
+                return v && v.length <= 50 || "Trop long !";
+            }],
+            icon: '',
+            iconTotal: '',
+            reference: {
+                id: null,
+                fk_category_id: null,
+                icon: '',
+                weight: null
+            }
+        };
     },
 
     watch: {
         idSelected: function idSelected(val, oldVal) {
-            console.log("id changed in points THIS IS NOT SUPPOSED TO HAPPEN.");console.log("Previous value : " + val + " New value : " + oldVal);
+            console.log("id changed in reference THIS IS NOT SUPPOSED TO HAPPEN.");console.log("Previous value : " + val + " New value : " + oldVal);
+        },
+        titlesInitial: function titlesInitial(val, oldVal) {
+            this.pageInit();
+        },
+        selectedReference: function selectedReference(val, oldVal) {
+            this.setIcon(val);
+        },
+        valid: function valid(val, oldVal) {
+            //front validation
+            for (var i = 0; i < this.titles.length; i++) {
+                if (this.titles[i].length == 0 || this.titles[i].length > 50) {
+                    this.valid = false;
+                }
+            }
+            if (this.icon.length == 0 || this.icon.length > 40) {
+                this.valid = false;
+            }
+            if (this.selectedReference === null) {
+                this.valid = false;
+            }
+            // console.log("titles "+this.titles);
+            // console.log("icon "+this.icon);
+            // console.log("selectedColor "+this.selectedColor);
+            // console.log("valid "+this.valid);
         }
     },
     methods: {
+        pageInit: function pageInit() {
+            //baking references list
+            for (var a = 0; a < this.references.length; a++) {
+                for (var b = 0; b < this.referenceNames.length; b++) {
+                    if (this.references[a]["id"] === this.referenceNames[b]["fk_reference_id"]) {
+                        var refListObjet = {
+                            "id": this.references[a]["id"],
+                            "text": this.referenceNames[b]["text"]
+                        };
+                        this.referenceList.push(refListObjet);
+                    }
+                }
+            }
+            //In edit mode
+            if (this.page == "point") {
+                this.editMode();
+            }
+            //In create mode
+            else if (this.page == "pointParent") {
+                    this.createMode();
+                }
+                //in error mode, I suppose
+                else {
+                        console.log("error with the parameters of the page located in EditPoint.vue !");
+                        alert("Un problème est survenu lors de l'affichage de la page, veuillez recharger.");
+                    }
+        },
+        editMode: function editMode() {
+            //set name(s) :
+            for (var i = 0; i < this.pointsContents.length; i++) {
+                if (this.idSelected == this.pointsContents[i]["fk_point_id"]) {
+                    for (var y = 0; y < this.languages.length; y++) {
+                        if (this.pointsContents[i]["fk_language_code"] == this.languages[y]["code"]) {
+                            this.fk_id[y] = this.pointsContents[i]["id"];
+                            this.titles[y] = this.pointsContents[i]["title"];
 
-        //POINTS CRUD NEED READ ONLY
-        // TO REMOVE
-        //methods other than read() are useless, but kept for the moment until I can remove them and not break anything in the process.
-        create: function create() {
+                            this.desc[y] = this.pointsContents[i]["description"];
+
+                            this.linkAlias[y] = this.pointsContents[i]["linkalias"];
+
+                            this.codes[y] = this.pointsContents[i]["fk_language_code"];
+                        }
+                    }
+                }
+            }
+            //search for fk_reference_id, fk_category_id & icon :
+            for (var x = 0; x < this.points.length; x++) {
+                if (this.idSelected == this.points[x]["id"]) {
+                    this.link = this.points[x]["link"];
+                    this.fk_ref = this.points[x]["fk_reference_id"];
+                    for (var _y = 0; _y < this.references.length; _y++) {
+                        if (this.references[_y]["id"] == this.fk_ref) {
+                            this.fk_cat = this.references[_y]["fk_category_id"];
+                            this.icon = this.references[_y]["icon"];
+                        }
+                    }
+                }
+            }
+
+            //set object selectedReference
+            for (var _y2 = 0; _y2 < this.references.length; _y2++) {
+                if (this.fk_ref == this.references[_y2]["id"]) {
+                    this.selectedReference = this.references[_y2]["id"];
+                }
+            }
+        },
+        createMode: function createMode() {
+            this.fk_ref = this.idSelected;
+            //search for fk_category_id & icon :
+            for (var x = 0; x < this.references.length; x++) {
+                if (this.idSelected == this.references[x]["id"]) {
+                    this.fk_cat = this.references[x]["fk_category_id"];
+                    this.icon = this.references[x]["icon"];
+                }
+            }
+
+            //set object selectedReference
+            for (var y = 0; y < this.references.length; y++) {
+                if (this.fk_ref == this.references[y]["id"]) {
+                    this.selectedReference = this.references[y]["id"];
+                }
+            }
+            this.valid = false;
+        },
+        setIcon: function setIcon(id) {
+            for (var ref = 0; ref < this.references.length; ref++) {
+                if (this.references[ref]["id"] == id) {
+                    this.icon = this.references[ref]["icon"];
+                    for (var cat = 0; cat < this.categories.length; cat++) {
+                        if (this.categories[cat]["id"] == this.references[ref]["fk_category_id"]) {
+                            this.selectedColor = this.categories[cat]["color"];
+                        }
+                    }
+                }
+            }
+            document.getElementById('coloredDiv').style.backgroundColor = this.selectedColor;
+        },
+        submit: function submit() {
+            if (this.$refs.form.validate()) {
+                var icon = this.selectedPrefix + "" + this.icon;
+                //In create mode
+                if (this.page == "referenceParent") {
+                    this.createReference(this.selectedCategory, icon);
+                }
+                //In edit mode
+                else if (this.page == "reference") {
+                        this.updateReference(this.idSelected, this.selectedCategory, icon);
+                        this.updateReferenceNames(this.fk_id, this.idSelected, this.codes, this.titles);
+                    } else {
+                        alert("Un problème est survenu lors de l'execution. Error located in EditReference.vue !");
+                    };
+            }
+        },
+        createReference: function createReference(fk_category_id, icon) {
             var _this = this;
 
-            this.mute = true;
+            var weight = 0;
+            for (var i = 0; i < this.references.length; i++) {
+                if (this.references[i]["weight"] >= weight) {
+                    weight = this.references[i]["weight"] + 1;
+                }
+            }
+            this.reference.fk_category_id = fk_category_id;
+            this.reference.icon = icon;
+            this.reference.weight = weight;
+            var newReference = this.reference;
 
-            window.axios.get('/api/points/create').then(function (_ref) {
-                var data = _ref.data;
+            axios.post('/api/references', newReference).then(function (resp) {
+                return Promise.all([resp, _this.createReferenceNames(resp.data.id, _this.titles)]);
+            }).catch(function (error) {
+                console.log(error.response.data);
 
-                _this.points.push(new Point(data));
-                _this.mute = false;
-            });
-            window.axios.get('/api/languages/create').then(function (_ref2) {
-                var data = _ref2.data;
-
-                _this.languages.push(new Language(data));
-                _this.mute = false;
-            });
-            window.axios.get('/api/categories/create').then(function (_ref3) {
-                var data = _ref3.data;
-
-                _this.categories.push(new Category(data));
-                _this.mute = false;
-            });
-            window.axios.get('/api/references/create').then(function (_ref4) {
-                var data = _ref4.data;
-
-                _this.references.push(new Reference(data));
-                _this.mute = false;
+                alert("Un problème est survenu lors de la création. Error located in EditReference.vue !");
             });
         },
-        readPoints: function readPoints() {
+        updateReference: function updateReference(id, fk_category_id, icon) {
+            var weight = 0;
+            for (var i = 0; i < this.references.length; i++) {
+                if (this.references[i]["id"] == this.idSelected) {
+                    weight = this.references[i]["weight"];
+                }
+            }
+
+            this.reference.fk_category_id = fk_category_id;
+            this.reference.icon = icon;
+            this.reference.weight = weight;
+            var newReference = this.reference;
+
+            axios.patch('/api/references/' + id, newReference).then(function (resp) {}).catch(function (error) {
+                console.log(error.response.data);
+
+                alert("Un problème est survenu lors de la mise à jour. Error located in EditReference.vue !");
+            });
+            this.$emit('pageToShow', "", null);
+        },
+        createReferenceNames: function createReferenceNames(id, names) {
+
+            for (var i = 0; i < names.length; i++) {
+                var newReferenceName = {
+                    "fk_reference_id": id,
+                    "fk_language_code": this.languages[i]["code"],
+                    "text": names[i]
+                };
+
+                axios.post('/api/referencesnames', newReferenceName).then(function (resp) {}).catch(function (error) {
+                    console.log(error.response.data);
+
+                    alert("Un problème est survenu lors de la création. Error located in EditReference.vue !");
+                });
+            }
+            this.$emit('pageToShow', "", null);
+        },
+        updateReferenceNames: function updateReferenceNames(id, fk_reference_id, codes, names) {
+            for (var i = 0; i < names.length; i++) {
+                //TO CHANGE
+                var newReferenceName = {
+                    "fk_reference_id": fk_reference_id,
+                    "fk_language_code": codes[i],
+                    "text": names[i]
+                };
+
+                axios.patch('/api/referencesnames/' + id[i], newReferenceName).then(function (resp) {}).catch(function (error) {
+                    console.log(error.response.data);
+
+                    alert("Un problème est survenu lors de la mise à jour.");
+                });
+            }
+            this.$emit('pageToShow', "", null);
+        },
+
+        //API CALLS
+        methodsApiCalls: function methodsApiCalls() {
             var _this2 = this;
 
-            console.log("value of id :");
+            this.points = __WEBPACK_IMPORTED_MODULE_0__services_points_js__["a" /* default */].readPoints();
+            this.pointsContents = __WEBPACK_IMPORTED_MODULE_0__services_points_js__["a" /* default */].readPointsPopupContent();
+            this.references = __WEBPACK_IMPORTED_MODULE_1__services_references_js__["a" /* default */].readReferences();
+            this.referenceNames = __WEBPACK_IMPORTED_MODULE_1__services_references_js__["a" /* default */].readReferenceNamesFrOnly();
+            this.categories = __WEBPACK_IMPORTED_MODULE_2__services_categories_js__["a" /* default */].readCategories();
+            this.categoriesNames = __WEBPACK_IMPORTED_MODULE_2__services_categories_js__["a" /* default */].readCategoriesNamesFrOnly();
+            this.languages = __WEBPACK_IMPORTED_MODULE_3__services_languages_js__["a" /* default */].readLanguages();
 
-            console.log(this.idSelected);
-
-            this.mute = true;
-            window.axios.get('/api/points').then(function (_ref5) {
-                var data = _ref5.data;
-
-                data.forEach(function (point) {
-                    //loops over each point in db
-                    // console.log("point :");
-                    // console.log(point);
-                    _this2.points.push(new Point(point));
-                });
-                _this2.mute = false;
-            });
-        },
-        update: function update(id, color) {
-            var _this3 = this;
-
-            this.mute = true;
-            window.axios.put('/api/points/' + id, { color: color }).then(function () {
-                _this3.points.find(function (point) {
-                    return point.id === id;
-                }).color = color;
-                _this3.mute = false;
-            });
-        },
-        del: function del(id) {
-            var _this4 = this;
-
-            this.mute = true;
-            window.axios.delete('/api/points/' + id).then(function () {
-                var index = _this4.points.findIndex(function (point) {
-                    return point.id === id;
-                });
-                _this4.points.splice(index, 1);
-                _this4.mute = false;
-            });
-        },
-
-        //REFERENCES READ
-        readReferences: function readReferences() {
-            var _this5 = this;
-
-            this.mute = true;
-            window.axios.get('/api/references').then(function (_ref6) {
-                var data = _ref6.data;
-
-                data.forEach(function (reference) {
-                    //loops over each reference in db
-                    // console.log("reference :");
-                    // console.log(reference);
-                    _this5.references.push(new Reference(reference));
-                    // var obj = {};
-                    // obj["id"] = reference.id;
-                    // obj["isToBeDisplayed"] = false;
-                    // obj["catColor"] = "";
-                    // this.referenceDisplayed.push(obj);
-                });
-                _this5.mute = false;
-            });
-        },
-
-        //REFERENCE NAMES READ
-        readReferenceNames: function readReferenceNames() {
-            var _this6 = this;
-
-            this.mute = true;
-            window.axios.get('/api/referencesnames').then(function (_ref7) {
-                var data = _ref7.data;
-
-                data.forEach(function (referenceName) {
-                    //loops over each reference name in db
-                    // console.log("reference name :");
-                    // console.log(referenceName);
-                    _this6.referenceNames.push(new ReferenceName(referenceName));
-                });
-                _this6.mute = false;
-            });
-        },
-
-        //CATEGORIES READ
-        readCategories: function readCategories() {
-            var _this7 = this;
-
-            this.mute = true;
-            window.axios.get('/api/categories').then(function (_ref8) {
-                var data = _ref8.data;
-
-                data.forEach(function (category) {
-                    //loops over each category in db
-                    // console.log("category :");
-                    // console.log(category);
-                    _this7.categories.push(new Category(category));
-                });
-                _this7.mute = false;
-            });
-        },
-
-        //CATEGORIES NAMES READ
-        readCategoriesNames: function readCategoriesNames() {
-            var _this8 = this;
-
-            this.mute = true;
-            window.axios.get('/api/categoriesnames').then(function (_ref9) {
-                var data = _ref9.data;
-
-                data.forEach(function (categoryName) {
-                    //loops over each category name in db
-                    // console.log("category name :");
-                    // console.log(categoryName);
-                    _this8.categoriesNames.push(new CategoryName(categoryName));
-                });
-                _this8.mute = false;
-            });
-        },
-
-        //LANGUAGES READ
-        readLanguages: function readLanguages() {
-            var _this9 = this;
-
-            this.mute = true;
-            window.axios.get('/api/languages').then(function (_ref10) {
-                var data = _ref10.data;
+            //setting initial empty names
+            window.axios.get('/api/languages').then(function (_ref) {
+                var data = _ref.data;
 
                 data.forEach(function (language) {
-                    //loops over each language in db
-                    // console.log("language :");
-                    // console.log(language);
-                    _this9.languages.push(new Language(language));
+                    _this2.titles.push("");
+                    _this2.desc.push("");
+                    _this2.linkAlias.push("");
+                    _this2.titlesInitial.push("");
                 });
-                _this9.mute = false;
+                _this2.loading = false;
             });
         }
     },
     created: function created() {
-        //each line calls for the function responsible for the api returns
-        this.readReferenceNames();
-        this.readPoints();
-        this.readReferences();
-        this.readCategories();
-        this.readLanguages();
-        this.readCategoriesNames();
-        console.log("testxxx");
-        console.log(this.idSelected);
-        console.log(this.page);
+        this.methodsApiCalls();
     }
 });
 
@@ -71927,15 +72574,300 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _vm.page == "point"
-      ? _c("div", [_vm._v("\n        Can edit existing point here\n    ")])
-      : _vm._e(),
-    _vm._v(" "),
-    _vm.page == "pointParent"
-      ? _c("div", [
-          _vm._v("\n        Can create new point here under parent\n    ")
-        ])
-      : _vm._e()
+    _c(
+      "div",
+      [
+        _c(
+          "v-form",
+          {
+            ref: "form",
+            attrs: { "lazy-validation": "" },
+            model: {
+              value: _vm.valid,
+              callback: function($$v) {
+                _vm.valid = $$v
+              },
+              expression: "valid"
+            }
+          },
+          [
+            _c(
+              "v-card-text",
+              [
+                _c(
+                  "v-container",
+                  { attrs: { "grid-list-md": "" } },
+                  [
+                    _c(
+                      "v-layout",
+                      { attrs: { wrap: "" } },
+                      [
+                        _c(
+                          "v-flex",
+                          { staticClass: "my-5", attrs: { xs12: "" } },
+                          [
+                            _c("div", [_vm._v("Réference parent *: ")]),
+                            _vm._v(" "),
+                            _c("v-select", {
+                              attrs: {
+                                "item-text": "text",
+                                "item-value": "id",
+                                items: _vm.referenceList,
+                                required: ""
+                              },
+                              model: {
+                                value: _vm.selectedReference,
+                                callback: function($$v) {
+                                  _vm.selectedReference = $$v
+                                },
+                                expression: "selectedReference"
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("div", {
+                              staticClass: "my-2",
+                              attrs: { id: "coloredDiv" }
+                            }),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              { staticClass: "my-2" },
+                              [
+                                _vm._v(
+                                  "Aperçu de " +
+                                    _vm._s(_vm.icon) +
+                                    " :\n                                    "
+                                ),
+                                _c(
+                                  "v-icon",
+                                  {
+                                    style: { color: _vm.selectedColor },
+                                    attrs: { "x-large": "" }
+                                  },
+                                  [
+                                    _vm._v(
+                                      "\n                                        " +
+                                        _vm._s(_vm.icon) +
+                                        "\n                                    "
+                                    )
+                                  ]
+                                )
+                              ],
+                              1
+                            )
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "v-flex",
+                          { staticClass: "my-5", attrs: { xs12: "" } },
+                          [
+                            _c("div", [_vm._v("Lien : ")]),
+                            _vm._v(" "),
+                            _c("v-text-field", {
+                              staticClass: "mb-2",
+                              attrs: { value: "link", counter: 100 },
+                              model: {
+                                value: _vm.link,
+                                callback: function($$v) {
+                                  _vm.link = $$v
+                                },
+                                expression: "link"
+                              }
+                            }),
+                            _vm._v(" "),
+                            _vm.link.length > 0
+                              ? _c("div", [
+                                  _c(
+                                    "a",
+                                    {
+                                      attrs: {
+                                        id: "linkDiv",
+                                        target: "_blank",
+                                        rel: "noopener noreferrer",
+                                        href: _vm.link
+                                      }
+                                    },
+                                    [
+                                      _vm._v(
+                                        "\n                                        test du lien\n                                    "
+                                      )
+                                    ]
+                                  ),
+                                  _vm._v(
+                                    "\n                                    (nouvel onglet)\n                                "
+                                  )
+                                ])
+                              : _vm._e()
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "v-flex",
+                          { staticClass: "my-5", attrs: { xs12: "" } },
+                          [
+                            _c(
+                              "v-expansion-panel",
+                              _vm._l(_vm.languages, function(language, i) {
+                                return _c(
+                                  "v-expansion-panel-content",
+                                  { key: i },
+                                  [
+                                    _c(
+                                      "div",
+                                      {
+                                        attrs: { slot: "header" },
+                                        slot: "header"
+                                      },
+                                      [_vm._v(_vm._s(language.name))]
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "v-card",
+                                      [
+                                        _c("div", [_vm._v("Nom du point *: ")]),
+                                        _vm._v(" "),
+                                        _c("v-text-field", {
+                                          staticClass: "mb-2",
+                                          attrs: {
+                                            rules: _vm.nameRules,
+                                            value: "titles[i]",
+                                            required: "",
+                                            counter: 50
+                                          },
+                                          model: {
+                                            value: _vm.titles[i],
+                                            callback: function($$v) {
+                                              _vm.$set(_vm.titles, i, $$v)
+                                            },
+                                            expression: "titles[i]"
+                                          }
+                                        }),
+                                        _vm._v(" "),
+                                        _c("div", [
+                                          _vm._v("Description du point *: ")
+                                        ]),
+                                        _vm._v(" "),
+                                        _c("v-text-field", {
+                                          staticClass: "mb-2",
+                                          attrs: {
+                                            rules: _vm.nameRules,
+                                            value: "desc[i]",
+                                            counter: 50
+                                          },
+                                          model: {
+                                            value: _vm.desc[i],
+                                            callback: function($$v) {
+                                              _vm.$set(_vm.desc, i, $$v)
+                                            },
+                                            expression: "desc[i]"
+                                          }
+                                        }),
+                                        _vm._v(" "),
+                                        _vm.link.length > 0
+                                          ? _c("div", [
+                                              _vm._v("link alias du point *: ")
+                                            ])
+                                          : _vm._e(),
+                                        _vm._v(" "),
+                                        _vm.link.length > 0
+                                          ? _c("v-text-field", {
+                                              staticClass: "mb-2",
+                                              attrs: {
+                                                value: "linkAlias[i]",
+                                                counter: 50
+                                              },
+                                              model: {
+                                                value: _vm.linkAlias[i],
+                                                callback: function($$v) {
+                                                  _vm.$set(
+                                                    _vm.linkAlias,
+                                                    i,
+                                                    $$v
+                                                  )
+                                                },
+                                                expression: "linkAlias[i]"
+                                              }
+                                            })
+                                          : _vm._e()
+                                      ],
+                                      1
+                                    )
+                                  ],
+                                  1
+                                )
+                              })
+                            )
+                          ],
+                          1
+                        )
+                      ],
+                      1
+                    )
+                  ],
+                  1
+                )
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c(
+              "v-card-actions",
+              [
+                _c(
+                  "v-layout",
+                  { attrs: { row: "", wrap: "", "justify-space-between": "" } },
+                  [
+                    _c(
+                      "v-flex",
+                      { attrs: { xs2: "", "align-right": "" } },
+                      [
+                        _c(
+                          "v-list-tile",
+                          [
+                            _c(
+                              "v-list-tile-action",
+                              [
+                                _c(
+                                  "v-btn",
+                                  {
+                                    attrs: {
+                                      disabled: !_vm.valid,
+                                      color: "success"
+                                    },
+                                    on: { click: _vm.submit }
+                                  },
+                                  [
+                                    _c("v-icon", [_vm._v("add")]),
+                                    _vm._v(
+                                      " Valider\n                                    "
+                                    )
+                                  ],
+                                  1
+                                )
+                              ],
+                              1
+                            )
+                          ],
+                          1
+                        )
+                      ],
+                      1
+                    )
+                  ],
+                  1
+                )
+              ],
+              1
+            )
+          ],
+          1
+        )
+      ],
+      1
+    )
   ])
 }
 var staticRenderFns = []
@@ -71983,14 +72915,16 @@ var render = function() {
       _vm.page == "reference" || _vm.page == "referenceParent"
         ? _c("edit-reference", {
             staticClass: "adminPage",
-            attrs: { idSelected: _vm.idSelected, page: _vm.page }
+            attrs: { idSelected: _vm.idSelected, page: _vm.page },
+            on: { pageToShow: _vm.pageToShow }
           })
         : _vm._e(),
       _vm._v(" "),
       _vm.page == "point" || _vm.page == "pointParent"
         ? _c("edit-point", {
             staticClass: "adminPage",
-            attrs: { idSelected: _vm.idSelected, page: _vm.page }
+            attrs: { idSelected: _vm.idSelected, page: _vm.page },
+            on: { pageToShow: _vm.pageToShow }
           })
         : _vm._e()
     ],
@@ -72104,7 +73038,7 @@ exports.push([module.i, "\n#adminHeader[data-v-8c217c66] {\n    z-index: 3;\n   
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__admin_AdminHeader_vue__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__admin_AdminHeader_vue__ = __webpack_require__(21);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__admin_AdminHeader_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__admin_AdminHeader_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__admin_LanguageList_vue__ = __webpack_require__(96);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__admin_LanguageList_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__admin_LanguageList_vue__);
@@ -72421,7 +73355,7 @@ exports.push([module.i, "\n#adminHeader[data-v-2f9dd798] {\n    z-index: 3;\n}\n
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__store__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__store__ = __webpack_require__(11);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__AdminHeaderNoNav_vue__ = __webpack_require__(107);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__AdminHeaderNoNav_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__AdminHeaderNoNav_vue__);
 //
@@ -73917,7 +74851,7 @@ module.exports = Component.exports
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__store__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__store__ = __webpack_require__(11);
 //
 //
 //
@@ -74244,10 +75178,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__TopToolbar_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__TopToolbar_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ContactForm_vue__ = __webpack_require__(22);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ContactForm_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__ContactForm_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_points_js__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_categories_js__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_references_js__ = __webpack_require__(21);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__services_languages_js__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_points_js__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_categories_js__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_references_js__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__services_languages_js__ = __webpack_require__(7);
 //
 //
 //
@@ -74745,7 +75679,7 @@ exports.push([module.i, "\n.noPaddingLeft[data-v-3e31bb83]{\n    margin-left: -1
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__services_languages_js__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__services_languages_js__ = __webpack_require__(7);
 //
 //
 //
@@ -76020,7 +76954,7 @@ exports.push([module.i, "\n#mapContainer[data-v-ee564a0a]{\n  height: 100%;\n  w
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__MapControls_vue__ = __webpack_require__(138);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__MapControls_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__MapControls_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_points_js__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_points_js__ = __webpack_require__(9);
 //
 //
 //
@@ -76040,8 +76974,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 //IMPORTS
 //TEST : are those import really necessary ?
-__webpack_require__(17);
-__webpack_require__(19);
+__webpack_require__(18);
+__webpack_require__(20);
 
 
 
