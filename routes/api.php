@@ -41,6 +41,8 @@ use Illuminate\Http\Request;
 
 //USER
 
+    Route::resource('/images', 'ImagesController');
+
     Route::resource('/points', 'PointsController');
 
     Route::resource('/pointsnames', 'PointsnamesController');

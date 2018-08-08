@@ -22,6 +22,7 @@
 
     import MapControls from './MapControls.vue'
     import pointsMethods from './../../services/points.js'
+    import imagesMethods from './../../services/images.js'
   //END IMPORTS
 
 const L = window.L;
@@ -38,6 +39,7 @@ export default {
       zoomLevel: 14,
       points: [],
       pointsContents: [],
+      images: [],
       references: [],
       storagePointsDisplayed: [],
       pointsMarkers: [],
@@ -78,7 +80,7 @@ export default {
       methodsApiCalls() {
         this.points = pointsMethods.readPoints();
         this.pointsContents = pointsMethods.readPointsPopupContent();
-
+        this.images = imagesMethods.readImages();
         // This method is outside the file as 2 tables are pushed, and if I move the this.references.push(reference); the whole app stops working.
         window.axios.get('/api/references').then(({ data }) => {
           data.forEach(reference => {
@@ -176,6 +178,8 @@ export default {
 
         var pointsContents = JSON.parse(JSON.stringify(this.pointsContents));
 
+        var images = JSON.parse(JSON.stringify(this.images));  
+
         var markers = this.pointsMarkers;
         var layers = this.pointsLayers;
         var marker;
@@ -208,13 +212,22 @@ export default {
                         title.appendChild(titleHtml);
                         popup.appendChild(title);
 
-                        if (point["image_path"].length >= 1) {
+                        if (point["fk_image_fk"]!== null) {
                           imgCtnr = document.createElement("div");
                           imgCtnr.setAttribute("style", "width:150px; height:auto;");
                           var img = document.createElement("img");
                           img.setAttribute("style", "width:100%; height:100%;");
                           img.setAttribute("alt", "image");
-                          img.setAttribute("src", point["image_path"]);
+                          
+                          for (let im = 0; im < images.length; im++) {
+                            if (images[im]["id"] == point["fk_image_id"]) {
+                              img.setAttribute("src", images[im]["image_path"]);
+                              console.log("image found :");
+                              console.log(images[im]["image_path"]);
+                              
+                            }
+                          }
+
                           imgCtnr.appendChild(img);
                           
                           popup.appendChild(imgCtnr);

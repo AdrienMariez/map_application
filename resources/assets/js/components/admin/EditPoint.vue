@@ -39,7 +39,7 @@
                                         </a>
                                         (nouvel onglet)
                                     </div>
-                                </v-flex>                               
+                                </v-flex>
                                 <v-flex xs12 class="my-5">
                                     <v-expansion-panel>
                                         <v-expansion-panel-content
@@ -76,6 +76,60 @@
                                         </v-expansion-panel-content>
                                     </v-expansion-panel>
                                 </v-flex>
+                                <v-flex xs12 class="my-5">
+                                    <v-expansion-panel>
+                                        <v-expansion-panel-content>
+                                            <div slot="header">Banque d'images</div>
+
+                                            <v-card>
+                                                <v-layout align-center justify-space-around fill-height row wrap>
+                                                    <v-flex
+                                                        v-for="(img,i) in images"
+                                                        :key="i"
+                                                        class="imgContainer
+                                                        xs3">
+                                                        <img
+                                                            xs3
+                                                            color="transparent" :src="img.image_path"
+                                                            @click="selectImage(img.id)">
+                                                    </v-flex>
+                                                </v-layout>
+                                            </v-card>
+                                        </v-expansion-panel-content>
+                                    </v-expansion-panel>
+                                    <v-expansion-panel>
+                                        <v-expansion-panel-content>
+                                            <div slot="header">Ajout d'un nouveau fichier</div>
+                                            <div class="card card-default">
+                                                <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-md-3" v-if="imageUpload">
+                                                        <img :src="imageUpload" class="img-responsive" height="70" width="90">
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <input type="file"
+                                                        v-on:change="onImageChange"
+                                                        class="form-control">
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <button class="btn btn-success btn-block" @click="uploadImage">Upload Image</button>
+                                                    </div>
+                                                </div>
+                                                </div>
+                                            </div>
+                                        </v-expansion-panel-content>
+                                    </v-expansion-panel>
+                                    <div v-if="image.length !== 0" class="card card-default">
+                                            <div class="card-header">Image utilisée :</div>
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <img
+                                                    class="imgContainerPreview"
+                                                    v-bind:src="image" alt="aperçu de l'image">
+                                                </div>
+                                            </div>
+                                        </div>
+                                </v-flex>
                             </v-layout>
                         </v-container>
                     </v-card-text>
@@ -101,6 +155,9 @@
 </template>
 
 <script>
+    import ImageList from "./ImageList.vue";
+
+    import imagesMethods from './../../services/images.js'
     import pointsMethods from './../../services/points.js'
     import referencesMethods from './../../services/references.js'
     import categoriesMethods from './../../services/categories.js'
@@ -114,6 +171,7 @@
                 loading: true,
                 points: [],
                 pointsContents: [],
+                images: [],
                 references: [],
                 referenceNames: [],
                 categories: [],
@@ -133,17 +191,19 @@
                 linkAlias: [],
                 codes:  [],
                 link: "",
+                image: "",
+                image_fk: "",
+                imageInitial_fk : "",
+                imageUpload: "",
                 nameRules: [
                     v => !!v || "Invalide ! ",
                     v => (v && v.length <= 50) || "Trop long !"
                 ],
                 icon: '',
                 iconTotal: '',
-                reference: {
+                imageToUpload: {
                     id: null,
-                    fk_category_id: null,
-                    icon: '',
-                    weight: null,
+                    image_path: "",
                 },
             }
         },
@@ -226,7 +286,14 @@
                         for (let x = 0; x < this.points.length; x++) {
                             if (this.idSelected == this.points[x]["id"]) {
                                 this.link = this.points[x]["link"];
+                                this.image_fk = this.points[x]["fk_image_id"];
+                                this.imageInitial_fk = this.points[x]["fk_image_id"];
                                 this.fk_ref = this.points[x]["fk_reference_id"];
+                                for (let img = 0; img < this.images.length; img++) {
+                                   if (this.images[img]["id"] == this.points[x]["fk_image_id"]) {
+                                       this.image = this.images[img]["image_path"]
+                                   }
+                                }
                                 for (let y = 0; y < this.references.length; y++) {
                                     if (this.references[y]["id"] == this.fk_ref) {
                                         this.fk_cat = this.references[y]["fk_category_id"];
@@ -272,8 +339,44 @@
                         }
                     }
                 }
-                document.getElementById('coloredDiv').style.backgroundColor = this.selectedColor;
+                // document.getElementById('coloredDiv').style.backgroundColor = this.selectedColor;
             },
+            selectImage(img) {
+                this.image_fk = img;
+                var images = JSON.parse(JSON.stringify(this.images));
+                for (let image = 0; image < images.length; image++) {
+                    if (img === images[image]["id"]) {
+                        this.image = images[image]["image_path"];
+                    }
+                }
+            },
+
+            onImageChange(e) {
+                let files = e.target.files || e.dataTransfer.files;
+                if (!files.length)
+                    return;
+                this.createImage(files[0]);
+            },
+            createImage(file) {
+                let reader = new FileReader();
+                let vm = this;
+                reader.onload = (e) => {
+                    vm.imageUpload = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            },
+            uploadImage(){
+                axios.post('api/images/',{image: this.imageUpload})
+                    .then(response => {
+                        console.log(response);
+                    })                    
+                    .catch(function (error) {
+                        console.log(error.response.data);
+                                
+                        alert("Un problème est survenu lors de la création. Error located in EditPoint.vue !");
+                    });
+            },
+
             submit () {
                 if (this.$refs.form.validate()) {
                     var icon = this.selectedPrefix +""+ this.icon;
@@ -385,6 +488,7 @@
             },
             //API CALLS
                 methodsApiCalls() {
+                    this.images = imagesMethods.readImages();
                     this.points = pointsMethods.readPoints();
                     this.pointsContents = pointsMethods.readPointsPopupContent();
                     this.references = referencesMethods.readReferences();
@@ -407,6 +511,9 @@
         },
         created() {
             this.methodsApiCalls();
+        },
+        components: {
+            ImageList
         }
     }
 </script>
@@ -416,5 +523,17 @@
         width: 50%;
         height: 20px;
         border-radius: 5px;
+    }
+    .imgContainer{
+        /* width:150px !important; */
+        min-width:150px !important;
+        /* max-height:200px !important; */
+    }
+    .imgContainerPreview{
+        width:250px !important;
+    }
+    .imgContainer > img, .imgContainerPreview > img{
+        width:100% !important;
+        height:100% !important;
     }
 </style>

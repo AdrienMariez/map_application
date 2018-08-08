@@ -27,7 +27,7 @@ class PointsController extends Controller
         $point->link = $request->link;
         $point->longitude = $request->longitude;
         $point->lattitude = $request->lattitude;
-        $point->image_path = $request->image_path;
+        $point->fk_image_id = $request->fk_image_id;
         $point->updated_at = $request->created_at;
         $point->created_at = $request->created_at;
         $point->save();
@@ -39,11 +39,9 @@ class PointsController extends Controller
     {
         $point = Point::findOrFail($id);
         $point->link = $request->link;
-        $point->icon = $request->icon;
-        $point->color = $request->color;
         $point->longitude = $request->longitude;
         $point->lattitude = $request->lattitude;
-        $point->image_path = $request->image_path;
+        $point->fk_image_id = $request->fk_image_id;
         $point->updated_at = $request->updated_at;
         $point->save();
 
