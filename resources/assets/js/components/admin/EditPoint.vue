@@ -80,14 +80,12 @@
                                     <v-expansion-panel>
                                         <v-expansion-panel-content>
                                             <div slot="header">Banque d'images</div>
-
                                             <v-card>
                                                 <v-layout align-center justify-space-around fill-height row wrap>
                                                     <v-flex
                                                         v-for="(img,i) in images"
                                                         :key="i"
-                                                        class="imgContainer
-                                                        xs3">
+                                                        class="imgContainer xs3 ma-3">
                                                         <img
                                                             xs3
                                                             color="transparent" :src="img.image_path"
@@ -103,15 +101,20 @@
                                             <div class="card card-default">
                                                 <div class="card-body">
                                                 <div class="row">
-                                                    <div class="col-md-3" v-if="imageUpload">
+                                                    <div class="col-md-6">
+                                                        <input
+                                                            type="file"
+                                                            accept="image/*"
+                                                            v-on:change="onImageChange"
+                                                            class="form-control">
+                                                    </div>
+                                                    <div
+                                                        class="col-md-3" v-if="imageUpload">
                                                         <img :src="imageUpload" class="img-responsive" height="70" width="90">
                                                     </div>
-                                                    <div class="col-md-6">
-                                                        <input type="file"
-                                                        v-on:change="onImageChange"
-                                                        class="form-control">
-                                                    </div>
-                                                    <div class="col-md-3">
+                                                    <div
+                                                        class="col-md-3"
+                                                        v-if="imageUpload">
                                                         <button class="btn btn-success btn-block" @click="uploadImage">Upload Image</button>
                                                     </div>
                                                 </div>
@@ -120,12 +123,13 @@
                                         </v-expansion-panel-content>
                                     </v-expansion-panel>
                                     <div v-if="image.length !== 0" class="card card-default">
-                                            <div class="card-header">Image utilisée :</div>
+                                        <div class="card-header">Image utilisée :</div>
                                             <div class="card-body">
-                                                <div class="row">
+                                                <div class="row imgContainerPreview xs3 ma-3">
                                                     <img
-                                                    class="imgContainerPreview"
-                                                    v-bind:src="image" alt="aperçu de l'image">
+                                                        xs3
+                                                        v-bind:src="image"
+                                                        alt="aperçu de l'image">
                                                 </div>
                                             </div>
                                         </div>
@@ -151,6 +155,33 @@
                     </v-card-actions>
             </v-form>
         </div>
+    <!-- loading... -->
+        <v-snackbar
+            v-model="snackbarLoading"
+            bottom
+            right
+            multi-line
+            :timeout=0>
+            Envoi en cours...
+            <v-icon large>fas fa-circle-notch fa-spin</v-icon>
+        </v-snackbar>
+    <!-- snackbar info -->
+        <v-snackbar
+            v-model="snackbar"
+            bottom
+            right
+            multi-line
+            :timeout=6000
+            >
+            {{ snackText }}
+            <v-btn
+                color="yellow lighten-1"
+                flat
+                @click="snackbar = false"
+            >
+                Close
+            </v-btn>
+        </v-snackbar>
     </div>
 </template>
 
@@ -195,6 +226,9 @@
                 image_fk: "",
                 imageInitial_fk : "",
                 imageUpload: "",
+                snackbarLoading: false,
+                snackText: "",
+                snackbar: false,
                 nameRules: [
                     v => !!v || "Invalide ! ",
                     v => (v && v.length <= 50) || "Trop long !"
@@ -366,15 +400,36 @@
                 reader.readAsDataURL(file);
             },
             uploadImage(){
+                this.snackbarLoading = true;
                 axios.post('api/images/',{image: this.imageUpload})
-                    .then(response => {
-                        console.log(response);
-                    })                    
-                    .catch(function (error) {
-                        console.log(error.response.data);
-                                
-                        alert("Un problème est survenu lors de la création. Error located in EditPoint.vue !");
+                    .then(response => { 
+                        this.successUpload(response);
+                    })
+                    .catch(error => {
+                        this.failedUpload(error);
                     });
+            },
+            successUpload(response) {
+                    this.snackbarLoading = false;
+                    // console.log("success !");
+                    // console.log(response);
+                    this.snackbar = true;
+                    this.snackText = "Upload effectué !"
+                    this.images = imagesMethods.readImages();
+                    this.imageUpload = "";
+            },
+            failedUpload(error) {
+                    // console.log("error !");
+                    // console.log(error.response.data);
+                    this.snackbar = true;
+                    this.snackText = "Erreur lors de l'upload du fichier ! Le format n'est pas reconnu."
+                    this.snackbarLoading = false;
+                    // if (error.response.data.message == "Image source not readable"){
+                    //     this.snackText = "Le format du fichier n'est pas reconnu."
+                    // }
+                    // else{
+                    //     this.snackText = "Erreur inconnue avec le fichier."
+                    // }
             },
 
             submit () {
@@ -526,11 +581,15 @@
     }
     .imgContainer{
         /* width:150px !important; */
-        min-width:150px !important;
+        width:100px !important;
+        min-width:70px !important;
         /* max-height:200px !important; */
+        /* background-color: red; */
+        box-shadow: 0px 5px 10px 2px #afafaf;
     }
     .imgContainerPreview{
         width:250px !important;
+        box-shadow: 0px 5px 10px 2px #afafaf;
     }
     .imgContainer > img, .imgContainerPreview > img{
         width:100% !important;

@@ -69781,10 +69781,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             references: [],
             referenceNames: [],
             snackbar: false,
-            snackY: 'bottom',
-            snackX: 'right',
-            mode: 'multi-line',
-            snackTimeout: 6000,
             snackText: '',
             dialog: false,
             dialogText: '',
@@ -70647,12 +70643,7 @@ var render = function() {
       _c(
         "v-snackbar",
         {
-          attrs: {
-            bottom: _vm.snackY === "bottom",
-            right: _vm.snackX === "right",
-            "multi-line": _vm.mode === "multi-line",
-            timeout: _vm.snackTimeout
-          },
+          attrs: { bottom: "", right: "", "multi-line": "", timeout: 6000 },
           model: {
             value: _vm.snackbar,
             callback: function($$v) {
@@ -72172,7 +72163,7 @@ exports = module.exports = __webpack_require__(1)(false);
 
 
 // module
-exports.push([module.i, "\n#coloredDiv[data-v-01c4eeff]{\n    width: 50%;\n    height: 20px;\n    border-radius: 5px;\n}\n.imgContainer[data-v-01c4eeff]{\n    /* width:150px !important; */\n    min-width:150px !important;\n    /* max-height:200px !important; */\n}\n.imgContainerPreview[data-v-01c4eeff]{\n    width:250px !important;\n}\n.imgContainer > img[data-v-01c4eeff], .imgContainerPreview > img[data-v-01c4eeff]{\n    width:100% !important;\n    height:100% !important;\n}\n", ""]);
+exports.push([module.i, "\n#coloredDiv[data-v-01c4eeff]{\n    width: 50%;\n    height: 20px;\n    border-radius: 5px;\n}\n.imgContainer[data-v-01c4eeff]{\n    /* width:150px !important; */\n    width:100px !important;\n    min-width:70px !important;\n    /* max-height:200px !important; */\n    /* background-color: red; */\n    -webkit-box-shadow: 0px 5px 10px 2px #afafaf;\n            box-shadow: 0px 5px 10px 2px #afafaf;\n}\n.imgContainerPreview[data-v-01c4eeff]{\n    width:250px !important;\n    -webkit-box-shadow: 0px 5px 10px 2px #afafaf;\n            box-shadow: 0px 5px 10px 2px #afafaf;\n}\n.imgContainer > img[data-v-01c4eeff], .imgContainerPreview > img[data-v-01c4eeff]{\n    width:100% !important;\n    height:100% !important;\n}\n", ""]);
 
 // exports
 
@@ -72190,6 +72181,37 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_references_js__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_categories_js__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__services_languages_js__ = __webpack_require__(5);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -72387,6 +72409,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             image_fk: "",
             imageInitial_fk: "",
             imageUpload: "",
+            snackbarLoading: false,
+            snackText: "",
+            snackbar: false,
             nameRules: [function (v) {
                 return !!v || "Invalide ! ";
             }, function (v) {
@@ -72558,13 +72583,36 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             reader.readAsDataURL(file);
         },
         uploadImage: function uploadImage() {
-            axios.post('api/images/', { image: this.imageUpload }).then(function (response) {
-                console.log(response);
-            }).catch(function (error) {
-                console.log(error.response.data);
+            var _this = this;
 
-                alert("Un problème est survenu lors de la création. Error located in EditPoint.vue !");
+            this.snackbarLoading = true;
+            axios.post('api/images/', { image: this.imageUpload }).then(function (response) {
+                _this.successUpload(response);
+            }).catch(function (error) {
+                _this.failedUpload(error);
             });
+        },
+        successUpload: function successUpload(response) {
+            this.snackbarLoading = false;
+            // console.log("success !");
+            // console.log(response);
+            this.snackbar = true;
+            this.snackText = "Upload effectué !";
+            this.images = __WEBPACK_IMPORTED_MODULE_1__services_images_js__["a" /* default */].readImages();
+            this.imageUpload = "";
+        },
+        failedUpload: function failedUpload(error) {
+            // console.log("error !");
+            // console.log(error.response.data);
+            this.snackbar = true;
+            this.snackText = "Erreur lors de l'upload du fichier ! Le format n'est pas reconnu.";
+            this.snackbarLoading = false;
+            // if (error.response.data.message == "Image source not readable"){
+            //     this.snackText = "Le format du fichier n'est pas reconnu."
+            // }
+            // else{
+            //     this.snackText = "Erreur inconnue avec le fichier."
+            // }
         },
         submit: function submit() {
             if (this.$refs.form.validate()) {
@@ -72583,7 +72631,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }
         },
         createReference: function createReference(fk_category_id, icon) {
-            var _this = this;
+            var _this2 = this;
 
             var weight = 0;
             for (var i = 0; i < this.references.length; i++) {
@@ -72597,7 +72645,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var newReference = this.reference;
 
             axios.post('/api/references', newReference).then(function (resp) {
-                return Promise.all([resp, _this.createReferenceNames(resp.data.id, _this.titles)]);
+                return Promise.all([resp, _this2.createReferenceNames(resp.data.id, _this2.titles)]);
             }).catch(function (error) {
                 console.log(error.response.data);
 
@@ -72661,7 +72709,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
         //API CALLS
         methodsApiCalls: function methodsApiCalls() {
-            var _this2 = this;
+            var _this3 = this;
 
             this.images = __WEBPACK_IMPORTED_MODULE_1__services_images_js__["a" /* default */].readImages();
             this.points = __WEBPACK_IMPORTED_MODULE_2__services_points_js__["a" /* default */].readPoints();
@@ -72677,12 +72725,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 var data = _ref.data;
 
                 data.forEach(function (language) {
-                    _this2.titles.push("");
-                    _this2.desc.push("");
-                    _this2.linkAlias.push("");
-                    _this2.titlesInitial.push("");
+                    _this3.titles.push("");
+                    _this3.desc.push("");
+                    _this3.linkAlias.push("");
+                    _this3.titlesInitial.push("");
                 });
-                _this2.loading = false;
+                _this3.loading = false;
             });
         }
     },
@@ -72733,472 +72781,557 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
-    _c(
-      "div",
-      [
-        _c(
-          "v-form",
-          {
-            ref: "form",
-            attrs: { "lazy-validation": "" },
-            model: {
-              value: _vm.valid,
-              callback: function($$v) {
-                _vm.valid = $$v
-              },
-              expression: "valid"
-            }
-          },
-          [
-            _c(
-              "v-card-text",
-              [
-                _c(
-                  "v-container",
-                  { attrs: { "grid-list-md": "" } },
-                  [
-                    _c(
-                      "v-layout",
-                      { attrs: { wrap: "" } },
-                      [
-                        _c(
-                          "v-flex",
-                          { staticClass: "my-5", attrs: { xs12: "" } },
-                          [
-                            _c("div", [_vm._v("Réference parent *: ")]),
-                            _vm._v(" "),
-                            _c("v-select", {
-                              attrs: {
-                                "item-text": "text",
-                                "item-value": "id",
-                                items: _vm.referenceList,
-                                required: ""
-                              },
-                              model: {
-                                value: _vm.selectedReference,
-                                callback: function($$v) {
-                                  _vm.selectedReference = $$v
+  return _c(
+    "div",
+    [
+      _c(
+        "div",
+        [
+          _c(
+            "v-form",
+            {
+              ref: "form",
+              attrs: { "lazy-validation": "" },
+              model: {
+                value: _vm.valid,
+                callback: function($$v) {
+                  _vm.valid = $$v
+                },
+                expression: "valid"
+              }
+            },
+            [
+              _c(
+                "v-card-text",
+                [
+                  _c(
+                    "v-container",
+                    { attrs: { "grid-list-md": "" } },
+                    [
+                      _c(
+                        "v-layout",
+                        { attrs: { wrap: "" } },
+                        [
+                          _c(
+                            "v-flex",
+                            { staticClass: "my-5", attrs: { xs12: "" } },
+                            [
+                              _c("div", [_vm._v("Réference parent *: ")]),
+                              _vm._v(" "),
+                              _c("v-select", {
+                                attrs: {
+                                  "item-text": "text",
+                                  "item-value": "id",
+                                  items: _vm.referenceList,
+                                  required: ""
                                 },
-                                expression: "selectedReference"
-                              }
-                            }),
-                            _vm._v(" "),
-                            _c("div", {
-                              staticClass: "my-2",
-                              attrs: { id: "coloredDiv" }
-                            }),
-                            _vm._v(" "),
-                            _c(
-                              "div",
-                              { staticClass: "my-2" },
-                              [
-                                _vm._v(
-                                  "Aperçu de " +
-                                    _vm._s(_vm.icon) +
-                                    " :\n                                    "
-                                ),
-                                _c(
-                                  "v-icon",
-                                  {
-                                    style: { color: _vm.selectedColor },
-                                    attrs: { "x-large": "" }
+                                model: {
+                                  value: _vm.selectedReference,
+                                  callback: function($$v) {
+                                    _vm.selectedReference = $$v
                                   },
-                                  [
-                                    _vm._v(
-                                      "\n                                        " +
-                                        _vm._s(_vm.icon) +
-                                        "\n                                    "
-                                    )
-                                  ]
-                                )
-                              ],
-                              1
-                            )
-                          ],
-                          1
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "v-flex",
-                          { staticClass: "my-5", attrs: { xs12: "" } },
-                          [
-                            _c("div", [_vm._v("Lien : ")]),
-                            _vm._v(" "),
-                            _c("v-text-field", {
-                              staticClass: "mb-2",
-                              attrs: { value: "link", counter: 100 },
-                              model: {
-                                value: _vm.link,
-                                callback: function($$v) {
-                                  _vm.link = $$v
-                                },
-                                expression: "link"
-                              }
-                            }),
-                            _vm._v(" "),
-                            _vm.link.length > 0
-                              ? _c("div", [
+                                  expression: "selectedReference"
+                                }
+                              }),
+                              _vm._v(" "),
+                              _c("div", {
+                                staticClass: "my-2",
+                                attrs: { id: "coloredDiv" }
+                              }),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                { staticClass: "my-2" },
+                                [
+                                  _vm._v(
+                                    "Aperçu de " +
+                                      _vm._s(_vm.icon) +
+                                      " :\n                                    "
+                                  ),
                                   _c(
-                                    "a",
+                                    "v-icon",
                                     {
-                                      attrs: {
-                                        id: "linkDiv",
-                                        target: "_blank",
-                                        rel: "noopener noreferrer",
-                                        href: _vm.link
-                                      }
+                                      style: { color: _vm.selectedColor },
+                                      attrs: { "x-large": "" }
                                     },
                                     [
                                       _vm._v(
-                                        "\n                                        test du lien\n                                    "
+                                        "\n                                        " +
+                                          _vm._s(_vm.icon) +
+                                          "\n                                    "
                                       )
                                     ]
-                                  ),
-                                  _vm._v(
-                                    "\n                                    (nouvel onglet)\n                                "
                                   )
-                                ])
-                              : _vm._e()
-                          ],
-                          1
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "v-flex",
-                          { staticClass: "my-5", attrs: { xs12: "" } },
-                          [
-                            _c(
-                              "v-expansion-panel",
-                              _vm._l(_vm.languages, function(language, i) {
-                                return _c(
-                                  "v-expansion-panel-content",
-                                  { key: i },
-                                  [
+                                ],
+                                1
+                              )
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-flex",
+                            { staticClass: "my-5", attrs: { xs12: "" } },
+                            [
+                              _c("div", [_vm._v("Lien : ")]),
+                              _vm._v(" "),
+                              _c("v-text-field", {
+                                staticClass: "mb-2",
+                                attrs: { value: "link", counter: 100 },
+                                model: {
+                                  value: _vm.link,
+                                  callback: function($$v) {
+                                    _vm.link = $$v
+                                  },
+                                  expression: "link"
+                                }
+                              }),
+                              _vm._v(" "),
+                              _vm.link.length > 0
+                                ? _c("div", [
                                     _c(
-                                      "div",
+                                      "a",
                                       {
-                                        attrs: { slot: "header" },
-                                        slot: "header"
+                                        attrs: {
+                                          id: "linkDiv",
+                                          target: "_blank",
+                                          rel: "noopener noreferrer",
+                                          href: _vm.link
+                                        }
                                       },
-                                      [_vm._v(_vm._s(language.name))]
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "v-card",
                                       [
-                                        _c("div", [_vm._v("Nom du point *: ")]),
-                                        _vm._v(" "),
-                                        _c("v-text-field", {
-                                          staticClass: "mb-2",
-                                          attrs: {
-                                            rules: _vm.nameRules,
-                                            value: "titles[i]",
-                                            required: "",
-                                            counter: 50
-                                          },
-                                          model: {
-                                            value: _vm.titles[i],
-                                            callback: function($$v) {
-                                              _vm.$set(_vm.titles, i, $$v)
-                                            },
-                                            expression: "titles[i]"
-                                          }
-                                        }),
-                                        _vm._v(" "),
-                                        _c("div", [
-                                          _vm._v("Description du point *: ")
-                                        ]),
-                                        _vm._v(" "),
-                                        _c("v-text-field", {
-                                          staticClass: "mb-2",
-                                          attrs: {
-                                            rules: _vm.nameRules,
-                                            value: "desc[i]",
-                                            counter: 50
-                                          },
-                                          model: {
-                                            value: _vm.desc[i],
-                                            callback: function($$v) {
-                                              _vm.$set(_vm.desc, i, $$v)
-                                            },
-                                            expression: "desc[i]"
-                                          }
-                                        }),
-                                        _vm._v(" "),
-                                        _vm.link.length > 0
-                                          ? _c("div", [
-                                              _vm._v("link alias du point *: ")
-                                            ])
-                                          : _vm._e(),
-                                        _vm._v(" "),
-                                        _vm.link.length > 0
-                                          ? _c("v-text-field", {
-                                              staticClass: "mb-2",
-                                              attrs: {
-                                                value: "linkAlias[i]",
-                                                counter: 50
-                                              },
-                                              model: {
-                                                value: _vm.linkAlias[i],
-                                                callback: function($$v) {
-                                                  _vm.$set(
-                                                    _vm.linkAlias,
-                                                    i,
-                                                    $$v
-                                                  )
-                                                },
-                                                expression: "linkAlias[i]"
-                                              }
-                                            })
-                                          : _vm._e()
-                                      ],
-                                      1
-                                    )
-                                  ],
-                                  1
-                                )
-                              })
-                            )
-                          ],
-                          1
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "v-flex",
-                          { staticClass: "my-5", attrs: { xs12: "" } },
-                          [
-                            _c(
-                              "v-expansion-panel",
-                              [
-                                _c(
-                                  "v-expansion-panel-content",
-                                  [
-                                    _c(
-                                      "div",
-                                      {
-                                        attrs: { slot: "header" },
-                                        slot: "header"
-                                      },
-                                      [_vm._v("Banque d'images")]
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "v-card",
-                                      [
-                                        _c(
-                                          "v-layout",
-                                          {
-                                            attrs: {
-                                              "align-center": "",
-                                              "justify-space-around": "",
-                                              "fill-height": "",
-                                              row: "",
-                                              wrap: ""
-                                            }
-                                          },
-                                          _vm._l(_vm.images, function(img, i) {
-                                            return _c(
-                                              "v-flex",
-                                              {
-                                                key: i,
-                                                staticClass:
-                                                  "imgContainer\n                                                    xs3"
-                                              },
-                                              [
-                                                _c("img", {
-                                                  attrs: {
-                                                    xs3: "",
-                                                    color: "transparent",
-                                                    src: img.image_path
-                                                  },
-                                                  on: {
-                                                    click: function($event) {
-                                                      _vm.selectImage(img.id)
-                                                    }
-                                                  }
-                                                })
-                                              ]
-                                            )
-                                          })
+                                        _vm._v(
+                                          "\n                                        test du lien\n                                    "
                                         )
-                                      ],
-                                      1
+                                      ]
+                                    ),
+                                    _vm._v(
+                                      "\n                                    (nouvel onglet)\n                                "
                                     )
-                                  ],
-                                  1
-                                )
-                              ],
-                              1
-                            ),
-                            _vm._v(" "),
-                            _c(
-                              "v-expansion-panel",
-                              [
-                                _c("v-expansion-panel-content", [
-                                  _c(
-                                    "div",
-                                    {
-                                      attrs: { slot: "header" },
-                                      slot: "header"
-                                    },
-                                    [_vm._v("Ajout d'un nouveau fichier")]
-                                  ),
-                                  _vm._v(" "),
-                                  _c(
-                                    "div",
-                                    { staticClass: "card card-default" },
+                                  ])
+                                : _vm._e()
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-flex",
+                            { staticClass: "my-5", attrs: { xs12: "" } },
+                            [
+                              _c(
+                                "v-expansion-panel",
+                                _vm._l(_vm.languages, function(language, i) {
+                                  return _c(
+                                    "v-expansion-panel-content",
+                                    { key: i },
                                     [
-                                      _c("div", { staticClass: "card-body" }, [
-                                        _c("div", { staticClass: "row" }, [
-                                          _vm.imageUpload
-                                            ? _c(
-                                                "div",
-                                                { staticClass: "col-md-3" },
+                                      _c(
+                                        "div",
+                                        {
+                                          attrs: { slot: "header" },
+                                          slot: "header"
+                                        },
+                                        [_vm._v(_vm._s(language.name))]
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "v-card",
+                                        [
+                                          _c("div", [
+                                            _vm._v("Nom du point *: ")
+                                          ]),
+                                          _vm._v(" "),
+                                          _c("v-text-field", {
+                                            staticClass: "mb-2",
+                                            attrs: {
+                                              rules: _vm.nameRules,
+                                              value: "titles[i]",
+                                              required: "",
+                                              counter: 50
+                                            },
+                                            model: {
+                                              value: _vm.titles[i],
+                                              callback: function($$v) {
+                                                _vm.$set(_vm.titles, i, $$v)
+                                              },
+                                              expression: "titles[i]"
+                                            }
+                                          }),
+                                          _vm._v(" "),
+                                          _c("div", [
+                                            _vm._v("Description du point *: ")
+                                          ]),
+                                          _vm._v(" "),
+                                          _c("v-text-field", {
+                                            staticClass: "mb-2",
+                                            attrs: {
+                                              rules: _vm.nameRules,
+                                              value: "desc[i]",
+                                              counter: 50
+                                            },
+                                            model: {
+                                              value: _vm.desc[i],
+                                              callback: function($$v) {
+                                                _vm.$set(_vm.desc, i, $$v)
+                                              },
+                                              expression: "desc[i]"
+                                            }
+                                          }),
+                                          _vm._v(" "),
+                                          _vm.link.length > 0
+                                            ? _c("div", [
+                                                _vm._v(
+                                                  "link alias du point *: "
+                                                )
+                                              ])
+                                            : _vm._e(),
+                                          _vm._v(" "),
+                                          _vm.link.length > 0
+                                            ? _c("v-text-field", {
+                                                staticClass: "mb-2",
+                                                attrs: {
+                                                  value: "linkAlias[i]",
+                                                  counter: 50
+                                                },
+                                                model: {
+                                                  value: _vm.linkAlias[i],
+                                                  callback: function($$v) {
+                                                    _vm.$set(
+                                                      _vm.linkAlias,
+                                                      i,
+                                                      $$v
+                                                    )
+                                                  },
+                                                  expression: "linkAlias[i]"
+                                                }
+                                              })
+                                            : _vm._e()
+                                        ],
+                                        1
+                                      )
+                                    ],
+                                    1
+                                  )
+                                })
+                              )
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-flex",
+                            { staticClass: "my-5", attrs: { xs12: "" } },
+                            [
+                              _c(
+                                "v-expansion-panel",
+                                [
+                                  _c(
+                                    "v-expansion-panel-content",
+                                    [
+                                      _c(
+                                        "div",
+                                        {
+                                          attrs: { slot: "header" },
+                                          slot: "header"
+                                        },
+                                        [_vm._v("Banque d'images")]
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "v-card",
+                                        [
+                                          _c(
+                                            "v-layout",
+                                            {
+                                              attrs: {
+                                                "align-center": "",
+                                                "justify-space-around": "",
+                                                "fill-height": "",
+                                                row: "",
+                                                wrap: ""
+                                              }
+                                            },
+                                            _vm._l(_vm.images, function(
+                                              img,
+                                              i
+                                            ) {
+                                              return _c(
+                                                "v-flex",
+                                                {
+                                                  key: i,
+                                                  staticClass:
+                                                    "imgContainer xs3 ma-3"
+                                                },
                                                 [
                                                   _c("img", {
-                                                    staticClass:
-                                                      "img-responsive",
                                                     attrs: {
-                                                      src: _vm.imageUpload,
-                                                      height: "70",
-                                                      width: "90"
+                                                      xs3: "",
+                                                      color: "transparent",
+                                                      src: img.image_path
+                                                    },
+                                                    on: {
+                                                      click: function($event) {
+                                                        _vm.selectImage(img.id)
+                                                      }
                                                     }
                                                   })
                                                 ]
                                               )
-                                            : _vm._e(),
-                                          _vm._v(" "),
-                                          _c(
-                                            "div",
-                                            { staticClass: "col-md-6" },
-                                            [
-                                              _c("input", {
-                                                staticClass: "form-control",
-                                                attrs: { type: "file" },
-                                                on: {
-                                                  change: _vm.onImageChange
-                                                }
-                                              })
-                                            ]
-                                          ),
-                                          _vm._v(" "),
-                                          _c(
-                                            "div",
-                                            { staticClass: "col-md-3" },
-                                            [
-                                              _c(
-                                                "button",
-                                                {
-                                                  staticClass:
-                                                    "btn btn-success btn-block",
-                                                  on: { click: _vm.uploadImage }
-                                                },
-                                                [_vm._v("Upload Image")]
-                                              )
-                                            ]
+                                            })
                                           )
-                                        ])
+                                        ],
+                                        1
+                                      )
+                                    ],
+                                    1
+                                  )
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "v-expansion-panel",
+                                [
+                                  _c("v-expansion-panel-content", [
+                                    _c(
+                                      "div",
+                                      {
+                                        attrs: { slot: "header" },
+                                        slot: "header"
+                                      },
+                                      [_vm._v("Ajout d'un nouveau fichier")]
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "div",
+                                      { staticClass: "card card-default" },
+                                      [
+                                        _c(
+                                          "div",
+                                          { staticClass: "card-body" },
+                                          [
+                                            _c("div", { staticClass: "row" }, [
+                                              _c(
+                                                "div",
+                                                { staticClass: "col-md-6" },
+                                                [
+                                                  _c("input", {
+                                                    staticClass: "form-control",
+                                                    attrs: {
+                                                      type: "file",
+                                                      accept: "image/*"
+                                                    },
+                                                    on: {
+                                                      change: _vm.onImageChange
+                                                    }
+                                                  })
+                                                ]
+                                              ),
+                                              _vm._v(" "),
+                                              _vm.imageUpload
+                                                ? _c(
+                                                    "div",
+                                                    { staticClass: "col-md-3" },
+                                                    [
+                                                      _c("img", {
+                                                        staticClass:
+                                                          "img-responsive",
+                                                        attrs: {
+                                                          src: _vm.imageUpload,
+                                                          height: "70",
+                                                          width: "90"
+                                                        }
+                                                      })
+                                                    ]
+                                                  )
+                                                : _vm._e(),
+                                              _vm._v(" "),
+                                              _vm.imageUpload
+                                                ? _c(
+                                                    "div",
+                                                    { staticClass: "col-md-3" },
+                                                    [
+                                                      _c(
+                                                        "button",
+                                                        {
+                                                          staticClass:
+                                                            "btn btn-success btn-block",
+                                                          on: {
+                                                            click:
+                                                              _vm.uploadImage
+                                                          }
+                                                        },
+                                                        [_vm._v("Upload Image")]
+                                                      )
+                                                    ]
+                                                  )
+                                                : _vm._e()
+                                            ])
+                                          ]
+                                        )
+                                      ]
+                                    )
+                                  ])
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _vm.image.length !== 0
+                                ? _c(
+                                    "div",
+                                    { staticClass: "card card-default" },
+                                    [
+                                      _c(
+                                        "div",
+                                        { staticClass: "card-header" },
+                                        [_vm._v("Image utilisée :")]
+                                      ),
+                                      _vm._v(" "),
+                                      _c("div", { staticClass: "card-body" }, [
+                                        _c(
+                                          "div",
+                                          {
+                                            staticClass:
+                                              "row imgContainerPreview xs3 ma-3"
+                                          },
+                                          [
+                                            _c("img", {
+                                              attrs: {
+                                                xs3: "",
+                                                src: _vm.image,
+                                                alt: "aperçu de l'image"
+                                              }
+                                            })
+                                          ]
+                                        )
                                       ])
                                     ]
                                   )
-                                ])
-                              ],
-                              1
-                            ),
-                            _vm._v(" "),
-                            _vm.image.length !== 0
-                              ? _c(
-                                  "div",
-                                  { staticClass: "card card-default" },
-                                  [
-                                    _c("div", { staticClass: "card-header" }, [
-                                      _vm._v("Image utilisée :")
-                                    ]),
-                                    _vm._v(" "),
-                                    _c("div", { staticClass: "card-body" }, [
-                                      _c("div", { staticClass: "row" }, [
-                                        _c("img", {
-                                          staticClass: "imgContainerPreview",
-                                          attrs: {
-                                            src: _vm.image,
-                                            alt: "aperçu de l'image"
-                                          }
-                                        })
-                                      ])
-                                    ])
-                                  ]
-                                )
-                              : _vm._e()
-                          ],
-                          1
-                        )
-                      ],
-                      1
-                    )
-                  ],
-                  1
-                )
-              ],
-              1
-            ),
-            _vm._v(" "),
-            _c(
-              "v-card-actions",
-              [
-                _c(
-                  "v-layout",
-                  { attrs: { row: "", wrap: "", "justify-space-between": "" } },
-                  [
-                    _c(
-                      "v-flex",
-                      { attrs: { xs2: "", "align-right": "" } },
-                      [
-                        _c(
-                          "v-list-tile",
-                          [
-                            _c(
-                              "v-list-tile-action",
-                              [
-                                _c(
-                                  "v-btn",
-                                  {
-                                    attrs: {
-                                      disabled: !_vm.valid,
-                                      color: "success"
+                                : _vm._e()
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  )
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "v-card-actions",
+                [
+                  _c(
+                    "v-layout",
+                    {
+                      attrs: { row: "", wrap: "", "justify-space-between": "" }
+                    },
+                    [
+                      _c(
+                        "v-flex",
+                        { attrs: { xs2: "", "align-right": "" } },
+                        [
+                          _c(
+                            "v-list-tile",
+                            [
+                              _c(
+                                "v-list-tile-action",
+                                [
+                                  _c(
+                                    "v-btn",
+                                    {
+                                      attrs: {
+                                        disabled: !_vm.valid,
+                                        color: "success"
+                                      },
+                                      on: { click: _vm.submit }
                                     },
-                                    on: { click: _vm.submit }
-                                  },
-                                  [
-                                    _c("v-icon", [_vm._v("add")]),
-                                    _vm._v(
-                                      " Valider\n                                    "
-                                    )
-                                  ],
-                                  1
-                                )
-                              ],
-                              1
-                            )
-                          ],
-                          1
-                        )
-                      ],
-                      1
-                    )
-                  ],
-                  1
-                )
-              ],
-              1
-            )
-          ],
-          1
-        )
-      ],
-      1
-    )
-  ])
+                                    [
+                                      _c("v-icon", [_vm._v("add")]),
+                                      _vm._v(
+                                        " Valider\n                                    "
+                                      )
+                                    ],
+                                    1
+                                  )
+                                ],
+                                1
+                              )
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  )
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-snackbar",
+        {
+          attrs: { bottom: "", right: "", "multi-line": "", timeout: 0 },
+          model: {
+            value: _vm.snackbarLoading,
+            callback: function($$v) {
+              _vm.snackbarLoading = $$v
+            },
+            expression: "snackbarLoading"
+          }
+        },
+        [
+          _vm._v("\n        Envoi en cours...\n        "),
+          _c("v-icon", { attrs: { large: "" } }, [
+            _vm._v("fas fa-circle-notch fa-spin")
+          ])
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-snackbar",
+        {
+          attrs: { bottom: "", right: "", "multi-line": "", timeout: 6000 },
+          model: {
+            value: _vm.snackbar,
+            callback: function($$v) {
+              _vm.snackbar = $$v
+            },
+            expression: "snackbar"
+          }
+        },
+        [
+          _vm._v("\n        " + _vm._s(_vm.snackText) + "\n        "),
+          _c(
+            "v-btn",
+            {
+              attrs: { color: "yellow lighten-1", flat: "" },
+              on: {
+                click: function($event) {
+                  _vm.snackbar = false
+                }
+              }
+            },
+            [_vm._v("\n            Close\n        ")]
+          )
+        ],
+        1
+      )
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true

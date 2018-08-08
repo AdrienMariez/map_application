@@ -287,10 +287,10 @@
     <!-- Message in case of impossible action -->
         <v-snackbar
             v-model="snackbar"
-            :bottom="snackY === 'bottom'"
-            :right="snackX === 'right'"
-            :multi-line="mode === 'multi-line'"
-            :timeout="snackTimeout"
+            bottom
+            right
+            multi-line
+            :timeout=6000
             >
             {{ snackText }}
             <v-btn
@@ -321,10 +321,6 @@
         references: [],
         referenceNames: [],
         snackbar: false,
-        snackY: 'bottom',
-        snackX: 'right',
-        mode: 'multi-line',
-        snackTimeout: 6000,
         snackText: '',
         dialog: false,
         dialogText: '',
