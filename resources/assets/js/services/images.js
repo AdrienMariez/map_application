@@ -9,7 +9,14 @@ var imagesMethods = {
         return images;
     },
     destroyImage(id){
-        console.log("Image destruction done : "+ id);
+        axios.delete(`/api/images/${id}`)
+        .then(function (resp) {
+        })
+        .catch(function (error) {
+            console.log(error.response.data);
+            
+            alert("Un problème est survenu lors de la suppression. Error located in ImageComponent.vue !");
+        });
     },
   }
   

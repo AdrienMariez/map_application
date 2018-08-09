@@ -80,92 +80,19 @@
                                     </v-expansion-panel>
                                 </v-flex>
                             <!-- Images -->
-                                <v-flex xs12 class="my-5">
-                                <!-- Image list -->
-                                    <v-expansion-panel>
-                                        <v-expansion-panel-content>
-                                            <div slot="header">Banque d'images</div>
-                                            <v-card>
-                                            <!-- button show upload -->
-                                                <v-btn
-                                                    v-if="add == false"
-                                                    color="success"
-                                                    @click="add = true">
-                                                    ajouter Image
-                                                </v-btn>
-                                            <!-- upload tool -->
-                                                <div v-if="add == true" class="card card-default">
-                                                    <div class="card-body">
-                                                        <div class="row">
-                                                            <!-- Upload pic input -->
-                                                                <div class="col-md-6">
-                                                                    <input
-                                                                        type="file"
-                                                                        accept="image/*"
-                                                                        v-on:change="onImageChange"
-                                                                        class="form-control">
-                                                                </div>
-                                                            <!-- Uploaded pic preview -->
-                                                                <div
-                                                                    class="col-md-2" v-if="imageUpload">
-                                                                    <img :src="imageUpload" class="img-responsive" height="70" width="90">
-                                                                </div>
-                                                            <!-- Upload button -->
-                                                                <div
-                                                                    class="col-md-2"
-                                                                    v-if="imageUpload">
-                                                                    <v-btn color="success"
-                                                                    @click="uploadImage">Upload Image</v-btn>
-                                                                </div>
-                                                            <!-- Cancel button -->
-                                                                <div
-                                                                    class="col-md-2">
-                                                                    <v-btn color="error"
-                                                                    @click="add = false">Annuler</v-btn>
-                                                                </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            <!-- Pics list -->
-                                                <v-layout align-center justify-space-around fill-height row wrap>
-                                                    <v-flex
-                                                        v-for="(img,i) in images"
-                                                        :key="i"
-                                                        class="imgContainer xs3 ma-3">
-                                                        <v-btn
-                                                            absolute
-                                                            dark
-                                                            fab
-                                                            center
-                                                            color="error"
-                                                            v-on:click="deleteImage(img.id)">
-                                                            <v-icon>delete_forever</v-icon>
-                                                        </v-btn>
-                                                        <img
-                                                            xs3
-                                                            color="transparent" :src="img.image_path"
-                                                            @click="selectImage(img.id,$event.target)">
-                                                    </v-flex>
-                                                </v-layout>
-                                            </v-card>
-                                        </v-expansion-panel-content>
-                                    </v-expansion-panel>
-                                <!-- Selected image -->
-                                    <div v-if="image.length !== 0" class="card card-default">
-                                        <div class="card-header">Image utilisée :</div>
-                                            <div class="card-body">
-                                                <div class="row imgContainerPreview xs3 ma-3">
-                                                    <img
-                                                        xs3
-                                                        v-bind:src="image"
-                                                        alt="aperçu de l'image">
-                                                </div>
-                                            </div>
-                                        </div>
-                                </v-flex>
-                                <!-- <image-component
-                                    @selectImage="selectImage">
-                                </image-component> -->
+                                <image-component
+                                    v-bind:image="image"
+                                    @imageSelected="imageSelected"
+                                    @clearImage="clearImage"
+                                    @imageListReload="imageListReload">
+                                </image-component>
+                            <!-- Point positionning -->
+                                <location-component
+                                    v-bind:lattitude="lattitude"
+                                    v-bind:longitude="longitude"
+                                    @pointLattitudeUpdate="pointLattitudeUpdate"
+                                    @pointLongitudeUpdate="pointLongitudeUpdate">
+                                </location-component>
                             </v-layout>
                         </v-container>
                     </v-card-text>
@@ -187,38 +114,12 @@
                     </v-card-actions>
             </v-form>
         </div>
-    <!-- loading... -->
-        <v-snackbar
-            v-model="snackbarLoading"
-            bottom
-            right
-            multi-line
-            :timeout=0>
-            Envoi en cours...
-            <v-icon large>fas fa-circle-notch fa-spin</v-icon>
-        </v-snackbar>
-    <!-- snackbar info -->
-        <v-snackbar
-            v-model="snackbar"
-            bottom
-            right
-            multi-line
-            :timeout=6000
-            >
-            {{ snackText }}
-            <v-btn
-                color="yellow lighten-1"
-                flat
-                @click="snackbar = false"
-            >
-                Close
-            </v-btn>
-        </v-snackbar>
     </div>
 </template>
 
 <script>
-    // import ImageComponent from "./ImageComponent.vue";
+    import ImageComponent from "./ImageComponent.vue";
+    import LocationComponent from "./LocationComponent.vue";
 
     import imagesMethods from './../../services/images.js'
     import pointsMethods from './../../services/points.js'
@@ -242,27 +143,22 @@
                 languages: [],
                 valid: false,
                 fk_cat: null,
-                fk_ref: null,
+                fk_ref: null,// point : fk_reference_id
                 referenceList: [],
                 selectedReference: null,
                 selectedReferenceId: null,
                 selectedColor: "",
                 fk_id: [],
-                titles: [],
+                titles: [],// pointname : title
                 titlesInitial: [],
-                desc: [],
-                linkAlias: [],
-                codes:  [],
-                link: "",
-                add: false,
-                selectedImgHtmlDisplay: "",
+                desc: [],// pointname : description
+                linkAlias: [],// pointname : linkalias
+                codes:  [],// pointname : fk_language_id
+                link: "",// point : link
+                lattitude: null,// point : longitude
+                longitude: null,// point : longitude
                 image: "",
-                image_fk: "",
-                imageInitial_fk : "",
-                imageUpload: "",
-                snackbarLoading: false,
-                snackText: "",
-                snackbar: false,
+                image_fk: "",// point : fk_image_id
                 nameRules: [
                     v => !!v || "Invalide ! ",
                     v => (v && v.length <= 50) || "Trop long !"
@@ -358,6 +254,8 @@
                         for (let x = 0; x < this.points.length; x++) {
                             if (this.idSelected == this.points[x]["id"]) {
                                 this.link = this.points[x]["link"];
+                                this.longitude = this.points[x]["longitude"];
+                                this.lattitude = this.points[x]["lattitude"];
                                 this.image_fk = this.points[x]["fk_image_id"];
                                 this.imageInitial_fk = this.points[x]["fk_image_id"];
                                 this.fk_ref = this.points[x]["fk_reference_id"];
@@ -413,70 +311,29 @@
                 }
                 // document.getElementById('coloredDiv').style.backgroundColor = this.selectedColor;
             },
-            selectImage(img, selectedImgHtmlDisplay) {
-                this.image_fk = img;
+
+            imageSelected(img) {    
                 var images = JSON.parse(JSON.stringify(this.images));
                 for (let image = 0; image < images.length; image++) {
                     if (img === images[image]["id"]) {
                         this.image = images[image]["image_path"];
                     }
                 }
-
-                // console.log(selectedImgHtmlDisplay);
-                if (this.selectedImgHtmlDisplay instanceof Element) {
-                    this.selectedImgHtmlDisplay.removeAttribute("class", "selectedImg");
-                }
-                selectedImgHtmlDisplay.setAttribute("class", "selectedImg");
-
-                this.selectedImgHtmlDisplay = selectedImgHtmlDisplay;
+                this.image_fk = img;
+            },
+            clearImage(){
+                this.image = "";
+                this.image_fk = "";
+            },
+            imageListReload() {
+                this.images = imagesMethods.readImages();
             },
 
-            onImageChange(e) {
-                let files = e.target.files || e.dataTransfer.files;
-                if (!files.length)
-                    return;
-                this.createImage(files[0]);
+            pointLattitudeUpdate(lattitude) {
+                this.lattitude = lattitude;
             },
-            createImage(file) {
-                let reader = new FileReader();
-                let vm = this;
-                reader.onload = (e) => {
-                    vm.imageUpload = e.target.result;
-                };
-                reader.readAsDataURL(file);
-            },
-            uploadImage(){
-                this.snackbarLoading = true;
-                axios.post('api/images/',{image: this.imageUpload})
-                    .then(response => { 
-                        this.successUpload(response);
-                    })
-                    .catch(error => {
-                        this.failedUpload(error);
-                    });
-            },
-            successUpload(response) {
-                    this.add = false;
-                    this.snackbarLoading = false;
-                    // console.log("success !");
-                    // console.log(response);
-                    this.snackbar = true;
-                    this.snackText = "Upload effectué !"
-                    this.images = imagesMethods.readImages();
-                    this.imageUpload = "";
-            },
-            failedUpload(error) {
-                    // console.log("error !");
-                    // console.log(error.response.data);
-                    this.snackbar = true;
-                    this.snackText = "Erreur lors de l'upload du fichier ! Le format n'est pas reconnu."
-                    this.snackbarLoading = false;
-                    // if (error.response.data.message == "Image source not readable"){
-                    //     this.snackText = "Le format du fichier n'est pas reconnu."
-                    // }
-                    // else{
-                    //     this.snackText = "Erreur inconnue avec le fichier."
-                    // }
+            pointLongitudeUpdate(longitude) {
+                this.longitude = longitude;
             },
 
             submit () {
@@ -615,7 +472,8 @@
             this.methodsApiCalls();
         },
         components: {
-            // ImageComponent
+            ImageComponent,
+            LocationComponent
         }
     }
 </script>

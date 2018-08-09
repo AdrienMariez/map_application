@@ -115,6 +115,8 @@
                 iconRules: [
                     v => !!v || "Invalide ! ",
                     v => (v && v.length <= 40) || "Trop long !"
+                    //  1.027538            1.360224
+                    //  44.392567           44.590387
                 ],
                 colors: [
                     { text: 'Rouge', code: '#B71C1C' },

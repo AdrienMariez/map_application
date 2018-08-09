@@ -67,7 +67,13 @@ class ImagesController extends Controller
 
     public function destroy($id)
     {
-        Image::destroy($id);
+        //destroy the file
+            $image = Image::where('id', $id)->first();
+            $path = substr($image->image_path, 1);
+        unlink(public_path($path));
+
+        //remove from db :
+            Image::destroy($id);
 
         return response(null, Response::HTTP_OK);
     }

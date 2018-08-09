@@ -269,7 +269,7 @@ export default {
                       shape: 'circle',
                       prefix: 'fa'
                     });
-                    marker = L.marker([point["longitude"], point["lattitude"]], {icon: currentMarker}).bindPopup(popup);
+                    marker = L.marker([point["lattitude"], point["longitude"]], {icon: currentMarker}).bindPopup(popup);
 
                     // marker = L.marker([point["longitude"], point["lattitude"]]).bindPopup(point["link"]);
 
