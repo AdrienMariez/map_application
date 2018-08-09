@@ -72163,7 +72163,7 @@ exports = module.exports = __webpack_require__(1)(false);
 
 
 // module
-exports.push([module.i, "\n#coloredDiv[data-v-01c4eeff]{\n    width: 50%;\n    height: 20px;\n    border-radius: 5px;\n}\n.imgContainer[data-v-01c4eeff]{\n    /* width:150px !important; */\n    width:100px !important;\n    min-width:70px !important;\n    /* max-height:200px !important; */\n    /* background-color: red; */\n    -webkit-box-shadow: 0px 5px 10px 2px #afafaf;\n            box-shadow: 0px 5px 10px 2px #afafaf;\n}\n.imgContainerPreview[data-v-01c4eeff]{\n    width:250px !important;\n    -webkit-box-shadow: 0px 5px 10px 2px #afafaf;\n            box-shadow: 0px 5px 10px 2px #afafaf;\n}\n.imgContainer > img[data-v-01c4eeff], .imgContainerPreview > img[data-v-01c4eeff]{\n    width:100% !important;\n    height:100% !important;\n}\n", ""]);
+exports.push([module.i, "\n#coloredDiv[data-v-01c4eeff]{\n    width: 50%;\n    height: 20px;\n    border-radius: 5px;\n}\n.imgContainer[data-v-01c4eeff]{\n    /* width:150px !important; */\n    width:100px !important;\n    min-width:70px !important;\n    /* max-height:200px !important; */\n    /* background-color: red; */\n    -webkit-box-shadow: 0px 5px 10px 2px #afafaf;\n            box-shadow: 0px 5px 10px 2px #afafaf;\n}\n.imgContainerPreview[data-v-01c4eeff]{\n    width:250px !important;\n    -webkit-box-shadow: 0px 5px 10px 2px #afafaf;\n            box-shadow: 0px 5px 10px 2px #afafaf;\n}\n.imgContainer > img[data-v-01c4eeff], .imgContainerPreview > img[data-v-01c4eeff]{\n    width:100% !important;\n    height:100% !important;\n}\n.selectedImg[data-v-01c4eeff] {\n    padding: 40px;\n    background-color: rgb(82, 196, 82);\n}\n", ""]);
 
 // exports
 
@@ -72174,13 +72174,43 @@ exports.push([module.i, "\n#coloredDiv[data-v-01c4eeff]{\n    width: 50%;\n    h
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ImageList_vue__ = __webpack_require__(91);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ImageList_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__ImageList_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_images_js__ = __webpack_require__(22);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_points_js__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_references_js__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_categories_js__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__services_languages_js__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__services_images_js__ = __webpack_require__(22);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_points_js__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_references_js__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_categories_js__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_languages_js__ = __webpack_require__(5);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -72369,7 +72399,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 
-
+// import ImageComponent from "./ImageComponent.vue";
 
 
 
@@ -72405,6 +72435,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             linkAlias: [],
             codes: [],
             link: "",
+            add: false,
+            selectedImgHtmlDisplay: "",
             image: "",
             image_fk: "",
             imageInitial_fk: "",
@@ -72419,9 +72451,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }],
             icon: '',
             iconTotal: '',
-            imageToUpload: {
+            point: {
                 id: null,
-                image_path: ""
+                link: "",
+                longitude: null,
+                lattitude: null,
+                fk_image_id: null,
+                fk_reference_id: null
             }
         };
     },
@@ -72560,7 +72596,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }
             // document.getElementById('coloredDiv').style.backgroundColor = this.selectedColor;
         },
-        selectImage: function selectImage(img) {
+        selectImage: function selectImage(img, selectedImgHtmlDisplay) {
             this.image_fk = img;
             var images = JSON.parse(JSON.stringify(this.images));
             for (var image = 0; image < images.length; image++) {
@@ -72568,6 +72604,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     this.image = images[image]["image_path"];
                 }
             }
+
+            // console.log(selectedImgHtmlDisplay);
+            if (this.selectedImgHtmlDisplay instanceof Element) {
+                this.selectedImgHtmlDisplay.removeAttribute("class", "selectedImg");
+            }
+            selectedImgHtmlDisplay.setAttribute("class", "selectedImg");
+
+            this.selectedImgHtmlDisplay = selectedImgHtmlDisplay;
         },
         onImageChange: function onImageChange(e) {
             var files = e.target.files || e.dataTransfer.files;
@@ -72593,12 +72637,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             });
         },
         successUpload: function successUpload(response) {
+            this.add = false;
             this.snackbarLoading = false;
             // console.log("success !");
             // console.log(response);
             this.snackbar = true;
             this.snackText = "Upload effectué !";
-            this.images = __WEBPACK_IMPORTED_MODULE_1__services_images_js__["a" /* default */].readImages();
+            this.images = __WEBPACK_IMPORTED_MODULE_0__services_images_js__["a" /* default */].readImages();
             this.imageUpload = "";
         },
         failedUpload: function failedUpload(error) {
@@ -72711,14 +72756,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         methodsApiCalls: function methodsApiCalls() {
             var _this3 = this;
 
-            this.images = __WEBPACK_IMPORTED_MODULE_1__services_images_js__["a" /* default */].readImages();
-            this.points = __WEBPACK_IMPORTED_MODULE_2__services_points_js__["a" /* default */].readPoints();
-            this.pointsContents = __WEBPACK_IMPORTED_MODULE_2__services_points_js__["a" /* default */].readPointsPopupContent();
-            this.references = __WEBPACK_IMPORTED_MODULE_3__services_references_js__["a" /* default */].readReferences();
-            this.referenceNames = __WEBPACK_IMPORTED_MODULE_3__services_references_js__["a" /* default */].readReferenceNamesFrOnly();
-            this.categories = __WEBPACK_IMPORTED_MODULE_4__services_categories_js__["a" /* default */].readCategories();
-            this.categoriesNames = __WEBPACK_IMPORTED_MODULE_4__services_categories_js__["a" /* default */].readCategoriesNamesFrOnly();
-            this.languages = __WEBPACK_IMPORTED_MODULE_5__services_languages_js__["a" /* default */].readLanguages();
+            this.images = __WEBPACK_IMPORTED_MODULE_0__services_images_js__["a" /* default */].readImages();
+            this.points = __WEBPACK_IMPORTED_MODULE_1__services_points_js__["a" /* default */].readPoints();
+            this.pointsContents = __WEBPACK_IMPORTED_MODULE_1__services_points_js__["a" /* default */].readPointsPopupContent();
+            this.references = __WEBPACK_IMPORTED_MODULE_2__services_references_js__["a" /* default */].readReferences();
+            this.referenceNames = __WEBPACK_IMPORTED_MODULE_2__services_references_js__["a" /* default */].readReferenceNamesFrOnly();
+            this.categories = __WEBPACK_IMPORTED_MODULE_3__services_categories_js__["a" /* default */].readCategories();
+            this.categoriesNames = __WEBPACK_IMPORTED_MODULE_3__services_categories_js__["a" /* default */].readCategoriesNamesFrOnly();
+            this.languages = __WEBPACK_IMPORTED_MODULE_4__services_languages_js__["a" /* default */].readLanguages();
 
             //setting initial empty names
             window.axios.get('/api/languages').then(function (_ref) {
@@ -72739,41 +72784,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
 
     components: {
-        ImageList: __WEBPACK_IMPORTED_MODULE_0__ImageList_vue___default.a
+        // ImageComponent
     }
 });
 
 /***/ }),
-/* 91 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var normalizeComponent = __webpack_require__(0)
-/* script */
-var __vue_script__ = null
-/* template */
-var __vue_template__ = null
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/assets/js/components/admin/ImageList.vue"
-
-module.exports = Component.exports
-
-
-/***/ }),
+/* 91 */,
 /* 92 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -73040,6 +73056,160 @@ var render = function() {
                                       _c(
                                         "v-card",
                                         [
+                                          _vm.add == false
+                                            ? _c(
+                                                "v-btn",
+                                                {
+                                                  attrs: { color: "success" },
+                                                  on: {
+                                                    click: function($event) {
+                                                      _vm.add = true
+                                                    }
+                                                  }
+                                                },
+                                                [
+                                                  _vm._v(
+                                                    "\n                                                ajouter Image\n                                            "
+                                                  )
+                                                ]
+                                              )
+                                            : _vm._e(),
+                                          _vm._v(" "),
+                                          _vm.add == true
+                                            ? _c(
+                                                "div",
+                                                {
+                                                  staticClass:
+                                                    "card card-default"
+                                                },
+                                                [
+                                                  _c(
+                                                    "div",
+                                                    {
+                                                      staticClass: "card-body"
+                                                    },
+                                                    [
+                                                      _c(
+                                                        "div",
+                                                        { staticClass: "row" },
+                                                        [
+                                                          _c(
+                                                            "div",
+                                                            {
+                                                              staticClass:
+                                                                "col-md-6"
+                                                            },
+                                                            [
+                                                              _c("input", {
+                                                                staticClass:
+                                                                  "form-control",
+                                                                attrs: {
+                                                                  type: "file",
+                                                                  accept:
+                                                                    "image/*"
+                                                                },
+                                                                on: {
+                                                                  change:
+                                                                    _vm.onImageChange
+                                                                }
+                                                              })
+                                                            ]
+                                                          ),
+                                                          _vm._v(" "),
+                                                          _vm.imageUpload
+                                                            ? _c(
+                                                                "div",
+                                                                {
+                                                                  staticClass:
+                                                                    "col-md-2"
+                                                                },
+                                                                [
+                                                                  _c("img", {
+                                                                    staticClass:
+                                                                      "img-responsive",
+                                                                    attrs: {
+                                                                      src:
+                                                                        _vm.imageUpload,
+                                                                      height:
+                                                                        "70",
+                                                                      width:
+                                                                        "90"
+                                                                    }
+                                                                  })
+                                                                ]
+                                                              )
+                                                            : _vm._e(),
+                                                          _vm._v(" "),
+                                                          _vm.imageUpload
+                                                            ? _c(
+                                                                "div",
+                                                                {
+                                                                  staticClass:
+                                                                    "col-md-2"
+                                                                },
+                                                                [
+                                                                  _c(
+                                                                    "v-btn",
+                                                                    {
+                                                                      attrs: {
+                                                                        color:
+                                                                          "success"
+                                                                      },
+                                                                      on: {
+                                                                        click:
+                                                                          _vm.uploadImage
+                                                                      }
+                                                                    },
+                                                                    [
+                                                                      _vm._v(
+                                                                        "Upload Image"
+                                                                      )
+                                                                    ]
+                                                                  )
+                                                                ],
+                                                                1
+                                                              )
+                                                            : _vm._e(),
+                                                          _vm._v(" "),
+                                                          _c(
+                                                            "div",
+                                                            {
+                                                              staticClass:
+                                                                "col-md-2"
+                                                            },
+                                                            [
+                                                              _c(
+                                                                "v-btn",
+                                                                {
+                                                                  attrs: {
+                                                                    color:
+                                                                      "error"
+                                                                  },
+                                                                  on: {
+                                                                    click: function(
+                                                                      $event
+                                                                    ) {
+                                                                      _vm.add = false
+                                                                    }
+                                                                  }
+                                                                },
+                                                                [
+                                                                  _vm._v(
+                                                                    "Annuler"
+                                                                  )
+                                                                ]
+                                                              )
+                                                            ],
+                                                            1
+                                                          )
+                                                        ]
+                                                      )
+                                                    ]
+                                                  )
+                                                ]
+                                              )
+                                            : _vm._e(),
+                                          _vm._v(" "),
                                           _c(
                                             "v-layout",
                                             {
@@ -73063,6 +73233,34 @@ var render = function() {
                                                     "imgContainer xs3 ma-3"
                                                 },
                                                 [
+                                                  _c(
+                                                    "v-btn",
+                                                    {
+                                                      attrs: {
+                                                        absolute: "",
+                                                        dark: "",
+                                                        fab: "",
+                                                        center: "",
+                                                        color: "error"
+                                                      },
+                                                      on: {
+                                                        click: function(
+                                                          $event
+                                                        ) {
+                                                          _vm.deleteImage(
+                                                            img.id
+                                                          )
+                                                        }
+                                                      }
+                                                    },
+                                                    [
+                                                      _c("v-icon", [
+                                                        _vm._v("delete_forever")
+                                                      ])
+                                                    ],
+                                                    1
+                                                  ),
+                                                  _vm._v(" "),
                                                   _c("img", {
                                                     attrs: {
                                                       xs3: "",
@@ -73071,11 +73269,15 @@ var render = function() {
                                                     },
                                                     on: {
                                                       click: function($event) {
-                                                        _vm.selectImage(img.id)
+                                                        _vm.selectImage(
+                                                          img.id,
+                                                          $event.target
+                                                        )
                                                       }
                                                     }
                                                   })
-                                                ]
+                                                ],
+                                                1
                                               )
                                             })
                                           )
@@ -73085,93 +73287,6 @@ var render = function() {
                                     ],
                                     1
                                   )
-                                ],
-                                1
-                              ),
-                              _vm._v(" "),
-                              _c(
-                                "v-expansion-panel",
-                                [
-                                  _c("v-expansion-panel-content", [
-                                    _c(
-                                      "div",
-                                      {
-                                        attrs: { slot: "header" },
-                                        slot: "header"
-                                      },
-                                      [_vm._v("Ajout d'un nouveau fichier")]
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "div",
-                                      { staticClass: "card card-default" },
-                                      [
-                                        _c(
-                                          "div",
-                                          { staticClass: "card-body" },
-                                          [
-                                            _c("div", { staticClass: "row" }, [
-                                              _c(
-                                                "div",
-                                                { staticClass: "col-md-6" },
-                                                [
-                                                  _c("input", {
-                                                    staticClass: "form-control",
-                                                    attrs: {
-                                                      type: "file",
-                                                      accept: "image/*"
-                                                    },
-                                                    on: {
-                                                      change: _vm.onImageChange
-                                                    }
-                                                  })
-                                                ]
-                                              ),
-                                              _vm._v(" "),
-                                              _vm.imageUpload
-                                                ? _c(
-                                                    "div",
-                                                    { staticClass: "col-md-3" },
-                                                    [
-                                                      _c("img", {
-                                                        staticClass:
-                                                          "img-responsive",
-                                                        attrs: {
-                                                          src: _vm.imageUpload,
-                                                          height: "70",
-                                                          width: "90"
-                                                        }
-                                                      })
-                                                    ]
-                                                  )
-                                                : _vm._e(),
-                                              _vm._v(" "),
-                                              _vm.imageUpload
-                                                ? _c(
-                                                    "div",
-                                                    { staticClass: "col-md-3" },
-                                                    [
-                                                      _c(
-                                                        "button",
-                                                        {
-                                                          staticClass:
-                                                            "btn btn-success btn-block",
-                                                          on: {
-                                                            click:
-                                                              _vm.uploadImage
-                                                          }
-                                                        },
-                                                        [_vm._v("Upload Image")]
-                                                      )
-                                                    ]
-                                                  )
-                                                : _vm._e()
-                                            ])
-                                          ]
-                                        )
-                                      ]
-                                    )
-                                  ])
                                 ],
                                 1
                               ),

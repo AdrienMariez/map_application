@@ -163,9 +163,6 @@
                                             </div>
                                         </div>
                                 </v-flex>
-                                <!-- <image-component
-                                    @selectImage="selectImage">
-                                </image-component> -->
                             </v-layout>
                         </v-container>
                     </v-card-text>
@@ -218,7 +215,7 @@
 </template>
 
 <script>
-    // import ImageComponent from "./ImageComponent.vue";
+    import ImageComponent from "./ImageComponent.vue";
 
     import imagesMethods from './../../services/images.js'
     import pointsMethods from './../../services/points.js'
@@ -615,7 +612,7 @@
             this.methodsApiCalls();
         },
         components: {
-            // ImageComponent
+            ImageList
         }
     }
 </script>
