@@ -80,19 +80,20 @@
                                     </v-expansion-panel>
                                 </v-flex>
                             <!-- Images -->
-                                <image-component
+                                <image-point
                                     v-bind:image="image"
                                     @imageSelected="imageSelected"
                                     @clearImage="clearImage"
                                     @imageListReload="imageListReload">
-                                </image-component>
+                                </image-point>
                             <!-- Point positionning -->
-                                <location-component
+                            {{lattitude}} - {{longitude}}
+                                <location-point
                                     v-bind:lattitude="lattitude"
                                     v-bind:longitude="longitude"
                                     @pointLattitudeUpdate="pointLattitudeUpdate"
                                     @pointLongitudeUpdate="pointLongitudeUpdate">
-                                </location-component>
+                                </location-point>
                             </v-layout>
                         </v-container>
                     </v-card-text>
@@ -118,8 +119,8 @@
 </template>
 
 <script>
-    import ImageComponent from "./ImageComponent.vue";
-    import LocationComponent from "./LocationComponent.vue";
+    import ImagePoint from "./ImagePoint.vue";
+    import LocationPoint from "./LocationPoint.vue";
 
     import imagesMethods from './../../services/images.js'
     import pointsMethods from './../../services/points.js'
@@ -472,8 +473,8 @@
             this.methodsApiCalls();
         },
         components: {
-            ImageComponent,
-            LocationComponent
+            ImagePoint,
+            LocationPoint
         }
     }
 </script>

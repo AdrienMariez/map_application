@@ -1,6 +1,11 @@
 <template>
     <v-flex xs12 class="my-5">
-        
+        <location-map-admin
+            v-bind:localLattitude="localLattitude"
+            v-bind:localLongitude="localLongitude"
+            @pointLattitudeUpdate="pointLattitudeUpdate"
+            @pointLongitudeUpdate="pointLongitudeUpdate">
+        </location-map-admin>
         <v-flex xs12 class="my-5">
             <div>Lattitude :</div>
             <v-text-field
@@ -26,6 +31,8 @@
 
 <script>
 
+    import LocationMapAdmin from "./LocationMapAdmin.vue";
+
     export default {
         props: ['lattitude', 'longitude'],
         data () {
@@ -50,24 +57,36 @@
             longitude(val, oldVal){
                 this.localLongitude = val;
             },
+            //map limits :
+                // 1.027538         1.360224
+                // 44.392567        44.590387
+
+                // 10275            13602
+                // 443925           445903
+            //
             localLattitude(val, oldVal){
                 if (isNaN(val)) {
-                    console.log("lattitude not a number");
                     this.localLattitude = oldVal;
                 }
+                this.$emit('pointLattitudeUpdate', this.localLattitude);
             },
             localLongitude(val, oldVal){
                 if (isNaN(val)) {
-                    console.log("longitude not a number");
                     this.localLongitude = oldVal;
                 }
+                this.$emit('pointLongitudeUpdate', this.localLongitude);
             },
         },
         methods: {
-            selectImage() {
+            pointLattitudeUpdate() {
+            },
+            pointLongitudeUpdate() {
             },
         },
         created() {
+        },
+        components: {
+            LocationMapAdmin
         }
     }
 </script>
