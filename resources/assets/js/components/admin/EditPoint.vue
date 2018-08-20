@@ -686,7 +686,7 @@
                     var newPointName;
                     if (this.link !== "") {
                         newPointName = {
-                            "fk_point_id": id,
+                            "fk_point_id": this.idSelected,
                             "fk_language_code": this.codes[i],
                             "title": this.titles[i],
                             "description": this.desc[i],
@@ -703,6 +703,8 @@
                         };
                     };
 
+                    console.log(newPointName);
+                    
                     axios.patch('/api/pointsnames/' + id[i], newPointName)
                         .then(function (resp) {
                         })

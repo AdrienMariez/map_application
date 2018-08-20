@@ -821,7 +821,18 @@ var pointsMethods = {
         return pointsnames;
     },
     destroyPoint: function destroyPoint(id) {
-        console.log("Point destruction done : " + id);
+        axios.delete('/api/points/' + id).then(function (resp) {}).catch(function (error) {
+            console.log(error.response.data);
+
+            alert("Un problème est survenu lors de la suppression. Error located in MainList.vue !");
+        });
+    },
+    destroyPointName: function destroyPointName(id) {
+        axios.delete('/api/pointsnames/' + id).then(function (resp) {}).catch(function (error) {
+            console.log(error.response.data);
+
+            alert("Un problème est survenu lors de la suppression. Error located in MainList.vue !");
+        });
     }
 };
 
@@ -69929,7 +69940,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             } else if (type == "reference") {
                 __WEBPACK_IMPORTED_MODULE_2__services_references_js__["a" /* default */].destroyReference(id);
                 for (var _i = 0; _i < this.referenceNames.length; _i++) {
-
                     if (this.referenceNames[_i]["fk_reference_id"] == id) {
 
                         __WEBPACK_IMPORTED_MODULE_2__services_references_js__["a" /* default */].destroyReferenceName(this.referenceNames[_i]["id"]);
@@ -69943,6 +69953,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 this.referenceNames = __WEBPACK_IMPORTED_MODULE_2__services_references_js__["a" /* default */].readReferenceNames();
             } else if (type == "point") {
                 __WEBPACK_IMPORTED_MODULE_0__services_points_js__["a" /* default */].destroyPoint(id);
+                for (var _i2 = 0; _i2 < this.pointsContents.length; _i2++) {
+                    if (this.pointsContents[_i2]["fk_point_id"] == id) {
+                        __WEBPACK_IMPORTED_MODULE_0__services_points_js__["a" /* default */].destroyPointName(this.pointsContents[_i2]["id"]);
+                    }
+                }
+                //reload references list
+                //mimics a reload
+                this.points = [];
+                this.points = __WEBPACK_IMPORTED_MODULE_0__services_points_js__["a" /* default */].readPoints();
+                this.pointsContents = [];
+                this.pointsContents = __WEBPACK_IMPORTED_MODULE_0__services_points_js__["a" /* default */].readPointsPopupContent();
             } else {
                 console.log("If we get here, we are in trouble as the method does not know what it is supposed to remove.");
                 alert("Un problème est survenu lors de la suppression. Error located in MainList.vue !");
@@ -72851,7 +72872,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 var newPointName;
                 if (this.link !== "") {
                     newPointName = {
-                        "fk_point_id": id,
+                        "fk_point_id": this.idSelected,
                         "fk_language_code": this.codes[i],
                         "title": this.titles[i],
                         "description": this.desc[i],
@@ -72866,6 +72887,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                         "linkalias": ""
                     };
                 };
+
+                console.log(newPointName);
 
                 axios.patch('/api/pointsnames/' + id[i], newPointName).then(function (resp) {}).catch(function (error) {
                     console.log(error.response.data);
@@ -75263,15 +75286,18 @@ exports = module.exports = __webpack_require__(0)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
 
 /***/ }),
 /* 110 */
-/***/ (function(module, exports) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__services_languages_js__ = __webpack_require__(6);
 //
 //
 //
@@ -75279,6 +75305,111 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {
+            languages: [],
+            selectedId: null,
+            selectedName: "",
+            selectedCode: "",
+
+            valid: false
+        };
+    },
+
+    watch: {},
+    methods: {
+        dummy: function dummy() {},
+        updateLanguage: function updateLanguage(id) {
+
+            // var languages = JSON.parse(JSON.stringify(this.languages));
+
+            this.selectedId = id;
+            for (var lang = 0; lang < this.languages.length; lang++) {
+                if (this.languages[lang]["id"] === id) {
+                    this.selectedName = this.languages[lang]["name"];
+                    this.selectedCode = this.languages[lang]["code"];
+                }
+            }
+        },
+        deleteLanguage: function deleteLanguage(id) {
+            console.log("delete " + id);
+        },
+
+        //API CALLS
+        methodsApiCalls: function methodsApiCalls() {
+            this.languages = __WEBPACK_IMPORTED_MODULE_0__services_languages_js__["a" /* default */].readLanguages();
+        }
+    },
+    created: function created() {
+        this.methodsApiCalls();
+    },
+
+    components: {}
+});
 
 /***/ }),
 /* 111 */
@@ -75288,7 +75419,165 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [_vm._v("\n    Can visualise languages here\n")])
+  return _c(
+    "div",
+    [
+      _c(
+        "v-list",
+        { attrs: { "two-line": "" } },
+        [
+          _c("v-subheader", [
+            _vm._v(
+              "\n            Langues implémentées (cliquer pour mettre à jour):\n        "
+            )
+          ]),
+          _vm._v(" "),
+          _c("v-divider"),
+          _vm._v(" "),
+          _vm._l(_vm.languages, function(language, i) {
+            return [
+              _c(
+                "v-list-tile",
+                {
+                  key: i,
+                  attrs: { avatar: "" },
+                  on: {
+                    click: function($event) {
+                      _vm.dummy()
+                    }
+                  }
+                },
+                [
+                  _c(
+                    "v-list-tile-content",
+                    {
+                      on: {
+                        click: function($event) {
+                          _vm.updateLanguage(i)
+                        }
+                      }
+                    },
+                    [
+                      _c("v-list-tile-title", {
+                        domProps: { innerHTML: _vm._s(language.name) }
+                      }),
+                      _vm._v(" "),
+                      _c("v-list-tile-sub-title", {
+                        domProps: { innerHTML: _vm._s(language.code) }
+                      })
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-btn",
+                    {
+                      attrs: { dark: "", fab: "", color: "error" },
+                      on: {
+                        click: function($event) {
+                          _vm.deleteLanguage(i)
+                        }
+                      }
+                    },
+                    [_c("v-icon", [_vm._v("delete")])],
+                    1
+                  )
+                ],
+                1
+              )
+            ]
+          })
+        ],
+        2
+      ),
+      _vm._v(" "),
+      _vm.selectedId !== null
+        ? _c(
+            "v-form",
+            {
+              ref: "form",
+              attrs: { "lazy-validation": "" },
+              model: {
+                value: _vm.valid,
+                callback: function($$v) {
+                  _vm.valid = $$v
+                },
+                expression: "valid"
+              }
+            },
+            [
+              _c("v-subheader", [_vm._v("\n            Edition :\n        ")]),
+              _vm._v(" "),
+              _c("v-divider"),
+              _vm._v(" "),
+              _c(
+                "v-card-text",
+                [
+                  _c(
+                    "v-container",
+                    { attrs: { "grid-list-md": "" } },
+                    [
+                      _c(
+                        "v-layout",
+                        { attrs: { wrap: "" } },
+                        [
+                          _c(
+                            "v-flex",
+                            { staticClass: "my-5", attrs: { xs12: "" } },
+                            [
+                              _c("div", [_vm._v("Nom de la langue : ")]),
+                              _vm._v(" "),
+                              _c("v-text-field", {
+                                staticClass: "mb-2",
+                                attrs: { value: "selectedName", counter: 30 },
+                                model: {
+                                  value: _vm.selectedName,
+                                  callback: function($$v) {
+                                    _vm.selectedName = $$v
+                                  },
+                                  expression: "selectedName"
+                                }
+                              })
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-flex",
+                            { staticClass: "my-5", attrs: { xs12: "" } },
+                            [
+                              _c("div", [_vm._v("Code linguistique : ")]),
+                              _vm._v(" "),
+                              _c("v-text-field", {
+                                staticClass: "mb-2",
+                                attrs: { value: "selectedCode", counter: 2 },
+                                model: {
+                                  value: _vm.selectedCode,
+                                  callback: function($$v) {
+                                    _vm.selectedCode = $$v
+                                  },
+                                  expression: "selectedCode"
+                                }
+                              })
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  )
+                ],
+                1
+              )
+            ],
+            1
+          )
+        : _vm._e()
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true

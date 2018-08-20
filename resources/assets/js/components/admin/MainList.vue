@@ -469,7 +469,6 @@
                 else if (type == "reference") {
                     referencesMethods.destroyReference(id);
                     for (let i = 0; i < this.referenceNames.length; i++) {
-                        
                         if (this.referenceNames[i]["fk_reference_id"] == id) {
 
                             referencesMethods.destroyReferenceName(this.referenceNames[i]["id"]);
@@ -484,6 +483,17 @@
                 }
                 else if (type == "point") {
                     pointsMethods.destroyPoint(id);
+                    for (let i = 0; i < this.pointsContents.length; i++) {
+                        if (this.pointsContents[i]["fk_point_id"] == id) {
+                            pointsMethods.destroyPointName(this.pointsContents[i]["id"]);
+                        }
+                    }
+                    //reload references list
+                    //mimics a reload
+                    this.points = [];
+                    this.points = pointsMethods.readPoints();
+                    this.pointsContents = [];
+                    this.pointsContents = pointsMethods.readPointsPopupContent();
                 }else{
                     console.log("If we get here, we are in trouble as the method does not know what it is supposed to remove.");
                     alert("Un problème est survenu lors de la suppression. Error located in MainList.vue !");

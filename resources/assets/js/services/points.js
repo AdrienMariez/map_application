@@ -18,7 +18,24 @@ var pointsMethods = {
         return pointsnames;
     },
     destroyPoint(id){
-        console.log("Point destruction done : "+ id);
+        axios.delete(`/api/points/${id}`)
+            .then(function (resp) {
+            })
+            .catch(function (error) {
+                console.log(error.response.data);
+                
+                alert("Un problème est survenu lors de la suppression. Error located in MainList.vue !");
+            });
+    },
+    destroyPointName(id){
+        axios.delete(`/api/pointsnames/${id}`)
+            .then(function (resp) {
+            })
+            .catch(function (error) {
+                console.log(error.response.data);
+                
+                alert("Un problème est survenu lors de la suppression. Error located in MainList.vue !");
+            });
     },
   }
   
