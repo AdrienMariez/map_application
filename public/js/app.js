@@ -72170,7 +72170,7 @@ exports = module.exports = __webpack_require__(0)(false);
 
 
 // module
-exports.push([module.i, "\n#coloredDiv[data-v-01c4eeff]{\n    width: 50%;\n    height: 20px;\n    border-radius: 5px;\n}\n.imgContainer[data-v-01c4eeff]{\n    /* width:150px !important; */\n    width:100px !important;\n    min-width:70px !important;\n    /* max-height:200px !important; */\n    /* background-color: red; */\n    -webkit-box-shadow: 0px 5px 10px 2px #afafaf;\n            box-shadow: 0px 5px 10px 2px #afafaf;\n}\n.imgContainerPreview[data-v-01c4eeff]{\n    width:250px !important;\n    -webkit-box-shadow: 0px 5px 10px 2px #afafaf;\n            box-shadow: 0px 5px 10px 2px #afafaf;\n}\n.imgContainer > img[data-v-01c4eeff], .imgContainerPreview > img[data-v-01c4eeff]{\n    width:100% !important;\n    height:100% !important;\n}\n.selectedImg[data-v-01c4eeff] {\n    padding: 40px;\n    background-color: rgb(82, 196, 82);\n}\n", ""]);
+exports.push([module.i, "\n#coloredDiv[data-v-01c4eeff]{\n    width: 50%;\n    height: 20px;\n    border-radius: 5px;\n}\n.imgContainer[data-v-01c4eeff]{\n    /* width:150px !important; */\n    width:100px !important;\n    min-width:70px !important;\n    /* max-height:200px !important; */\n    /* background-color: red; */\n    -webkit-box-shadow: 0px 5px 10px 2px #afafaf;\n            box-shadow: 0px 5px 10px 2px #afafaf;\n}\n.imgContainerPreview[data-v-01c4eeff]{\n    width:250px !important;\n    -webkit-box-shadow: 0px 5px 10px 2px #afafaf;\n            box-shadow: 0px 5px 10px 2px #afafaf;\n}\n.imgContainer > img[data-v-01c4eeff], .imgContainerPreview > img[data-v-01c4eeff]{\n    width:100% !important;\n    height:100% !important;\n}\n.selectedImg[data-v-01c4eeff] {\n    padding: 40px;\n    background-color: rgb(82, 196, 82);\n}\n.validationFailure[data-v-01c4eeff]{\n    color: red;\n}\n", ""]);
 
 // exports
 
@@ -72374,10 +72374,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             categoriesNames: [],
             languages: [],
             valid: false,
+            validationFailure: "",
             fk_cat: null,
-            fk_ref: null, // point : fk_reference_id
+            fk_ref: null,
             referenceList: [],
-            selectedReference: null,
+            selectedReference: null, // point : fk_reference_id
             selectedReferenceId: null,
             selectedColor: "",
             fk_id: [],
@@ -72413,8 +72414,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             point: {
                 id: null,
                 link: "",
-                longitude: null,
                 lattitude: null,
+                longitude: null,
                 fk_image_id: null,
                 fk_reference_id: null
             }
@@ -72431,23 +72432,31 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         selectedReference: function selectedReference(val, oldVal) {
             this.setIcon(val);
         },
-        valid: function valid(val, oldVal) {
-            //front validation
-            for (var i = 0; i < this.titles.length; i++) {
-                if (this.titles[i].length == 0 || this.titles[i].length > 50) {
-                    this.valid = false;
-                }
-            }
-            if (this.icon.length == 0 || this.icon.length > 40) {
-                this.valid = false;
-            }
-            if (this.selectedReference === null) {
-                this.valid = false;
-            }
-            // console.log("titles "+this.titles);
-            // console.log("icon "+this.icon);
-            // console.log("selectedColor "+this.selectedColor);
-            // console.log("valid "+this.valid);
+
+        // Validation updaters :
+        valid: function valid() {
+            this.validation();
+        },
+        fk_ref: function fk_ref() {
+            this.validation();
+        },
+        titles: function titles() {
+            this.validation();
+        },
+        desc: function desc() {
+            this.validation();
+        },
+        link: function link() {
+            this.validation();
+        },
+        linkAlias: function linkAlias() {
+            this.validation();
+        },
+        lattitude: function lattitude() {
+            this.validation();
+        },
+        longitude: function longitude() {
+            this.validation();
         }
     },
     methods: {
@@ -72491,7 +72500,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
                             this.desc[y] = this.pointsContents[i]["description"];
 
-                            this.linkAlias[y] = this.pointsContents[i]["linkalias"];
+                            if (this.pointsContents[i]["linkalias"]) {
+                                this.linkAlias[y] = this.pointsContents[i]["linkalias"];
+                            } else {
+                                this.linkAlias[y] = "";
+                            }
                         }
                     }
                 }
@@ -72499,7 +72512,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             //search for fk_reference_id, fk_category_id & icon :
             for (var x = 0; x < this.points.length; x++) {
                 if (this.idSelected == this.points[x]["id"]) {
-                    this.link = this.points[x]["link"];
+                    if (this.points[x]["link"]) {
+                        this.link = this.points[x]["link"];
+                    } else {
+                        this.link = "";
+                    }
                     this.longitude = this.points[x]["longitude"];
                     this.lattitude = this.points[x]["lattitude"];
                     this.longitudeUpdater = this.points[x]["longitude"];
@@ -72605,7 +72622,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         previewPoint: function previewPoint() {
             if (this.lattitude !== null && this.longitude !== null) {
-                console.log("position set !");
                 var getFR;
 
                 for (var lang = 0; lang < this.codes.length; lang++) {
@@ -72617,26 +72633,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 // console.log(titles);
 
                 if (this.titles[getFR] !== "" && this.desc[getFR] !== "") {
-                    console.log("fr title set !");
-
                     this.pointPreview.lat = this.lattitude;
                     this.pointPreview.lng = this.longitude;
                     this.pointPreview.title = this.titles[getFR];
                     this.pointPreview.desc = this.desc[getFR];
-                    //Optionnal
-                    if (this.linkAlias[getFR] !== "" && this.link != "") {
-                        console.log("link set");
+                    //Optional
+                    if (this.linkAlias[getFR] !== "" && this.link !== "") {
                         this.pointPreview.link = this.link;
                         this.pointPreview.linkAlias = this.linkAlias[getFR];
-                    } else {
-                        console.log("link not set");
-                    }
+                    } else {}
 
                     if (this.image_fk != null) {
-                        console.log("image set");
                         this.pointPreview.img = this.image;
-                    } else {
-                        console.log("image not set");
                     }
                     //END Optionnal
                     this.preview = !this.preview;
@@ -72647,24 +72655,228 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 console.log("position not set !");
             }
         },
-        submit: function submit() {
-            if (this.$refs.form.validate()) {
-                var icon = this.selectedPrefix + "" + this.icon;
-                //In create mode
-                if (this.page == "referenceParent") {
-                    this.createReference(this.selectedCategory, icon);
+        validation: function validation() {
+            //front validation
+            var valid = true;
+            var validationFailure = "Impossible de créer le point pour les raisons suivantes :  ";
+
+            // Title
+            var missingTitle = false;
+            var errorTitle = false;
+            for (var title = 0; title < this.titles.length; title++) {
+                if (this.titles[title].length == 0) {
+                    missingTitle = true;
                 }
-                //In edit mode
-                else if (this.page == "reference") {
-                        this.updateReference(this.idSelected, this.selectedCategory, icon);
-                        this.updateReferenceNames(this.fk_id, this.idSelected, this.codes, this.titles);
-                    } else {
-                        alert("Un problème est survenu lors de l'execution. Error located in EditReference.vue !");
-                    };
+                if (this.titles[title].length > 50) {
+                    errorTitle = true;
+                }
+            }
+            if (missingTitle === true) {
+                valid = false;
+                validationFailure += " Un titre est manquant.";
+            }
+            if (errorTitle === true) {
+                valid = false;
+                validationFailure += " Un titre est invalide.";
+            }
+            // END Title
+            // Description
+            var missingDesc = false;
+            var errorDesc = false;
+            for (var d = 0; d < this.desc.length; d++) {
+                if (this.desc[d].length == 0) {
+                    missingDesc = true;
+                }
+                if (this.desc[d].length > 50) {
+                    errorDesc = true;
+                }
+            }
+            if (missingDesc === true) {
+                valid = false;
+                validationFailure += " Une description est manquante.";
+            }
+            if (errorDesc === true) {
+                valid = false;
+                validationFailure += " Une description est invalide.";
+            }
+            // END Description
+            // Link
+            if (this.link !== "") {
+                var missingLink = false;
+                var errorLink = false;
+                for (var alias = 0; alias < this.linkAlias.length; alias++) {
+                    if (this.linkAlias[alias]) {
+                        if (this.linkAlias[alias].length == 0) {
+                            missingLink = true;
+                        }
+                        if (this.linkAlias[alias].length > 50) {
+                            errorLink = true;
+                        }
+                    }
+                }
+                if (missingLink === true) {
+                    valid = false;
+                    validationFailure += " Un alias du lien est manquant.";
+                }
+                if (errorLink === true) {
+                    valid = false;
+                    validationFailure += " Un alias du lien est invalide.";
+                }
+            }
+            // END Link
+            // Parent
+            if (this.fk_ref === null) {
+                valid = false;
+                validationFailure += " Parent manquant !";
+            }
+            // END Parent
+            // Coord
+            if (this.lattitude === null) {
+                valid = false;
+                validationFailure += " Lattitude non renseignée !";
+            }
+            if (this.longitude === null) {
+                valid = false;
+                validationFailure += " Longitude non renseignée !";
+            }
+            // END Coord
+
+            if (valid == true) {
+                this.valid = true;
+                this.validationFailure = "";
+            } else {
+                this.valid = false;
+                this.validationFailure = validationFailure;
             }
         },
-        createReference: function createReference(fk_category_id, icon) {
+        submit: function submit() {
+            if (this.$refs.form.validate()) {
+                // In create mode
+                if (this.page == "pointParent") {
+                    this.createPoint();
+                }
+                // In edit mode
+                else if (this.page == "point") {
+                        this.updatePoint(this.idSelected);
+                        this.updatePointNames(this.fk_id);
+                    }
+                    // Error
+                    else {
+                            alert("Un problème est survenu lors de l'execution. Error located in EditReference.vue !");
+                        };
+            }
+        },
+        createPoint: function createPoint() {
             var _this = this;
+
+            this.point.longitude = this.longitude;
+            this.point.lattitude = this.lattitude;
+            this.point.fk_reference_id = this.selectedReference;
+            if (this.link !== "") {
+                this.point.link = this.link;
+            } else {
+                this.point.link = "";
+            }
+            if (this.image_fk !== "") {
+                this.point.fk_image_id = this.image_fk;
+            } else {
+                this.point.fk_image_id = "";
+            }
+
+            var newPoint = this.point;
+
+            axios.post('/api/points', newPoint).then(function (resp) {
+                return Promise.all([resp, _this.createPointNames(resp.data.id)]);
+            }).catch(function (error) {
+                console.log(error.response.data);
+
+                alert("Un problème est survenu lors de la création. Error located in EditPoint.vue !");
+            });
+        },
+        createPointNames: function createPointNames(id) {
+            for (var i = 0; i < this.codes.length; i++) {
+                var newPointName;
+                if (this.link !== "") {
+                    newPointName = {
+                        "fk_point_id": id,
+                        "fk_language_code": this.codes[i],
+                        "title": this.titles[i],
+                        "description": this.desc[i],
+                        "linkalias": this.linkAlias[i]
+                    };
+                } else {
+                    newPointName = {
+                        "fk_point_id": id,
+                        "fk_language_code": this.codes[i],
+                        "title": this.titles[i],
+                        "description": this.desc[i],
+                        "linkalias": ""
+                    };
+                };
+
+                axios.post('/api/pointsnames', newPointName).then(function (resp) {}).catch(function (error) {
+                    console.log(error.response.data);
+
+                    alert("Un problème est survenu lors de la création. Error located in EditPoint.vue !");
+                });
+            }
+            this.$emit('pageToShow', "", null);
+        },
+        updatePoint: function updatePoint(id) {
+            this.point.longitude = this.longitude;
+            this.point.lattitude = this.lattitude;
+            this.point.fk_reference_id = this.selectedReference;
+            if (this.link !== "") {
+                this.point.link = this.link;
+            } else {
+                this.point.link = "";
+            }
+            if (this.image_fk !== "") {
+                this.point.fk_image_id = this.image_fk;
+            } else {
+                this.point.fk_image_id = "";
+            }
+
+            var newPoint = this.point;
+
+            axios.patch('/api/points/' + id, newPoint).then(function (resp) {}).catch(function (error) {
+                console.log(error.response.data);
+
+                alert("Un problème est survenu lors de la mise à jour. Error located in EditPoint.vue !");
+            });
+            this.$emit('pageToShow', "", null);
+        },
+        updatePointNames: function updatePointNames(id) {
+            for (var i = 0; i < this.codes.length; i++) {
+                var newPointName;
+                if (this.link !== "") {
+                    newPointName = {
+                        "fk_point_id": id,
+                        "fk_language_code": this.codes[i],
+                        "title": this.titles[i],
+                        "description": this.desc[i],
+                        "linkalias": this.linkAlias[i]
+                    };
+                } else {
+                    newPointName = {
+                        "fk_point_id": this.idSelected,
+                        "fk_language_code": this.codes[i],
+                        "title": this.titles[i],
+                        "description": this.desc[i],
+                        "linkalias": ""
+                    };
+                };
+
+                axios.patch('/api/pointsnames/' + id[i], newPointName).then(function (resp) {}).catch(function (error) {
+                    console.log(error.response.data);
+
+                    alert("Un problème est survenu lors de la mise à jour. Error located in EditPoint.vue !");
+                });
+            }
+            this.$emit('pageToShow', "", null);
+        },
+        createReference: function createReference(fk_category_id, icon) {
+            var _this2 = this;
 
             var weight = 0;
             for (var i = 0; i < this.references.length; i++) {
@@ -72678,7 +72890,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var newReference = this.reference;
 
             axios.post('/api/references', newReference).then(function (resp) {
-                return Promise.all([resp, _this.createReferenceNames(resp.data.id, _this.titles)]);
+                return Promise.all([resp, _this2.createReferenceNames(resp.data.id, _this2.titles)]);
             }).catch(function (error) {
                 console.log(error.response.data);
 
@@ -72724,7 +72936,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         updateReferenceNames: function updateReferenceNames(id, fk_reference_id, codes, names) {
             for (var i = 0; i < names.length; i++) {
-                //TO CHANGE
                 var newReferenceName = {
                     "fk_reference_id": fk_reference_id,
                     "fk_language_code": codes[i],
@@ -72742,7 +72953,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
         //API CALLS
         methodsApiCalls: function methodsApiCalls() {
-            var _this2 = this;
+            var _this3 = this;
 
             this.images = __WEBPACK_IMPORTED_MODULE_2__services_images_js__["a" /* default */].readImages();
             this.points = __WEBPACK_IMPORTED_MODULE_3__services_points_js__["a" /* default */].readPoints();
@@ -72758,12 +72969,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 var data = _ref.data;
 
                 data.forEach(function (language) {
-                    _this2.titles.push("");
-                    _this2.desc.push("");
-                    _this2.linkAlias.push("");
-                    _this2.titlesInitial.push("");
+                    _this3.titles.push("");
+                    _this3.desc.push("");
+                    _this3.linkAlias.push("");
+                    _this3.titlesInitial.push("");
                 });
-                _this2.loading = false;
+                _this3.loading = false;
             });
         }
     },
@@ -73945,7 +74156,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.drawerMap = false;
         },
 
-        // Creation of positionned point
+        // Creation of Preview point
         previewPoint: function previewPoint() {
             this.previewMode = true;
             this.drawerMap = true;
@@ -73960,10 +74171,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             });
 
             //popup
-            console.log("v1");
-            console.log(this.pointPreview.title);
-            console.log("v2");
-            console.log(this.pointPreview["title"]);
+            // console.log(this.pointPreview.title);
+            // console.log(this.pointPreview["title"]);
 
             var title;
             var desc = "";
@@ -73999,12 +74208,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 link.setAttribute("rel", "noopener noreferrer");
                 link.setAttribute("href", this.pointPreview.link);
                 var linkHtml;
-                if (this.pointPreview.linkalias >= 1) {
-                    var linkHtml = document.createTextNode(this.pointPreview.linkalias);
-                } else {
-                    var linkHtml = document.createTextNode(this.pointPreview.link);
-                }
+                // link alias
+                var linkHtml = document.createTextNode(this.pointPreview.linkAlias);
+
                 link.appendChild(linkHtml);
+
+                popup.appendChild(link);
             }
             //END popup
 
@@ -74655,7 +74864,11 @@ var render = function() {
                         _c(
                           "v-btn",
                           {
-                            attrs: { dark: "", color: "success" },
+                            attrs: {
+                              dark: "",
+                              color: "success",
+                              disabled: !_vm.valid
+                            },
                             on: {
                               click: function($event) {
                                 $event.stopPropagation()
@@ -74688,37 +74901,29 @@ var render = function() {
                   [
                     _c(
                       "v-flex",
-                      { attrs: { xs2: "", "align-right": "" } },
                       [
                         _c(
-                          "v-list-tile",
+                          "v-btn",
+                          {
+                            attrs: { disabled: !_vm.valid, color: "success" },
+                            on: { click: _vm.submit }
+                          },
                           [
-                            _c(
-                              "v-list-tile-action",
-                              [
-                                _c(
-                                  "v-btn",
-                                  {
-                                    attrs: {
-                                      disabled: !_vm.valid,
-                                      color: "success"
-                                    },
-                                    on: { click: _vm.submit }
-                                  },
-                                  [
-                                    _c("v-icon", [_vm._v("add")]),
-                                    _vm._v(
-                                      " Valider\n                                    "
-                                    )
-                                  ],
-                                  1
-                                )
-                              ],
-                              1
+                            _c("v-icon", [_vm._v("add")]),
+                            _vm._v(
+                              " Valider\n                                    "
                             )
                           ],
                           1
-                        )
+                        ),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "validationFailure" }, [
+                          _vm._v(
+                            "\n                                        " +
+                              _vm._s(_vm.validationFailure) +
+                              "\n                                    "
+                          )
+                        ])
                       ],
                       1
                     )
@@ -79069,7 +79274,7 @@ var L = window.L;
 
                         popup.appendChild(desc);
                       }
-                      if (point["link"].length >= 1) {
+                      if (point["link"]) {
                         link = document.createElement("a");
                         link.setAttribute("target", "_blank");
                         link.setAttribute("rel", "noopener noreferrer");
@@ -79122,11 +79327,6 @@ var L = window.L;
 
       var current = JSON.parse(JSON.stringify(pointsDisplayed));
       var str = JSON.parse(JSON.stringify(storagePointsDisplayed));
-
-      // console.log("current : ");
-      // console.log(current);
-      // console.log("stored :");
-      // console.log(str);
 
       this.storagePointsDisplayed = pointsDisplayed;
     },

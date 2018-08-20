@@ -251,7 +251,7 @@
 
                     this.drawerMap = false;
                 },
-            // Creation of positionned point
+            // Creation of Preview point
                 previewPoint(){
                     this.previewMode = true;
                     this.drawerMap = true;
@@ -266,10 +266,8 @@
                     });
 
                     //popup
-                        console.log("v1");
-                        console.log(this.pointPreview.title);
-                        console.log("v2");
-                        console.log(this.pointPreview["title"]);
+                        // console.log(this.pointPreview.title);
+                        // console.log(this.pointPreview["title"]);
                     
                         var title;
                         var desc = "";
@@ -305,13 +303,12 @@
                             link.setAttribute("rel", "noopener noreferrer");
                             link.setAttribute("href", this.pointPreview.link);
                             var linkHtml;
-                            if (this.pointPreview.linkalias >= 1) {
-                                var linkHtml = document.createTextNode(this.pointPreview.linkalias);
-                            }
-                            else{
-                                var linkHtml = document.createTextNode(this.pointPreview.link);
-                            }
+                            // link alias
+                            var linkHtml = document.createTextNode(this.pointPreview.linkAlias);
+
                             link.appendChild(linkHtml);
+
+                            popup.appendChild(link);
                         }
                     //END popup
 

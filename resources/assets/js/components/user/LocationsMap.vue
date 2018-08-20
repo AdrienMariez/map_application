@@ -239,7 +239,7 @@ export default {
 
                           popup.appendChild(desc);
                         }
-                        if (point["link"].length >= 1) {    
+                        if (point["link"]) {
                           link = document.createElement("a");
                           link.setAttribute("target", "_blank");
                           link.setAttribute("rel", "noopener noreferrer");
@@ -294,11 +294,6 @@ export default {
 
         var current = JSON.parse(JSON.stringify(pointsDisplayed));
         var str = JSON.parse(JSON.stringify(storagePointsDisplayed));
-
-        // console.log("current : ");
-        // console.log(current);
-        // console.log("stored :");
-        // console.log(str);
         
         this.storagePointsDisplayed = pointsDisplayed;
       },

@@ -28,6 +28,7 @@ class PointsController extends Controller
         $point->longitude = $request->longitude;
         $point->lattitude = $request->lattitude;
         $point->fk_image_id = $request->fk_image_id;
+        $point->fk_reference_id = $request->fk_reference_id;
         $point->updated_at = $request->created_at;
         $point->created_at = $request->created_at;
         $point->save();
@@ -42,6 +43,7 @@ class PointsController extends Controller
         $point->longitude = $request->longitude;
         $point->lattitude = $request->lattitude;
         $point->fk_image_id = $request->fk_image_id;
+        $point->fk_reference_id = $request->fk_reference_id;
         $point->updated_at = $request->updated_at;
         $point->save();
 

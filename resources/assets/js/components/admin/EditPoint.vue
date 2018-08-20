@@ -130,6 +130,7 @@
                                 <v-btn
                                     dark
                                     color="success"
+                                    :disabled="!valid"
                                     @click.stop="previewPoint()">
                                     Previsualiser le point
                                 </v-btn>
@@ -138,17 +139,16 @@
                     </v-card-text>
                     <v-card-actions>
                         <v-layout row wrap justify-space-between>
-                            <v-flex xs2 align-right>
-                                <v-list-tile>
-                                    <v-list-tile-action>
+                            <v-flex>
                                         <v-btn
                                             :disabled="!valid"
                                             @click="submit"
                                             color="success">
                                             <v-icon>add</v-icon> Valider
-                                        </v-btn> 
-                                    </v-list-tile-action>
-                                </v-list-tile>
+                                        </v-btn>
+                                        <div class="validationFailure">
+                                            {{validationFailure}}
+                                        </div>
                             </v-flex>
                         </v-layout>
                     </v-card-actions>
@@ -182,10 +182,11 @@
                 categoriesNames: [],
                 languages: [],
                 valid: false,
+                validationFailure: "",
                 fk_cat: null,
-                fk_ref: null,// point : fk_reference_id
+                fk_ref: null,
                 referenceList: [],
-                selectedReference: null,
+                selectedReference: null,// point : fk_reference_id
                 selectedReferenceId: null,
                 selectedColor: "",
                 fk_id: [],
@@ -220,8 +221,8 @@
                 point: {
                     id: null,
                     link: "",
-                    longitude: null,
                     lattitude: null,
+                    longitude: null,
                     fk_image_id: null,
                     fk_reference_id: null,
                 },
@@ -237,24 +238,32 @@
             selectedReference(val, oldVal){
                 this.setIcon(val);
             },  
-            valid(val, oldVal){
-                //front validation
-                for (let i = 0; i < this.titles.length; i++) {
-                    if (this.titles[i].length == 0 || this.titles[i].length > 50) {
-                        this.valid = false;
-                    }
-                }
-                if (this.icon.length == 0 || this.icon.length > 40) {
-                    this.valid = false;
-                }
-                if (this.selectedReference === null) {
-                    this.valid = false;
-                }
-                // console.log("titles "+this.titles);
-                // console.log("icon "+this.icon);
-                // console.log("selectedColor "+this.selectedColor);
-                // console.log("valid "+this.valid);
-            },
+            // Validation updaters :
+                valid(){
+                    this.validation();
+                },
+                fk_ref(){
+                    this.validation();
+                },
+                titles(){
+                    this.validation();
+                },
+                desc(){
+                    this.validation();
+                },
+                link(){
+                    this.validation();
+                },
+                linkAlias(){
+                    this.validation();
+                },
+                lattitude(){
+                    this.validation();
+                },
+                longitude(){
+                    this.validation();
+                },
+            // END Validation updaters
         },
         methods: {
             pageInit(){
@@ -297,15 +306,25 @@
 
                                         this.desc[y] = this.pointsContents[i]["description"];
 
-                                        this.linkAlias[y] = this.pointsContents[i]["linkalias"];
+                                        if (this.pointsContents[i]["linkalias"]) {
+                                            this.linkAlias[y] = this.pointsContents[i]["linkalias"];
+                                        }
+                                        else{
+                                            this.linkAlias[y] = "";
+                                        }
                                     }
                                 }
                             }
                         }
                 //search for fk_reference_id, fk_category_id & icon :
                         for (let x = 0; x < this.points.length; x++) {
-                            if (this.idSelected == this.points[x]["id"]) {
-                                this.link = this.points[x]["link"];
+                            if (this.idSelected == this.points[x]["id"]) { 
+                                if (this.points[x]["link"]) {
+                                    this.link = this.points[x]["link"];
+                                }
+                                else{
+                                    this.link = "";
+                                }
                                 this.longitude = this.points[x]["longitude"];
                                 this.lattitude = this.points[x]["lattitude"];
                                 this.longitudeUpdater = this.points[x]["longitude"];
@@ -416,7 +435,6 @@
 
             previewPoint() {
                 if (this.lattitude !== null && this.longitude !== null) {
-                    console.log("position set !");
                     var getFR;
                     
                     for (let lang = 0; lang < this.codes.length; lang++) {
@@ -428,28 +446,20 @@
                     // console.log(titles);
                     
                     if (this.titles[getFR] !== "" && this.desc[getFR] !== "") {
-                        console.log("fr title set !");
-
                         this.pointPreview.lat =  this.lattitude;
                         this.pointPreview.lng = this.longitude;
                         this.pointPreview.title = this.titles[getFR];
                         this.pointPreview.desc = this.desc[getFR];
-                        //Optionnal
-                        if (this.linkAlias[getFR] !== "" && this.link != "") {
-                            console.log("link set");
+                        //Optional
+                        if (this.linkAlias[getFR] !== "" && this.link !== "") {
                             this.pointPreview.link = this.link;
                             this.pointPreview.linkAlias = this.linkAlias[getFR];
                         }
                         else{
-                            console.log("link not set");
                         }
 
                         if (this.image_fk != null) {
-                            console.log("image set");
                             this.pointPreview.img = this.image;
-                        }
-                        else{
-                            console.log("image not set");
                         }
                         //END Optionnal
                         this.preview = !this.preview;
@@ -463,22 +473,248 @@
                 }
             },
 
+            validation() {
+                //front validation
+                var valid = true;
+                var validationFailure = "Impossible de créer le point pour les raisons suivantes :  ";
+
+                // Title
+                    var missingTitle = false;
+                    var errorTitle = false;
+                    for (let title = 0; title < this.titles.length; title++) {
+                        if (this.titles[title].length == 0) {
+                            missingTitle = true
+                        }
+                        if (this.titles[title].length > 50) {
+                            errorTitle = true
+                        }
+                    }
+                    if (missingTitle === true) {
+                        valid = false;
+                        validationFailure += " Un titre est manquant.";
+                    }
+                    if (errorTitle === true) {
+                        valid = false;
+                        validationFailure += " Un titre est invalide.";
+                    }
+                // END Title
+                // Description
+                    var missingDesc = false;
+                    var errorDesc = false;
+                    for (let d = 0; d < this.desc.length; d++) {
+                        if (this.desc[d].length == 0) {
+                            missingDesc = true
+                        }
+                        if (this.desc[d].length > 50) {
+                            errorDesc = true
+                        }
+                    }
+                    if (missingDesc === true) {
+                        valid = false;
+                        validationFailure += " Une description est manquante.";
+                    }
+                    if (errorDesc === true) {
+                        valid = false;
+                        validationFailure += " Une description est invalide.";
+                    }
+                // END Description
+                // Link
+                    if (this.link !== "") {
+                        var missingLink = false;
+                        var errorLink = false;
+                        for (let alias = 0; alias < this.linkAlias.length; alias++) {
+                            if (this.linkAlias[alias]) {
+                                if (this.linkAlias[alias].length == 0) {
+                                    missingLink = true;
+                                }
+                                if (this.linkAlias[alias].length > 50) {
+                                    errorLink = true;
+                                }
+                            }
+                        }
+                        if (missingLink === true) {
+                            valid = false;
+                            validationFailure += " Un alias du lien est manquant.";
+                        }
+                        if (errorLink === true) {
+                            valid = false;
+                            validationFailure += " Un alias du lien est invalide.";
+                        }
+                    }
+                // END Link
+                // Parent
+                    if (this.fk_ref === null) {
+                        valid = false;
+                        validationFailure += " Parent manquant !";
+                    }
+                // END Parent
+                // Coord
+                    if (this.lattitude === null) {
+                        valid = false;
+                        validationFailure += " Lattitude non renseignée !";
+                    }
+                    if (this.longitude === null) {
+                        valid = false;
+                        validationFailure += " Longitude non renseignée !";
+                    }
+                // END Coord
+
+                if (valid == true) {
+                    this.valid = true;
+                    this.validationFailure = "";
+                }
+                else{
+                    this.valid = false;
+                    this.validationFailure = validationFailure;
+                }
+            },
+
             submit () {
                 if (this.$refs.form.validate()) {
-                    var icon = this.selectedPrefix +""+ this.icon;
-                    //In create mode
-                    if(this.page == "referenceParent"){
-                        this.createReference(this.selectedCategory, icon);
+                    // In create mode
+                    if(this.page == "pointParent"){
+                        this.createPoint();
                     }
-                    //In edit mode
-                    else if(this.page == "reference"){
-                        this.updateReference(this.idSelected, this.selectedCategory, icon);
-                        this.updateReferenceNames(this.fk_id, this.idSelected, this.codes, this.titles);
-                    }else{
+                    // In edit mode
+                    else if(this.page == "point"){
+                        this.updatePoint(this.idSelected);
+                        this.updatePointNames(this.fk_id);
+                    }
+                    // Error
+                    else{
                         alert("Un problème est survenu lors de l'execution. Error located in EditReference.vue !");
                     };
                 }
             },
+            createPoint() {
+                this.point.longitude = this.longitude;
+                this.point.lattitude = this.lattitude;
+                this.point.fk_reference_id = this.selectedReference;
+                if (this.link !== "") {
+                    this.point.link = this.link;
+                }
+                else{
+                    this.point.link = "";
+                }
+                if (this.image_fk !== "") {
+                    this.point.fk_image_id = this.image_fk;
+                }
+                else{
+                    this.point.fk_image_id = "";
+                }
+
+                var newPoint = this.point;
+
+                axios.post('/api/points', newPoint)
+                    .then(
+                    resp =>
+                        Promise.all([
+                        resp,
+                        this.createPointNames(resp.data.id),
+                        ])   
+                    )
+                    .catch(function (error) {
+                        console.log(error.response.data);
+                        
+                        alert("Un problème est survenu lors de la création. Error located in EditPoint.vue !");
+                    });
+            },
+            createPointNames(id) {
+                for (let i = 0; i < this.codes.length; i++) {
+                    var newPointName;
+                    if (this.link !== "") {
+                        newPointName = {
+                            "fk_point_id": id,
+                            "fk_language_code": this.codes[i],
+                            "title": this.titles[i],
+                            "description": this.desc[i],
+                            "linkalias": this.linkAlias[i],
+                        };
+                    }
+                    else {
+                        newPointName = {
+                            "fk_point_id": id,
+                            "fk_language_code": this.codes[i],
+                            "title": this.titles[i],
+                            "description": this.desc[i],
+                            "linkalias": "",
+                        };
+                    };
+
+                    axios.post('/api/pointsnames', newPointName)
+                        .then(function (resp) {
+                        })
+                        .catch(function (error) {
+                            console.log(error.response.data);
+                            
+                            alert("Un problème est survenu lors de la création. Error located in EditPoint.vue !");
+                        });
+                }
+                this.$emit('pageToShow', "", null);
+            },
+            updatePoint(id) {
+                this.point.longitude = this.longitude;
+                this.point.lattitude = this.lattitude;
+                this.point.fk_reference_id = this.selectedReference;
+                if (this.link !== "") {
+                    this.point.link = this.link;
+                }
+                else{
+                    this.point.link = "";
+                }
+                if (this.image_fk !== "") {
+                    this.point.fk_image_id = this.image_fk;
+                }
+                else{
+                    this.point.fk_image_id = "";
+                }
+
+                var newPoint = this.point;
+
+                axios.patch('/api/points/' + id, newPoint)
+                    .then(function (resp) {
+                    })
+                    .catch(function (error) {
+                        console.log(error.response.data);
+                        
+                        alert("Un problème est survenu lors de la mise à jour. Error located in EditPoint.vue !");
+                    });
+                this.$emit('pageToShow', "", null);
+            },
+            updatePointNames(id) {
+                for (let i = 0; i < this.codes.length; i++) {
+                    var newPointName;
+                    if (this.link !== "") {
+                        newPointName = {
+                            "fk_point_id": id,
+                            "fk_language_code": this.codes[i],
+                            "title": this.titles[i],
+                            "description": this.desc[i],
+                            "linkalias": this.linkAlias[i],
+                        };
+                    }
+                    else {
+                        newPointName = {
+                            "fk_point_id": this.idSelected,
+                            "fk_language_code": this.codes[i],
+                            "title": this.titles[i],
+                            "description": this.desc[i],
+                            "linkalias": "",
+                        };
+                    };
+
+                    axios.patch('/api/pointsnames/' + id[i], newPointName)
+                        .then(function (resp) {
+                        })
+                        .catch(function (error) {
+                            console.log(error.response.data);
+                            
+                            alert("Un problème est survenu lors de la mise à jour. Error located in EditPoint.vue !");
+                        });
+                }
+                this.$emit('pageToShow', "", null);
+            },
+
             createReference(fk_category_id, icon) {
 
                 var weight = 0;
@@ -528,7 +764,6 @@
                         alert("Un problème est survenu lors de la mise à jour. Error located in EditReference.vue !");
                     });
                 this.$emit('pageToShow', "", null);
-                
             },
             createReferenceNames(id, names){
                 
@@ -553,7 +788,6 @@
             },
             updateReferenceNames(id, fk_reference_id, codes, names){
                 for (let i = 0; i < names.length; i++) {
-                    //TO CHANGE
                     var newReferenceName = {
                         "fk_reference_id": fk_reference_id,
                         "fk_language_code": codes[i],
@@ -630,5 +864,8 @@
     .selectedImg {
         padding: 40px;
         background-color: rgb(82, 196, 82);
+    }
+    .validationFailure{
+        color: red;
     }
 </style>
