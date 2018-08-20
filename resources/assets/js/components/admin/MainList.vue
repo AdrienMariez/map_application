@@ -71,27 +71,27 @@
                 </v-list>
 
                 <!-- categories responsive buttons -->
-                        <v-list
-                            color="green lighten-3"
-                            class="hidden-md-and-up green lighten-3">
-                            <v-layout align-center justify-space-around>
-                                <v-btn
+                <v-list
+                    color="green lighten-3"
+                    class="hidden-md-and-up green lighten-3">
+                    <v-layout align-center justify-space-around>
+                        <v-btn
                                     color="success"
                                     @click="createReference(category.id)">
                                     <v-icon>add</v-icon>
-                                </v-btn>
-                                <v-btn
+                        </v-btn>
+                        <v-btn
                                     color="warning"
                                     @click="editCategory(category.id)">
                                     <v-icon>build</v-icon>
                                  </v-btn>
-                                <v-btn
+                        <v-btn
                                     color="error"
                                     @click="deleteCategory(category.id)">
                                      <v-icon>delete</v-icon>
-                                </v-btn>
-                            </v-layout>
-                        </v-list>
+                        </v-btn>
+                    </v-layout>
+                </v-list>
 
                 <!-- loop on references in categories -->
                 <v-expansion-panel

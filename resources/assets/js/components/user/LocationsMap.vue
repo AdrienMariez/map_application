@@ -222,8 +222,8 @@ export default {
                           for (let im = 0; im < images.length; im++) {
                             if (images[im]["id"] == point["fk_image_id"]) {
                               img.setAttribute("src", images[im]["image_path"]);
-                              console.log("image found :");
-                              console.log(images[im]["image_path"]);
+                              // console.log("image found :");
+                              // console.log(images[im]["image_path"]);
                               
                             }
                           }
@@ -262,7 +262,7 @@ export default {
 
                     
                     
-
+                    // REMOVE ,prefix: 'fa'
                     var currentMarker = L.ExtraMarkers.icon({
                       icon: references[x]["icon"],
                       markerColor: pointsDisplayed[i]["catColor"],

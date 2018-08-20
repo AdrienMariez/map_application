@@ -87,13 +87,52 @@
                                     @imageListReload="imageListReload">
                                 </image-point>
                             <!-- Point positionning -->
-                            {{lattitude}} - {{longitude}}
-                                <location-point
-                                    v-bind:lattitude="lattitude"
-                                    v-bind:longitude="longitude"
-                                    @pointLattitudeUpdate="pointLattitudeUpdate"
-                                    @pointLongitudeUpdate="pointLongitudeUpdate">
-                                </location-point>
+                                <v-flex xs12 class="my-5">
+                                    <location-map-admin
+                                        v-bind:lattitude="lattitude"
+                                        v-bind:longitude="longitude"
+                                        v-bind:lattitudeUpdater="lattitudeUpdater"
+                                        v-bind:longitudeUpdater="longitudeUpdater"
+                                        v-bind:icon="icon"
+                                        v-bind:markerColor="selectedColor"
+                                        v-bind:pointPreview="pointPreview"
+                                        v-bind:preview="preview"
+                                        @pointLattitudeUpdate="pointLattitudeUpdate"
+                                        @pointLongitudeUpdate="pointLongitudeUpdate">
+                                    </location-map-admin>
+                                    <div>
+                                        Lattitude :
+                                    </div>
+                                    <v-text-field
+                                        v-model="lattitudeUpdater"
+                                        @change="pointLattitudeUpdate(lattitudeUpdater)"
+                                        label="Lattitude"
+                                        hint="Entre 44.590387  et 44.392567"
+                                        single-line
+                                        solo
+                                    ></v-text-field>
+                                    <div>
+                                        Longitude :
+                                    </div>
+                                    <v-text-field
+                                        v-model="longitudeUpdater"
+                                        @change="pointLongitudeUpdate(longitudeUpdater)"
+                                        label="Longitude"
+                                        hint="Entre 1.360224 et 1.027538"
+                                        single-line
+                                        solo
+                                    ></v-text-field>
+                                </v-flex>
+                            </v-layout>
+                        </v-container>
+                        <v-container>
+                            <v-layout>
+                                <v-btn
+                                    dark
+                                    color="success"
+                                    @click.stop="previewPoint()">
+                                    Previsualiser le point
+                                </v-btn>
                             </v-layout>
                         </v-container>
                     </v-card-text>
@@ -120,7 +159,7 @@
 
 <script>
     import ImagePoint from "./ImagePoint.vue";
-    import LocationPoint from "./LocationPoint.vue";
+    import LocationMapAdmin from "./LocationMapAdmin.vue";
 
     import imagesMethods from './../../services/images.js'
     import pointsMethods from './../../services/points.js'
@@ -158,6 +197,8 @@
                 link: "",// point : link
                 lattitude: null,// point : longitude
                 longitude: null,// point : longitude
+                lattitudeUpdater: null,
+                longitudeUpdater: null,
                 image: "",
                 image_fk: "",// point : fk_image_id
                 nameRules: [
@@ -166,6 +207,16 @@
                 ],
                 icon: '',
                 iconTotal: '',
+                pointPreview: {
+                    lat: null,
+                    lng: null,
+                    title: "",
+                    desc: "",
+                    link: "",
+                    linkAlias: "",
+                    img: "",
+                },
+                preview: false,
                 point: {
                     id: null,
                     link: "",
@@ -232,6 +283,8 @@
                     console.log("error with the parameters of the page located in EditPoint.vue !");
                     alert("Un problème est survenu lors de l'affichage de la page, veuillez recharger.");
                 }
+                //used in create & edit mode
+                this.setcodes();
             },
             editMode() {
                 //set name(s) :
@@ -245,8 +298,6 @@
                                         this.desc[y] = this.pointsContents[i]["description"];
 
                                         this.linkAlias[y] = this.pointsContents[i]["linkalias"];
-
-                                        this.codes[y] = this.pointsContents[i]["fk_language_code"];
                                     }
                                 }
                             }
@@ -257,6 +308,8 @@
                                 this.link = this.points[x]["link"];
                                 this.longitude = this.points[x]["longitude"];
                                 this.lattitude = this.points[x]["lattitude"];
+                                this.longitudeUpdater = this.points[x]["longitude"];
+                                this.lattitudeUpdater = this.points[x]["lattitude"];
                                 this.image_fk = this.points[x]["fk_image_id"];
                                 this.imageInitial_fk = this.points[x]["fk_image_id"];
                                 this.fk_ref = this.points[x]["fk_reference_id"];
@@ -299,6 +352,12 @@
                     }
                 this.valid = false;
             },
+            setcodes(){
+                //set languages codes
+                    for (let lang = 0; lang < this.languages.length; lang++) {
+                        this.codes[lang] = this.languages[lang]["code"];
+                    }
+            },
             setIcon(id) {
                 for (let ref = 0; ref < this.references.length; ref++) {
                     if (this.references[ref]["id"] == id) {
@@ -331,10 +390,77 @@
             },
 
             pointLattitudeUpdate(lattitude) {
-                this.lattitude = lattitude;
+                if (lattitude <= 44.590387 && lattitude >= 44.392567) {
+                    this.lattitude = lattitude;
+                    this.lattitudeUpdater = lattitude;
+                }
+                else{
+                    console.log("value for lat incorrect !");
+
+                    this.lattitude = this.lattitude;
+                    this.lattitudeUpdater = this.lattitude;
+                }
             },
             pointLongitudeUpdate(longitude) {
-                this.longitude = longitude;
+                if (longitude <= 1.360224 && longitude >= 1.027538) {
+                    this.longitude = longitude;
+                    this.longitudeUpdater = longitude;
+                }
+                else{
+                    console.log("value of long incorrect !");
+                    
+                    this.longitude = this.longitude;
+                    this.longitudeUpdater = this.longitude;
+                }
+            },
+
+            previewPoint() {
+                if (this.lattitude !== null && this.longitude !== null) {
+                    console.log("position set !");
+                    var getFR;
+                    
+                    for (let lang = 0; lang < this.codes.length; lang++) {
+                        if (this.codes[lang] == "fr") {
+                            getFR = lang;
+                        }
+                    }
+                    // var titles = JSON.parse(JSON.stringify(this.titles));
+                    // console.log(titles);
+                    
+                    if (this.titles[getFR] !== "" && this.desc[getFR] !== "") {
+                        console.log("fr title set !");
+
+                        this.pointPreview.lat =  this.lattitude;
+                        this.pointPreview.lng = this.longitude;
+                        this.pointPreview.title = this.titles[getFR];
+                        this.pointPreview.desc = this.desc[getFR];
+                        //Optionnal
+                        if (this.linkAlias[getFR] !== "" && this.link != "") {
+                            console.log("link set");
+                            this.pointPreview.link = this.link;
+                            this.pointPreview.linkAlias = this.linkAlias[getFR];
+                        }
+                        else{
+                            console.log("link not set");
+                        }
+
+                        if (this.image_fk != null) {
+                            console.log("image set");
+                            this.pointPreview.img = this.image;
+                        }
+                        else{
+                            console.log("image not set");
+                        }
+                        //END Optionnal
+                        this.preview = !this.preview;
+                    }
+                    else{
+                        console.log("fr title not set !");
+                    }
+                }
+                else{
+                    console.log("position not set !");
+                }
             },
 
             submit () {
@@ -474,7 +600,7 @@
         },
         components: {
             ImagePoint,
-            LocationPoint
+            LocationMapAdmin
         }
     }
 </script>

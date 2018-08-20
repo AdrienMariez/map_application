@@ -72181,15 +72181,54 @@ exports.push([module.i, "\n#coloredDiv[data-v-01c4eeff]{\n    width: 50%;\n    h
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ImagePoint_vue__ = __webpack_require__(171);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ImagePoint_vue__ = __webpack_require__(91);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ImagePoint_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__ImagePoint_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__LocationPoint_vue__ = __webpack_require__(166);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__LocationPoint_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__LocationPoint_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__LocationMapAdmin_vue__ = __webpack_require__(96);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__LocationMapAdmin_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__LocationMapAdmin_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_images_js__ = __webpack_require__(11);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_points_js__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_references_js__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__services_categories_js__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__services_languages_js__ = __webpack_require__(6);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -72350,6 +72389,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             link: "", // point : link
             lattitude: null, // point : longitude
             longitude: null, // point : longitude
+            lattitudeUpdater: null,
+            longitudeUpdater: null,
             image: "",
             image_fk: "", // point : fk_image_id
             nameRules: [function (v) {
@@ -72359,6 +72400,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }],
             icon: '',
             iconTotal: '',
+            pointPreview: {
+                lat: null,
+                lng: null,
+                title: "",
+                desc: "",
+                link: "",
+                linkAlias: "",
+                img: ""
+            },
+            preview: false,
             point: {
                 id: null,
                 link: "",
@@ -72426,6 +72477,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                         console.log("error with the parameters of the page located in EditPoint.vue !");
                         alert("Un problème est survenu lors de l'affichage de la page, veuillez recharger.");
                     }
+            //used in create & edit mode
+            this.setcodes();
         },
         editMode: function editMode() {
             //set name(s) :
@@ -72439,8 +72492,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                             this.desc[y] = this.pointsContents[i]["description"];
 
                             this.linkAlias[y] = this.pointsContents[i]["linkalias"];
-
-                            this.codes[y] = this.pointsContents[i]["fk_language_code"];
                         }
                     }
                 }
@@ -72451,6 +72502,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     this.link = this.points[x]["link"];
                     this.longitude = this.points[x]["longitude"];
                     this.lattitude = this.points[x]["lattitude"];
+                    this.longitudeUpdater = this.points[x]["longitude"];
+                    this.lattitudeUpdater = this.points[x]["lattitude"];
                     this.image_fk = this.points[x]["fk_image_id"];
                     this.imageInitial_fk = this.points[x]["fk_image_id"];
                     this.fk_ref = this.points[x]["fk_reference_id"];
@@ -72493,6 +72546,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }
             this.valid = false;
         },
+        setcodes: function setcodes() {
+            //set languages codes
+            for (var lang = 0; lang < this.languages.length; lang++) {
+                this.codes[lang] = this.languages[lang]["code"];
+            }
+        },
         setIcon: function setIcon(id) {
             for (var ref = 0; ref < this.references.length; ref++) {
                 if (this.references[ref]["id"] == id) {
@@ -72523,10 +72582,70 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.images = __WEBPACK_IMPORTED_MODULE_2__services_images_js__["a" /* default */].readImages();
         },
         pointLattitudeUpdate: function pointLattitudeUpdate(lattitude) {
-            this.lattitude = lattitude;
+            if (lattitude <= 44.590387 && lattitude >= 44.392567) {
+                this.lattitude = lattitude;
+                this.lattitudeUpdater = lattitude;
+            } else {
+                console.log("value for lat incorrect !");
+
+                this.lattitude = this.lattitude;
+                this.lattitudeUpdater = this.lattitude;
+            }
         },
         pointLongitudeUpdate: function pointLongitudeUpdate(longitude) {
-            this.longitude = longitude;
+            if (longitude <= 1.360224 && longitude >= 1.027538) {
+                this.longitude = longitude;
+                this.longitudeUpdater = longitude;
+            } else {
+                console.log("value of long incorrect !");
+
+                this.longitude = this.longitude;
+                this.longitudeUpdater = this.longitude;
+            }
+        },
+        previewPoint: function previewPoint() {
+            if (this.lattitude !== null && this.longitude !== null) {
+                console.log("position set !");
+                var getFR;
+
+                for (var lang = 0; lang < this.codes.length; lang++) {
+                    if (this.codes[lang] == "fr") {
+                        getFR = lang;
+                    }
+                }
+                // var titles = JSON.parse(JSON.stringify(this.titles));
+                // console.log(titles);
+
+                if (this.titles[getFR] !== "" && this.desc[getFR] !== "") {
+                    console.log("fr title set !");
+
+                    this.pointPreview.lat = this.lattitude;
+                    this.pointPreview.lng = this.longitude;
+                    this.pointPreview.title = this.titles[getFR];
+                    this.pointPreview.desc = this.desc[getFR];
+                    //Optionnal
+                    if (this.linkAlias[getFR] !== "" && this.link != "") {
+                        console.log("link set");
+                        this.pointPreview.link = this.link;
+                        this.pointPreview.linkAlias = this.linkAlias[getFR];
+                    } else {
+                        console.log("link not set");
+                    }
+
+                    if (this.image_fk != null) {
+                        console.log("image set");
+                        this.pointPreview.img = this.image;
+                    } else {
+                        console.log("image not set");
+                    }
+                    //END Optionnal
+                    this.preview = !this.preview;
+                } else {
+                    console.log("fr title not set !");
+                }
+            } else {
+                console.log("position not set !");
+            }
         },
         submit: function submit() {
             if (this.$refs.form.validate()) {
@@ -72654,21 +72773,1548 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     components: {
         ImagePoint: __WEBPACK_IMPORTED_MODULE_0__ImagePoint_vue___default.a,
-        LocationPoint: __WEBPACK_IMPORTED_MODULE_1__LocationPoint_vue___default.a
+        LocationMapAdmin: __WEBPACK_IMPORTED_MODULE_1__LocationMapAdmin_vue___default.a
     }
 });
 
 /***/ }),
-/* 91 */,
-/* 92 */,
-/* 93 */,
-/* 94 */,
-/* 95 */,
-/* 96 */,
-/* 97 */,
-/* 98 */,
-/* 99 */,
-/* 100 */,
+/* 91 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(92)
+}
+var normalizeComponent = __webpack_require__(1)
+/* script */
+var __vue_script__ = __webpack_require__(94)
+/* template */
+var __vue_template__ = __webpack_require__(95)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = "data-v-6c7b1928"
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/admin/ImagePoint.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-6c7b1928", Component.options)
+  } else {
+    hotAPI.reload("data-v-6c7b1928", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 92 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(93);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(2)("f0892b52", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-6c7b1928\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./ImagePoint.vue", function() {
+     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-6c7b1928\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./ImagePoint.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 93 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(0)(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.imgContainer[data-v-6c7b1928]{\n    /* width:150px !important; */\n    width:100px !important;\n    min-width:70px !important;\n    /* max-height:200px !important; */\n    /* background-color: red; */\n    -webkit-box-shadow: 0px 5px 10px 2px #afafaf;\n            box-shadow: 0px 5px 10px 2px #afafaf;\n}\n.imgContainerPreview[data-v-6c7b1928]{\n    width:250px !important;\n    -webkit-box-shadow: 0px 5px 10px 2px #afafaf;\n            box-shadow: 0px 5px 10px 2px #afafaf;\n}\n.imgContainerDialog[data-v-6c7b1928]{\n    width:175px !important;\n    -webkit-box-shadow: 0px 5px 5px 2px #afafaf;\n            box-shadow: 0px 5px 5px 2px #afafaf;\n}\n.imgContainer > img[data-v-6c7b1928], .imgContainerPreview > img[data-v-6c7b1928]{\n    width:100% !important;\n    height:100% !important;\n}\n.selectedImg[data-v-6c7b1928] {\n    padding: 40px;\n    background-color: rgb(82, 196, 82);\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 94 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__services_images_js__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_points_js__ = __webpack_require__(4);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: ['image'],
+    data: function data() {
+        return {
+            images: [],
+            points: [],
+            pointsWhereImageUsed: [],
+            add: false,
+            selectedImgHtmlDisplay: "",
+            selectedImageId: null,
+            imageInitial_fk: "",
+            imageUpload: "",
+            snackbarLoading: false,
+            snackText: "",
+            snackbar: false,
+            dialog: false,
+            dialogId: null,
+            dialogImage: ''
+        };
+    },
+
+    watch: {},
+    methods: {
+        selectImage: function selectImage(img, selectedImgHtmlDisplay) {
+            if (this.selectedImgHtmlDisplay instanceof Element) {
+                this.selectedImgHtmlDisplay.removeAttribute("class", "selectedImg");
+            }
+            selectedImgHtmlDisplay.setAttribute("class", "selectedImg");
+
+            this.selectedImgHtmlDisplay = selectedImgHtmlDisplay;
+
+            this.selectedImageId = img;
+
+            this.$emit('imageSelected', img);
+        },
+        onImageChange: function onImageChange(e) {
+            var files = e.target.files || e.dataTransfer.files;
+            if (!files.length) return;
+            this.createImage(files[0]);
+        },
+        createImage: function createImage(file) {
+            var reader = new FileReader();
+            var vm = this;
+            reader.onload = function (e) {
+                vm.imageUpload = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        },
+        uploadImage: function uploadImage() {
+            var _this = this;
+
+            this.snackbarLoading = true;
+            axios.post('api/images/', { image: this.imageUpload }).then(function (response) {
+                _this.successUpload(response);
+            }).catch(function (error) {
+                _this.failedUpload(error);
+            });
+        },
+        successUpload: function successUpload(response) {
+            this.add = false;
+            this.snackbarLoading = false;
+            this.snackbar = true;
+            this.snackText = "Upload effectué !";
+            this.images = __WEBPACK_IMPORTED_MODULE_0__services_images_js__["a" /* default */].readImages();
+            this.$emit('imageListReload');
+            this.imageUpload = "";
+        },
+        failedUpload: function failedUpload(error) {
+            this.snackbar = true;
+            this.snackText = "Erreur lors de l'upload du fichier ! Le format n'est pas reconnu.";
+            this.snackbarLoading = false;
+            // if (error.response.data.message == "Image source not readable"){
+            //     this.snackText = "Le format du fichier n'est pas reconnu."
+            // }
+            // else{
+            //     this.snackText = "Erreur inconnue avec le fichier."
+            // }
+        },
+        deleteImage: function deleteImage(id) {
+            var verifImageUsed = false;
+            for (var point = 0; point < this.points.length; point++) {
+                if (this.points[point]["fk_image_id"] === id) {
+                    verifImageUsed = true;
+                }
+            }
+            if (verifImageUsed === false) {
+                var img;
+                for (var image = 0; image < this.images.length; image++) {
+                    if (this.images[image]["id"] === id) {
+                        img = this.images[image]["image_path"];
+                    }
+                }
+                this.dialogImage = img;
+                this.dialogId = id;
+                this.dialog = true;
+                // this.destroyImage(id);
+            } else {
+                this.snackbar = true;
+                this.snackText = "Suppression impossible : le fichier est utilisé autre part sur le site.";
+                this.snackbarLoading = false;
+            }
+        },
+        destroyImage: function destroyImage(id) {
+            var _this2 = this;
+
+            if (this.selectedImageId === id) {
+                this.$emit('clearImage');
+            }
+            this.snackbarLoading = true;
+            axios.delete('api/images/' + id).then(function (response) {
+                _this2.successDestroy(response);
+            }).catch(function (error) {
+                _this2.failedDestroy(error);
+            });
+        },
+        successDestroy: function successDestroy(response) {
+            this.snackbarLoading = false;
+            this.snackbar = true;
+            this.snackText = "Suppression effectuée !";
+            this.images = __WEBPACK_IMPORTED_MODULE_0__services_images_js__["a" /* default */].readImages();
+            this.$emit('imageListReload');
+            this.imageUpload = "";
+        },
+        failedDestroy: function failedDestroy(error) {
+            console.log(error);
+
+            this.snackbar = true;
+            this.snackText = "Erreur lors de la suppression du fichier !";
+            this.snackbarLoading = false;
+        },
+
+
+        //API CALLS
+        methodsApiCalls: function methodsApiCalls() {
+            this.images = __WEBPACK_IMPORTED_MODULE_0__services_images_js__["a" /* default */].readImages();
+            this.points = __WEBPACK_IMPORTED_MODULE_1__services_points_js__["a" /* default */].readPoints();
+        }
+    },
+    created: function created() {
+        this.methodsApiCalls();
+    }
+});
+
+/***/ }),
+/* 95 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "v-flex",
+    { staticClass: "my-5", attrs: { xs12: "" } },
+    [
+      _c(
+        "v-expansion-panel",
+        [
+          _c(
+            "v-expansion-panel-content",
+            [
+              _c("div", { attrs: { slot: "header" }, slot: "header" }, [
+                _vm._v("Banque d'images")
+              ]),
+              _vm._v(" "),
+              _c(
+                "v-card",
+                [
+                  _vm.add == false
+                    ? _c(
+                        "v-btn",
+                        {
+                          attrs: { color: "success" },
+                          on: {
+                            click: function($event) {
+                              _vm.add = true
+                            }
+                          }
+                        },
+                        [
+                          _vm._v(
+                            "\n                                ajouter Image\n                            "
+                          )
+                        ]
+                      )
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _vm.add == true
+                    ? _c("div", { staticClass: "card card-default" }, [
+                        _c("div", { staticClass: "card-body" }, [
+                          _c("div", { staticClass: "row" }, [
+                            _c("div", { staticClass: "col-md-6" }, [
+                              _c("input", {
+                                staticClass: "form-control",
+                                attrs: { type: "file", accept: "image/*" },
+                                on: { change: _vm.onImageChange }
+                              })
+                            ]),
+                            _vm._v(" "),
+                            _vm.imageUpload
+                              ? _c("div", { staticClass: "col-md-2" }, [
+                                  _c("img", {
+                                    staticClass: "img-responsive",
+                                    attrs: {
+                                      src: _vm.imageUpload,
+                                      height: "70",
+                                      width: "90"
+                                    }
+                                  })
+                                ])
+                              : _vm._e(),
+                            _vm._v(" "),
+                            _vm.imageUpload
+                              ? _c(
+                                  "div",
+                                  { staticClass: "col-md-2" },
+                                  [
+                                    _c(
+                                      "v-btn",
+                                      {
+                                        attrs: { color: "success" },
+                                        on: { click: _vm.uploadImage }
+                                      },
+                                      [
+                                        _vm._v(
+                                          "\n                                                    Upload Image\n                                                    "
+                                        )
+                                      ]
+                                    )
+                                  ],
+                                  1
+                                )
+                              : _vm._e(),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              { staticClass: "col-md-2" },
+                              [
+                                _c(
+                                  "v-btn",
+                                  {
+                                    attrs: { color: "error" },
+                                    on: {
+                                      click: function($event) {
+                                        _vm.add = false
+                                      }
+                                    }
+                                  },
+                                  [
+                                    _vm._v(
+                                      "\n                                                    Annuler\n                                                "
+                                    )
+                                  ]
+                                )
+                              ],
+                              1
+                            )
+                          ])
+                        ])
+                      ])
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _c(
+                    "v-layout",
+                    {
+                      attrs: {
+                        "align-center": "",
+                        "justify-space-around": "",
+                        "fill-height": "",
+                        row: "",
+                        wrap: ""
+                      }
+                    },
+                    _vm._l(_vm.images, function(img, i) {
+                      return _c(
+                        "v-flex",
+                        { key: i, staticClass: "imgContainer xs3 ma-3" },
+                        [
+                          _c(
+                            "v-btn",
+                            {
+                              attrs: {
+                                absolute: "",
+                                dark: "",
+                                fab: "",
+                                center: "",
+                                color: "error"
+                              },
+                              on: {
+                                click: function($event) {
+                                  _vm.deleteImage(img.id)
+                                }
+                              }
+                            },
+                            [
+                              _c("v-icon", [
+                                _vm._v(
+                                  "\n                                            delete_forever\n                                        "
+                                )
+                              ])
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c("img", {
+                            attrs: {
+                              xs3: "",
+                              color: "transparent",
+                              src: img.image_path
+                            },
+                            on: {
+                              click: function($event) {
+                                _vm.selectImage(img.id, $event.target)
+                              }
+                            }
+                          })
+                        ],
+                        1
+                      )
+                    })
+                  )
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _vm.image.length !== 0
+        ? _c("div", { staticClass: "card card-default" }, [
+            _c("div", { staticClass: "card-header" }, [
+              _vm._v("\n                Image utilisée :\n            ")
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "card-body" }, [
+              _c(
+                "div",
+                { staticClass: "row imgContainerPreview xs3 ma-3" },
+                [
+                  _c(
+                    "v-btn",
+                    {
+                      attrs: {
+                        absolute: "",
+                        dark: "",
+                        fab: "",
+                        center: "",
+                        color: "error"
+                      },
+                      on: {
+                        click: function($event) {
+                          _vm.$emit("clearImage")
+                        }
+                      }
+                    },
+                    [
+                      _c("v-icon", [
+                        _vm._v(
+                          "\n                            clear\n                        "
+                        )
+                      ])
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c("img", {
+                    attrs: { xs3: "", src: _vm.image, alt: "aperçu de l'image" }
+                  })
+                ],
+                1
+              )
+            ])
+          ])
+        : _vm._e(),
+      _vm._v(" "),
+      _c(
+        "v-snackbar",
+        {
+          attrs: { bottom: "", right: "", "multi-line": "", timeout: 0 },
+          model: {
+            value: _vm.snackbarLoading,
+            callback: function($$v) {
+              _vm.snackbarLoading = $$v
+            },
+            expression: "snackbarLoading"
+          }
+        },
+        [
+          _vm._v("\n        Envoi en cours...\n        "),
+          _c("v-icon", { attrs: { large: "" } }, [
+            _vm._v("fas fa-circle-notch fa-spin")
+          ])
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-snackbar",
+        {
+          attrs: { bottom: "", right: "", "multi-line": "", timeout: 6000 },
+          model: {
+            value: _vm.snackbar,
+            callback: function($$v) {
+              _vm.snackbar = $$v
+            },
+            expression: "snackbar"
+          }
+        },
+        [
+          _vm._v("\n        " + _vm._s(_vm.snackText) + "\n        "),
+          _c(
+            "v-btn",
+            {
+              attrs: { color: "yellow lighten-1", flat: "" },
+              on: {
+                click: function($event) {
+                  _vm.snackbar = false
+                }
+              }
+            },
+            [_vm._v("\n            Close\n        ")]
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-layout",
+        { attrs: { row: "", "justify-center": "" } },
+        [
+          _c(
+            "v-dialog",
+            {
+              attrs: { persistent: "", "max-width": "290" },
+              model: {
+                value: _vm.dialog,
+                callback: function($$v) {
+                  _vm.dialog = $$v
+                },
+                expression: "dialog"
+              }
+            },
+            [
+              _c(
+                "v-card",
+                [
+                  _c("v-card-title", { staticClass: "headline" }, [
+                    _vm._v(
+                      "\n                    Supprimer l'image ?\n                "
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("v-card-text", [
+                    _c(
+                      "div",
+                      { staticClass: "row imgContainerDialog xs3 ma-3" },
+                      [
+                        _c("img", {
+                          attrs: {
+                            xs3: "",
+                            src: _vm.dialogImage,
+                            alt: "aperçu de l'image en cours de suppression"
+                          }
+                        })
+                      ]
+                    ),
+                    _vm._v(
+                      "\n                    Cette suppression sera irreversible à partir de l'acceptation de cette boîte de dialogue.\n                "
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "v-card-actions",
+                    [
+                      _c("v-spacer"),
+                      _vm._v(" "),
+                      _c(
+                        "v-btn",
+                        {
+                          attrs: { color: "green darken-1", flat: "" },
+                          nativeOn: {
+                            click: function($event) {
+                              ;(_vm.dialog = false), (_vm.dialogId = null)
+                            }
+                          }
+                        },
+                        [
+                          _vm._v(
+                            "\n                        Annuler\n                    "
+                          )
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-btn",
+                        {
+                          attrs: { color: "green darken-1", flat: "" },
+                          nativeOn: {
+                            click: function($event) {
+                              _vm.destroyImage(_vm.dialogId),
+                                (_vm.dialog = false),
+                                (_vm.dialogId = null)
+                            }
+                          }
+                        },
+                        [
+                          _vm._v(
+                            "\n                        Supprimer\n                    "
+                          )
+                        ]
+                      )
+                    ],
+                    1
+                  )
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-6c7b1928", module.exports)
+  }
+}
+
+/***/ }),
+/* 96 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(97)
+}
+var normalizeComponent = __webpack_require__(1)
+/* script */
+var __vue_script__ = __webpack_require__(99)
+/* template */
+var __vue_template__ = __webpack_require__(100)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = "data-v-0460a7df"
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/admin/LocationMapAdmin.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-0460a7df", Component.options)
+  } else {
+    hotAPI.reload("data-v-0460a7df", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 97 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(98);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(2)("d9763d66", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-0460a7df\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./LocationMapAdmin.vue", function() {
+     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-0460a7df\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./LocationMapAdmin.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 98 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(0)(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.fixedButton[data-v-0460a7df]{\n    z-index: 4;\n    position: fixed;\n    top: 30vh;\n    right: 0px;\n}\n#fixedDrawer[data-v-0460a7df]{\n    top: 5vh;\n    /* width: 90vw !important; */\n    height: 90vh !important;\n}\n#fixedDrawerContent[data-v-0460a7df]{\n    height: 100% !important;\n    width: 100% !important;\n    max-width: 80vw !important;\n    /* z-index: 6;\n    position: fixed;\n    top: 5vh;\n    width: 90vw;\n    height: 90vh;\n    background-color: beige; */\n}\n#map[data-v-0460a7df]{\n    height: 85%;\n    width: 100%;\n    position: relative;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 99 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: ['lattitude', 'longitude', 'lattitudeUpdater', 'longitudeUpdater', 'icon', 'markerColor', 'pointPreview', 'preview'],
+    data: function data() {
+        return {
+            initialization: true,
+            drawerMap: false,
+            //map parameters
+            map: [],
+            mapLat: 44.5040577,
+            mapLong: 1.1874496,
+            zoom: 14,
+            marker: [],
+            pointLattitude: null,
+            pointLongitude: null,
+            previewMode: false
+        };
+    },
+
+    watch: {
+        lattitude: function lattitude(val, oldVal) {
+            this.createPositionnedPoint();
+        },
+        longitude: function longitude(val, oldVal) {
+            this.createPositionnedPoint();
+        },
+        lattitudeUpdater: function lattitudeUpdater(val, oldVal) {
+            if (this.lattitude == null && this.longitude == null) {} else {
+                this.createPositionnedPoint();
+            }
+        },
+        longitudeUpdater: function longitudeUpdater(val, oldVal) {
+            if (this.lattitude == null && this.longitude == null) {} else {
+                this.createPositionnedPoint();
+            }
+        },
+        preview: function preview(val, oldVal) {
+            this.previewPoint();
+        }
+    },
+    methods: {
+        // Creation of map
+        readMap: function readMap() {
+            var map = L.map('map').setView([this.mapLat, this.mapLong], this.zoom);
+
+            L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+                minZoom: 10,
+                maxZoom: 18,
+                id: 'mapbox.streets',
+                accessToken: 'pk.eyJ1IjoiYmlib3VuIiwiYSI6ImNqaGhvdTc1ZzAyYXIzZW5yN3ZnaThrdnMifQ.-m9db8kuRMAOEiSsdvQTQA'
+            }).addTo(map);
+
+            var southWest = L.latLng(44.392567, 1.027538),
+                northEast = L.latLng(44.590387, 1.360224);
+            var bounds = L.latLngBounds(southWest, northEast);
+
+            map.setMaxBounds(bounds);
+            map.on('drag', function () {
+                map.panInsideBounds(bounds, { animate: false });
+            });
+
+            this.map = map;
+
+            this.createCenterPoint();
+        },
+
+        // Creation of centered point
+        createCenterPoint: function createCenterPoint() {
+            var currentMarker = L.ExtraMarkers.icon({
+                icon: "fa-angle-double-down",
+                markerColor: "#FFC400",
+                shape: 'circle',
+                prefix: 'fa'
+            });
+
+            this.marker = L.marker([this.mapLat, this.mapLong], { icon: currentMarker, draggable: 'true' }).addTo(this.map);
+        },
+
+        // Creation of positionned point
+        createPositionnedPoint: function createPositionnedPoint() {
+            this.map.removeLayer(this.marker);
+
+            this.previewMode = false;
+
+            this.initialization = false;
+
+            var currentMarker = L.ExtraMarkers.icon({
+                icon: this.icon,
+                markerColor: this.selectedColor,
+                shape: 'circle',
+                prefix: 'fa'
+            });
+
+            this.marker = L.marker([this.lattitude, this.longitude], { icon: currentMarker, draggable: 'true' }).addTo(this.map);
+        },
+
+        // Recenter of positionned point
+        centerPointCoord: function centerPointCoord() {
+            this.map.removeLayer(this.marker);
+            this.createCenterPoint();
+        },
+
+        // get back to previous state for point
+        reinitPointCoord: function reinitPointCoord() {
+            if (this.lattitude == null) {
+                this.map.removeLayer(this.marker);
+                this.createCenterPoint();
+            } else {
+                this.createPositionnedPoint();
+            }
+            this.drawerMap = false;
+        },
+
+        // Reading point coordinates and sending 'em
+        getPointCoord: function getPointCoord() {
+            var marker = JSON.parse(JSON.stringify(this.marker.getLatLng()));
+
+            this.$emit('pointLattitudeUpdate', marker.lat);
+            this.$emit('pointLongitudeUpdate', marker.lng);
+
+            this.drawerMap = false;
+        },
+
+        // Creation of positionned point
+        previewPoint: function previewPoint() {
+            this.previewMode = true;
+            this.drawerMap = true;
+
+            this.map.removeLayer(this.marker);
+
+            var currentMarker = L.ExtraMarkers.icon({
+                icon: this.icon,
+                markerColor: this.selectedColor,
+                shape: 'circle',
+                prefix: 'fa'
+            });
+
+            //popup
+            console.log("v1");
+            console.log(this.pointPreview.title);
+            console.log("v2");
+            console.log(this.pointPreview["title"]);
+
+            var title;
+            var desc = "";
+            var link = "";
+            var imgCtnr = "";
+            var popup = document.createElement("div");
+            popup.setAttribute("style", "text-align:center;");
+            //title
+            title = document.createElement("h3");
+            var titleHtml = document.createTextNode(this.pointPreview.title);
+            title.appendChild(titleHtml);
+            popup.appendChild(title);
+            //img
+            if (this.pointPreview.img != "") {
+                imgCtnr = document.createElement("div");
+                imgCtnr.setAttribute("style", "width:150px; height:auto;");
+                var img = document.createElement("img");
+                img.setAttribute("style", "width:100%; height:100%;");
+                img.setAttribute("alt", "image");
+                img.setAttribute("src", this.pointPreview.img);
+                imgCtnr.appendChild(img);
+                popup.appendChild(imgCtnr);
+            }
+            //desc
+            desc = document.createElement("div");
+            var descHtml = document.createTextNode(this.pointPreview.desc);
+            desc.appendChild(descHtml);
+            popup.appendChild(desc);
+            //link
+            if (this.pointPreview.link != "") {
+                link = document.createElement("a");
+                link.setAttribute("target", "_blank");
+                link.setAttribute("rel", "noopener noreferrer");
+                link.setAttribute("href", this.pointPreview.link);
+                var linkHtml;
+                if (this.pointPreview.linkalias >= 1) {
+                    var linkHtml = document.createTextNode(this.pointPreview.linkalias);
+                } else {
+                    var linkHtml = document.createTextNode(this.pointPreview.link);
+                }
+                link.appendChild(linkHtml);
+            }
+            //END popup
+
+            this.marker = L.marker([this.pointPreview.lat, this.pointPreview.lng], { icon: currentMarker }).bindPopup(popup).addTo(this.map);
+        }
+    },
+    mounted: function mounted() {
+        this.readMap();
+    }
+});
+
+/***/ }),
+/* 100 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "v-layout",
+    [
+      _c(
+        "v-btn",
+        {
+          staticClass: "fixedButton",
+          attrs: { dark: "", fab: "", color: "success" },
+          on: {
+            click: function($event) {
+              $event.stopPropagation()
+              _vm.drawerMap = true
+            }
+          }
+        },
+        [_c("v-icon", [_vm._v("map")])],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-container",
+        [
+          _c(
+            "v-layout",
+            [
+              _c(
+                "v-btn",
+                {
+                  attrs: { dark: "", color: "success" },
+                  on: {
+                    click: function($event) {
+                      $event.stopPropagation()
+                      _vm.drawerMap = true
+                    }
+                  }
+                },
+                [
+                  _vm._v(
+                    "\n                Positionner le point sur la carte ici !\n            "
+                  )
+                ]
+              )
+            ],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-navigation-drawer",
+        {
+          attrs: {
+            fixed: "",
+            right: "",
+            temporary: "",
+            width: "1200",
+            id: "fixedDrawer"
+          },
+          model: {
+            value: _vm.drawerMap,
+            callback: function($$v) {
+              _vm.drawerMap = $$v
+            },
+            expression: "drawerMap"
+          }
+        },
+        [
+          _c(
+            "div",
+            { attrs: { id: "fixedDrawerContent" } },
+            [
+              _c("div", { attrs: { id: "map" } }),
+              _vm._v(" "),
+              _vm.previewMode == false
+                ? _c(
+                    "v-layout",
+                    {
+                      staticClass: "hidden-md-and-up",
+                      attrs: { "justify-space-between": "" }
+                    },
+                    [
+                      _vm._v(">\n                    "),
+                      _c(
+                        "v-btn",
+                        {
+                          staticClass: "mx-2",
+                          attrs: { dark: "", right: "", color: "success" },
+                          on: {
+                            click: function($event) {
+                              $event.stopPropagation()
+                              _vm.getPointCoord()
+                            }
+                          }
+                        },
+                        [_c("v-icon", [_vm._v("check_circle_outline")])],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-btn",
+                        {
+                          staticClass: "mx-2",
+                          attrs: { dark: "", right: "", color: "success" },
+                          on: {
+                            click: function($event) {
+                              $event.stopPropagation()
+                              _vm.centerPointCoord()
+                            }
+                          }
+                        },
+                        [_c("v-icon", [_vm._v("center_focus_strong")])],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-btn",
+                        {
+                          staticClass: "mx-2",
+                          attrs: { dark: "", right: "", color: "warning" },
+                          on: {
+                            click: function($event) {
+                              $event.stopPropagation()
+                              _vm.reinitPointCoord()
+                            }
+                          }
+                        },
+                        [_c("v-icon", [_vm._v("highlight_off")])],
+                        1
+                      )
+                    ],
+                    1
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.previewMode
+                ? _c(
+                    "v-layout",
+                    {
+                      staticClass: "hidden-md-and-up",
+                      attrs: { "justify-space-between": "" }
+                    },
+                    [
+                      _vm._v(">\n                    "),
+                      _c(
+                        "v-btn",
+                        {
+                          staticClass: "mx-2",
+                          attrs: { dark: "", right: "", color: "warning" },
+                          on: {
+                            click: function($event) {
+                              $event.stopPropagation()
+                              _vm.createPositionnedPoint()
+                            }
+                          }
+                        },
+                        [_c("v-icon", [_vm._v("highlight_off")])],
+                        1
+                      )
+                    ],
+                    1
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.previewMode == false
+                ? _c(
+                    "v-layout",
+                    {
+                      staticClass: "hidden-sm-and-down",
+                      attrs: { "justify-space-between": "" }
+                    },
+                    [
+                      _c(
+                        "v-btn",
+                        {
+                          staticClass: "mx-2",
+                          attrs: { dark: "", right: "", color: "success" },
+                          on: {
+                            click: function($event) {
+                              $event.stopPropagation()
+                              _vm.getPointCoord()
+                            }
+                          }
+                        },
+                        [
+                          _c("v-icon", [_vm._v("check_circle_outline")]),
+                          _vm._v(
+                            "\n                        Mettre à jour la position du point\n                    "
+                          )
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-btn",
+                        {
+                          staticClass: "mx-2",
+                          attrs: { dark: "", right: "", color: "success" },
+                          on: {
+                            click: function($event) {
+                              $event.stopPropagation()
+                              _vm.centerPointCoord()
+                            }
+                          }
+                        },
+                        [
+                          _c("v-icon", [_vm._v("warning")]),
+                          _vm._v(
+                            "\n                        placer le point au centre\n                    "
+                          )
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-btn",
+                        {
+                          staticClass: "mx-2",
+                          attrs: { dark: "", right: "", color: "warning" },
+                          on: {
+                            click: function($event) {
+                              $event.stopPropagation()
+                              _vm.reinitPointCoord()
+                            }
+                          }
+                        },
+                        [
+                          _c("v-icon", [_vm._v("highlight_off")]),
+                          _vm._v(
+                            "\n                        Annuler\n                    "
+                          )
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.previewMode
+                ? _c(
+                    "v-layout",
+                    {
+                      staticClass: "hidden-sm-and-down",
+                      attrs: { "justify-space-between": "" }
+                    },
+                    [
+                      _c(
+                        "v-btn",
+                        {
+                          staticClass: "mx-2",
+                          attrs: { dark: "", right: "", color: "warning" },
+                          on: {
+                            click: function($event) {
+                              $event.stopPropagation()
+                              _vm.createPositionnedPoint()
+                            }
+                          }
+                        },
+                        [
+                          _c("v-icon", [_vm._v("highlight_off")]),
+                          _vm._v(
+                            "\n                        Retour au mode edition\n                    "
+                          )
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  )
+                : _vm._e()
+            ],
+            1
+          )
+        ]
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-0460a7df", module.exports)
+  }
+}
+
+/***/ }),
 /* 101 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -72916,23 +74562,113 @@ var render = function() {
                           }
                         }),
                         _vm._v(" "),
-                        _vm._v(
-                          "\n                        " +
-                            _vm._s(_vm.lattitude) +
-                            " - " +
-                            _vm._s(_vm.longitude) +
-                            "\n                            "
-                        ),
-                        _c("location-point", {
-                          attrs: {
-                            lattitude: _vm.lattitude,
-                            longitude: _vm.longitude
+                        _c(
+                          "v-flex",
+                          { staticClass: "my-5", attrs: { xs12: "" } },
+                          [
+                            _c("location-map-admin", {
+                              attrs: {
+                                lattitude: _vm.lattitude,
+                                longitude: _vm.longitude,
+                                lattitudeUpdater: _vm.lattitudeUpdater,
+                                longitudeUpdater: _vm.longitudeUpdater,
+                                icon: _vm.icon,
+                                markerColor: _vm.selectedColor,
+                                pointPreview: _vm.pointPreview,
+                                preview: _vm.preview
+                              },
+                              on: {
+                                pointLattitudeUpdate: _vm.pointLattitudeUpdate,
+                                pointLongitudeUpdate: _vm.pointLongitudeUpdate
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("div", [
+                              _vm._v(
+                                "\n                                    Lattitude :\n                                "
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _c("v-text-field", {
+                              attrs: {
+                                label: "Lattitude",
+                                hint: "Entre 44.590387  et 44.392567",
+                                "single-line": "",
+                                solo: ""
+                              },
+                              on: {
+                                change: function($event) {
+                                  _vm.pointLattitudeUpdate(_vm.lattitudeUpdater)
+                                }
+                              },
+                              model: {
+                                value: _vm.lattitudeUpdater,
+                                callback: function($$v) {
+                                  _vm.lattitudeUpdater = $$v
+                                },
+                                expression: "lattitudeUpdater"
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("div", [
+                              _vm._v(
+                                "\n                                    Longitude :\n                                "
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _c("v-text-field", {
+                              attrs: {
+                                label: "Longitude",
+                                hint: "Entre 1.360224 et 1.027538",
+                                "single-line": "",
+                                solo: ""
+                              },
+                              on: {
+                                change: function($event) {
+                                  _vm.pointLongitudeUpdate(_vm.longitudeUpdater)
+                                }
+                              },
+                              model: {
+                                value: _vm.longitudeUpdater,
+                                callback: function($$v) {
+                                  _vm.longitudeUpdater = $$v
+                                },
+                                expression: "longitudeUpdater"
+                              }
+                            })
+                          ],
+                          1
+                        )
+                      ],
+                      1
+                    )
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "v-container",
+                  [
+                    _c(
+                      "v-layout",
+                      [
+                        _c(
+                          "v-btn",
+                          {
+                            attrs: { dark: "", color: "success" },
+                            on: {
+                              click: function($event) {
+                                $event.stopPropagation()
+                                _vm.previewPoint()
+                              }
+                            }
                           },
-                          on: {
-                            pointLattitudeUpdate: _vm.pointLattitudeUpdate,
-                            pointLongitudeUpdate: _vm.pointLongitudeUpdate
-                          }
-                        })
+                          [
+                            _vm._v(
+                              "\n                                Previsualiser le point\n                            "
+                            )
+                          ]
+                        )
                       ],
                       1
                     )
@@ -77317,8 +79053,8 @@ var L = window.L;
                         for (var im = 0; im < images.length; im++) {
                           if (images[im]["id"] == point["fk_image_id"]) {
                             img.setAttribute("src", images[im]["image_path"]);
-                            console.log("image found :");
-                            console.log(images[im]["image_path"]);
+                            // console.log("image found :");
+                            // console.log(images[im]["image_path"]);
                           }
                         }
 
@@ -77353,6 +79089,7 @@ var L = window.L;
                     }
                   });
 
+                  // REMOVE ,prefix: 'fa'
                   var currentMarker = L.ExtraMarkers.icon({
                     icon: references[x]["icon"],
                     markerColor: pointsDisplayed[i]["catColor"],
@@ -77950,1406 +79687,6 @@ if (false) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 160 */,
-/* 161 */,
-/* 162 */,
-/* 163 */,
-/* 164 */,
-/* 165 */,
-/* 166 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__(167)
-}
-var normalizeComponent = __webpack_require__(1)
-/* script */
-var __vue_script__ = __webpack_require__(169)
-/* template */
-var __vue_template__ = __webpack_require__(170)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = injectStyle
-/* scopeId */
-var __vue_scopeId__ = "data-v-5469a534"
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/assets/js/components/admin/LocationPoint.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-5469a534", Component.options)
-  } else {
-    hotAPI.reload("data-v-5469a534", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 167 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(168);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(2)("515094b0", content, false, {});
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-5469a534\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./LocationPoint.vue", function() {
-     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-5469a534\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./LocationPoint.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 168 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(0)(false);
-// imports
-
-
-// module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 169 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__LocationMapAdmin_vue__ = __webpack_require__(176);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__LocationMapAdmin_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__LocationMapAdmin_vue__);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['lattitude', 'longitude'],
-    data: function data() {
-        return {
-            localLattitude: null,
-            localLongitude: null,
-            mask: '##.####',
-            lattitudeRules: [function (v) {
-                return !!v || "Invalide ! ";
-            }, function (v) {
-                return v && v.length >= 6 || "exemple : 44.5020";
-            }],
-            longitudeRules: [function (v) {
-                return !!v || "Invalide ! ";
-            }, function (v) {
-                return v && v.length >= 6 || "exemple : 01.1980";
-            }]
-        };
-    },
-
-    watch: {
-        lattitude: function lattitude(val, oldVal) {
-            this.localLattitude = val;
-        },
-        longitude: function longitude(val, oldVal) {
-            this.localLongitude = val;
-        },
-
-        //map limits :
-        // 1.027538         1.360224
-        // 44.392567        44.590387
-
-        // 10275            13602
-        // 443925           445903
-        //
-        localLattitude: function localLattitude(val, oldVal) {
-            if (isNaN(val)) {
-                this.localLattitude = oldVal;
-            }
-            this.$emit('pointLattitudeUpdate', this.localLattitude);
-        },
-        localLongitude: function localLongitude(val, oldVal) {
-            if (isNaN(val)) {
-                this.localLongitude = oldVal;
-            }
-            this.$emit('pointLongitudeUpdate', this.localLongitude);
-        }
-    },
-    methods: {
-        pointLattitudeUpdate: function pointLattitudeUpdate() {},
-        pointLongitudeUpdate: function pointLongitudeUpdate() {}
-    },
-    created: function created() {},
-
-    components: {
-        LocationMapAdmin: __WEBPACK_IMPORTED_MODULE_0__LocationMapAdmin_vue___default.a
-    }
-});
-
-/***/ }),
-/* 170 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "v-flex",
-    { staticClass: "my-5", attrs: { xs12: "" } },
-    [
-      _c("location-map-admin", {
-        attrs: {
-          localLattitude: _vm.localLattitude,
-          localLongitude: _vm.localLongitude
-        },
-        on: {
-          pointLattitudeUpdate: _vm.pointLattitudeUpdate,
-          pointLongitudeUpdate: _vm.pointLongitudeUpdate
-        }
-      }),
-      _vm._v(" "),
-      _c(
-        "v-flex",
-        { staticClass: "my-5", attrs: { xs12: "" } },
-        [
-          _c("div", [_vm._v("Lattitude :")]),
-          _vm._v(" "),
-          _c("v-text-field", {
-            attrs: {
-              rules: _vm.lattitudeRules,
-              placeholder: "44.5020",
-              "single-line": "",
-              mask: _vm.mask,
-              required: ""
-            },
-            model: {
-              value: _vm.localLattitude,
-              callback: function($$v) {
-                _vm.localLattitude = $$v
-              },
-              expression: "localLattitude"
-            }
-          }),
-          _vm._v(" "),
-          _c("div", [_vm._v("Longitude :")]),
-          _vm._v(" "),
-          _c("v-text-field", {
-            attrs: {
-              rules: _vm.longitudeRules,
-              placeholder: "01.1980",
-              "single-line": "",
-              mask: _vm.mask,
-              required: ""
-            },
-            model: {
-              value: _vm.localLongitude,
-              callback: function($$v) {
-                _vm.localLongitude = $$v
-              },
-              expression: "localLongitude"
-            }
-          })
-        ],
-        1
-      )
-    ],
-    1
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-5469a534", module.exports)
-  }
-}
-
-/***/ }),
-/* 171 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__(172)
-}
-var normalizeComponent = __webpack_require__(1)
-/* script */
-var __vue_script__ = __webpack_require__(174)
-/* template */
-var __vue_template__ = __webpack_require__(175)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = injectStyle
-/* scopeId */
-var __vue_scopeId__ = "data-v-6c7b1928"
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/assets/js/components/admin/ImagePoint.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-6c7b1928", Component.options)
-  } else {
-    hotAPI.reload("data-v-6c7b1928", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 172 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(173);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(2)("f0892b52", content, false, {});
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-6c7b1928\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./ImagePoint.vue", function() {
-     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-6c7b1928\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./ImagePoint.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 173 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(0)(false);
-// imports
-
-
-// module
-exports.push([module.i, "\n.imgContainer[data-v-6c7b1928]{\n    /* width:150px !important; */\n    width:100px !important;\n    min-width:70px !important;\n    /* max-height:200px !important; */\n    /* background-color: red; */\n    -webkit-box-shadow: 0px 5px 10px 2px #afafaf;\n            box-shadow: 0px 5px 10px 2px #afafaf;\n}\n.imgContainerPreview[data-v-6c7b1928]{\n    width:250px !important;\n    -webkit-box-shadow: 0px 5px 10px 2px #afafaf;\n            box-shadow: 0px 5px 10px 2px #afafaf;\n}\n.imgContainerDialog[data-v-6c7b1928]{\n    width:175px !important;\n    -webkit-box-shadow: 0px 5px 5px 2px #afafaf;\n            box-shadow: 0px 5px 5px 2px #afafaf;\n}\n.imgContainer > img[data-v-6c7b1928], .imgContainerPreview > img[data-v-6c7b1928]{\n    width:100% !important;\n    height:100% !important;\n}\n.selectedImg[data-v-6c7b1928] {\n    padding: 40px;\n    background-color: rgb(82, 196, 82);\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 174 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__services_images_js__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_points_js__ = __webpack_require__(4);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['image'],
-    data: function data() {
-        return {
-            images: [],
-            points: [],
-            pointsWhereImageUsed: [],
-            add: false,
-            selectedImgHtmlDisplay: "",
-            selectedImageId: null,
-            imageInitial_fk: "",
-            imageUpload: "",
-            snackbarLoading: false,
-            snackText: "",
-            snackbar: false,
-            dialog: false,
-            dialogId: null,
-            dialogImage: ''
-        };
-    },
-
-    watch: {},
-    methods: {
-        selectImage: function selectImage(img, selectedImgHtmlDisplay) {
-            if (this.selectedImgHtmlDisplay instanceof Element) {
-                this.selectedImgHtmlDisplay.removeAttribute("class", "selectedImg");
-            }
-            selectedImgHtmlDisplay.setAttribute("class", "selectedImg");
-
-            this.selectedImgHtmlDisplay = selectedImgHtmlDisplay;
-
-            this.selectedImageId = img;
-
-            this.$emit('imageSelected', img);
-        },
-        onImageChange: function onImageChange(e) {
-            var files = e.target.files || e.dataTransfer.files;
-            if (!files.length) return;
-            this.createImage(files[0]);
-        },
-        createImage: function createImage(file) {
-            var reader = new FileReader();
-            var vm = this;
-            reader.onload = function (e) {
-                vm.imageUpload = e.target.result;
-            };
-            reader.readAsDataURL(file);
-        },
-        uploadImage: function uploadImage() {
-            var _this = this;
-
-            this.snackbarLoading = true;
-            axios.post('api/images/', { image: this.imageUpload }).then(function (response) {
-                _this.successUpload(response);
-            }).catch(function (error) {
-                _this.failedUpload(error);
-            });
-        },
-        successUpload: function successUpload(response) {
-            this.add = false;
-            this.snackbarLoading = false;
-            this.snackbar = true;
-            this.snackText = "Upload effectué !";
-            this.images = __WEBPACK_IMPORTED_MODULE_0__services_images_js__["a" /* default */].readImages();
-            this.$emit('imageListReload');
-            this.imageUpload = "";
-        },
-        failedUpload: function failedUpload(error) {
-            this.snackbar = true;
-            this.snackText = "Erreur lors de l'upload du fichier ! Le format n'est pas reconnu.";
-            this.snackbarLoading = false;
-            // if (error.response.data.message == "Image source not readable"){
-            //     this.snackText = "Le format du fichier n'est pas reconnu."
-            // }
-            // else{
-            //     this.snackText = "Erreur inconnue avec le fichier."
-            // }
-        },
-        deleteImage: function deleteImage(id) {
-            var verifImageUsed = false;
-            for (var point = 0; point < this.points.length; point++) {
-                if (this.points[point]["fk_image_id"] === id) {
-                    verifImageUsed = true;
-                }
-            }
-            if (verifImageUsed === false) {
-                var img;
-                for (var image = 0; image < this.images.length; image++) {
-                    if (this.images[image]["id"] === id) {
-                        img = this.images[image]["image_path"];
-                    }
-                }
-                this.dialogImage = img;
-                this.dialogId = id;
-                this.dialog = true;
-                // this.destroyImage(id);
-            } else {
-                this.snackbar = true;
-                this.snackText = "Suppression impossible : le fichier est utilisé autre part sur le site.";
-                this.snackbarLoading = false;
-            }
-        },
-        destroyImage: function destroyImage(id) {
-            var _this2 = this;
-
-            if (this.selectedImageId === id) {
-                this.$emit('clearImage');
-            }
-            this.snackbarLoading = true;
-            axios.delete('api/images/' + id).then(function (response) {
-                _this2.successDestroy(response);
-            }).catch(function (error) {
-                _this2.failedDestroy(error);
-            });
-        },
-        successDestroy: function successDestroy(response) {
-            this.snackbarLoading = false;
-            this.snackbar = true;
-            this.snackText = "Suppression effectuée !";
-            this.images = __WEBPACK_IMPORTED_MODULE_0__services_images_js__["a" /* default */].readImages();
-            this.$emit('imageListReload');
-            this.imageUpload = "";
-        },
-        failedDestroy: function failedDestroy(error) {
-            console.log(error);
-
-            this.snackbar = true;
-            this.snackText = "Erreur lors de la suppression du fichier !";
-            this.snackbarLoading = false;
-        },
-
-
-        //API CALLS
-        methodsApiCalls: function methodsApiCalls() {
-            this.images = __WEBPACK_IMPORTED_MODULE_0__services_images_js__["a" /* default */].readImages();
-            this.points = __WEBPACK_IMPORTED_MODULE_1__services_points_js__["a" /* default */].readPoints();
-        }
-    },
-    created: function created() {
-        this.methodsApiCalls();
-    }
-});
-
-/***/ }),
-/* 175 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "v-flex",
-    { staticClass: "my-5", attrs: { xs12: "" } },
-    [
-      _c(
-        "v-expansion-panel",
-        [
-          _c(
-            "v-expansion-panel-content",
-            [
-              _c("div", { attrs: { slot: "header" }, slot: "header" }, [
-                _vm._v("Banque d'images")
-              ]),
-              _vm._v(" "),
-              _c(
-                "v-card",
-                [
-                  _vm.add == false
-                    ? _c(
-                        "v-btn",
-                        {
-                          attrs: { color: "success" },
-                          on: {
-                            click: function($event) {
-                              _vm.add = true
-                            }
-                          }
-                        },
-                        [
-                          _vm._v(
-                            "\n                                ajouter Image\n                            "
-                          )
-                        ]
-                      )
-                    : _vm._e(),
-                  _vm._v(" "),
-                  _vm.add == true
-                    ? _c("div", { staticClass: "card card-default" }, [
-                        _c("div", { staticClass: "card-body" }, [
-                          _c("div", { staticClass: "row" }, [
-                            _c("div", { staticClass: "col-md-6" }, [
-                              _c("input", {
-                                staticClass: "form-control",
-                                attrs: { type: "file", accept: "image/*" },
-                                on: { change: _vm.onImageChange }
-                              })
-                            ]),
-                            _vm._v(" "),
-                            _vm.imageUpload
-                              ? _c("div", { staticClass: "col-md-2" }, [
-                                  _c("img", {
-                                    staticClass: "img-responsive",
-                                    attrs: {
-                                      src: _vm.imageUpload,
-                                      height: "70",
-                                      width: "90"
-                                    }
-                                  })
-                                ])
-                              : _vm._e(),
-                            _vm._v(" "),
-                            _vm.imageUpload
-                              ? _c(
-                                  "div",
-                                  { staticClass: "col-md-2" },
-                                  [
-                                    _c(
-                                      "v-btn",
-                                      {
-                                        attrs: { color: "success" },
-                                        on: { click: _vm.uploadImage }
-                                      },
-                                      [
-                                        _vm._v(
-                                          "\n                                                    Upload Image\n                                                    "
-                                        )
-                                      ]
-                                    )
-                                  ],
-                                  1
-                                )
-                              : _vm._e(),
-                            _vm._v(" "),
-                            _c(
-                              "div",
-                              { staticClass: "col-md-2" },
-                              [
-                                _c(
-                                  "v-btn",
-                                  {
-                                    attrs: { color: "error" },
-                                    on: {
-                                      click: function($event) {
-                                        _vm.add = false
-                                      }
-                                    }
-                                  },
-                                  [
-                                    _vm._v(
-                                      "\n                                                    Annuler\n                                                "
-                                    )
-                                  ]
-                                )
-                              ],
-                              1
-                            )
-                          ])
-                        ])
-                      ])
-                    : _vm._e(),
-                  _vm._v(" "),
-                  _c(
-                    "v-layout",
-                    {
-                      attrs: {
-                        "align-center": "",
-                        "justify-space-around": "",
-                        "fill-height": "",
-                        row: "",
-                        wrap: ""
-                      }
-                    },
-                    _vm._l(_vm.images, function(img, i) {
-                      return _c(
-                        "v-flex",
-                        { key: i, staticClass: "imgContainer xs3 ma-3" },
-                        [
-                          _c(
-                            "v-btn",
-                            {
-                              attrs: {
-                                absolute: "",
-                                dark: "",
-                                fab: "",
-                                center: "",
-                                color: "error"
-                              },
-                              on: {
-                                click: function($event) {
-                                  _vm.deleteImage(img.id)
-                                }
-                              }
-                            },
-                            [
-                              _c("v-icon", [
-                                _vm._v(
-                                  "\n                                            delete_forever\n                                        "
-                                )
-                              ])
-                            ],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c("img", {
-                            attrs: {
-                              xs3: "",
-                              color: "transparent",
-                              src: img.image_path
-                            },
-                            on: {
-                              click: function($event) {
-                                _vm.selectImage(img.id, $event.target)
-                              }
-                            }
-                          })
-                        ],
-                        1
-                      )
-                    })
-                  )
-                ],
-                1
-              )
-            ],
-            1
-          )
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _vm.image.length !== 0
-        ? _c("div", { staticClass: "card card-default" }, [
-            _c("div", { staticClass: "card-header" }, [
-              _vm._v("\n                Image utilisée :\n            ")
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "card-body" }, [
-              _c(
-                "div",
-                { staticClass: "row imgContainerPreview xs3 ma-3" },
-                [
-                  _c(
-                    "v-btn",
-                    {
-                      attrs: {
-                        absolute: "",
-                        dark: "",
-                        fab: "",
-                        center: "",
-                        color: "error"
-                      },
-                      on: {
-                        click: function($event) {
-                          _vm.$emit("clearImage")
-                        }
-                      }
-                    },
-                    [
-                      _c("v-icon", [
-                        _vm._v(
-                          "\n                            clear\n                        "
-                        )
-                      ])
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c("img", {
-                    attrs: { xs3: "", src: _vm.image, alt: "aperçu de l'image" }
-                  })
-                ],
-                1
-              )
-            ])
-          ])
-        : _vm._e(),
-      _vm._v(" "),
-      _c(
-        "v-snackbar",
-        {
-          attrs: { bottom: "", right: "", "multi-line": "", timeout: 0 },
-          model: {
-            value: _vm.snackbarLoading,
-            callback: function($$v) {
-              _vm.snackbarLoading = $$v
-            },
-            expression: "snackbarLoading"
-          }
-        },
-        [
-          _vm._v("\n        Envoi en cours...\n        "),
-          _c("v-icon", { attrs: { large: "" } }, [
-            _vm._v("fas fa-circle-notch fa-spin")
-          ])
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _c(
-        "v-snackbar",
-        {
-          attrs: { bottom: "", right: "", "multi-line": "", timeout: 6000 },
-          model: {
-            value: _vm.snackbar,
-            callback: function($$v) {
-              _vm.snackbar = $$v
-            },
-            expression: "snackbar"
-          }
-        },
-        [
-          _vm._v("\n        " + _vm._s(_vm.snackText) + "\n        "),
-          _c(
-            "v-btn",
-            {
-              attrs: { color: "yellow lighten-1", flat: "" },
-              on: {
-                click: function($event) {
-                  _vm.snackbar = false
-                }
-              }
-            },
-            [_vm._v("\n            Close\n        ")]
-          )
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _c(
-        "v-layout",
-        { attrs: { row: "", "justify-center": "" } },
-        [
-          _c(
-            "v-dialog",
-            {
-              attrs: { persistent: "", "max-width": "290" },
-              model: {
-                value: _vm.dialog,
-                callback: function($$v) {
-                  _vm.dialog = $$v
-                },
-                expression: "dialog"
-              }
-            },
-            [
-              _c(
-                "v-card",
-                [
-                  _c("v-card-title", { staticClass: "headline" }, [
-                    _vm._v(
-                      "\n                    Supprimer l'image ?\n                "
-                    )
-                  ]),
-                  _vm._v(" "),
-                  _c("v-card-text", [
-                    _c(
-                      "div",
-                      { staticClass: "row imgContainerDialog xs3 ma-3" },
-                      [
-                        _c("img", {
-                          attrs: {
-                            xs3: "",
-                            src: _vm.dialogImage,
-                            alt: "aperçu de l'image en cours de suppression"
-                          }
-                        })
-                      ]
-                    ),
-                    _vm._v(
-                      "\n                    Cette suppression sera irreversible à partir de l'acceptation de cette boîte de dialogue.\n                "
-                    )
-                  ]),
-                  _vm._v(" "),
-                  _c(
-                    "v-card-actions",
-                    [
-                      _c("v-spacer"),
-                      _vm._v(" "),
-                      _c(
-                        "v-btn",
-                        {
-                          attrs: { color: "green darken-1", flat: "" },
-                          nativeOn: {
-                            click: function($event) {
-                              ;(_vm.dialog = false), (_vm.dialogId = null)
-                            }
-                          }
-                        },
-                        [
-                          _vm._v(
-                            "\n                        Annuler\n                    "
-                          )
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "v-btn",
-                        {
-                          attrs: { color: "green darken-1", flat: "" },
-                          nativeOn: {
-                            click: function($event) {
-                              _vm.destroyImage(_vm.dialogId),
-                                (_vm.dialog = false),
-                                (_vm.dialogId = null)
-                            }
-                          }
-                        },
-                        [
-                          _vm._v(
-                            "\n                        Supprimer\n                    "
-                          )
-                        ]
-                      )
-                    ],
-                    1
-                  )
-                ],
-                1
-              )
-            ],
-            1
-          )
-        ],
-        1
-      )
-    ],
-    1
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-6c7b1928", module.exports)
-  }
-}
-
-/***/ }),
-/* 176 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__(177)
-}
-var normalizeComponent = __webpack_require__(1)
-/* script */
-var __vue_script__ = __webpack_require__(179)
-/* template */
-var __vue_template__ = __webpack_require__(180)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = injectStyle
-/* scopeId */
-var __vue_scopeId__ = "data-v-0460a7df"
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/assets/js/components/admin/LocationMapAdmin.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-0460a7df", Component.options)
-  } else {
-    hotAPI.reload("data-v-0460a7df", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 177 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(178);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(2)("d9763d66", content, false, {});
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-0460a7df\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./LocationMapAdmin.vue", function() {
-     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-0460a7df\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./LocationMapAdmin.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 178 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(0)(false);
-// imports
-
-
-// module
-exports.push([module.i, "\n.fixedButton[data-v-0460a7df]{\n    z-index: 4;\n    position: fixed;\n    top: 100px;\n    right: 0px;\n}\n#fixedDrawer[data-v-0460a7df]{\n    top: 5vh;\n    /* width: 90vw !important; */\n    height: 90vh !important;\n}\n#fixedDrawerContent[data-v-0460a7df]{\n    height: 100% !important;\n    width: 100% !important;\n    max-width: 80vw !important;\n    background-color: rgb(250, 117, 117);\n    /* z-index: 6;\n    position: fixed;\n    top: 5vh;\n    width: 90vw;\n    height: 90vh;\n    background-color: beige; */\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 179 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['localLattitude', 'localLongitude'],
-    data: function data() {
-        return {
-            drawerMap: false
-        };
-    },
-
-    watch: {
-        localLattitude: function localLattitude(val, oldVal) {
-            if (isNaN(val)) {
-                console.log("lattitude not a number");
-                this.localLattitude = oldVal;
-            }
-        },
-        localLongitude: function localLongitude(val, oldVal) {
-            if (isNaN(val)) {
-                console.log("longitude not a number");
-                this.localLongitude = oldVal;
-            }
-        }
-    },
-    methods: {
-        selectImage: function selectImage() {}
-    },
-    created: function created() {}
-});
-
-/***/ }),
-/* 180 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "v-layout",
-    [
-      _c(
-        "v-btn",
-        {
-          staticClass: "fixedButton",
-          attrs: { dark: "", fab: "", color: "success" },
-          on: {
-            click: function($event) {
-              $event.stopPropagation()
-              _vm.drawerMap = true
-            }
-          }
-        },
-        [_c("v-icon", [_vm._v("add")])],
-        1
-      ),
-      _vm._v(" "),
-      _c(
-        "v-container",
-        [
-          _c(
-            "v-layout",
-            { attrs: { "justify-end": "" } },
-            [
-              _c(
-                "v-btn",
-                {
-                  attrs: { dark: "", right: "", color: "success" },
-                  on: {
-                    click: function($event) {
-                      $event.stopPropagation()
-                      _vm.drawerMap = true
-                    }
-                  }
-                },
-                [_vm._v("\n                Montrer la carte\n            ")]
-              )
-            ],
-            1
-          )
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _c(
-        "v-navigation-drawer",
-        {
-          attrs: {
-            fixed: "",
-            right: "",
-            temporary: "",
-            width: "1200",
-            id: "fixedDrawer"
-          },
-          model: {
-            value: _vm.drawerMap,
-            callback: function($$v) {
-              _vm.drawerMap = $$v
-            },
-            expression: "drawerMap"
-          }
-        },
-        [
-          _c(
-            "div",
-            { attrs: { id: "fixedDrawerContent" } },
-            [
-              _c(
-                "v-btn",
-                {
-                  attrs: {
-                    color: "warning",
-                    dark: "",
-                    small: "",
-                    absolute: "",
-                    middle: "",
-                    right: "",
-                    fab: ""
-                  },
-                  on: {
-                    click: function($event) {
-                      $event.stopPropagation()
-                      _vm.drawerMap = !_vm.drawerMap
-                    }
-                  }
-                },
-                [_c("v-icon", [_vm._v("remove")])],
-                1
-              ),
-              _vm._v(
-                "\n            " +
-                  _vm._s(_vm.localLattitude) +
-                  "\n            " +
-                  _vm._s(_vm.localLongitude) +
-                  "\n        "
-              )
-            ],
-            1
-          )
-        ]
-      )
-    ],
-    1
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-0460a7df", module.exports)
-  }
-}
 
 /***/ })
 /******/ ]);
