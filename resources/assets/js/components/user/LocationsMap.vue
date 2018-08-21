@@ -212,7 +212,7 @@ export default {
                         title.appendChild(titleHtml);
                         popup.appendChild(title);
 
-                        if (point["fk_image_fk"]!== null) {
+                        if (point["fk_image_id"]!== null) {
                           imgCtnr = document.createElement("div");
                           imgCtnr.setAttribute("style", "width:150px; height:auto;");
                           var img = document.createElement("img");

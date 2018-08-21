@@ -920,6 +920,65 @@ var languagesMethods = {
 
 /***/ }),
 /* 7 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var referencesMethods = {
+    readReferences: function readReferences() {
+        var references = [];
+        window.axios.get('/api/references').then(function (_ref) {
+            var data = _ref.data;
+
+            data.forEach(function (reference) {
+                references.push(reference);
+            });
+        });
+        return references;
+    },
+    readReferenceNames: function readReferenceNames() {
+        var referencesNames = [];
+        window.axios.get('/api/referencesnames').then(function (_ref2) {
+            var data = _ref2.data;
+
+            data.forEach(function (referenceName) {
+                referencesNames.push(referenceName);
+            });
+        });
+        return referencesNames;
+    },
+    readReferenceNamesFrOnly: function readReferenceNamesFrOnly() {
+        var referencesNames = [];
+        window.axios.get('/api/referencesnames').then(function (_ref3) {
+            var data = _ref3.data;
+
+            data.forEach(function (referenceName) {
+                if (referenceName["fk_language_code"] == "fr") {
+                    referencesNames.push(referenceName);
+                }
+            });
+        });
+        return referencesNames;
+    },
+    destroyReference: function destroyReference(id) {
+        axios.delete('/api/references/' + id).then(function (resp) {}).catch(function (error) {
+            console.log(error.response.data);
+
+            alert("Un problème est survenu lors de la suppression. Error located in MainList.vue !");
+        });
+    },
+    destroyReferenceName: function destroyReferenceName(id) {
+        axios.delete('/api/referencesnames/' + id).then(function (resp) {}).catch(function (error) {
+            console.log(error.response.data);
+
+            alert("Un problème est survenu lors de la suppression. Error located in MainList.vue !");
+        });
+    }
+};
+
+/* harmony default export */ __webpack_exports__["a"] = (referencesMethods);
+
+/***/ }),
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11733,10 +11792,10 @@ Vue$3.compile = compileToFunctions;
 
 module.exports = Vue$3;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8), __webpack_require__(26).setImmediate))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9), __webpack_require__(26).setImmediate))
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports) {
 
 var g;
@@ -11761,65 +11820,6 @@ try {
 
 module.exports = g;
 
-
-/***/ }),
-/* 9 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-var referencesMethods = {
-    readReferences: function readReferences() {
-        var references = [];
-        window.axios.get('/api/references').then(function (_ref) {
-            var data = _ref.data;
-
-            data.forEach(function (reference) {
-                references.push(reference);
-            });
-        });
-        return references;
-    },
-    readReferenceNames: function readReferenceNames() {
-        var referencesNames = [];
-        window.axios.get('/api/referencesnames').then(function (_ref2) {
-            var data = _ref2.data;
-
-            data.forEach(function (referenceName) {
-                referencesNames.push(referenceName);
-            });
-        });
-        return referencesNames;
-    },
-    readReferenceNamesFrOnly: function readReferenceNamesFrOnly() {
-        var referencesNames = [];
-        window.axios.get('/api/referencesnames').then(function (_ref3) {
-            var data = _ref3.data;
-
-            data.forEach(function (referenceName) {
-                if (referenceName["fk_language_code"] == "fr") {
-                    referencesNames.push(referenceName);
-                }
-            });
-        });
-        return referencesNames;
-    },
-    destroyReference: function destroyReference(id) {
-        axios.delete('/api/references/' + id).then(function (resp) {}).catch(function (error) {
-            console.log(error.response.data);
-
-            alert("Un problème est survenu lors de la suppression. Error located in MainList.vue !");
-        });
-    },
-    destroyReferenceName: function destroyReferenceName(id) {
-        axios.delete('/api/referencesnames/' + id).then(function (resp) {}).catch(function (error) {
-            console.log(error.response.data);
-
-            alert("Un problème est survenu lors de la suppression. Error located in MainList.vue !");
-        });
-    }
-};
-
-/* harmony default export */ __webpack_exports__["a"] = (referencesMethods);
 
 /***/ }),
 /* 10 */
@@ -11954,7 +11954,7 @@ var imagesMethods = {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuex__ = __webpack_require__(117);
 
@@ -12983,7 +12983,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
  * includes Vue and other libraries. It is a great starting point when
  * building robust, powerful web applications using Vue and Laravel.
  */
-window.Vue = __webpack_require__(7);
+window.Vue = __webpack_require__(8);
 
 
 
@@ -13133,7 +13133,7 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
                          (typeof global !== "undefined" && global.clearImmediate) ||
                          (this && this.clearImmediate);
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9)))
 
 /***/ }),
 /* 27 */
@@ -13326,7 +13326,7 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
     attachTo.clearImmediate = clearImmediate;
 }(typeof self === "undefined" ? typeof global === "undefined" ? this : global : self));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8), __webpack_require__(13)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9), __webpack_require__(13)))
 
 /***/ }),
 /* 28 */
@@ -13334,7 +13334,7 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
 
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(true)
-		module.exports = factory(__webpack_require__(7));
+		module.exports = factory(__webpack_require__(8));
 	else if(typeof define === 'function' && define.amd)
 		define(["vue"], factory);
 	else if(typeof exports === 'object')
@@ -52158,7 +52158,7 @@ if (token) {
   }
 }.call(this));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8), __webpack_require__(32)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9), __webpack_require__(32)(module)))
 
 /***/ }),
 /* 32 */
@@ -66001,7 +66001,7 @@ exports.push([module.i, ".leaflet-cluster-anim .leaflet-marker-icon, .leaflet-cl
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_router__ = __webpack_require__(62);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_AdminComponent__ = __webpack_require__(63);
@@ -69472,7 +69472,7 @@ exports.push([module.i, "\n.v-expansion-panel__container[data-v-52d311a4]{\n    
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__services_points_js__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_categories_js__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_references_js__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_references_js__ = __webpack_require__(7);
 //
 //
 //
@@ -71484,7 +71484,7 @@ exports.push([module.i, "\n#coloredDiv[data-v-457f3fba]{\n    width: 50%;\n    h
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__services_references_js__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__services_references_js__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_categories_js__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_languages_js__ = __webpack_require__(6);
 //
@@ -72208,7 +72208,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__LocationMapAdmin_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__LocationMapAdmin_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_images_js__ = __webpack_require__(11);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_points_js__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_references_js__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_references_js__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__services_categories_js__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__services_languages_js__ = __webpack_require__(6);
 //
@@ -75287,7 +75287,7 @@ exports = module.exports = __webpack_require__(0)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -75300,7 +75300,7 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__services_languages_js__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_points_js__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_references_js__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_references_js__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_categories_js__ = __webpack_require__(5);
 //
 //
@@ -75478,6 +75478,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     data: function data() {
         return {
             languages: [],
+
+            categories: [],
+            references: [],
+            points: [],
+
             categoriesNames: [],
             referenceNames: [],
             pointsContents: [],
@@ -75526,7 +75531,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.selectedCode = "";
         },
         updateLanguageMode: function updateLanguageMode(id) {
-            console.log("updateLanguage" + id);
             // var languages = JSON.parse(JSON.stringify(this.languages));
             this.selectedId = id;
             for (var lang = 0; lang < this.languages.length; lang++) {
@@ -75585,6 +75589,70 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }).catch(function (error) {
                 _this.failed(error, "Erreur lors de la création de la langue !");
             });
+
+            // Create all data
+            var language = this.selectedCode;
+            // For each category, create category name
+            for (var cat = 0; cat < this.categories.length; cat++) {
+                var id = this.categories[cat]["id"];
+
+                var newCatName = {
+                    "fk_category_id": id,
+                    "fk_language_code": language,
+                    "text": "[missing]"
+                };
+
+                axios.post('/api/categoriesnames', newCatName).then(function (resp) {
+                    console.log("cat create complete");
+                }).catch(function (error) {
+                    console.log(error.response.data);
+
+                    alert("Un problème est survenu lors de la création. Error located in LanguageList.vue !");
+                });
+            }
+            this.categoriesNames = [];
+            this.categoriesNames = __WEBPACK_IMPORTED_MODULE_3__services_categories_js__["a" /* default */].readCategoriesNames();
+            // For each reference, create reference name
+            for (var ref = 0; ref < this.references.length; ref++) {
+                var id = this.references[ref]["id"];
+
+                var newRefName = {
+                    "fk_reference_id": id,
+                    "fk_language_code": language,
+                    "text": "[missing]"
+                };
+
+                axios.post('/api/referencesnames', newRefName).then(function (resp) {
+                    console.log("ref create complete");
+                }).catch(function (error) {
+                    console.log(error.response.data);
+
+                    alert("Un problème est survenu lors de la création. Error located in LanguageList.vue !");
+                });
+            }
+            this.referenceNames = [];
+            this.referenceNames = __WEBPACK_IMPORTED_MODULE_2__services_references_js__["a" /* default */].readReferenceNames();
+            // For each point, create point name
+            for (var poi = 0; poi < this.points.length; poi++) {
+                var id = this.points[poi]["id"];
+                var newPoiName = {
+                    "fk_point_id": id,
+                    "fk_language_code": language,
+                    "title": "[missing]",
+                    "description": "[missing]",
+                    "linkalias": "[missing]"
+                };
+
+                axios.post('/api/pointsnames', newPoiName).then(function (resp) {
+                    console.log("point create ok");
+                }).catch(function (error) {
+                    console.log(error.response.data);
+
+                    alert("Un problème est survenu lors de la création. Error located in LanguageList.vue !");
+                });
+            }
+            this.pointsContents = [];
+            this.pointsContents = __WEBPACK_IMPORTED_MODULE_1__services_points_js__["a" /* default */].readPointsPopupContent();
         },
         submitEdit: function submitEdit() {
             var _this2 = this;
@@ -75602,6 +75670,82 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }).catch(function (error) {
                 _this2.failed(error, "Erreur lors de la modification de la langue !");
             });
+
+            // Edit all data
+            var language = "";
+            for (var lang = 0; lang < this.languages.length; lang++) {
+                if (this.languages[lang]["id"] == id) {
+                    language = this.languages[lang]["code"];
+                }
+            }
+            // Edit categories names
+            for (var cat = 0; cat < this.categoriesNames.length; cat++) {
+                if (this.categoriesNames[cat]["fk_language_code"] == language) {
+                    var id = this.categoriesNames[cat]["id"];
+
+                    var newCatName = {
+                        "fk_category_id": this.categoriesNames[cat]["fk_category_id"],
+                        "fk_language_code": this.selectedCode,
+                        "text": this.categoriesNames[cat]["text"]
+                    };
+
+                    axios.patch('/api/categoriesnames/' + id, newCatName).then(function (resp) {
+                        console.log("cat edit complete");
+                    }).catch(function (error) {
+                        console.log(error.response.data);
+
+                        alert("Un problème est survenu lors de la mise à jour. Error located in LanguageList.vue !");
+                    });
+                }
+            }
+            this.categoriesNames = [];
+            this.categoriesNames = __WEBPACK_IMPORTED_MODULE_3__services_categories_js__["a" /* default */].readCategoriesNames();
+            // Edit references names
+            for (var ref = 0; ref < this.referenceNames.length; ref++) {
+                if (this.referenceNames[ref]["fk_language_code"] == language) {
+                    var id = this.referenceNames[ref]["id"];
+
+                    var newRefName = {
+                        "fk_reference_id": this.referenceNames[ref]["fk_reference_id"],
+                        "fk_language_code": this.selectedCode,
+                        "text": this.referenceNames[ref]["text"]
+                    };
+
+                    axios.patch('/api/referencesnames/' + id, newRefName).then(function (resp) {
+                        console.log("ref edit complete");
+                    }).catch(function (error) {
+                        console.log(error.response.data);
+
+                        alert("Un problème est survenu lors de la mise à jour. Error located in LanguageList.vue !");
+                    });
+                }
+            }
+            this.referenceNames = [];
+            this.referenceNames = __WEBPACK_IMPORTED_MODULE_2__services_references_js__["a" /* default */].readReferenceNames();
+            // Edit points names
+            for (var poi = 0; poi < this.pointsContents.length; poi++) {
+                if (this.pointsContents[poi]["fk_language_code"] == language) {
+                    var id = this.pointsContents[poi]["id"];
+
+                    var newPoiName = {
+                        "fk_point_id": this.pointsContents[poi]["fk_point_id"],
+                        "fk_language_code": this.selectedCode,
+                        "title": this.pointsContents[poi]["title"],
+                        "description": this.pointsContents[poi]["description"],
+                        "linkalias": this.pointsContents[poi]["linkalias"]
+                    };
+
+                    axios.patch('/api/pointsnames/' + id, newPoiName).then(function (resp) {
+                        console.log("point edit complete");
+                    }).catch(function (error) {
+                        console.log(error.response.data);
+
+                        alert("Un problème est survenu lors de la mise à jour. Error located in LanguageList.vue !");
+                    });
+                }
+            }
+            this.pointsContents = [];
+            this.pointsContents = __WEBPACK_IMPORTED_MODULE_1__services_points_js__["a" /* default */].readPointsPopupContent();
         },
         deleteLanguage: function deleteLanguage(id) {
             this.dialogId = id;
@@ -75612,10 +75756,44 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             this.snackbarLoading = true;
             axios.delete('api/languages/' + id).then(function (response) {
+                console.log("suppression ok !");
+
                 _this3.success(response, "Suppression effectuée !");
             }).catch(function (error) {
                 _this3.failed(error, "Erreur lors de la suppression de la langue !");
             });
+
+            // Destroy all data
+            var language = "";
+            for (var lang = 0; lang < this.languages.length; lang++) {
+                if (this.languages[lang]["id"] == id) {
+                    language = this.languages[lang]["code"];
+                }
+            }
+            // Destroy categories names
+            for (var cat = 0; cat < this.categoriesNames.length; cat++) {
+                if (this.categoriesNames[cat]["fk_language_code"] == language) {
+                    __WEBPACK_IMPORTED_MODULE_3__services_categories_js__["a" /* default */].destroyCategoryName(this.categoriesNames[cat]["id"]);
+                }
+            }
+            this.categoriesNames = [];
+            this.categoriesNames = __WEBPACK_IMPORTED_MODULE_3__services_categories_js__["a" /* default */].readCategoriesNames();
+            // Destroy references names
+            for (var ref = 0; ref < this.referenceNames.length; ref++) {
+                if (this.referenceNames[ref]["fk_language_code"] == language) {
+                    __WEBPACK_IMPORTED_MODULE_2__services_references_js__["a" /* default */].destroyReferenceName(this.referenceNames[ref]["id"]);
+                }
+            }
+            this.referenceNames = [];
+            this.referenceNames = __WEBPACK_IMPORTED_MODULE_2__services_references_js__["a" /* default */].readReferenceNames();
+            // Destroy points names
+            for (var poi = 0; poi < this.pointsContents.length; poi++) {
+                if (this.pointsContents[poi]["fk_language_code"] == language) {
+                    __WEBPACK_IMPORTED_MODULE_1__services_points_js__["a" /* default */].destroyPointName(this.pointsContents[poi]["id"]);
+                }
+            }
+            this.pointsContents = [];
+            this.pointsContents = __WEBPACK_IMPORTED_MODULE_1__services_points_js__["a" /* default */].readPointsPopupContent();
         },
         success: function success(response, msg) {
             this.snackbarLoading = false;
@@ -75638,6 +75816,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         methodsApiCalls: function methodsApiCalls() {
             this.languages = __WEBPACK_IMPORTED_MODULE_0__services_languages_js__["a" /* default */].readLanguages();
 
+            //needed for create action
+            this.categories = __WEBPACK_IMPORTED_MODULE_3__services_categories_js__["a" /* default */].readCategories();
+            this.references = __WEBPACK_IMPORTED_MODULE_2__services_references_js__["a" /* default */].readReferences();
+            this.points = __WEBPACK_IMPORTED_MODULE_1__services_points_js__["a" /* default */].readPoints();
+
+            //needed for edit/delete action
             this.categoriesNames = __WEBPACK_IMPORTED_MODULE_3__services_categories_js__["a" /* default */].readCategoriesNames();
             this.referenceNames = __WEBPACK_IMPORTED_MODULE_2__services_references_js__["a" /* default */].readReferenceNames();
             this.pointsContents = __WEBPACK_IMPORTED_MODULE_1__services_points_js__["a" /* default */].readPointsPopupContent();
@@ -75691,7 +75875,7 @@ var render = function() {
                     {
                       on: {
                         click: function($event) {
-                          _vm.updateLanguageMode(i)
+                          _vm.updateLanguageMode(language.id)
                         }
                       }
                     },
@@ -75713,7 +75897,7 @@ var render = function() {
                       attrs: { dark: "", fab: "", color: "error" },
                       on: {
                         click: function($event) {
-                          _vm.deleteLanguage(i)
+                          _vm.deleteLanguage(language.id)
                         }
                       }
                     },
@@ -78012,7 +78196,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ContactForm_vue__ = __webpack_require__(23);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ContactForm_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__ContactForm_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_points_js__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_references_js__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_references_js__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_categories_js__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__services_languages_js__ = __webpack_require__(6);
 //
@@ -80007,7 +80191,7 @@ var L = window.L;
                       title.appendChild(titleHtml);
                       popup.appendChild(title);
 
-                      if (point["fk_image_fk"] !== null) {
+                      if (point["fk_image_id"] !== null) {
                         imgCtnr = document.createElement("div");
                         imgCtnr.setAttribute("style", "width:150px; height:auto;");
                         var img = document.createElement("img");
