@@ -22,7 +22,7 @@ class LanguagesController extends Controller
         $language->code = $request->code;
         $language->save();
 
-        return response($Language->jsonSerialize(), Response::HTTP_CREATED);
+        return response($language->jsonSerialize(), Response::HTTP_CREATED);
     }
 
     public function update(Request $request, $id)

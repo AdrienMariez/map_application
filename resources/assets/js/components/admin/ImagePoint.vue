@@ -192,6 +192,7 @@
                 selectedImageId: null,
                 imageInitial_fk : "",
                 imageUpload: "",
+                
                 snackbarLoading: false,
                 snackText: "",
                 snackbar: false,

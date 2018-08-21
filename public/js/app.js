@@ -73304,6 +73304,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             selectedImageId: null,
             imageInitial_fk: "",
             imageUpload: "",
+
             snackbarLoading: false,
             snackText: "",
             snackbar: false,
@@ -75286,7 +75287,7 @@ exports = module.exports = __webpack_require__(0)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -75298,6 +75299,9 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__services_languages_js__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_points_js__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_references_js__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_categories_js__ = __webpack_require__(5);
 //
 //
 //
@@ -75366,49 +75370,283 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
             languages: [],
+            categoriesNames: [],
+            referenceNames: [],
+            pointsContents: [],
+
+            editForm: false,
             selectedId: null,
             selectedName: "",
             selectedCode: "",
 
-            valid: false
+            editedName: "",
+            editedCode: "",
+
+            valid: false,
+            validButton: false,
+            validationFailure: "",
+
+            snackbarLoading: false,
+            snackText: "",
+            snackbar: false,
+            dialog: false,
+            dialogId: null,
+
+            language: {
+                id: null,
+                name: "",
+                code: ""
+            }
         };
     },
 
-    watch: {},
+    watch: {
+        selectedName: function selectedName() {
+            this.validation();
+        },
+        selectedCode: function selectedCode() {
+            this.validation();
+        }
+    },
     methods: {
         dummy: function dummy() {},
-        updateLanguage: function updateLanguage(id) {
-
+        createLanguageMode: function createLanguageMode() {
+            console.log("createLanguage");
+            this.editForm = true;
+            this.selectedId = null;
+            this.selectedName = "";
+            this.selectedCode = "";
+        },
+        updateLanguageMode: function updateLanguageMode(id) {
+            console.log("updateLanguage" + id);
             // var languages = JSON.parse(JSON.stringify(this.languages));
-
             this.selectedId = id;
             for (var lang = 0; lang < this.languages.length; lang++) {
                 if (this.languages[lang]["id"] === id) {
                     this.selectedName = this.languages[lang]["name"];
+                    this.editedName = this.languages[lang]["name"];
                     this.selectedCode = this.languages[lang]["code"];
+                    this.editedCode = this.languages[lang]["code"];
                 }
             }
+            this.editForm = true;
+        },
+        validation: function validation() {
+            var valid = true;
+            var validationFailure = "Impossible de créer la langue pour les raisons suivantes :  ";
+            // selectedName
+            if (this.selectedName.length == 0) {
+                valid = false;
+                validationFailure += " Le nom est manquant.";
+            }
+            if (this.selectedName.length > 30) {
+                valid = false;
+                validationFailure += " Le nom est invalide.";
+            }
+            // END selectedName
+            // selectedCode
+            if (this.selectedCode.length == 0) {
+                valid = false;
+                validationFailure += " Le code est manquant.";
+            }
+            if (this.selectedCode.length > 2) {
+                valid = false;
+                validationFailure += " Le code est invalide.";
+            }
+            // END selectedCode
+            if (valid == true) {
+                this.valid = true;
+                this.validButton = true;
+                this.validationFailure = "";
+            } else {
+                this.valid = false;
+                this.validButton = false;
+                this.validationFailure = validationFailure;
+            }
+        },
+        submitCreate: function submitCreate() {
+            var _this = this;
+
+            this.language.name = this.selectedName;
+            this.language.code = this.selectedCode;
+            var newLanguage = this.language;
+
+            this.snackbarLoading = true;
+            axios.post('/api/languages', newLanguage).then(function (response) {
+                _this.success(response, "Création effectuée avec succès.");
+            }).catch(function (error) {
+                _this.failed(error, "Erreur lors de la création de la langue !");
+            });
+        },
+        submitEdit: function submitEdit() {
+            var _this2 = this;
+
+            var id = this.selectedId;
+
+            this.language.id = id;
+            this.language.name = this.selectedName;
+            this.language.code = this.selectedCode;
+            var newLanguage = this.language;
+
+            this.snackbarLoading = true;
+            axios.patch('/api/languages/' + id, newLanguage).then(function (response) {
+                _this2.success(response, "Modification effectuée avec succès.");
+            }).catch(function (error) {
+                _this2.failed(error, "Erreur lors de la modification de la langue !");
+            });
         },
         deleteLanguage: function deleteLanguage(id) {
-            console.log("delete " + id);
+            this.dialogId = id;
+            this.dialog = true;
+        },
+        destroyLanguage: function destroyLanguage(id) {
+            var _this3 = this;
+
+            this.snackbarLoading = true;
+            axios.delete('api/languages/' + id).then(function (response) {
+                _this3.success(response, "Suppression effectuée !");
+            }).catch(function (error) {
+                _this3.failed(error, "Erreur lors de la suppression de la langue !");
+            });
+        },
+        success: function success(response, msg) {
+            this.snackbarLoading = false;
+            this.snackbar = true;
+            this.snackText = msg;
+            this.reloadLanguages();
+        },
+        failed: function failed(error) {
+            console.log(error);
+            this.snackbarLoading = false;
+            this.snackbar = true;
+            this.snackText = msg;
+        },
+        reloadLanguages: function reloadLanguages() {
+            this.languages = [];
+            this.languages = __WEBPACK_IMPORTED_MODULE_0__services_languages_js__["a" /* default */].readLanguages();
         },
 
         //API CALLS
         methodsApiCalls: function methodsApiCalls() {
             this.languages = __WEBPACK_IMPORTED_MODULE_0__services_languages_js__["a" /* default */].readLanguages();
+
+            this.categoriesNames = __WEBPACK_IMPORTED_MODULE_3__services_categories_js__["a" /* default */].readCategoriesNames();
+            this.referenceNames = __WEBPACK_IMPORTED_MODULE_2__services_references_js__["a" /* default */].readReferenceNames();
+            this.pointsContents = __WEBPACK_IMPORTED_MODULE_1__services_points_js__["a" /* default */].readPointsPopupContent();
         }
     },
     created: function created() {
         this.methodsApiCalls();
-    },
-
-    components: {}
+        this.validation();
+    }
 });
 
 /***/ }),
@@ -75453,7 +75691,7 @@ var render = function() {
                     {
                       on: {
                         click: function($event) {
-                          _vm.updateLanguage(i)
+                          _vm.updateLanguageMode(i)
                         }
                       }
                     },
@@ -75491,7 +75729,21 @@ var render = function() {
         2
       ),
       _vm._v(" "),
-      _vm.selectedId !== null
+      _c(
+        "v-btn",
+        {
+          attrs: { color: "success" },
+          on: {
+            click: function($event) {
+              _vm.createLanguageMode()
+            }
+          }
+        },
+        [_c("v-icon", [_vm._v("add")])],
+        1
+      ),
+      _vm._v(" "),
+      (_vm.editForm = true)
         ? _c(
             "v-form",
             {
@@ -75506,7 +75758,19 @@ var render = function() {
               }
             },
             [
-              _c("v-subheader", [_vm._v("\n            Edition :\n        ")]),
+              _vm.selectedId !== null
+                ? _c("v-subheader", [
+                    _vm._v(
+                      "\n            Edition de " +
+                        _vm._s(_vm.editedName) +
+                        " (" +
+                        _vm._s(_vm.selectedCode) +
+                        "):\n        "
+                    )
+                  ])
+                : _c("v-subheader", [
+                    _vm._v("\n            Création :\n        ")
+                  ]),
               _vm._v(" "),
               _c("v-divider"),
               _vm._v(" "),
@@ -75550,7 +75814,13 @@ var render = function() {
                               _vm._v(" "),
                               _c("v-text-field", {
                                 staticClass: "mb-2",
-                                attrs: { value: "selectedCode", counter: 2 },
+                                attrs: {
+                                  value: "selectedCode",
+                                  counter: 2,
+                                  hint:
+                                    "Utilisez les codes de la norme ISO 639-1 : https://fr.wikipedia.org/wiki/Liste_des_codes_ISO_639-1",
+                                  "persistent-hint": ""
+                                },
                                 model: {
                                   value: _vm.selectedCode,
                                   callback: function($$v) {
@@ -75570,11 +75840,214 @@ var render = function() {
                   )
                 ],
                 1
+              ),
+              _vm._v(" "),
+              _c(
+                "v-card-actions",
+                [
+                  _c(
+                    "v-layout",
+                    {
+                      attrs: { row: "", wrap: "", "justify-space-between": "" }
+                    },
+                    [
+                      _c(
+                        "v-flex",
+                        [
+                          _vm.selectedId !== null
+                            ? _c(
+                                "v-btn",
+                                {
+                                  attrs: {
+                                    disabled: !_vm.validButton,
+                                    color: "success"
+                                  },
+                                  on: { click: _vm.submitEdit }
+                                },
+                                [
+                                  _c("v-icon", [_vm._v("add")]),
+                                  _vm._v(" Modifier\n                    ")
+                                ],
+                                1
+                              )
+                            : _c(
+                                "v-btn",
+                                {
+                                  attrs: {
+                                    disabled: !_vm.validButton,
+                                    color: "success"
+                                  },
+                                  on: { click: _vm.submitCreate }
+                                },
+                                [
+                                  _c("v-icon", [_vm._v("add")]),
+                                  _vm._v(" Créer\n                    ")
+                                ],
+                                1
+                              ),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "validationFailure" }, [
+                            _vm._v(
+                              "\n                        " +
+                                _vm._s(_vm.validationFailure) +
+                                "\n                    "
+                            )
+                          ])
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  )
+                ],
+                1
               )
             ],
             1
           )
-        : _vm._e()
+        : _vm._e(),
+      _vm._v(" "),
+      _c(
+        "v-snackbar",
+        {
+          attrs: { bottom: "", right: "", "multi-line": "", timeout: 0 },
+          model: {
+            value: _vm.snackbarLoading,
+            callback: function($$v) {
+              _vm.snackbarLoading = $$v
+            },
+            expression: "snackbarLoading"
+          }
+        },
+        [
+          _vm._v("\n            Envoi en cours...\n            "),
+          _c("v-icon", { attrs: { large: "" } }, [
+            _vm._v("fas fa-circle-notch fa-spin")
+          ])
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-snackbar",
+        {
+          attrs: { bottom: "", right: "", "multi-line": "", timeout: 6000 },
+          model: {
+            value: _vm.snackbar,
+            callback: function($$v) {
+              _vm.snackbar = $$v
+            },
+            expression: "snackbar"
+          }
+        },
+        [
+          _vm._v("\n            " + _vm._s(_vm.snackText) + "\n            "),
+          _c(
+            "v-btn",
+            {
+              attrs: { color: "yellow lighten-1", flat: "" },
+              on: {
+                click: function($event) {
+                  _vm.snackbar = false
+                }
+              }
+            },
+            [_vm._v("\n                Close\n            ")]
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-layout",
+        { attrs: { row: "", "justify-center": "" } },
+        [
+          _c(
+            "v-dialog",
+            {
+              attrs: { persistent: "", "max-width": "290" },
+              model: {
+                value: _vm.dialog,
+                callback: function($$v) {
+                  _vm.dialog = $$v
+                },
+                expression: "dialog"
+              }
+            },
+            [
+              _c(
+                "v-card",
+                [
+                  _c("v-card-title", { staticClass: "headline" }, [
+                    _vm._v(
+                      "\n                        Supprimer la langue ?\n                    "
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("v-card-text", [
+                    _vm._v(
+                      "\n                        Cette suppression sera irreversible à partir de l'acceptation de cette boîte de dialogue.\n                    "
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("v-card-text", [
+                    _vm._v(
+                      "\n                        ATTENTION ! La suppression de la langue entraînera la destruction de toutes les données associées !\n                    "
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "v-card-actions",
+                    [
+                      _c("v-spacer"),
+                      _vm._v(" "),
+                      _c(
+                        "v-btn",
+                        {
+                          attrs: { color: "green darken-1", flat: "" },
+                          nativeOn: {
+                            click: function($event) {
+                              ;(_vm.dialog = false), (_vm.dialogId = null)
+                            }
+                          }
+                        },
+                        [
+                          _vm._v(
+                            "\n                            Annuler\n                        "
+                          )
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-btn",
+                        {
+                          attrs: { color: "green darken-1", flat: "" },
+                          nativeOn: {
+                            click: function($event) {
+                              _vm.destroyLanguage(_vm.dialogId),
+                                (_vm.dialog = false),
+                                (_vm.dialogId = null)
+                            }
+                          }
+                        },
+                        [
+                          _vm._v(
+                            "\n                            Supprimer\n                        "
+                          )
+                        ]
+                      )
+                    ],
+                    1
+                  )
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
+      )
     ],
     1
   )
@@ -77539,10 +78012,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ContactForm_vue__ = __webpack_require__(23);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ContactForm_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__ContactForm_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_points_js__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_categories_js__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_references_js__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_references_js__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_categories_js__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__services_languages_js__ = __webpack_require__(6);
-//
 //
 //
 //
@@ -77924,10 +78396,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         //
         //API CALLS
         methodsApiCalls: function methodsApiCalls() {
-            this.categories = __WEBPACK_IMPORTED_MODULE_3__services_categories_js__["a" /* default */].readCategories();
-            this.categoriesNames = __WEBPACK_IMPORTED_MODULE_3__services_categories_js__["a" /* default */].readCategoriesNames();
-            this.references = __WEBPACK_IMPORTED_MODULE_4__services_references_js__["a" /* default */].readReferences();
-            this.referenceNames = __WEBPACK_IMPORTED_MODULE_4__services_references_js__["a" /* default */].readReferenceNames();
+            this.categories = __WEBPACK_IMPORTED_MODULE_4__services_categories_js__["a" /* default */].readCategories();
+            this.categoriesNames = __WEBPACK_IMPORTED_MODULE_4__services_categories_js__["a" /* default */].readCategoriesNames();
+            this.references = __WEBPACK_IMPORTED_MODULE_3__services_references_js__["a" /* default */].readReferences();
+            this.referenceNames = __WEBPACK_IMPORTED_MODULE_3__services_references_js__["a" /* default */].readReferenceNames();
             this.points = __WEBPACK_IMPORTED_MODULE_2__services_points_js__["a" /* default */].readPoints();
             this.languages = __WEBPACK_IMPORTED_MODULE_5__services_languages_js__["a" /* default */].readLanguages();
         }
@@ -79164,8 +79636,6 @@ var render = function() {
                                       ? _c("v-list-tile-content", { key: b }, [
                                           _vm._v(
                                             "\n                                " +
-                                              _vm._s(refName.fk_reference_id) +
-                                              " - \n                                " +
                                               _vm._s(refName.text) +
                                               "\n                            "
                                           )

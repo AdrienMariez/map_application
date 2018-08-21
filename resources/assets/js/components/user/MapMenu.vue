@@ -140,7 +140,6 @@
                                     v-for="(refName,b) in referenceNames"
                                     v-if="refName.fk_language_code == languageSelected && refName.fk_reference_id == reference.id"
                                     :key="b">
-                                    {{refName.fk_reference_id}} - 
                                     {{refName.text}}
                                 </v-list-tile-content>
                             </v-list-tile-action>
@@ -170,8 +169,8 @@
 import TopToolbar from './TopToolbar.vue'
 import ContactForm from './ContactForm.vue'
 import pointsMethods from './../../services/points.js'
-import categoriesMethods from './../../services/categories.js'
 import referencesMethods from './../../services/references.js'
+import categoriesMethods from './../../services/categories.js'
 import languagesMethods from './../../services/languages.js'
 
 export default {
