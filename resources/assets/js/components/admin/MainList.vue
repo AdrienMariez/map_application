@@ -67,6 +67,18 @@
                             @click="deleteCategory(category.id)">
                             supprimer
                         </v-btn>
+                        <v-btn
+                            v-if="i !== 0"
+                            color="info"
+                            @click="moveCatUp(category.id)">
+                            <v-icon>arrow_upward</v-icon>
+                        </v-btn>
+                        <v-btn
+                            v-if="i !== categories.length-1"
+                            color="info"
+                            @click="moveCatDown(category.id)">
+                            <v-icon>arrow_downward</v-icon>
+                        </v-btn>
                     </v-layout>
                 </v-list>
 
@@ -76,19 +88,31 @@
                     class="hidden-md-and-up green lighten-3">
                     <v-layout align-center justify-space-around>
                         <v-btn
-                                    color="success"
-                                    @click="createReference(category.id)">
-                                    <v-icon>add</v-icon>
+                            color="success"
+                            @click="createReference(category.id)">
+                            <v-icon>add</v-icon>
                         </v-btn>
                         <v-btn
-                                    color="warning"
-                                    @click="editCategory(category.id)">
-                                    <v-icon>build</v-icon>
-                                 </v-btn>
+                            color="warning"
+                            @click="editCategory(category.id)">
+                            <v-icon>build</v-icon>
+                        </v-btn>
                         <v-btn
-                                    color="error"
-                                    @click="deleteCategory(category.id)">
-                                     <v-icon>delete</v-icon>
+                            color="error"
+                            @click="deleteCategory(category.id)">
+                            <v-icon>delete</v-icon>
+                        </v-btn>
+                        <v-btn
+                            v-if="i !== 0"
+                            color="info"
+                            @click="moveCatUp(category.id)">
+                            <v-icon>arrow_upward</v-icon>
+                        </v-btn>
+                        <v-btn
+                            v-if="i !== categories.length-1"
+                            color="info"
+                            @click="moveCatDown(category.id)">
+                            <v-icon>arrow_downward</v-icon>
                         </v-btn>
                     </v-layout>
                 </v-list>
@@ -138,7 +162,7 @@
                                     color="success"
                                     @click="createPoint(reference.id)">
                                     ajouter point
-                                </v-btn>                                 <v-btn
+                                </v-btn>                                <v-btn
                                     color="warning"
                                     @click="editReference(reference.id)">
                                     modifier
@@ -147,6 +171,16 @@
                                     color="error"
                                     @click="deleteReference(reference.id)">
                                     supprimer
+                                </v-btn>
+                                <v-btn
+                                    color="info"
+                                    @click="moveRefUp(reference.id)">
+                                    <v-icon>arrow_upward</v-icon>
+                                </v-btn>
+                                <v-btn
+                                    color="info"
+                                    @click="moveRefDown(reference.id)">
+                                    <v-icon>arrow_downward</v-icon>
                                 </v-btn>
                             </v-layout>
                         </v-list>
@@ -160,7 +194,7 @@
                                     color="success"
                                     @click="createPoint(reference.id)">
                                     <v-icon>add</v-icon>
-                                </v-btn>                                       <v-btn
+                                </v-btn>                                <v-btn
                                     color="warning"
                                     @click="editReference(reference.id)">
                                     <v-icon>build</v-icon>
@@ -169,6 +203,16 @@
                                     color="error"
                                     @click="deleteReference(reference.id)">
                                     <v-icon>delete</v-icon>
+                                </v-btn>
+                                <v-btn
+                                    color="info"
+                                    @click="moveRefUp(reference.id)">
+                                    <v-icon>arrow_upward</v-icon>
+                                </v-btn>
+                                <v-btn
+                                    color="info"
+                                    @click="moveRefDown(reference.id)">
+                                    <v-icon>arrow_downward</v-icon>
                                 </v-btn>
                             </v-layout>
                         </v-list>
@@ -343,6 +387,221 @@
                 this.pointsContents = pointsMethods.readPointsPopupContent();
             },
         //
+        //MOVE CAT UP
+            moveCatUp(id) {
+                for (let cat = 0; cat < this.categories.length; cat++) {
+                    if (this.categories[cat]["id"] === id) {
+                        //if previous exists
+                        if (this.categories[cat-1]) {
+                            var PreviousCatId = this.categories[cat-1]["id"]
+
+                            var editPreviousCat = {
+                                "icon": this.categories[cat-1]["icon"],
+                                "color": this.categories[cat-1]["color"],
+                                "weight": this.categories[cat]["weight"]
+                            };
+                            var editCurrentCat = {
+                                "icon": this.categories[cat]["icon"],
+                                "color": this.categories[cat]["color"],
+                                "weight": this.categories[cat-1]["weight"]
+                            };
+
+                            axios.patch('/api/categories/' + id, editCurrentCat)
+                                .then(function (resp) {
+                                })
+                                .catch(function (error) {
+                                    console.log(error.response.data);
+                                    
+                                    alert("Un problème est survenu lors de la mise à jour. Error located in MainList.vue !");
+                                });
+
+                            axios.patch('/api/categories/' + PreviousCatId, editPreviousCat)
+                                .then(response => { 
+                                    this.categoriesSuccess(response, "Modification effectuée !");
+                                })
+                                .catch(function (error) {
+                                    console.log(error.response.data);
+                                    
+                                    alert("Un problème est survenu lors de la mise à jour. Error located in MainList.vue !");
+                                });
+
+                        }
+                    }
+                }
+            },
+        //MOVE CAT DOWN
+            moveCatDown(id) {
+                for (let cat = 0; cat < this.categories.length; cat++) {
+                    if (this.categories[cat]["id"] === id) {
+                        //if next exists
+                        if (this.categories[cat+1]) {
+
+                            var NextCatId = this.categories[cat+1]["id"]
+
+                            var editNextCat = {
+                                "icon": this.categories[cat+1]["icon"],
+                                "color": this.categories[cat+1]["color"],
+                                "weight": this.categories[cat]["weight"]
+                            };
+                            var editCurrentCat = {
+                                "icon": this.categories[cat]["icon"],
+                                "color": this.categories[cat]["color"],
+                                "weight": this.categories[cat+1]["weight"]
+                            };
+
+                            axios.patch('/api/categories/' + id, editCurrentCat)
+                                .then(function (resp) {
+                                    console.log("current edited");
+                                })
+                                .catch(function (error) {
+                                    console.log(error.response.data);
+                                    
+                                    alert("Un problème est survenu lors de la mise à jour. Error located in MainList.vue !");
+                                });
+
+                            axios.patch('/api/categories/' + NextCatId, editNextCat)
+                                .then(response => { 
+                                    this.categoriesSuccess(response, "Modification effectuée !");
+                                })
+                                .catch(function (error) {
+                                    console.log(error.response.data);
+                                    
+                                    alert("Un problème est survenu lors de la mise à jour. Error located in MainList.vue !");
+                                });
+                        }
+                    }
+                }
+            },
+        // CATEGORIES SUCCESS
+            categoriesSuccess(response, msg) {
+                this.snackbar = true;
+                this.snackText = msg;
+                this.categories = [];
+                this.categories = categoriesMethods.readCategories();
+            },
+        //MOVE REF UP
+            moveRefUp(id) {
+                // Search for the parent category
+                var ParentCategory;
+                for (let ref = 0; ref < this.references.length; ref++) {
+                    if (this.references[ref]["id"] === id) {
+                        ParentCategory = this.references[ref]["fk_category_id"];
+                        break;
+                    }
+                }
+                // Search for all others references belonging to this parent
+                var refTable = [];
+                for (let ref = 0; ref < this.references.length; ref++) {
+                    if (this.references[ref]["fk_category_id"] == ParentCategory) {
+                        refTable.push(this.references[ref]);
+                    }
+                }
+
+                // Now to make it work
+
+                for (let ref = 0; ref < refTable.length; ref++) {
+                    if (refTable[ref]["id"] === id) {
+                        // If previous exists
+                        if (refTable[ref-1]) {
+                            var previousRefId = refTable[ref-1]["id"]
+
+                            var editPreviousRef = {
+                                "icon": refTable[ref-1]["icon"],
+                                "weight": refTable[ref]["weight"],
+                                "fk_category_id": refTable[ref-1]["fk_category_id"]
+                            };
+                            var editCurrentRef = {
+                                "icon": refTable[ref]["icon"],
+                                "weight": refTable[ref-1]["weight"],
+                                "fk_category_id": refTable[ref]["fk_category_id"]
+                            };
+
+                            axios.patch('/api/references/' + previousRefId, editPreviousRef)
+                                .then(function (resp) {
+                                })
+                                .catch(function (error) {
+                                    console.log(error.response.data);
+                                    
+                                    alert("Un problème est survenu lors de la mise à jour. Error located in MainList.vue !");
+                                });
+                            axios.patch('/api/references/' + id, editCurrentRef)
+                                .then(response => { 
+                                    this.referencesSuccess(response, "Modification effectuée !");
+                                })
+                                .catch(function (error) {
+                                    console.log(error.response.data);
+                                    
+                                    alert("Un problème est survenu lors de la mise à jour. Error located in MainList.vue !");
+                                });
+                        }
+                    }
+                }
+            },
+        //MOVE REF DOWN
+            moveRefDown(id) {
+                                // Search for the parent category
+                var ParentCategory;
+                for (let ref = 0; ref < this.references.length; ref++) {
+                    if (this.references[ref]["id"] === id) {
+                        ParentCategory = this.references[ref]["fk_category_id"];
+                        break;
+                    }
+                }
+                // Search for all others references belonging to this parent
+                var refTable = [];
+                for (let ref = 0; ref < this.references.length; ref++) {
+                    if (this.references[ref]["fk_category_id"] == ParentCategory) {
+                        refTable.push(this.references[ref]);
+                    }
+                }
+
+                // Now to make it work
+
+                for (let ref = 0; ref < refTable.length; ref++) {
+                    if (refTable[ref]["id"] === id) {
+                        // If next exists
+                        if (refTable[ref+1]) {
+                            var nextRefId = refTable[ref+1]["id"]
+
+                            var editCurrentRef = {
+                                "icon": refTable[ref]["icon"],
+                                "weight": refTable[ref+1]["weight"],
+                                "fk_category_id": refTable[ref]["fk_category_id"]
+                            };
+                            var editNextRef = {
+                                "icon": refTable[ref+1]["icon"],
+                                "weight": refTable[ref]["weight"],
+                                "fk_category_id": refTable[ref+1]["fk_category_id"]
+                            };
+                            
+                            axios.patch('/api/references/' + id, editCurrentRef)
+                                .then(response => { 
+                                    this.referencesSuccess(response, "Modification effectuée !");
+                                })
+                                .catch(function (error) {
+                                    console.log(error.response.data);
+                                    
+                                    alert("Un problème est survenu lors de la mise à jour. Error located in MainList.vue !");
+                                });
+                            axios.patch('/api/references/' + nextRefId, editNextRef)
+                                .then(function (resp) {
+                                })
+                                .catch(function (error) {
+                                    console.log(error.response.data);
+                                    
+                                    alert("Un problème est survenu lors de la mise à jour. Error located in MainList.vue !");
+                                });
+                        }
+                    }
+                }
+            },
+        // REFERENCE SUCCESS
+            referencesSuccess(response, msg) {
+                this.snackbar = true;
+                this.snackText = msg;
+                this.references = [];
+                this.references = referencesMethods.readReferences();
+            },
         //EDIT CATEGORIES
             editCategory(id){
                 this.$emit('pageToShow', "category", id);

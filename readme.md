@@ -100,6 +100,10 @@ Sources :
     Images upload
         https://appdividend.com/2018/02/13/vue-js-laravel-file-upload-tutorial/
 
+    Sortable
+        https://github.com/SortableJS/Vue.Draggable
+        https://vuejsexamples.com/a-set-of-vue-mixins-to-turn-any-list-into-an-animated-sortable-list/
+
 
 Good reads :
     Vuejs :

@@ -467,8 +467,6 @@
                 this.snackbarLoading = true;
                 axios.delete(`api/languages/${id}`)
                     .then(response => { 
-                        console.log("suppression ok !");
-                        
                         this.success(response, "Suppression effectuée !");
                     })
                     .catch(error => {

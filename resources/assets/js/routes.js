@@ -4,6 +4,7 @@ import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 
 import AdminComponent from './components/AdminComponent'
+import SortAdminComponent from './components/SortAdministration'
 import LanguagesAdminComponent from './components/LanguageAdministration'
 import LoginComponent from './components/auth/LoginComponent'
 import LogoutComponent from './components/auth/LogoutComponent'
@@ -20,6 +21,12 @@ const routes = [
         path: '/admin',
         name: 'admin',
         component: AdminComponent,
+        meta: { requiresAuth: true }
+    },
+    {
+        path: '/sort',
+        name: 'sort',
+        component: SortAdminComponent,
         meta: { requiresAuth: true }
     },
     {
