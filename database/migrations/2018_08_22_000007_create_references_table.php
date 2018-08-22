@@ -4,17 +4,17 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePasswordResetsTable extends Migration
+class CreateReferencesTable extends Migration
 {
     /**
      * Schema table name to migrate
      * @var string
      */
-    public $set_schema_table = 'password_resets';
+    public $set_schema_table = 'references';
 
     /**
      * Run the migrations.
-     * @table password_resets
+     * @table references
      *
      * @return void
      */
@@ -23,11 +23,13 @@ class CreatePasswordResetsTable extends Migration
         if (Schema::hasTable($this->set_schema_table)) return;
         Schema::create($this->set_schema_table, function (Blueprint $table) {
             $table->engine = 'InnoDB';
-            $table->string('email');
-            $table->string('token');
-            $table->timestamp('created_at')->nullable()->default(null);
+            $table->increments('id');
+            $table->string('icon');
+            $table->integer('weight');
+            $table->integer('fk_category_id');
 
-            $table->index(["email"], 'password_resets_email_index');
+            $table->unique(["id"], 'references_id_unique');
+            $table->nullableTimestamps();
         });
     }
 
