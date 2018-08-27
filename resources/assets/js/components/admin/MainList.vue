@@ -12,7 +12,8 @@
 
     <!-- Main list -->
         <v-expansion-panel
-            expand>
+            expand
+            class="mainList">
             <!-- loop on categories -->
             <v-expansion-panel-content
                 v-for="(category,i) in categories"
@@ -22,6 +23,7 @@
 
                 <!-- category header -->
                 <div class="headerCategories" slot="header">
+                    <div class="borderCategories"></div>
                     <v-list
                         color="transparent"
                         class="transparent">
@@ -130,6 +132,7 @@
 
                         <!-- reference header -->
                         <div  class="headerReferences" slot="header">
+                            <div class="borderReferences"></div>
                             <v-list
                                 color="transparent"
                                 class="transparent">
@@ -252,6 +255,7 @@
                             color="white"
                             class="white pointsListElement">
                             <v-list-tile>
+
                                 <v-list-tile-action>
                                             <v-menu right>
                                                 <v-btn
@@ -539,7 +543,7 @@
             },
         //MOVE REF DOWN
             moveRefDown(id) {
-                                // Search for the parent category
+                // Search for the parent category
                 var ParentCategory;
                 for (let ref = 0; ref < this.references.length; ref++) {
                     if (this.references[ref]["id"] === id) {
@@ -766,8 +770,23 @@
 </script>
 
 <style scoped>
-    .v-expansion-panel__container{
-        border-top: none !important;
+    .borderCategories:before {
+        content:'';
+        position:absolute;
+        width:100%;
+        height:3px;
+        background:linear-gradient(to left, rgba(0, 0, 0, 0), #388E3C, rgba(0, 0, 0, 0));
+        top:0px;
+        left:0;
+    }
+    .borderReferences{
+        content:'';
+        position:absolute;
+        width:100%;
+        height:3px;
+        background:linear-gradient(to left, rgba(0, 0, 0, 0), #A5D6A7, rgba(0, 0, 0, 0));
+        top:0px;
+        left:0;
     }
     .headerCategories{
         padding-left: 0px;
@@ -781,7 +800,10 @@
         }
     }
     .pointsListElement{
-        padding-left: 80px;        
+        padding-left: 80px;
+        border-bottom: 1px !important;
+        border-bottom-color: rgb(87, 87, 87) !important;
+        border-bottom-style:solid !important;
     }
 
     /* .v-snack--bottom{

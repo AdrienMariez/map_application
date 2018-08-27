@@ -112,6 +112,7 @@
             return {
                 dialog: false,
                 valid: true,
+
                 name: '',
                 nameRules: [
                     v => !!v || this.$t('message.contact_nameRules_required'),
@@ -131,39 +132,46 @@
                     v => !!v || this.$t('message.contact_textRules_required'),
                     v => (v && v.length <= 1000) || this.$t('message.contact_too_long')
                 ],
+
+                contact: {
+                    name: "",
+                    title: "",
+                    email: "",
+                    message: ""
+                },
             }
         },
         methods: {
             submit () {
                 if (this.$refs.form.validate()) {
                 // Native form submission is not yet supported
-                    optionnalMail =this.$t('message.contact_optionnal_mail');
-                    if (this.email.length > 0) {
-                        optionnalMail = this.email;
+                    var mail =this.$t('message.contact_optionnal_mail');
+                    if (this.email) {
+                        mail = this.email;
                     }
-                    axios.post('/api/contactform', {
-                        name: this.name,
-                        title: this.title,
-                        email: optionnalMail,
-                        text: this.text
-                    })
+                    this.contact.name = this.name;
+                    this.contact.title = this.title;
+                    this.contact.email = mail;
+                    this.contact.message = this.text;
+
+                    var newContact = this.contact;
+
+                    axios.post('/api/contact', newContact)
+                        .then(
+                            resp =>
+                                Promise.all([
+                                resp,
+                                this.clear (),
+                                ])   
+                            )
+                        .catch(error => {
+                            console.log(error.response.data);
+                        
+                            alert("Un problème est survenu lors de la création. Error located in ContactForm.vue !");
+                        });
+
                     this.dialog = false;
                 }
-
-                // if (this.$refs.form.validate()) {
-                // // Native form submission is not yet supported
-                //     optionnalMail ='Courriel non renseigné';
-                //     if (this.email.length > 0) {
-                //         optionnalMail = this.email;
-                //     }
-                //     axios.post('/api/contactform', {
-                //         name: this.name,
-                //         title: this.title,
-                //         email: optionnalMail,
-                //         text: this.text
-                //     })
-                //     this.dialog = false;
-                // }
             },
             clear () {
                 this.$refs.form.reset()

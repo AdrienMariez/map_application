@@ -13,7 +13,7 @@ use Illuminate\Http\Request;
 |
 */
 
-//ADMIN
+//ADMIN ONLY
 
     Route::middleware('auth:api')->get('/user', function (Request $request) {
         return $request->user();
@@ -39,15 +39,13 @@ use Illuminate\Http\Request;
 
     });
 
-//USER
+//USER & ADMIN
 
     Route::resource('/images', 'ImagesController');
 
     Route::resource('/points', 'PointsController');
 
     Route::resource('/pointsnames', 'PointsnamesController');
-
-    Route::resource('/languages', 'LanguagesController');
 
     Route::resource('/references', 'ReferencesController');
 
@@ -61,6 +59,13 @@ use Illuminate\Http\Request;
 
     Route::resource('/categoriesnames', 'CategoriesnamesController');
 
-    Route::resource('/contactform', 'ContactformController', [
-        'except' => ['edit', 'show', 'store']
-    ]);
+    Route::resource('/languages', 'LanguagesController');
+
+    Route::resource('/contact', 'ContactController');
+
+    // Route::resource('/contactus', 'ContactusController');
+
+    // Route::resource('/contactform', 'ContactformController', [
+    //     'except' => ['edit', 'show', 'store']
+    // ]);
+

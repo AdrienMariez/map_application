@@ -280,6 +280,7 @@
                 var newLanguage = this.language;
 
                 this.snackbarLoading = true;
+
                 axios.post('/api/languages', newLanguage)
                     .then(response => { 
                         this.success(response, "Création effectuée avec succès.");

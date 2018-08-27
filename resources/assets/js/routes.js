@@ -6,6 +6,7 @@ Vue.use(VueRouter)
 import AdminComponent from './components/AdminComponent'
 import SortAdminComponent from './components/SortAdministration'
 import LanguagesAdminComponent from './components/LanguageAdministration'
+import ContactAdminComponent from './components/ContactAdministration'
 import LoginComponent from './components/auth/LoginComponent'
 import LogoutComponent from './components/auth/LogoutComponent'
 import PublicComponent from './components/PublicComponent'
@@ -33,6 +34,12 @@ const routes = [
         path: '/languages',
         name: 'languages',
         component: LanguagesAdminComponent,
+        meta: { requiresAuth: true }
+    },
+    {
+        path: '/contact',
+        name: 'contact',
+        component: ContactAdminComponent,
         meta: { requiresAuth: true }
     },
     {

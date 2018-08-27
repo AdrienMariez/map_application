@@ -52,6 +52,10 @@ Create user:
     php artisan tinker
     >   App\User::create(['name' => 'User', 'email' => 'user@email.com', 'password' => Hash::make('UserPass')])
 
+In case of laravel not correctly reloading (can happen in case of global variables in .env changes)
+
+    php artisan config:cache
+
 -------------------
 Models :
 skycatch-challenge
@@ -71,7 +75,7 @@ may be used :
         https://github.com/xiaokaike/vue-color
         (at least as inspiration)
         https://www.geoportail.gouv.fr/tutoriels
-    Color picker : (inspiration)
+        Color picker : (inspiration)
         http://xiaokaike.github.io/vue-color/
 
 Sources :
@@ -103,6 +107,12 @@ Sources :
     Sortable
         https://github.com/SortableJS/Vue.Draggable
         https://vuejsexamples.com/a-set-of-vue-mixins-to-turn-any-list-into-an-animated-sortable-list/
+
+    Laravel migrations from MySQL Workbench
+        https://github.com/beckenrode/mysql-workbench-export-laravel-5-migrations
+
+    contact form
+        https://www.cloudways.com/blog/laravel-contact-form/
 
 
 Good reads :

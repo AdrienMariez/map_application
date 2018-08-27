@@ -158,6 +158,7 @@
             { title: "Retourner au menu d'administration principal", page: "admin", icon: "list" },
             { title: "Arrangement des listes", page: "sort", icon: "swap_vert" },
             { title: "Administration des langues", page: "languages", icon: "language" },
+            { title: "Messages reçus", page: "contact", icon: "chat_bubble_outline" },
             { title: "Se déconnecter", page: "logout", icon: "fa-power-off" }
         ]
       }
