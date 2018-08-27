@@ -6,6 +6,8 @@
  */
 window.Vue = require('vue');
 
+import '@mdi/font/css/materialdesignicons.css'
+
 import Vuetify from 'vuetify'
 
 import VueI18n from 'vue-i18n'
@@ -28,7 +30,10 @@ require('../../../node_modules/leaflet.markercluster/dist/MarkerCluster.css')
 import router from './routes.js';
 import AppComponent from './components/AppComponent'
 
-Vue.use(Vuetify)
+// Vue.use(Vuetify)
+Vue.use(Vuetify, {
+    iconfont: 'md' || 'mdi' || 'fa' || 'fa4'
+  })
 
 const messages = {
     en: {

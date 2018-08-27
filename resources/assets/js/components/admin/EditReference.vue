@@ -18,6 +18,7 @@
                                 </v-flex>
                                 <v-flex xs12 class="my-5">
                                     <div>Icone utilisée : </div>
+                                    <!-- select library -->
                                     <v-select
                                         label="origine de l'icone :"
                                         item-text="text"
@@ -27,6 +28,72 @@
                                         required
                                         class="mb-2"
                                     ></v-select>
+                                    <!-- hints how to use -->
+                                    <div>
+                                        <div
+                                            v-if="selectedPrefix === ''">
+                                            <div>
+                                                <a
+                                                    id="linkDiv" target="_blank" rel="noopener noreferrer"
+                                                    href="https://material.io/tools/icons/?style=baseline">
+                                                    Bibliothèque Material
+                                                </a>
+                                                (nouvel onglet)
+                                            </div>
+                                            <v-tooltip
+                                                top>
+                                                <v-icon slot="activator">help</v-icon>
+                                                <div>
+                                                    <div>Ouvrir le lien.</div>
+                                                    <div>Cliquer sur l'icône choise.</div>
+                                                    <div>Cliquer sur Selected Icon en bas à gauche de l'écran.</div> 
+                                                    <div>Copier le lien à côté de l'icône en haut.</div>
+                                                    <div>Placer le texte ainsi sélectionné dans la zone "icône" ci-dessous.</div>
+                                                </div>
+                                            </v-tooltip>
+                                        </div>
+                                        <div
+                                            v-if="selectedPrefix === 'fa-'">
+                                            <div>
+                                                <a
+                                                    id="linkDiv" target="_blank" rel="noopener noreferrer"
+                                                    href="https://fontawesome.com/icons?from=io">
+                                                    Bibliothèque Font Awesome
+                                                </a>
+                                                (nouvel onglet)
+                                            </div>
+                                            <v-tooltip
+                                                top>
+                                                <v-icon slot="activator">help</v-icon>
+                                                <div>
+                                                    <div>Ouvrir le lien.</div>
+                                                    <div>Cliquer une fois sur le texte sous l'icône choisie,  copiez le.</div>
+                                                    <div>Placer le texte ainsi sélectionné dans la zone "icône" ci-dessous.</div>
+                                                </div>
+                                            </v-tooltip>
+                                        </div>
+                                        <div
+                                            v-if="selectedPrefix === 'mdi-'">
+                                            <div>
+                                                <a
+                                                    id="linkDiv" target="_blank" rel="noopener noreferrer"
+                                                    href="https://materialdesignicons.com/">
+                                                    Bibliothèque Material Design
+                                                </a>
+                                                (nouvel onglet)
+                                            </div>
+                                            <v-tooltip
+                                                top>
+                                                <v-icon slot="activator">help</v-icon>
+                                                <div>
+                                                    <div>Ouvrir le lien.</div>
+                                                    <div>Cliquer sur l'icône choise.</div>
+                                                    <div>Copier le titre de la fenêtre qui s'affiche.</div>
+                                                </div>
+                                            </v-tooltip>
+                                        </div>
+                                    </div>
+                                    <!-- text input choose icon -->
                                     <v-text-field
                                         v-model="icon"
                                         :rules="iconRules"
@@ -35,6 +102,7 @@
                                         required
                                         :counter="40"
                                     ></v-text-field>
+                                    <!-- preview icon -->
                                     <div>Aperçu de {{selectedPrefix}}{{icon}} :
                                         <v-icon
                                             v-bind:style="{ color: selectedColor }"
@@ -115,7 +183,7 @@
                 iconsPrefix: [
                     { text: 'Material', code: '' },
                     { text: 'Font Awesome', code: 'fa-' },
-                    // { text: 'Material Design', code: 'mdi-' },
+                    { text: 'Material Design', code: 'mdi-' },
                 ],
                 selectedPrefix: "",
                 icon: '',

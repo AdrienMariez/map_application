@@ -64,11 +64,6 @@
             <!-- END OBSOLETE list -->
         </v-list>
 
-        <!-- <v-pagination
-            v-model="contactsLength"
-            :length="6"
-        ></v-pagination> -->
-
         <!-- Show message -->
             <v-layout row justify-center>
                 <v-dialog v-model="dialog" persistent>
@@ -89,7 +84,7 @@
                                 flat
                                 @click.native="
                                 deleteContact(contact.id)">
-                                <v-icon>warning</v-icon>
+                                <v-icon>delete</v-icon>
                                 Supprimer
                             </v-btn>
                         </v-card-actions>
@@ -142,7 +137,7 @@
                                 flat
                                 @click.native="
                                 deleteContact(contact.id)">
-                                <v-icon>warning</v-icon>
+                                <v-icon>delete</v-icon>
                                 Supprimer
                             </v-btn>
                         </v-card-actions>
