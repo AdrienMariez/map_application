@@ -5,6 +5,7 @@
                     <v-card-text>
                         <v-container grid-list-md>
                             <v-layout wrap>
+                            <!-- Translations -->
                                 <v-flex xs12 class="my-5">
                                     <div>Nom de la catégorie dans chaque langue *: </div>
                                     <v-text-field
@@ -18,16 +19,27 @@
                                         :counter="50"
                                         class="mb-2"
                                     ></v-text-field>
+                                    <div class="validationFailure">
+                                        <v-icon v-if="nameValidationFailure.length>0">
+                                            warning
+                                        </v-icon>
+                                        {{nameValidationFailure}}
+                                    </div>
                                 </v-flex>
+                                <v-flex xs12 class="my-5">
+                                    <v-divider></v-divider>
+                                </v-flex>
+                            <!-- Icon selection/icon test -->
                                 <v-flex xs12 class="my-5">
                                     <div>Icone utilisée : </div>
                                     <!-- select library -->
                                     <v-select
-                                        label="origine de l'icone :"
+                                        label="origine de l'icône :"
                                         item-text="text"
                                         item-value="code"
                                         :items="iconsPrefix"
                                         v-model="selectedPrefix"
+                                        solo
                                         required
                                         class="mb-2"
                                     ></v-select>
@@ -45,7 +57,11 @@
                                             </div>
                                             <v-tooltip
                                                 top>
-                                                <v-icon slot="activator">help</v-icon>
+                                                <v-icon
+                                                    class="iconTooltip"
+                                                    slot="activator">
+                                                    help
+                                                </v-icon>
                                                 <div>
                                                     <div>Ouvrir le lien.</div>
                                                     <div>Cliquer sur l'icône choise.</div>
@@ -67,7 +83,11 @@
                                             </div>
                                             <v-tooltip
                                                 top>
-                                                <v-icon slot="activator">help</v-icon>
+                                                <v-icon
+                                                    class="iconTooltip"
+                                                    slot="activator">
+                                                    help
+                                                </v-icon>
                                                 <div>
                                                     <div>Ouvrir le lien.</div>
                                                     <div>Cliquer une fois sur le texte sous l'icône choisie,  copiez le.</div>
@@ -87,7 +107,11 @@
                                             </div>
                                             <v-tooltip
                                                 top>
-                                                <v-icon slot="activator">help</v-icon>
+                                                <v-icon
+                                                    class="iconTooltip"
+                                                    slot="activator">
+                                                    help
+                                                </v-icon>
                                                 <div>
                                                     <div>Ouvrir le lien.</div>
                                                     <div>Cliquer sur l'icône choise.</div>
@@ -98,8 +122,10 @@
                                     </div>
                                     <!-- text input choose icon -->
                                     <v-text-field
+                                    class="mt-3"
                                         v-model="icon"
                                         :rules="iconRules"
+                                        solo
                                         label="icône *"
                                         hint="icône utilisée par la catégorie"
                                         required
@@ -123,8 +149,17 @@
                                         </v-icon>
                                         <div v-if="icon.length > 0">Attention ! Pas plus d'une icône ne doit s'afficher ici !</div>
                                     </div>
+                                    <div class="validationFailure">
+                                        <v-icon v-if="iconValidationFailure.length>0">
+                                            warning
+                                        </v-icon>
+                                        {{iconValidationFailure}}
+                                    </div>
                                 </v-flex>
-                                <v-divider></v-divider>
+                                <v-flex xs12 class="my-5">
+                                    <v-divider></v-divider>
+                                </v-flex>
+                            <!-- Icon color/color preview -->
                                 <v-flex xs12 class="my-5">
                                     <div>Couleur de l'icone de la catégorie *: </div>
                                     <v-select
@@ -132,26 +167,42 @@
                                         item-value="code"
                                         :items="colors"
                                         v-model="selectedColor"
+                                        solo
                                         required
                                     ></v-select>
                                     <div id="coloredDiv"></div>
+                                    <div class="validationFailure">
+                                        <v-icon v-if="colorValidationFailure.length>0">
+                                            warning
+                                        </v-icon>
+                                        {{colorValidationFailure}}
+                                    </div>
                                 </v-flex>
                             </v-layout>
                         </v-container>
                     </v-card-text>
                     <v-card-actions>
-                        <v-layout row wrap justify-space-between>
-                            <v-flex xs2 align-right>
-                                <v-list-tile>
-                                    <v-list-tile-action>
-                                        <v-btn
-                                            :disabled="!valid"
-                                            @click="submit"
-                                            color="success">
-                                            <v-icon>add</v-icon> Valider
-                                        </v-btn> 
-                                    </v-list-tile-action>
-                                </v-list-tile>
+                        <v-layout align-center column justify-center>
+                            <v-flex>
+                                <v-btn
+                                    v-if="!valid"
+                                    :disabled="!valid"
+                                    @click="submit"
+                                    color="grey lighten-1">
+                                    <v-icon>add</v-icon> Valider
+                                </v-btn>
+                                <v-btn
+                                    v-if="valid"
+                                    :disabled="!valid"
+                                    @click="submit"
+                                    color="success">
+                                    <v-icon>add</v-icon> Valider
+                                </v-btn>
+                            </v-flex>
+                            <v-flex>
+                                <div class="validationFailure mt-3">
+                                    {{validationFailure}}
+                                </div>
                             </v-flex>
                         </v-layout>
                     </v-card-actions>
@@ -177,6 +228,11 @@
                 codes:  [],
 
                 valid: false,
+                validationFailure: "",
+                nameValidationFailure: "",
+                iconValidationFailure: "",
+                colorValidationFailure: "",
+
                 namesInitial: [],
                 fk_id: [],
 
@@ -241,24 +297,30 @@
             namesInitial(val, oldVal){
                 this.editMode();
             },
+            names() {
+                this.validation();
+            },
             icon(val, oldVal) {
                 this.icon = val.toLowerCase();
+                this.validation();
             },
             selectedColor(val, oldVal){
                 document.getElementById('coloredDiv').style.backgroundColor = val;
+                this.validation();
             },  
             valid(val, oldVal){
-                for (let i = 0; i < this.names.length; i++) {
-                    if (this.names[i].length == 0 || this.names[i].length > 50) {
-                        this.valid = false;
-                    }
-                }
-                if (this.icon.length == 0 || this.icon.length > 40) {
-                    this.valid = false;
-                }
-                if (this.selectedColor.length == 0) {
-                    this.valid = false;
-                }
+                // for (let i = 0; i < this.names.length; i++) {
+                //     if (this.names[i].length == 0 || this.names[i].length > 50) {
+                //         this.valid = false;
+                //     }
+                // }
+                // if (this.icon.length == 0 || this.icon.length > 40) {
+                //     this.valid = false;
+                // }
+                // if (this.selectedColor.length == 0) {
+                //     this.valid = false;
+                // }
+                this.validation();
                 // console.log("names "+this.names);
                 // console.log("icon "+this.icon);
                 // console.log("selectedColor "+this.selectedColor);
@@ -309,6 +371,72 @@
                     this.valid = false;
                 }
             },
+
+            validation() {
+                //front validation
+                var valid = true;
+                var validationFailure = "Impossible de créer la catégorie pour les raisons suivantes :  ";
+                var nameValidationFailure = "";
+                var iconValidationFailure = "";
+                var colorValidationFailure = "";
+
+                // Name
+                    var missingName = false;
+                    var errorName = false;
+                    for (let name = 0; name < this.names.length; name++) {
+                        if (this.names[name].length == 0) {
+                            missingName = true
+                        }
+                        if (this.names[name].length > 50) {
+                            errorName = true
+                        }
+                    }
+                    if (missingName === true) {
+                        valid = false;
+                        validationFailure += " Au moins l'un des noms de la catégorie est manquant.";
+                        nameValidationFailure += "Au moins l'un des noms de la catégorie est manquant.";
+                    }
+                    if (errorName === true) {
+                        valid = false;
+                        validationFailure += " Au moins l'un des noms de la catégorie est invalide.";
+                        nameValidationFailure = "Au moins l'un des noms de la catégorie est invalide.";
+                    }
+                // END Name
+                // Icon
+                    var missingIcon = false;
+                    var errorIcon = false;
+                    if (this.icon.length == 0) {
+                        valid = false;
+                        validationFailure += " Aucune icône sélectionnée.";
+                        iconValidationFailure += "Aucune icône sélectionnée.";
+                    }
+                    if (this.icon.length > 40) {
+                        valid = false;
+                        validationFailure += " Le nom de l'icône est trop long.";
+                        iconValidationFailure += "Le nom de l'icône est trop long.";
+                    }
+                // END Icon
+                // Color
+                    if (this.selectedColor.length == 0) {
+                        valid = false;
+                        validationFailure += " Aucune couleur sélectionnée pour l'icône.";
+                        colorValidationFailure = "Aucune couleur sélectionnée pour l'icône.";
+                    }
+                // END Color
+
+                if (valid == true) {
+                    this.valid = true;
+                    this.validationFailure = "";
+                }
+                else{
+                    this.valid = false;
+                    this.validationFailure = validationFailure;
+                }
+                this.nameValidationFailure = nameValidationFailure;
+                this.iconValidationFailure = iconValidationFailure;
+                this.colorValidationFailure = colorValidationFailure;
+            },
+
             submit () {
                 if (this.$refs.form.validate()) {
                     // console.log("names "+this.names);

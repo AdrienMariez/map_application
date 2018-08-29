@@ -1,15 +1,19 @@
 <template>
     <div>
-        <v-list two-line>
+        <!-- Existing languages list -->
+        <v-list
+            two-line 
+            class="mt-5">
             <v-subheader>
                 Langues implémentées (cliquer pour mettre à jour):
             </v-subheader>
-            <v-divider></v-divider>
+            <!-- <v-divider></v-divider> -->
             <template v-for="(language,i) in languages">
                 <v-list-tile
                     :key="i"
                     avatar
-                    @click="dummy()">
+                    @click="dummy()"
+                    class="hoveredItem">
                     <v-list-tile-content @click="updateLanguageMode(language.id)">
                         <v-list-tile-title v-html="language.name"></v-list-tile-title>
                         <v-list-tile-sub-title v-html="language.code"></v-list-tile-sub-title>
@@ -29,25 +33,35 @@
                 </v-list-tile>
             </template>
         </v-list>
-        <v-btn
-            color="success"
-            @click="createLanguageMode()">
-            <v-icon>add</v-icon>
-        </v-btn>
+        <v-divider></v-divider>
+        <!-- Creation button -->
+        <div
+            v-if="selectedId !== null">
+            <v-btn
+                class="mt-5"
+                color="success"
+                @click="createLanguageMode()">
+                <v-icon>add</v-icon>
+                Passer en mode création
+            </v-btn>
+            <v-divider></v-divider>
+        </div>
+        <!-- Create/edit form -->
         <v-form
             v-if="editForm = true"
             ref="form"
             v-model="valid"
-            lazy-validation>
+            lazy-validation
+            class="mt-5">
             <v-subheader
                 v-if="selectedId !== null">
-                Edition de {{editedName}} ({{selectedCode}}):
+                Edition de {{editedName}} ({{editedCode}}):
             </v-subheader>
             <v-subheader
                 v-else>
                 Création :
             </v-subheader>
-            <v-divider></v-divider>
+            <!-- <v-divider></v-divider> -->
             <v-card-text>
                 <v-container grid-list-md>
                     <v-layout wrap>
@@ -56,6 +70,7 @@
                             <v-text-field
                                 v-model=selectedName
                                 value= selectedName
+                                solo
                                 :counter="30"
                                 class="mb-2"
                             ></v-text-field>
@@ -66,6 +81,7 @@
                                 v-model=selectedCode
                                 value= selectedCode
                                 :counter="2"
+                                solo
                                 class="mb-2"
                                 hint="Utilisez les codes de la norme ISO 639-1 : https://fr.wikipedia.org/wiki/Liste_des_codes_ISO_639-1"
                                 persistent-hint
@@ -75,22 +91,38 @@
                 </v-container>
             </v-card-text>
             <v-card-actions>
-                <v-layout row wrap justify-space-between>
+                <v-layout align-center column justify-center>
                     <v-flex>
                         <v-btn
-                            v-if="selectedId !== null"
+                            v-if="selectedId !== null && validButton"
                             :disabled="!validButton"
                             @click="submitEdit"
                             color="success">
                             <v-icon>add</v-icon> Modifier
                         </v-btn>
                         <v-btn
-                            v-else
+                            v-if="selectedId !== null && !validButton"
+                            :disabled="!validButton"
+                            @click="submitEdit"
+                            color="grey lighten-1">
+                            <v-icon>add</v-icon> Modifier
+                        </v-btn>
+                        <v-btn
+                            v-if="selectedId === null && validButton"
                             :disabled="!validButton"
                             @click="submitCreate"
                             color="success">
                             <v-icon>add</v-icon> Créer
                         </v-btn>
+                        <v-btn
+                            v-if="selectedId === null && !validButton"
+                            :disabled="!validButton"
+                            @click="submitCreate"
+                            color="grey lighten-1">
+                            <v-icon>add</v-icon> Créer
+                        </v-btn>
+                    </v-flex>
+                    <v-flex>
                         <div class="validationFailure">
                             {{validationFailure}}
                         </div>
@@ -146,16 +178,20 @@
                                 flat
                                 @click.native="
                                     dialog = false,
-                                    dialogId = null">
-                                Annuler
+                                    dialogId = null"
+                                >
+                                <v-icon>keyboard_backspace</v-icon>
+                                Retour
                             </v-btn>
                             <v-btn
-                                color="green darken-1"
+                                color="error"
                                 flat
                                 @click.native="
                                     destroyLanguage(dialogId),
                                     dialog = false,
-                                    dialogId = null">
+                                    dialogId = null"
+                                >
+                                <v-icon>delete</v-icon>
                                 Supprimer
                             </v-btn>
                         </v-card-actions>
@@ -547,4 +583,7 @@
 </script>
 
 <style scoped>
+    .hoveredItem:hover{
+        background-color: rgb(233, 233, 233) !important;
+    }
 </style>

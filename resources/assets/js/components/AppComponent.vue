@@ -13,5 +13,11 @@
     .v-menu--inline{
         width: 100% !important;
     }
+    .validationFailure{
+        color: red;
+    }
+    .iconTooltip{
+        cursor: help;
+    }
 </style>
 

@@ -9,7 +9,6 @@
                                 <v-flex xs12 class="my-5">
                                     <div>Réference parent *: </div>
                                     <v-select
-                                        prepend-icon="search"
                                         item-text="text"
                                         item-value="id"
                                         :items="referenceList"
@@ -17,14 +16,22 @@
                                         solo
                                         required
                                     ></v-select>
-                                    <div class="my-2" id="coloredDiv"></div>
-                                    <div class="my-2">Aperçu de l'icône de {{selectedReference}} :
+                                    <div class="my-2">Aperçu de l'icône de la référence sélectionnée :
                                         <v-icon
                                             v-bind:style="{ color: selectedColor }"
                                             x-large>
                                             {{icon}}
                                         </v-icon>
                                     </div>
+                                    <div class="validationFailure">
+                                        <v-icon v-if="fkrefValidationFailure.length>0">
+                                            warning
+                                        </v-icon>
+                                        {{fkrefValidationFailure}}
+                                    </div>
+                                </v-flex>
+                                <v-flex xs12 class="my-5">
+                                    <v-divider></v-divider>
                                 </v-flex>
                             <!-- Link /link test -->
                                 <v-flex xs12 class="my-5">
@@ -33,6 +40,7 @@
                                         v-model=link
                                         value= link
                                         :counter="100"
+                                        solo
                                         class="mb-2"
                                     ></v-text-field>
                                     <div v-if="link.length > 0">
@@ -44,42 +52,80 @@
                                         (nouvel onglet)
                                     </div>
                                 </v-flex>
+                                <v-flex xs12 class="my-5">
+                                    <v-divider></v-divider>
+                                </v-flex>
                             <!-- Translations -->
                                 <v-flex xs12 class="my-5">
-                                    <v-expansion-panel>
+                                    <v-expansion-panel class="elevation-10">
                                         <v-expansion-panel-content
                                             v-for="(language,i) in languages"
-                                            :key="i">
-                                            <div slot="header">{{language.name}}</div>
+                                            :key="i"
+                                            color="light-green lighten-3"
+                                            class="light-green lighten-3 highlightHeader">
+                                            <div slot="header">
+                                                <div class="separator"></div>
+                                                {{language.name}}
+                                            </div>
                                             <v-card>
-                                                <div>Nom du point *: </div>
-                                                <v-text-field
-                                                    v-model=titles[i]
-                                                    :rules="nameRules"
-                                                    value= titles[i]
-                                                    required
-                                                    :counter="50"
-                                                    class="mb-2"
-                                                ></v-text-field>
-                                                <div>Description du point *: </div>
-                                                <v-text-field
-                                                    v-model=desc[i]
-                                                    :rules="nameRules"
-                                                    value= desc[i]
-                                                    :counter="50"
-                                                    class="mb-2"
-                                                ></v-text-field>
-                                                <div v-if="link.length > 0">link alias du point *: </div>
-                                                <v-text-field
-                                                    v-if="link.length > 0"
-                                                    v-model=linkAlias[i]
-                                                    value= linkAlias[i]
-                                                    :counter="50"
-                                                    class="mb-2"
-                                                ></v-text-field>
+                                                <div>
+                                                <!-- Title -->
+                                                    <div class="my-4 mx-2 py-4 px-2">
+                                                        <div>Nom du point *: </div>
+                                                        <v-text-field
+                                                            v-model=titles[i]
+                                                            :rules="nameRules"
+                                                            value= titles[i]
+                                                            required
+                                                            :counter="50">
+                                                        </v-text-field>
+                                                    </div>
+                                                <!-- Description -->
+                                                    <div class="my-4 mx-2 py-4 px-2">
+                                                        <div>Description du point *: </div>
+                                                        <v-text-field
+                                                            v-model=desc[i]
+                                                            :rules="nameRules"
+                                                            value= desc[i]
+                                                            :counter="50">
+                                                        </v-text-field>
+                                                    </div>
+                                                <!-- Link alias -->
+                                                    <div
+                                                        v-if="link.length > 0"
+                                                        class="my-4 mx-2 py-4 px-2">
+                                                        <div>Texte du lien du point *: </div>
+                                                        <v-text-field
+                                                            v-model=linkAlias[i]
+                                                            value= linkAlias[i]
+                                                            :counter="50">
+                                                        </v-text-field>
+                                                    </div>
+                                                </div>
                                             </v-card>
                                         </v-expansion-panel-content>
                                     </v-expansion-panel>
+                                    <div class="validationFailure">
+                                        <v-icon v-if="titlesValidationFailure.length>0">
+                                            warning
+                                        </v-icon>
+                                        {{titlesValidationFailure}}
+                                    </div>
+                                    <div class="validationFailure">
+                                        <v-icon v-if="descValidationFailure.length>0">
+                                            warning
+                                        </v-icon>
+                                        {{descValidationFailure}}
+                                    </div>
+                                    <div class="validationFailure">
+                                        <v-icon v-if="linkAliasValidationFailure.length>0">
+                                            warning
+                                        </v-icon>
+                                        {{linkAliasValidationFailure}}
+                                    </div>
+                                </v-flex>
+                                <v-flex xs12 class="my-5">
+                                    <v-divider></v-divider>
                                 </v-flex>
                             <!-- Images -->
                                 <image-point
@@ -88,6 +134,9 @@
                                     @clearImage="clearImage"
                                     @imageListReload="imageListReload">
                                 </image-point>
+                                <v-flex xs12 class="my-5">
+                                    <v-divider></v-divider>
+                                </v-flex>
                             <!-- Point positionning -->
                                 <v-flex xs12 class="my-5">
                                     <location-map-admin
@@ -113,6 +162,12 @@
                                         single-line
                                         solo
                                     ></v-text-field>
+                                    <div class="validationFailure">
+                                        <v-icon v-if="lattitudeValidationFailure.length>0">
+                                            warning
+                                        </v-icon>
+                                        {{lattitudeValidationFailure}}
+                                    </div>
                                     <div>
                                         Longitude :
                                     </div>
@@ -124,6 +179,12 @@
                                         single-line
                                         solo
                                     ></v-text-field>
+                                    <div class="validationFailure">
+                                        <v-icon v-if="longitudeValidationFailure.length>0">
+                                            warning
+                                        </v-icon>
+                                        {{longitudeValidationFailure}}
+                                    </div>
                                 </v-flex>
                             </v-layout>
                         </v-container>
@@ -140,17 +201,27 @@
                         </v-container>
                     </v-card-text>
                     <v-card-actions>
-                        <v-layout row wrap justify-space-between>
+                        <v-layout align-center column justify-center>
                             <v-flex>
-                                        <v-btn
-                                            :disabled="!valid"
-                                            @click="submit"
-                                            color="success">
-                                            <v-icon>add</v-icon> Valider
-                                        </v-btn>
-                                        <div class="validationFailure">
-                                            {{validationFailure}}
-                                        </div>
+                                <v-btn
+                                    v-if="!valid"
+                                    :disabled="!valid"
+                                    @click="submit"
+                                    color="grey lighten-1">
+                                    <v-icon>add</v-icon> Valider
+                                </v-btn>
+                                <v-btn
+                                    v-if="valid"
+                                    :disabled="!valid"
+                                    @click="submit"
+                                    color="success">
+                                    <v-icon>add</v-icon> Valider
+                                </v-btn>
+                            </v-flex>
+                            <v-flex>
+                                <div class="validationFailure mt-3">
+                                    {{validationFailure}}
+                                </div>
                             </v-flex>
                         </v-layout>
                     </v-card-actions>
@@ -183,8 +254,16 @@
                 categories: [],
                 categoriesNames: [],
                 languages: [],
+                
                 valid: false,
                 validationFailure: "",
+                fkrefValidationFailure: "",
+                titlesValidationFailure: "",
+                descValidationFailure: "",
+                linkAliasValidationFailure: "",
+                lattitudeValidationFailure: "",
+                longitudeValidationFailure: "",
+
                 fk_cat: null,
                 fk_ref: null,
                 referenceList: [],
@@ -479,6 +558,12 @@
                 //front validation
                 var valid = true;
                 var validationFailure = "Impossible de créer le point pour les raisons suivantes :  ";
+                var titlesValidationFailure = "";
+                var descValidationFailure = "";
+                var linkAliasValidationFailure = "";
+                var fkrefValidationFailure = "";
+                var lattitudeValidationFailure = "";
+                var longitudeValidationFailure = "";
 
                 // Title
                     var missingTitle = false;
@@ -493,11 +578,13 @@
                     }
                     if (missingTitle === true) {
                         valid = false;
-                        validationFailure += " Un titre est manquant.";
+                        validationFailure += " Au moins l'un des titres du point est manquant.";
+                        titlesValidationFailure += "Au moins l'un des titres du point est manquant.";
                     }
                     if (errorTitle === true) {
                         valid = false;
-                        validationFailure += " Un titre est invalide.";
+                        validationFailure += " Au moins l'un des titres du point est invalide.";
+                        titlesValidationFailure += "Au moins l'un des titres du point est invalide.";
                     }
                 // END Title
                 // Description
@@ -513,11 +600,13 @@
                     }
                     if (missingDesc === true) {
                         valid = false;
-                        validationFailure += " Une description est manquante.";
+                        validationFailure += " Au moins l'une des descriptions du point est manquante.";
+                        descValidationFailure += "Au moins l'une des descriptions du point est manquante.";
                     }
                     if (errorDesc === true) {
                         valid = false;
-                        validationFailure += " Une description est invalide.";
+                        validationFailure += " Au moins l'une des descriptions du point est invalide.";
+                        descValidationFailure += "Au moins l'une des descriptions du point est invalide.";
                     }
                 // END Description
                 // Link
@@ -536,28 +625,33 @@
                         }
                         if (missingLink === true) {
                             valid = false;
-                            validationFailure += " Un alias du lien est manquant.";
+                            validationFailure += " Au moins l'un des textes du lien est manquant.";
+                            linkAliasValidationFailure += "Au moins l'un des textes du lien est manquant.";
                         }
                         if (errorLink === true) {
                             valid = false;
-                            validationFailure += " Un alias du lien est invalide.";
+                            validationFailure += " Au moins l'un des textes du lien est invalide.";
+                            linkAliasValidationFailure += "Au moins l'un des textes du lien est invalide.";
                         }
                     }
                 // END Link
                 // Parent
                     if (this.fk_ref === null) {
                         valid = false;
-                        validationFailure += " Parent manquant !";
+                        validationFailure += " Référence parent non indiquée.";
+                        fkrefValidationFailure += "Référence parent non indiquée.";
                     }
                 // END Parent
                 // Coord
                     if (this.lattitude === null) {
                         valid = false;
-                        validationFailure += " Lattitude non renseignée !";
+                        validationFailure += " Lattitude non renseignée.";
+                        lattitudeValidationFailure += "Lattitude non renseignée.";
                     }
                     if (this.longitude === null) {
                         valid = false;
-                        validationFailure += " Longitude non renseignée !";
+                        validationFailure += " Longitude non renseignée.";
+                        longitudeValidationFailure += "Longitude non renseignée.";
                     }
                 // END Coord
 
@@ -569,6 +663,13 @@
                     this.valid = false;
                     this.validationFailure = validationFailure;
                 }
+
+                this.titlesValidationFailure = titlesValidationFailure;
+                this.descValidationFailure = descValidationFailure;
+                this.linkAliasValidationFailure = linkAliasValidationFailure;
+                this.fkrefValidationFailure = fkrefValidationFailure;
+                this.lattitudeValidationFailure = lattitudeValidationFailure;
+                this.longitudeValidationFailure = longitudeValidationFailure;
             },
 
             submit () {
@@ -749,10 +850,17 @@
 </script>
 
 <style scoped>
-    #coloredDiv{
-        width: 50%;
-        height: 20px;
-        border-radius: 5px;
+    .highlightHeader:hover{
+        background-color: #AED581 !important;
+    }
+    .separator:before {
+        content:'';
+        position:absolute;
+        width:100%;
+        height:3px;
+        background:linear-gradient(to left, rgba(0, 0, 0, 0), #AED581, rgba(0, 0, 0, 0));
+        top:0px;
+        left:0;
     }
     .imgContainer{
         /* width:150px !important; */
@@ -773,8 +881,5 @@
     .selectedImg {
         padding: 40px;
         background-color: rgb(82, 196, 82);
-    }
-    .validationFailure{
-        color: red;
     }
 </style>

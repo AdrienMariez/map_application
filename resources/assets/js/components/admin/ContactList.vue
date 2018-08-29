@@ -14,13 +14,13 @@
                 label="Rechercher un nom"
                 single-line
                 hide-details
+                solo
                 v-model="search"
             ></v-text-field>
-            <v-divider></v-divider>
             <v-data-table
                 :headers="headers"
                 :items="filteredList"
-                class="elevation-1">
+                class="elevation-10 mt-5">
                 <template
                     slot="items"
                     slot-scope="props">
@@ -39,9 +39,9 @@
                     </td>
                 </template>
                 <template slot="no-data">
-                <v-alert :value="true" color="error" icon="warning">
-                    Aucun message à afficher.
-                </v-alert>
+                    <v-alert :value="true" color="error" icon="warning">
+                        Aucun message à afficher.
+                    </v-alert>
                 </template>
             </v-data-table>
             <!-- OBSOLETE list -->
@@ -128,8 +128,9 @@
                                 flat
                                 @click.native="
                                     dialog = false,
-                                    dialogId = null">
-                                    <v-icon>keyboard_backspace</v-icon>
+                                    dialogId = null"
+                                >
+                                <v-icon>keyboard_backspace</v-icon>
                                 Retour
                             </v-btn>
                             <v-btn
@@ -191,16 +192,20 @@
                                 flat
                                 @click.native="
                                     removeDialog = false,
-                                    dialogId = null">
-                                Annuler
+                                    dialogId = null"
+                                >
+                                <v-icon>keyboard_backspace</v-icon>
+                                Retour
                             </v-btn>
                             <v-btn
-                                color="green darken-1"
+                                color="error"
                                 flat
                                 @click.native="
                                     destroyContact(dialogId),
                                     removeDialog = false,
-                                    dialogId = null">
+                                    dialogId = null"
+                                >
+                                <v-icon>delete</v-icon>
                                 Supprimer
                             </v-btn>
                         </v-card-actions>
@@ -340,5 +345,8 @@
     }
     td{
         cursor: pointer;
+    }
+    td:hover{
+        background-color: rgb(233, 233, 233) !important;
     }
 </style>

@@ -10,9 +10,19 @@
         </v-btn>
         <v-container>
             <v-layout>
+                <!-- responsive -->
                 <v-btn
                     dark
                     color="success"
+                    class="hidden-md-and-up"
+                    @click.stop="drawerMap = true">
+                    Positionner le point ici !
+                </v-btn>
+                <!-- desktop -->
+                <v-btn
+                    dark
+                    color="success"
+                    class="hidden-sm-and-down"
                     @click.stop="drawerMap = true">
                     Positionner le point sur la carte ici !
                 </v-btn>

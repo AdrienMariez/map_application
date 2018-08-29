@@ -2,7 +2,9 @@
     <v-flex xs12 class="my-5">
         <!-- Image list -->
             <v-expansion-panel>
-                <v-expansion-panel-content>
+                <v-expansion-panel-content
+                    color="light-green lighten-3"
+                    class="light-green lighten-3 highlightHeader">
                     <div slot="header">Banque d'images</div>
                         <v-card>
                             <!-- button show upload -->
@@ -54,6 +56,23 @@
                                                 </div>
                                         </div>
                                     </div>
+                                </div>
+                            <!-- tutorial -->
+                                <v-divider></v-divider>
+                                <div>
+                                    <v-tooltip
+                                        top>
+                                        <v-icon
+                                            class="iconTooltip"
+                                            slot="activator">
+                                            help
+                                        </v-icon>
+                                        <div>
+                                            <div>Choisir une image en cliquant dessus.</div>
+                                            <div>Cliquer sur l'icône suppression supprimera l'image du site si elle n'est plus utilisée nulle part.</div>
+                                            <div>Une image choisie peut être enlevée du point en cliquant sur l'icône X</div>
+                                        </div>
+                                    </v-tooltip>
                                 </div>
                             <!-- Pics list -->
                                 <v-layout align-center justify-space-around fill-height row wrap>
@@ -336,15 +355,19 @@
 </script>
 
 <style scoped>
+    .highlightHeader:hover{
+        background-color: #AED581 !important;
+    }
     .imgContainer{
         max-width:100px !important;
         min-width:50px !important;
         box-shadow: 0px 5px 10px 2px #afafaf;
+        cursor: pointer;
     }
     .imgContainerPreview{
         max-width: 90vw !important;
         width:250px !important;
-        min-width:150px !important;
+        min-width:75px !important;
         box-shadow: 0px 5px 10px 2px #afafaf;
     }
     .imgContainerDialog{

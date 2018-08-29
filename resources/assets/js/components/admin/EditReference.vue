@@ -5,6 +5,7 @@
                     <v-card-text>
                         <v-container grid-list-md>
                             <v-layout wrap>
+                            <!-- Parent selection -->
                                 <v-flex xs12 class="my-5">
                                     <div>Catégorie parent *: </div>
                                     <v-select
@@ -12,23 +13,35 @@
                                         item-value="id"
                                         :items="categoryList"
                                         v-model="selectedCategory"
+                                        solo
                                         required
                                     ></v-select>
                                     <div id="coloredDiv"></div>
+                                    <div class="validationFailure">
+                                        <v-icon v-if="categoryValidationFailure.length>0">
+                                            warning
+                                        </v-icon>
+                                        {{categoryValidationFailure}}
+                                    </div>
                                 </v-flex>
                                 <v-flex xs12 class="my-5">
+                                    <v-divider></v-divider>
+                                </v-flex>
+                            <!-- Icon selection/icon test -->
+                                <v-flex xs12 class="my-5">
                                     <div>Icone utilisée : </div>
-                                    <!-- select library -->
+                                    <!-- Select library -->
                                     <v-select
                                         label="origine de l'icone :"
                                         item-text="text"
                                         item-value="code"
                                         :items="iconsPrefix"
                                         v-model="selectedPrefix"
+                                        solo
                                         required
                                         class="mb-2"
                                     ></v-select>
-                                    <!-- hints how to use -->
+                                    <!-- Hints how to use -->
                                     <div>
                                         <div
                                             v-if="selectedPrefix === ''">
@@ -42,7 +55,11 @@
                                             </div>
                                             <v-tooltip
                                                 top>
-                                                <v-icon slot="activator">help</v-icon>
+                                                <v-icon
+                                                    class="iconTooltip"
+                                                    slot="activator">
+                                                    help
+                                                </v-icon>
                                                 <div>
                                                     <div>Ouvrir le lien.</div>
                                                     <div>Cliquer sur l'icône choise.</div>
@@ -64,7 +81,11 @@
                                             </div>
                                             <v-tooltip
                                                 top>
-                                                <v-icon slot="activator">help</v-icon>
+                                                <v-icon
+                                                    class="iconTooltip"
+                                                    slot="activator">
+                                                    help
+                                                </v-icon>
                                                 <div>
                                                     <div>Ouvrir le lien.</div>
                                                     <div>Cliquer une fois sur le texte sous l'icône choisie,  copiez le.</div>
@@ -84,7 +105,11 @@
                                             </div>
                                             <v-tooltip
                                                 top>
-                                                <v-icon slot="activator">help</v-icon>
+                                                <v-icon
+                                                    class="iconTooltip"
+                                                    slot="activator">
+                                                    help
+                                                </v-icon>
                                                 <div>
                                                     <div>Ouvrir le lien.</div>
                                                     <div>Cliquer sur l'icône choise.</div>
@@ -93,7 +118,7 @@
                                             </v-tooltip>
                                         </div>
                                     </div>
-                                    <!-- text input choose icon -->
+                                    <!-- Text input choose icon -->
                                     <v-text-field
                                         v-model="icon"
                                         :rules="iconRules"
@@ -102,7 +127,7 @@
                                         required
                                         :counter="40"
                                     ></v-text-field>
-                                    <!-- preview icon -->
+                                    <!-- Preview icon -->
                                     <div>Aperçu de {{selectedPrefix}}{{icon}} :
                                         <v-icon
                                             v-bind:style="{ color: selectedColor }"
@@ -111,7 +136,17 @@
                                         </v-icon>
                                         <div v-if="icon.length > 0">Attention ! Pas plus d'une icône ne doit s'afficher ici !</div>
                                     </div>
+                                    <div class="validationFailure">
+                                        <v-icon v-if="iconValidationFailure.length>0">
+                                            warning
+                                        </v-icon>
+                                        {{iconValidationFailure}}
+                                    </div>
                                 </v-flex>
+                                <v-flex xs12 class="my-5">
+                                    <v-divider></v-divider>
+                                </v-flex>
+                            <!-- Translations -->
                                 <v-flex xs12 class="my-5">
                                     <div>Nom de la réference dans chaque langue *: </div>
                                     <v-text-field
@@ -125,24 +160,38 @@
                                         :counter="50"
                                         class="mb-2"
                                     ></v-text-field>
+                                    <div class="validationFailure">
+                                        <v-icon v-if="nameValidationFailure.length>0">
+                                            warning
+                                        </v-icon>
+                                        {{nameValidationFailure}}
+                                    </div>
                                 </v-flex>
-                                <v-divider></v-divider>
                             </v-layout>
                         </v-container>
                     </v-card-text>
                     <v-card-actions>
-                        <v-layout row wrap justify-space-between>
-                            <v-flex xs2 align-right>
-                                <v-list-tile>
-                                    <v-list-tile-action>
-                                        <v-btn
-                                            :disabled="!valid"
-                                            @click="submit"
-                                            color="success">
-                                            <v-icon>add</v-icon> Valider
-                                        </v-btn> 
-                                    </v-list-tile-action>
-                                </v-list-tile>
+                        <v-layout align-center column justify-center>
+                            <v-flex>
+                                <v-btn
+                                    v-if="!valid"
+                                    :disabled="!valid"
+                                    @click="submit"
+                                    color="grey lighten-1">
+                                    <v-icon>add</v-icon> Valider
+                                </v-btn>
+                                <v-btn
+                                    v-if="valid"
+                                    :disabled="!valid"
+                                    @click="submit"
+                                    color="success">
+                                    <v-icon>add</v-icon> Valider
+                                </v-btn>
+                            </v-flex>
+                            <v-flex>
+                                <div class="validationFailure mt-3">
+                                    {{validationFailure}}
+                                </div>
                             </v-flex>
                         </v-layout>
                     </v-card-actions>
@@ -167,7 +216,13 @@
                 categories: [],
                 categoriesNames: [],
                 languages: [],
+
                 valid: false,
+                validationFailure: "",
+                nameValidationFailure: "",
+                iconValidationFailure: "",
+                categoryValidationFailure: "",
+
                 namesInitial: [],
                 fk_cat: null,
                 categoryList: [],
@@ -224,29 +279,20 @@
             namesInitial(val, oldVal){
                 this.pageInit();
             },
+            names(){
+                this.validation();
+            },
             icon(val, oldVal) {
                 this.icon = val.toLowerCase();
+                this.validation();
             },
             selectedCategory(val, oldVal){
                 this.setIconColor(val);
+                this.validation();
             },  
             valid(val, oldVal){
                 //front validation
-                for (let i = 0; i < this.names.length; i++) {
-                    if (this.names[i].length == 0 || this.names[i].length > 50) {
-                        this.valid = false;
-                    }
-                }
-                if (this.icon.length == 0 || this.icon.length > 40) {
-                    this.valid = false;
-                }
-                if (this.selectedCategory === null) {
-                    this.valid = false;
-                }
-                // console.log("names "+this.names);
-                // console.log("icon "+this.icon);
-                // console.log("selectedColor "+this.selectedColor);
-                // console.log("valid "+this.valid);
+                this.validation();
             },
         },
         methods: {
@@ -339,6 +385,73 @@
                 }
                 document.getElementById('coloredDiv').style.backgroundColor = this.selectedColor;
             },
+            
+            validation() {
+                //front validation
+                var valid = true;
+                var validationFailure = "Impossible de créer la référence pour les raisons suivantes :  ";
+                var nameValidationFailure = "";
+                var iconValidationFailure = "";
+                var categoryValidationFailure = "";
+
+                // Name
+                    var missingName = false;
+                    var errorName = false;
+                    for (let name = 0; name < this.names.length; name++) {
+                        if (this.names[name].length == 0) {
+                            missingName = true
+                        }
+                        if (this.names[name].length > 50) {
+                            errorName = true
+                        }
+                    }
+                    if (missingName === true) {
+                        valid = false;
+                        validationFailure += " Au moins l'un des noms de la référence est manquant.";
+                        nameValidationFailure += "Au moins l'un des noms de la référence est manquant.";
+                    }
+                    if (errorName === true) {
+                        valid = false;
+                        validationFailure += " Au moins l'un des noms de la référence est invalide.";
+                        nameValidationFailure += "Au moins l'un des noms de la référence est invalide.";
+                    }
+                // END Name
+                // Icon
+                    var missingIcon = false;
+                    var errorIcon = false;
+                    if (this.icon.length == 0) {
+                        valid = false;
+                        validationFailure += " Aucune icône sélectionnée.";
+                        iconValidationFailure += "Aucune icône sélectionnée.";
+                    }
+                    if (this.icon.length > 40) {
+                        valid = false;
+                        validationFailure += " Le nom de l'icône est trop long.";
+                        iconValidationFailure += "Le nom de l'icône est trop long.";
+                    }
+                // END Icon
+                // Category
+                    if (this.selectedCategory === null) {
+                        valid = false;
+                        validationFailure += " Aucune catégorie parent sélectionnée.";
+                        categoryValidationFailure = "Aucune catégorie parent sélectionnée.";
+                    }
+                // END Category
+
+                if (valid == true) {
+                    this.valid = true;
+                    this.validationFailure = "";
+                }
+                else{
+                    this.valid = false;
+                    this.validationFailure = validationFailure;
+                }
+
+                this.nameValidationFailure = nameValidationFailure;
+                this.iconValidationFailure = iconValidationFailure;
+                this.categoryValidationFailure = categoryValidationFailure;
+            },
+
             submit () {
                 if (this.$refs.form.validate()) {
                     var icon = this.selectedPrefix +""+ this.icon;
