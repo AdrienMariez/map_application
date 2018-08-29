@@ -602,14 +602,14 @@
                 else{
                     this.point.fk_image_id = "";
                 }
-
                 var newPoint = this.point;
-
                 axios.post('/api/points', newPoint)
                     .then(
                     resp =>
                         Promise.all([
                         resp,
+                        console.log("point created")
+                        ,
                         this.createPointNames(resp.data.id),
                         ])   
                     )
@@ -640,9 +640,9 @@
                             "linkalias": "",
                         };
                     };
-
                     axios.post('/api/pointsnames', newPointName)
                         .then(function (resp) {
+                            console.log("point name created");
                         })
                         .catch(function (error) {
                             console.log(error.response.data);
@@ -668,9 +668,7 @@
                 else{
                     this.point.fk_image_id = "";
                 }
-
                 var newPoint = this.point;
-
                 axios.patch('/api/points/' + id, newPoint)
                     .then(function (resp) {
                     })
@@ -702,8 +700,6 @@
                             "linkalias": "",
                         };
                     };
-
-                    console.log(newPointName);
                     
                     axios.patch('/api/pointsnames/' + id[i], newPointName)
                         .then(function (resp) {
@@ -717,97 +713,6 @@
                 this.$emit('pageToShow', "", null);
             },
 
-            createReference(fk_category_id, icon) {
-
-                var weight = 0;
-                for (let i = 0; i < this.references.length; i++) {
-                    if (this.references[i]["weight"] >= weight) {
-                        weight = this.references[i]["weight"] + 1;
-                    }
-                }
-                this.reference.fk_category_id = fk_category_id;
-                this.reference.icon = icon;
-                this.reference.weight = weight;
-                var newReference = this.reference;
-
-                axios.post('/api/references', newReference)
-                    .then(
-                    resp =>
-                        Promise.all([
-                        resp,
-                        this.createReferenceNames(resp.data.id, this.titles),
-                        ])   
-                    )
-                    .catch(function (error) {
-                        console.log(error.response.data);
-                        
-                        alert("Un problème est survenu lors de la création. Error located in EditReference.vue !");
-                    });
-            },
-            updateReference(id, fk_category_id, icon) {
-                var weight = 0;
-                for (let i = 0; i < this.references.length; i++) {
-                    if (this.references[i]["id"] == this.idSelected) {
-                        weight = this.references[i]["weight"];
-                    }
-                }
-
-                this.reference.fk_category_id = fk_category_id;
-                this.reference.icon = icon;
-                this.reference.weight = weight;
-                var newReference = this.reference;
-
-                axios.patch('/api/references/' + id, newReference)
-                    .then(function (resp) {
-                    })
-                    .catch(function (error) {
-                        console.log(error.response.data);
-                        
-                        alert("Un problème est survenu lors de la mise à jour. Error located in EditReference.vue !");
-                    });
-                this.$emit('pageToShow', "", null);
-            },
-            createReferenceNames(id, names){
-                
-                for (let i = 0; i < names.length; i++) {
-                    var newReferenceName = {
-                        "fk_reference_id": id,
-                        "fk_language_code": this.languages[i]["code"],
-                        "text": names[i]
-                    };
-
-                    axios.post('/api/referencesnames', newReferenceName)
-                        .then(function (resp) {
-
-                        })
-                        .catch(function (error) {
-                            console.log(error.response.data);
-                            
-                            alert("Un problème est survenu lors de la création. Error located in EditReference.vue !");
-                        });
-                }
-                this.$emit('pageToShow', "", null);
-            },
-            updateReferenceNames(id, fk_reference_id, codes, names){
-                for (let i = 0; i < names.length; i++) {
-                    var newReferenceName = {
-                        "fk_reference_id": fk_reference_id,
-                        "fk_language_code": codes[i],
-                        "text": names[i]
-                    };
-                    
-                    axios.patch('/api/referencesnames/' + id[i], newReferenceName)
-                        .then(function (resp) {
-                            
-                        })
-                        .catch(function (error) {
-                            console.log(error.response.data);
-                            
-                            alert("Un problème est survenu lors de la mise à jour.");
-                        });
-                }
-                this.$emit('pageToShow', "", null);
-            },
             //API CALLS
                 methodsApiCalls() {
                     this.images = imagesMethods.readImages();

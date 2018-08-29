@@ -16,9 +16,9 @@
 <script>
 
   //IMPORTS
-    //TEST : are those import really necessary ?
-    require('../../../../../node_modules/leaflet/dist/leaflet.css')
-    require('../../../../../node_modules/leaflet.markercluster/dist/MarkerCluster.css')
+    // OBSOLETE not required for map to work
+    // require('../../../../../node_modules/leaflet/dist/leaflet.css')
+    // require('../../../../../node_modules/leaflet.markercluster/dist/MarkerCluster.css')
 
     import MapControls from './MapControls.vue'
     import pointsMethods from './../../services/points.js'
@@ -67,9 +67,18 @@ export default {
             minZoom: 10,
             maxZoom: 18,
             id: 'mapbox.streets',
-            accessToken: 'pk.eyJ1IjoiYmlib3VuIiwiYSI6ImNqaGhvdTc1ZzAyYXIzZW5yN3ZnaThrdnMifQ.-m9db8kuRMAOEiSsdvQTQA',
+            accessToken: 'pk.eyJ1IjoiYWRyaWVubWFyaWV6IiwiYSI6ImNqbGRqMXFuZzBidXIzcG95M2FyMWwyazkifQ.zhV0yppFnp7JaXT_cCDSuA',
             zoomControl: false
         }).addTo(map);
+
+        var southWest = L.latLng(44.392567, 1.027538);
+        var northEast = L.latLng(44.590387, 1.360224);
+        var bounds = L.latLngBounds(southWest, northEast);
+
+        map.setMaxBounds(bounds);
+        map.on('drag', function() {
+            map.panInsideBounds(bounds, { animate: false });
+        });
 
         this.map = map;
 

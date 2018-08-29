@@ -180,11 +180,11 @@
                         minZoom: 10,
                         maxZoom: 18,
                         id: 'mapbox.streets',
-                        accessToken: 'pk.eyJ1IjoiYmlib3VuIiwiYSI6ImNqaGhvdTc1ZzAyYXIzZW5yN3ZnaThrdnMifQ.-m9db8kuRMAOEiSsdvQTQA'
+                        accessToken: 'pk.eyJ1IjoiYWRyaWVubWFyaWV6IiwiYSI6ImNqbGRqMXFuZzBidXIzcG95M2FyMWwyazkifQ.zhV0yppFnp7JaXT_cCDSuA'
                     }).addTo(map);
 
-                    var southWest = L.latLng(44.392567, 1.027538),
-                    northEast = L.latLng(44.590387, 1.360224);
+                    var southWest = L.latLng(44.392567, 1.027538);
+                    var northEast = L.latLng(44.590387, 1.360224);
                     var bounds = L.latLngBounds(southWest, northEast);
 
                     map.setMaxBounds(bounds);

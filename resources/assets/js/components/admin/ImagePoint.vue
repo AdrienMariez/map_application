@@ -66,6 +66,7 @@
                                             dark
                                             fab
                                             center
+                                            small
                                             color="error"
                                             v-on:click="deleteImage(img.id)">
                                             <v-icon>
@@ -85,7 +86,7 @@
         <!-- Selected image -->
             <div v-if="image.length !== 0" class="card card-default">
                 <div class="card-header">
-                    Image utilisée :
+                    Image sélectionnée :
                 </div>
                 <div class="card-body">
                     <div class="row imgContainerPreview xs3 ma-3">
@@ -94,6 +95,7 @@
                             dark
                             fab
                             center
+                            small
                             color="error"
                             v-on:click="$emit('clearImage')">
                             <v-icon>
@@ -136,18 +138,20 @@
         </v-snackbar>
     <!-- Alert in case of imminent destroy -->
         <v-layout row justify-center>
-            <v-dialog v-model="dialog" persistent max-width="290">
+            <v-dialog v-model="dialog" persistent>
                 <v-card>
-                    <v-card-title class="headline">
+                    <v-card-text class="headline text-xs-center">
                         Supprimer l'image ?
-                    </v-card-title>
-                    <v-card-text>
-                        <div class="row imgContainerDialog xs3 ma-3">
+                    </v-card-text>
+                    <v-card-text class="text-xs-center">
+                        <v-layout align-center justify-center column fill-height>
+                        <div class="row imgContainerDialog xs3 ma-3 text-xs-center">
                             <img
                                 xs3
                                 v-bind:src="dialogImage"
                                 alt="aperçu de l'image en cours de suppression">
-                            </div>
+                        </div>
+                        </v-layout>
                         Cette suppression sera irreversible à partir de l'acceptation de cette boîte de dialogue.
                     </v-card-text>
                     <v-card-actions>
@@ -157,16 +161,20 @@
                             flat
                             @click.native="
                                 dialog = false,
-                                dialogId = null">
-                            Annuler
+                                dialogId = null"
+                            >
+                            <v-icon>keyboard_backspace</v-icon>
+                            Retour
                         </v-btn>
                         <v-btn
-                            color="green darken-1"
+                            color="error"
                             flat
                             @click.native="
                                 destroyImage(dialogId),
                                 dialog = false,
-                                dialogId = null">
+                                dialogId = null"
+                            >
+                            <v-icon>delete</v-icon>
                             Supprimer
                         </v-btn>
                     </v-card-actions>
@@ -329,15 +337,14 @@
 
 <style scoped>
     .imgContainer{
-        /* width:150px !important; */
-        width:100px !important;
-        min-width:70px !important;
-        /* max-height:200px !important; */
-        /* background-color: red; */
+        max-width:100px !important;
+        min-width:50px !important;
         box-shadow: 0px 5px 10px 2px #afafaf;
     }
     .imgContainerPreview{
+        max-width: 90vw !important;
         width:250px !important;
+        min-width:150px !important;
         box-shadow: 0px 5px 10px 2px #afafaf;
     }
     .imgContainerDialog{
@@ -349,7 +356,7 @@
         height:100% !important;
     }
     .selectedImg {
-        padding: 40px;
+        padding: 20px;
         background-color: rgb(82, 196, 82);
     }
 </style>

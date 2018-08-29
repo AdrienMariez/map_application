@@ -109,6 +109,7 @@
                                             x-large>
                                             {{selectedPrefix}}{{icon}}
                                         </v-icon>
+                                        <div v-if="icon.length > 0">Attention ! Pas plus d'une icône ne doit s'afficher ici !</div>
                                     </div>
                                 </v-flex>
                                 <v-flex xs12 class="my-5">
@@ -207,6 +208,7 @@
                     { text: 'Vert', code: '#388E3C' },
                     { text: 'Vert clair', code: '#4CAF50' },
                 ],
+
                 reference: {
                     id: null,
                     fk_category_id: null,
@@ -221,6 +223,9 @@
             },
             namesInitial(val, oldVal){
                 this.pageInit();
+            },
+            icon(val, oldVal) {
+                this.icon = val.toLowerCase();
             },
             selectedCategory(val, oldVal){
                 this.setIconColor(val);
@@ -353,6 +358,7 @@
             createReference(fk_category_id, icon) {
 
                 var weight = 0;
+                //We use all the references to determine the weight so that if a reference is moved from one category from another, their weight will still be unique.
                 for (let i = 0; i < this.references.length; i++) {
                     if (this.references[i]["weight"] >= weight) {
                         weight = this.references[i]["weight"] + 1;
@@ -362,7 +368,7 @@
                 this.reference.icon = icon;
                 this.reference.weight = weight;
                 var newReference = this.reference;
-
+                // Cannot place this elsewhere or the promise does not work
                 axios.post('/api/references', newReference)
                     .then(
                     resp =>
@@ -373,7 +379,7 @@
                     )
                     .catch(function (error) {
                         console.log(error.response.data);
-                        
+
                         alert("Un problème est survenu lors de la création. Error located in EditReference.vue !");
                     });
             },
@@ -390,19 +396,12 @@
                 this.reference.weight = weight;
                 var newReference = this.reference;
 
-                axios.patch('/api/references/' + id, newReference)
-                    .then(function (resp) {
-                    })
-                    .catch(function (error) {
-                        console.log(error.response.data);
-                        
-                        alert("Un problème est survenu lors de la mise à jour. Error located in EditReference.vue !");
-                    });
+                referencesMethods.editReference(id, newReference);
+                
                 this.$emit('pageToShow', "", null);
                 
             },
             createReferenceNames(id, names){
-                
                 for (let i = 0; i < names.length; i++) {
                     var newReferenceName = {
                         "fk_reference_id": id,
@@ -410,36 +409,27 @@
                         "text": names[i]
                     };
 
-                    axios.post('/api/referencesnames', newReferenceName)
-                        .then(function (resp) {
-
-                        })
-                        .catch(function (error) {
-                            console.log(error.response.data);
-                            
-                            alert("Un problème est survenu lors de la création. Error located in EditReference.vue !");
-                        });
+                    referencesMethods.createReferenceName(newReferenceName);
+                    // axios.post('/api/referencesnames', newReferenceName)
+                    //     .then(function (resp) {
+                    //     })
+                    //     .catch(function (error) {
+                    //         console.log(error.response.data);
+                                        
+                    //         alert("Un problème est survenu lors de la création. Error located in EditReference.vue !");
+                    //     });
                 }
                 this.$emit('pageToShow', "", null);
             },
             updateReferenceNames(id, fk_reference_id, codes, names){
                 for (let i = 0; i < names.length; i++) {
-                    //TO CHANGE
                     var newReferenceName = {
                         "fk_reference_id": fk_reference_id,
                         "fk_language_code": codes[i],
                         "text": names[i]
                     };
-                    
-                    axios.patch('/api/referencesnames/' + id[i], newReferenceName)
-                        .then(function (resp) {
-                            
-                        })
-                        .catch(function (error) {
-                            console.log(error.response.data);
-                            
-                            alert("Un problème est survenu lors de la mise à jour.");
-                        });
+
+                    referencesMethods.editReferenceName(id[i],newReferenceName);
                 }
                 this.$emit('pageToShow', "", null);
             },

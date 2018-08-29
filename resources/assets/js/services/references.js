@@ -28,6 +28,37 @@ var referencesMethods = {
         });
         return referencesNames;
     },
+    //createReference is in EditReference.vue
+    createReferenceName(newReferenceName) {
+        axios.post('/api/referencesnames', newReferenceName)
+            .then(function (resp) {
+            })
+            .catch(function (error) {
+                console.log(error.response.data);
+                            
+                alert("Un problème est survenu lors de la création. Error located in EditReference.vue !");
+            });
+    },
+    editReference(id, newReference) {
+        axios.patch('/api/references/' + id, newReference)
+            .then(function (resp) {
+            })
+            .catch(function (error) {
+                console.log(error.response.data);
+                
+                alert("Un problème est survenu lors de la mise à jour. Error located in EditReference.vue !");
+            });
+    },
+    editReferenceName(id,newReferenceName) {
+        axios.patch('/api/referencesnames/' + id, newReferenceName)
+            .then(function (resp) {
+            })
+            .catch(function (error) {
+                console.log(error.response.data);
+                            
+                alert("Un problème est survenu lors de la mise à jour. Error located in EditReference.vue !");
+            });
+    },
     destroyReference(id){
         axios.delete(`/api/references/${id}`)
             .then(function (resp) {

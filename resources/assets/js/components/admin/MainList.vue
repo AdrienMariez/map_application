@@ -90,27 +90,32 @@
                     class="hidden-md-and-up green lighten-3">
                     <v-layout align-center justify-space-around>
                         <v-btn
+                            small
                             color="success"
                             @click="createReference(category.id)">
                             <v-icon>add</v-icon>
                         </v-btn>
                         <v-btn
+                            small
                             color="warning"
                             @click="editCategory(category.id)">
                             <v-icon>build</v-icon>
                         </v-btn>
                         <v-btn
+                            small
                             color="error"
                             @click="deleteCategory(category.id)">
                             <v-icon>delete</v-icon>
                         </v-btn>
                         <v-btn
+                            small
                             v-if="i !== 0"
                             color="info"
                             @click="moveCatUp(category.id)">
                             <v-icon>arrow_upward</v-icon>
                         </v-btn>
                         <v-btn
+                            small
                             v-if="i !== categories.length-1"
                             color="info"
                             @click="moveCatDown(category.id)">
@@ -194,25 +199,30 @@
                             class="hidden-md-and-up green lighten-4">
                             <v-layout align-center justify-space-around>
                                 <v-btn
+                                    small
                                     color="success"
                                     @click="createPoint(reference.id)">
                                     <v-icon>add</v-icon>
-                                </v-btn>                                <v-btn
+                                </v-btn>                     <v-btn
+                                    small
                                     color="warning"
                                     @click="editReference(reference.id)">
                                     <v-icon>build</v-icon>
                                 </v-btn>
                                 <v-btn
+                                    small
                                     color="error"
                                     @click="deleteReference(reference.id)">
                                     <v-icon>delete</v-icon>
                                 </v-btn>
                                 <v-btn
+                                    small
                                     color="info"
                                     @click="moveRefUp(reference.id)">
                                     <v-icon>arrow_upward</v-icon>
                                 </v-btn>
                                 <v-btn
+                                    small
                                     color="info"
                                     @click="moveRefDown(reference.id)">
                                     <v-icon>arrow_downward</v-icon>
@@ -257,26 +267,42 @@
                             <v-list-tile>
 
                                 <v-list-tile-action>
-                                            <v-menu right>
-                                                <v-btn
-                                                    slot="activator"
-                                                    icon>
-                                                    <v-icon>build</v-icon>
-                                                </v-btn>
-                                    
-                                                <v-list>
-                                                    <v-btn
-                                                        color="warning"
-                                                        @click="editPoint(point.id)">
-                                                        modifier
-                                                    </v-btn>
-                                                    <v-btn
-                                                        color="error"
-                                                        @click="deletePoint(point.id)">
-                                                        supprimer
-                                                    </v-btn>
-                                                </v-list>
-                                            </v-menu>
+                                    <v-menu right>
+                                        <v-btn
+                                            slot="activator"
+                                            icon>
+                                            <v-icon>build</v-icon>
+                                        </v-btn>
+                                        <!-- points desktop buttons -->
+                                        <v-list class="hidden-sm-and-down">
+                                            <v-btn
+                                                color="warning"
+                                                @click="editPoint(point.id)">
+                                                modifier
+                                            </v-btn>
+                                            <v-btn
+                                                color="error"
+                                                @click="deletePoint(point.id)">
+                                                supprimer
+                                            </v-btn>
+                                        </v-list>
+                                        <!-- points responsive buttons -->
+                                        <v-list class="hidden-md-and-up">
+                                            <v-btn
+                                                small
+                                                color="warning"
+                                                @click="editPoint(point.id)">
+                                                <v-icon>build</v-icon>
+                                            </v-btn>
+                                            <v-btn
+                                                small
+                                                color="error"
+                                                @click="deletePoint(point.id)">
+                                                <v-icon>delete</v-icon>
+                                            </v-btn>
+                                        </v-list>
+
+                                    </v-menu>
                                 </v-list-tile-action>
 
                                 <v-list-tile-action>
@@ -298,12 +324,12 @@
 
     <!-- Alert in case of imminent destroy -->
         <v-layout row justify-center>
-            <v-dialog v-model="dialog" persistent max-width="290">
+            <v-dialog v-model="dialog" persistent>
                 <v-card>
-                            <v-card-title class="headline">
+                            <v-card-text class="headline text-xs-center">
                                 {{dialogText}}
-                            </v-card-title>
-                            <v-card-text>
+                            </v-card-text>
+                            <v-card-text class="text-xs-center">
                                 Cette suppression sera irreversible à partir de l'acceptation de cette boîte de dialogue.
                             </v-card-text>
                             <v-card-actions>
@@ -314,17 +340,21 @@
                                     @click.native="
                                         dialog = false,
                                         dialogId = null,
-                                        dialogType = ''">
-                                    Annuler
+                                        dialogType = ''"
+                                    >
+                                    <v-icon>keyboard_backspace</v-icon>
+                                    Retour
                                 </v-btn>
                                 <v-btn
-                                    color="green darken-1"
+                                    color="error"
                                     flat
                                     @click.native="
                                         destroy(dialogType,dialogId)
                                         dialog = false,
                                         dialogId = null,
-                                        dialogType = ''">
+                                        dialogType = ''"
+                                    >
+                                    <v-icon>delete</v-icon>
                                     Supprimer
                                 </v-btn>
                             </v-card-actions>
@@ -634,7 +664,7 @@
                     //if no child found, can remove
                     this.dialogId = idCategory,
                     this.dialogType = 'category',
-                    this.dialogText = 'Veuillez confirmer la suppression de '+idName+' with id: '+this.dialogId+' of type: '+this.dialogType,
+                    this.dialogText = 'Veuillez confirmer la suppression de la catégorie '+idName,
                     this.dialog = true;
                 }
                 else{
@@ -675,8 +705,7 @@
                     //if no child found, can remove
                     this.dialogId = idReference,
                     this.dialogType = 'reference',
-                    //TO CHANGE too much info in dialogText
-                    this.dialogText = 'Veuillez confirmer la suppression de '+idName+' with id: '+this.dialogId+' of type: '+this.dialogType,
+                    this.dialogText = 'Veuillez confirmer la suppression de la référence '+idName,
                     this.dialog = true;
                 }
                 else{
@@ -708,7 +737,7 @@
                     //if no child found, can remove
                     this.dialogId = idPoint,
                     this.dialogType = 'point',
-                    this.dialogText = 'Veuillez confirmer la suppression de '+idName+' with id: '+this.dialogId+' of type: '+this.dialogType,
+                    this.dialogText = 'Veuillez confirmer la suppression du point '+idName,
                     this.dialog = true;
             },
         //DESTROY HUB
@@ -804,6 +833,9 @@
         border-bottom: 1px !important;
         border-bottom-color: rgb(87, 87, 87) !important;
         border-bottom-style:solid !important;
+    }
+    .v-btn--small{
+        min-width: 25px !important;
     }
 
     /* .v-snack--bottom{

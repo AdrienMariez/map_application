@@ -121,6 +121,7 @@
                                             x-large>
                                             {{selectedPrefix}}{{icon}}
                                         </v-icon>
+                                        <div v-if="icon.length > 0">Attention ! Pas plus d'une icône ne doit s'afficher ici !</div>
                                     </div>
                                 </v-flex>
                                 <v-divider></v-divider>
@@ -171,17 +172,20 @@
                 loading: true,
                 categories: [],
                 categoriesNames: [],
+
                 languages: [],
+                codes:  [],
 
                 valid: false,
                 namesInitial: [],
                 fk_id: [],
+
                 names: [],
-                codes:  [],
                 nameRules: [
                     v => !!v || "Invalide ! ",
                     v => (v && v.length <= 50) || "Trop long !"
                 ],
+
                 iconsPrefix: [
                     { text: 'Material', code: '' },
                     { text: 'Font Awesome', code: 'fa-' },
@@ -195,6 +199,7 @@
                 //     'L', 'M', 'N', 'O'
                 // ],
                 selectedPrefix: "",
+
                 icon: '',
                 iconTotal: '',
                 iconRules: [
@@ -203,6 +208,7 @@
                     //  1.027538            1.360224
                     //  44.392567           44.590387
                 ],
+                
                 colors: [
                     { text: 'Rouge', code: '#B71C1C' },
                     { text: 'Orange sombre', code: '#F4511E' },
@@ -234,6 +240,9 @@
             },
             namesInitial(val, oldVal){
                 this.editMode();
+            },
+            icon(val, oldVal) {
+                this.icon = val.toLowerCase();
             },
             selectedColor(val, oldVal){
                 document.getElementById('coloredDiv').style.backgroundColor = val;
@@ -370,15 +379,8 @@
                 this.category.weight = weight;
                 var newCategory = this.category;
 
-                axios.patch('/api/categories/' + id, newCategory)
-                    .then(function (resp) {
-                        
-                    })
-                    .catch(function (error) {
-                        console.log(error.response.data);
-                        
-                        alert("Un problème est survenu lors de la mise à jour. Error located in EditCategory.vue !");
-                    });
+                categoriesMethods.editCategory(id, newCategory);
+
                 this.$emit('pageToShow', "", null);
                 
             },
@@ -390,7 +392,7 @@
                         "fk_language_code": this.languages[i]["code"],
                         "text": names[i]
                     };
-
+                    
                     axios.post('/api/categoriesnames', newCategoryName)
                         .then(function (resp) {
                         })
@@ -405,21 +407,13 @@
             },
             updateCategoryNames(id, fk_id, codes, names){
                 for (let i = 0; i < names.length; i++) {
-                    //TO CHANGE
                     var newCategoryName = {
                         "fk_category_id": fk_id,
                         "fk_language_code": codes[i],
                         "text": names[i]
                     };
 
-                    axios.patch('/api/categoriesnames/' + id[i], newCategoryName)
-                        .then(function (resp) {
-                        })
-                        .catch(function (error) {
-                            console.log(error.response.data);
-                            
-                            alert("Un problème est survenu lors de la mise à jour. Error located in EditCategory.vue !");
-                        });
+                    categoriesMethods.editCategoryName(id[i], newCategoryName);
                 }
                 this.$emit('pageToShow', "", null);
             },
