@@ -101,6 +101,9 @@ Sources :
         https://blog.peterplucinski.com/setting-up-jwt-authentication-with-laravel-and-vue-part-1/
         https://github.com/PeterPlucinski/laravel-vue-jwt
 
+    Leaflet extra markers
+        https://github.com/coryasilva/Leaflet.ExtraMarkers
+
     Images upload
         https://appdividend.com/2018/02/13/vue-js-laravel-file-upload-tutorial/
 

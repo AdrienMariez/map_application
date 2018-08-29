@@ -268,16 +268,27 @@ export default {
                         }
                       }
                     });
+                    
+                    var currentMarker;
 
+                    if (references[x]["icon"].substring(0,3) == "fa-") {
+                      currentMarker = L.ExtraMarkers.icon({
+                        icon: references[x]["icon"],
+                        markerColor: pointsDisplayed[i]["catColor"],
+                        shape: 'circle',
+                        prefix: 'fa'
+                      });
+                    }
+                    else{
+                      currentMarker = L.ExtraMarkers.icon({
+                        icon: references[x]["icon"],
+                        markerColor: pointsDisplayed[i]["catColor"],
+                        shape: 'circle',
+                        prefix: 'mdi'
+                      });
+                    }
                     
-                    
-                    // REMOVE ,prefix: 'fa'
-                    var currentMarker = L.ExtraMarkers.icon({
-                      icon: references[x]["icon"],
-                      markerColor: pointsDisplayed[i]["catColor"],
-                      shape: 'circle',
-                      prefix: 'fa'
-                    });
+
                     marker = L.marker([point["lattitude"], point["longitude"]], {icon: currentMarker}).bindPopup(popup);
 
                     // marker = L.marker([point["longitude"], point["lattitude"]]).bindPopup(point["link"]);

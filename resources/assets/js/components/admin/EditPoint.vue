@@ -189,7 +189,7 @@
                             </v-layout>
                         </v-container>
                         <v-container>
-                            <v-layout>
+                            <v-layout align-center column justify-center>
                                 <v-btn
                                     dark
                                     color="success"
@@ -206,7 +206,6 @@
                                 <v-btn
                                     v-if="!valid"
                                     :disabled="!valid"
-                                    @click="submit"
                                     color="grey lighten-1">
                                     <v-icon>add</v-icon> Valider
                                 </v-btn>
@@ -214,6 +213,7 @@
                                     v-if="valid"
                                     :disabled="!valid"
                                     @click="submit"
+                                    large
                                     color="success">
                                     <v-icon>add</v-icon> Valider
                                 </v-btn>
@@ -289,7 +289,10 @@
                 ],
                 icon: '',
                 iconTotal: '',
+
                 pointPreview: {
+                    icon: "",
+                    color: "",
                     lat: null,
                     lng: null,
                     title: "",
@@ -299,6 +302,7 @@
                     img: "",
                 },
                 preview: false,
+
                 point: {
                     id: null,
                     link: "",
@@ -495,8 +499,6 @@
                     this.lattitudeUpdater = lattitude;
                 }
                 else{
-                    console.log("value for lat incorrect !");
-
                     this.lattitude = this.lattitude;
                     this.lattitudeUpdater = this.lattitude;
                 }
@@ -507,8 +509,6 @@
                     this.longitudeUpdater = longitude;
                 }
                 else{
-                    console.log("value of long incorrect !");
-                    
                     this.longitude = this.longitude;
                     this.longitudeUpdater = this.longitude;
                 }
@@ -525,12 +525,15 @@
                     }
                     // var titles = JSON.parse(JSON.stringify(this.titles));
                     // console.log(titles);
+                    this.pointPreview.icon = this.icon;
+                    this.pointPreview.color = this.selectedColor;
                     
                     if (this.titles[getFR] !== "" && this.desc[getFR] !== "") {
                         this.pointPreview.lat =  this.lattitude;
                         this.pointPreview.lng = this.longitude;
                         this.pointPreview.title = this.titles[getFR];
                         this.pointPreview.desc = this.desc[getFR];
+
                         //Optional
                         if (this.linkAlias[getFR] !== "" && this.link !== "") {
                             this.pointPreview.link = this.link;
@@ -569,6 +572,7 @@
                     var missingTitle = false;
                     var errorTitle = false;
                     for (let title = 0; title < this.titles.length; title++) {
+                        
                         if (this.titles[title].length == 0) {
                             missingTitle = true
                         }
@@ -591,6 +595,7 @@
                     var missingDesc = false;
                     var errorDesc = false;
                     for (let d = 0; d < this.desc.length; d++) {
+                        
                         if (this.desc[d].length == 0) {
                             missingDesc = true
                         }
@@ -614,13 +619,11 @@
                         var missingLink = false;
                         var errorLink = false;
                         for (let alias = 0; alias < this.linkAlias.length; alias++) {
-                            if (this.linkAlias[alias]) {
-                                if (this.linkAlias[alias].length == 0) {
-                                    missingLink = true;
-                                }
-                                if (this.linkAlias[alias].length > 50) {
-                                    errorLink = true;
-                                }
+                            if (this.linkAlias[alias].length == 0) {
+                                missingLink = true;
+                            }
+                            if (this.linkAlias[alias].length > 50) {
+                                errorLink = true;
                             }
                         }
                         if (missingLink === true) {
@@ -723,6 +726,7 @@
                     });
             },
             createPointNames(id) {
+                
                 for (let i = 0; i < this.codes.length; i++) {
                     var newPointName;
                     if (this.link !== "") {
@@ -743,9 +747,12 @@
                             "linkalias": "",
                         };
                     };
+
+                    // console.log(newPointName);
+                    
                     axios.post('/api/pointsnames', newPointName)
                         .then(function (resp) {
-                            console.log("point name created");
+                            console.log("point name created"+this.codes[i]);
                         })
                         .catch(function (error) {
                             console.log(error.response.data);

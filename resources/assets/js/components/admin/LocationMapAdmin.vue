@@ -268,12 +268,97 @@
 
                     this.map.removeLayer(this.marker);
 
-                    var currentMarker = L.ExtraMarkers.icon({
-                      icon: this.icon,
-                      markerColor: this.selectedColor,
-                      shape: 'circle',
-                      prefix: 'fa'
-                    });
+                    // Convert colors
+                        var color;
+                        switch (this.pointPreview.color) {
+                            case "#B71C1C":
+                                //red darken-4
+                                color = "red";
+                                break;
+
+                            case "#F4511E":
+                                //deep-orange darken-4
+                                color = "orange-dark";
+                                break;
+
+                            case "#FFA726":
+                                //orange lighten-1
+                                color = "orange";
+                                break;
+
+                            case "#FFC400":
+                                //amber accent-3
+                                color = "yellow";
+                                break;
+
+                            case "#006064":
+                                //cyan darken-4
+                                color = "blue-dark";
+                                break;
+
+                            case "#01579B":
+                                //light-blue darken-4
+                                color = "blue";
+                                break;
+
+                            case "#1E88E5":
+                                //blue darken-1
+                                color = "cyan";
+                                break;
+
+                            case "#4A148C":
+                                //purple darken-4
+                                color = "purple";
+                                break;
+
+                            case "#880E4F":
+                                //pink darken-4
+                                color = "violet";
+                                break;
+
+                            case "#F50057":
+                                //pink accent-3
+                                color = "pink";
+                                break;
+
+                            case "#1B5E20":
+                                //green darken-4
+                                color = "green-dark";
+                                break;
+
+                            case "#388E3C":
+                                //green darken-2
+                                color = "green";
+                                break;
+
+                            case "#4CAF50":
+                                //green
+                                color = "green-light";
+                                break;
+
+                            default:
+                                color = catColor;
+                        }
+                    // END Convert colors
+
+                    var currentMarker;
+
+                    if (this.pointPreview.icon.substring(0,3) == "fa-") {
+                      currentMarker = L.ExtraMarkers.icon({
+                        icon: this.pointPreview.icon,
+                        markerColor: color,
+                        shape: 'circle',
+                        prefix: 'fa'
+                      });
+                    }
+                    else{
+                      currentMarker = L.ExtraMarkers.icon({
+                        icon: this.pointPreview.icon,
+                        markerColor: color,
+                        shape: 'circle',
+                        prefix: 'mdi'
+                      });
+                    }
 
                     //popup
                         // console.log(this.pointPreview.title);

@@ -29,58 +29,32 @@
                                 </v-flex>
                             <!-- Icon selection/icon test -->
                                 <v-flex xs12 class="my-5">
-                                    <div>Icone utilisée : </div>
-                                    <!-- Select library -->
+                                <!-- Select library -->
+                                    <div>Choix de la bibliothèque * : </div>
                                     <v-select
-                                        label="origine de l'icone :"
+                                        label="Sélectionner une bibliothèque"
                                         item-text="text"
                                         item-value="code"
                                         :items="iconsPrefix"
                                         v-model="selectedPrefix"
                                         solo
                                         required
-                                        class="mb-2"
+                                        class="mt-2 mb-4"
                                     ></v-select>
-                                    <!-- Hints how to use -->
-                                    <div>
-                                        <div
-                                            v-if="selectedPrefix === ''">
-                                            <div>
-                                                <a
-                                                    id="linkDiv" target="_blank" rel="noopener noreferrer"
-                                                    href="https://material.io/tools/icons/?style=baseline">
-                                                    Bibliothèque Material
-                                                </a>
-                                                (nouvel onglet)
-                                            </div>
-                                            <v-tooltip
-                                                top>
-                                                <v-icon
-                                                    class="iconTooltip"
-                                                    slot="activator">
-                                                    help
-                                                </v-icon>
-                                                <div>
-                                                    <div>Ouvrir le lien.</div>
-                                                    <div>Cliquer sur l'icône choise.</div>
-                                                    <div>Cliquer sur Selected Icon en bas à gauche de l'écran.</div> 
-                                                    <div>Copier le lien à côté de l'icône en haut.</div>
-                                                    <div>Placer le texte ainsi sélectionné dans la zone "icône" ci-dessous.</div>
-                                                </div>
-                                            </v-tooltip>
-                                        </div>
+                                <!-- Hints how to use -->
+                                    <div class="mb-4">
                                         <div
                                             v-if="selectedPrefix === 'fa-'">
-                                            <div>
+                                            <v-tooltip right>
                                                 <a
-                                                    id="linkDiv" target="_blank" rel="noopener noreferrer"
+                                                    slot="activator"
+                                                    id="linkDiv"target="_blank"rel="noopener noreferrer"
                                                     href="https://fontawesome.com/icons?from=io">
                                                     Bibliothèque Font Awesome
                                                 </a>
-                                                (nouvel onglet)
-                                            </div>
-                                            <v-tooltip
-                                                top>
+                                                <span>Ouverture dans un nouvel onglet</span>
+                                            </v-tooltip>
+                                            <v-tooltip right>
                                                 <v-icon
                                                     class="iconTooltip"
                                                     slot="activator">
@@ -95,16 +69,16 @@
                                         </div>
                                         <div
                                             v-if="selectedPrefix === 'mdi-'">
-                                            <div>
+                                            <v-tooltip right>
                                                 <a
+                                                    slot="activator"
                                                     id="linkDiv" target="_blank" rel="noopener noreferrer"
                                                     href="https://materialdesignicons.com/">
                                                     Bibliothèque Material Design
                                                 </a>
-                                                (nouvel onglet)
-                                            </div>
-                                            <v-tooltip
-                                                top>
+                                                <span>Ouverture dans un nouvel onglet</span>
+                                            </v-tooltip>
+                                            <v-tooltip right>
                                                 <v-icon
                                                     class="iconTooltip"
                                                     slot="activator">
@@ -118,16 +92,17 @@
                                             </v-tooltip>
                                         </div>
                                     </div>
-                                    <!-- Text input choose icon -->
+                                <!-- Text input choose icon -->
+                                    <div>Choix de l'icône * : </div>
                                     <v-text-field
+                                        class="mt-2 mb-4"
                                         v-model="icon"
                                         :rules="iconRules"
-                                        label="icone *"
-                                        hint="icone utilisée par la catégorie"
+                                        hint="Icône utilisée par la reférence"
                                         required
                                         :counter="40"
                                     ></v-text-field>
-                                    <!-- Preview icon -->
+                                <!-- Preview icon -->
                                     <div>Aperçu de {{selectedPrefix}}{{icon}} :
                                         <v-icon
                                             v-bind:style="{ color: selectedColor }"
@@ -176,7 +151,6 @@
                                 <v-btn
                                     v-if="!valid"
                                     :disabled="!valid"
-                                    @click="submit"
                                     color="grey lighten-1">
                                     <v-icon>add</v-icon> Valider
                                 </v-btn>
@@ -184,6 +158,7 @@
                                     v-if="valid"
                                     :disabled="!valid"
                                     @click="submit"
+                                    large
                                     color="success">
                                     <v-icon>add</v-icon> Valider
                                 </v-btn>
@@ -236,12 +211,13 @@
                     v => !!v || "Invalide ! ",
                     v => (v && v.length <= 50) || "Trop long !"
                 ],
+                
                 iconsPrefix: [
-                    { text: 'Material', code: '' },
                     { text: 'Font Awesome', code: 'fa-' },
                     { text: 'Material Design', code: 'mdi-' },
                 ],
                 selectedPrefix: "",
+
                 icon: '',
                 iconTotal: '',
                 iconRules: [
