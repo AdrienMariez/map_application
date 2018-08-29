@@ -332,6 +332,7 @@
         top: 5vh;
         /* width: 90vw !important; */
         height: 90vh !important;
+        background-color: white !important;
     }
     #fixedDrawerContent{
         height: 100% !important;

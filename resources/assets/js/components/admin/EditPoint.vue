@@ -9,14 +9,16 @@
                                 <v-flex xs12 class="my-5">
                                     <div>Réference parent *: </div>
                                     <v-select
+                                        prepend-icon="search"
                                         item-text="text"
                                         item-value="id"
                                         :items="referenceList"
                                         v-model="selectedReference"
+                                        solo
                                         required
                                     ></v-select>
                                     <div class="my-2" id="coloredDiv"></div>
-                                    <div class="my-2">Aperçu de {{icon}} :
+                                    <div class="my-2">Aperçu de l'icône de {{selectedReference}} :
                                         <v-icon
                                             v-bind:style="{ color: selectedColor }"
                                             x-large>

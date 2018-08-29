@@ -837,6 +837,9 @@
     .v-btn--small{
         min-width: 25px !important;
     }
+    .v-menu__content{
+        background-color: white !important;
+    }
 
     /* .v-snack--bottom{
         bottom: 50px;

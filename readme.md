@@ -45,7 +45,7 @@ Set auth:
     php artisan jwt:secret
 
     npm install
-
+    
 
 Create user:
 

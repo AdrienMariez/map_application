@@ -207,6 +207,12 @@
         width: 100px;
         height: 100px;
     }
+    .v-list{
+        background-color: white !important;
+    }
+    .v-menu--inline{
+        width: inherit !important;
+    }
     /* .white--text{
         text-shadow: 2px 2px 8px #000000;
     } */

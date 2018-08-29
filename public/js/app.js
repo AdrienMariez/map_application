@@ -69155,7 +69155,7 @@ exports = module.exports = __webpack_require__(0)(false);
 
 
 // module
-exports.push([module.i, "\n.width90[data-v-557bb4d5]{\n    width: 90vw;\n}\n.v-card__title[data-v-557bb4d5]{\n   padding: 0;\n}\n.logoContainerTopNav[data-v-557bb4d5]{\n    height: 100%;\n    -webkit-box-orient: vertical;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: column;\n            flex-direction: column;\n}\n.logoMini[data-v-557bb4d5]{\n    width: 48px;\n    height: 48px;\n}\n.logoMedium[data-v-557bb4d5]{\n    width: 100px;\n    height: 100px;\n}\n/* .white--text{\n    text-shadow: 2px 2px 8px #000000;\n} */\n", ""]);
+exports.push([module.i, "\n.width90[data-v-557bb4d5]{\n    width: 90vw;\n}\n.v-card__title[data-v-557bb4d5]{\n   padding: 0;\n}\n.logoContainerTopNav[data-v-557bb4d5]{\n    height: 100%;\n    -webkit-box-orient: vertical;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: column;\n            flex-direction: column;\n}\n.logoMini[data-v-557bb4d5]{\n    width: 48px;\n    height: 48px;\n}\n.logoMedium[data-v-557bb4d5]{\n    width: 100px;\n    height: 100px;\n}\n.v-list[data-v-557bb4d5]{\n    background-color: white !important;\n}\n.v-menu--inline[data-v-557bb4d5]{\n    width: inherit !important;\n}\n/* .white--text{\n    text-shadow: 2px 2px 8px #000000;\n} */\n", ""]);
 
 // exports
 
@@ -69631,7 +69631,7 @@ exports = module.exports = __webpack_require__(0)(false);
 
 
 // module
-exports.push([module.i, "\n.borderCategories[data-v-52d311a4]:before {\n    content:'';\n    position:absolute;\n    width:100%;\n    height:3px;\n    background:-webkit-gradient(linear, right top, left top, from(rgba(0, 0, 0, 0)), color-stop(#388E3C), to(rgba(0, 0, 0, 0)));\n    background:linear-gradient(to left, rgba(0, 0, 0, 0), #388E3C, rgba(0, 0, 0, 0));\n    top:0px;\n    left:0;\n}\n.borderReferences[data-v-52d311a4]{\n    content:'';\n    position:absolute;\n    width:100%;\n    height:3px;\n    background:-webkit-gradient(linear, right top, left top, from(rgba(0, 0, 0, 0)), color-stop(#A5D6A7), to(rgba(0, 0, 0, 0)));\n    background:linear-gradient(to left, rgba(0, 0, 0, 0), #A5D6A7, rgba(0, 0, 0, 0));\n    top:0px;\n    left:0;\n}\n.headerCategories[data-v-52d311a4]{\n    padding-left: 0px;\n}\n.headerReferences[data-v-52d311a4]{\n    padding-left: 10px;\n}\n@media screen and (min-width: 600px) {\n.headerReferences[data-v-52d311a4]{\n        padding-left: 30px;\n}\n}\n.pointsListElement[data-v-52d311a4]{\n    padding-left: 80px;\n    border-bottom: 1px !important;\n    border-bottom-color: rgb(87, 87, 87) !important;\n    border-bottom-style:solid !important;\n}\n.v-btn--small[data-v-52d311a4]{\n    min-width: 25px !important;\n}\n\n/* .v-snack--bottom{\n    bottom: 50px;\n} */\n", ""]);
+exports.push([module.i, "\n.borderCategories[data-v-52d311a4]:before {\n    content:'';\n    position:absolute;\n    width:100%;\n    height:3px;\n    background:-webkit-gradient(linear, right top, left top, from(rgba(0, 0, 0, 0)), color-stop(#388E3C), to(rgba(0, 0, 0, 0)));\n    background:linear-gradient(to left, rgba(0, 0, 0, 0), #388E3C, rgba(0, 0, 0, 0));\n    top:0px;\n    left:0;\n}\n.borderReferences[data-v-52d311a4]{\n    content:'';\n    position:absolute;\n    width:100%;\n    height:3px;\n    background:-webkit-gradient(linear, right top, left top, from(rgba(0, 0, 0, 0)), color-stop(#A5D6A7), to(rgba(0, 0, 0, 0)));\n    background:linear-gradient(to left, rgba(0, 0, 0, 0), #A5D6A7, rgba(0, 0, 0, 0));\n    top:0px;\n    left:0;\n}\n.headerCategories[data-v-52d311a4]{\n    padding-left: 0px;\n}\n.headerReferences[data-v-52d311a4]{\n    padding-left: 10px;\n}\n@media screen and (min-width: 600px) {\n.headerReferences[data-v-52d311a4]{\n        padding-left: 30px;\n}\n}\n.pointsListElement[data-v-52d311a4]{\n    padding-left: 80px;\n    border-bottom: 1px !important;\n    border-bottom-color: rgb(87, 87, 87) !important;\n    border-bottom-style:solid !important;\n}\n.v-btn--small[data-v-52d311a4]{\n    min-width: 25px !important;\n}\n.v-menu__content[data-v-52d311a4]{\n    background-color: white !important;\n}\n\n/* .v-snack--bottom{\n    bottom: 50px;\n} */\n", ""]);
 
 // exports
 
@@ -73613,6 +73613,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 
 
@@ -75123,7 +75125,7 @@ exports = module.exports = __webpack_require__(0)(false);
 
 
 // module
-exports.push([module.i, "\n.fixedButton[data-v-0460a7df]{\n    z-index: 4;\n    position: fixed;\n    top: 30vh;\n    right: 0px;\n}\n#fixedDrawer[data-v-0460a7df]{\n    top: 5vh;\n    /* width: 90vw !important; */\n    height: 90vh !important;\n}\n#fixedDrawerContent[data-v-0460a7df]{\n    height: 100% !important;\n    width: 100% !important;\n    max-width: 80vw !important;\n    /* z-index: 6;\n    position: fixed;\n    top: 5vh;\n    width: 90vw;\n    height: 90vh;\n    background-color: beige; */\n}\n#map[data-v-0460a7df]{\n    height: 85%;\n    width: 100%;\n    position: relative;\n}\n", ""]);
+exports.push([module.i, "\n.fixedButton[data-v-0460a7df]{\n    z-index: 4;\n    position: fixed;\n    top: 30vh;\n    right: 0px;\n}\n#fixedDrawer[data-v-0460a7df]{\n    top: 5vh;\n    /* width: 90vw !important; */\n    height: 90vh !important;\n    background-color: white !important;\n}\n#fixedDrawerContent[data-v-0460a7df]{\n    height: 100% !important;\n    width: 100% !important;\n    max-width: 80vw !important;\n    /* z-index: 6;\n    position: fixed;\n    top: 5vh;\n    width: 90vw;\n    height: 90vh;\n    background-color: beige; */\n}\n#map[data-v-0460a7df]{\n    height: 85%;\n    width: 100%;\n    position: relative;\n}\n", ""]);
 
 // exports
 
@@ -75796,9 +75798,11 @@ var render = function() {
                             _vm._v(" "),
                             _c("v-select", {
                               attrs: {
+                                "prepend-icon": "search",
                                 "item-text": "text",
                                 "item-value": "id",
                                 items: _vm.referenceList,
+                                solo: "",
                                 required: ""
                               },
                               model: {
@@ -75820,8 +75824,8 @@ var render = function() {
                               { staticClass: "my-2" },
                               [
                                 _vm._v(
-                                  "Aperçu de " +
-                                    _vm._s(_vm.icon) +
+                                  "Aperçu de l'icône de " +
+                                    _vm._s(_vm.selectedReference) +
                                     " :\n                                    "
                                 ),
                                 _c(
@@ -84662,6 +84666,10 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(196)
+}
 var normalizeComponent = __webpack_require__(1)
 /* script */
 var __vue_script__ = __webpack_require__(187)
@@ -84670,7 +84678,7 @@ var __vue_template__ = __webpack_require__(188)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
-var __vue_styles__ = null
+var __vue_styles__ = injectStyle
 /* scopeId */
 var __vue_scopeId__ = null
 /* moduleIdentifier (server only) */
@@ -84742,6 +84750,52 @@ if (false) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 190 */,
+/* 191 */,
+/* 192 */,
+/* 193 */,
+/* 194 */,
+/* 195 */,
+/* 196 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(197);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(2)("b38c4232", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-34935b93\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./AppComponent.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-34935b93\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./AppComponent.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 197 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(0)(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.v-card{\n    background-color: white !important;\n}\n.v-menu--inline{\n    width: 100% !important;\n}\n", ""]);
+
+// exports
+
 
 /***/ })
 /******/ ]);
