@@ -188,7 +188,7 @@
         position: absolute;
         right: 20px;
         bottom: 0px;
-        z-index: 50;
+        z-index: 30;
     }
     .buttonContact > button{
         right: 5px;

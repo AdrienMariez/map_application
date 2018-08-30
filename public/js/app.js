@@ -83073,7 +83073,7 @@ exports = module.exports = __webpack_require__(0)(false);
 
 
 // module
-exports.push([module.i, "\n.asideDrawer[data-v-ff68bee4]{\n      max-height: 100% !important;\n}\n.v-list__tile__action--stack[data-v-ff68bee4]{\n      padding-top: 0 !important;\n      padding-bottom: 0 !important;\n      white-space: unset !important;\n}\n.selectTop[data-v-ff68bee4]{\n      z-index: 200;\n      max-width: 100px;\n      margin-top: 10px;\n}\n  /* .shadow{\n      text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;\n  } */\n.logoContainer > img[data-v-ff68bee4]{\n      width: 200px;\n      height: 200px;\n}\n.logoContainerMedium > img[data-v-ff68bee4]{\n      width: 80px;\n      height: 80px;\n}\n.logoContainerMini[data-v-ff68bee4]{\n      height: 100%;\n}\n.logoContainerMini > img[data-v-ff68bee4]{\n      width: 48px;\n      height: 48px;\n}\n.flexCenter[data-v-ff68bee4] {\n      -webkit-box-pack: center;\n          -ms-flex-pack: center;\n              justify-content: center;\n}\n.cursorAction[data-v-ff68bee4]{\n      cursor: pointer;\n}\na[data-v-ff68bee4]{\n      color: rgb(24, 53, 17) !important;\n      text-decoration: inherit;\n}\n/* #publicMapControls{\n  float: right;\n  border: 5px;\n  border-color: brown;\n  border-style: solid;\n  z-index: 100;\n} */\n", ""]);
+exports.push([module.i, "\n.asideDrawer[data-v-ff68bee4]{\n      max-height: 100% !important;\n}\n.v-list__tile__action--stack[data-v-ff68bee4]{\n      padding-top: 0 !important;\n      padding-bottom: 0 !important;\n      white-space: unset !important;\n}\n.selectTop[data-v-ff68bee4]{\n      z-index: 200;\n      max-width: 100px;\n      margin-top: 10px;\n}\n  /* .shadow{\n      text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;\n  } */\n.logoContainer > img[data-v-ff68bee4]{\n      width: 200px;\n      height: 200px;\n}\n.logoContainerMedium > img[data-v-ff68bee4]{\n      width: 80px;\n      height: 80px;\n}\n.logoContainerMini[data-v-ff68bee4]{\n      height: 100%;\n}\n.logoContainerMini > img[data-v-ff68bee4]{\n      width: 48px;\n      height: 48px;\n}\n.listColorAlt[data-v-ff68bee4]{\n      background-color: #C8E6C9 !important;\n}\n.borderReferences[data-v-ff68bee4]{\n      content:'';\n      position:absolute;\n      width:100%;\n      height:3px;\n      background:-webkit-gradient(linear, right top, left top, from(rgba(0, 0, 0, 0)), to(#C8E6C9));\n      background:linear-gradient(to left, rgba(0, 0, 0, 0), #C8E6C9);\n      top:0px;\n      left:0;\n}\n.flexCenter[data-v-ff68bee4] {\n      -webkit-box-pack: center;\n          -ms-flex-pack: center;\n              justify-content: center;\n}\n.cursorAction[data-v-ff68bee4]{\n      cursor: pointer;\n}\na[data-v-ff68bee4]{\n      color: rgb(24, 53, 17) !important;\n      text-decoration: inherit;\n}\n/* #publicMapControls{\n  float: right;\n  border: 5px;\n  border-color: brown;\n  border-style: solid;\n  z-index: 100;\n} */\n", ""]);
 
 // exports
 
@@ -83092,6 +83092,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_references_js__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_categories_js__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__services_languages_js__ = __webpack_require__(7);
+//
+//
 //
 //
 //
@@ -83856,7 +83858,7 @@ exports = module.exports = __webpack_require__(0)(false);
 
 
 // module
-exports.push([module.i, "\n.buttonContact[data-v-3f2012b7]{\n    height: 45px;\n    width: 100px;\n    position: absolute;\n    right: 20px;\n    bottom: 0px;\n    z-index: 50;\n}\n.buttonContact > button[data-v-3f2012b7]{\n    right: 5px;\n}\n.linkColor[data-v-3f2012b7]{\n    color: rgb(245, 255, 153);\n}\n.logoContainerMini[data-v-3f2012b7]{\n    height: 100%;\n}\n.logoContainerMini > img[data-v-3f2012b7]{\n    width: 48px;\n    height: 48px;\n}\n.cursorAction[data-v-3f2012b7]{\n    cursor: pointer;\n}\na[data-v-3f2012b7]{\n    color: rgb(146, 221, 123) !important;\n    text-decoration: inherit;\n}\n", ""]);
+exports.push([module.i, "\n.buttonContact[data-v-3f2012b7]{\n    height: 45px;\n    width: 100px;\n    position: absolute;\n    right: 20px;\n    bottom: 0px;\n    z-index: 30;\n}\n.buttonContact > button[data-v-3f2012b7]{\n    right: 5px;\n}\n.linkColor[data-v-3f2012b7]{\n    color: rgb(245, 255, 153);\n}\n.logoContainerMini[data-v-3f2012b7]{\n    height: 100%;\n}\n.logoContainerMini > img[data-v-3f2012b7]{\n    width: 48px;\n    height: 48px;\n}\n.cursorAction[data-v-3f2012b7]{\n    cursor: pointer;\n}\na[data-v-3f2012b7]{\n    color: rgb(146, 221, 123) !important;\n    text-decoration: inherit;\n}\n", ""]);
 
 // exports
 
@@ -84579,8 +84581,9 @@ var render = function() {
                 "v-expansion-panel-content",
                 {
                   key: i,
-                  staticClass: "green lighten-4 noPaddingLeftRight",
-                  attrs: { value: _vm.showAllForms, color: "green lighten-4" },
+                  staticClass: "green lighten-3",
+                  class: { listColorAlt: i % 2 == 0 },
+                  attrs: { value: _vm.showAllForms, color: "green lighten-3" },
                   on: {
                     click: function($event) {
                       $event.stopPropagation()
@@ -84602,7 +84605,6 @@ var render = function() {
                         [
                           _c(
                             "v-list-tile",
-                            { staticClass: "noPaddingLeftRight" },
                             [
                               _c(
                                 "v-list-tile-action",
@@ -84684,6 +84686,8 @@ var render = function() {
                                 }
                               },
                               [
+                                _c("div", { staticClass: "borderReferences" }),
+                                _vm._v(" "),
                                 _c(
                                   "v-list-tile-action",
                                   [

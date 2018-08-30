@@ -80,15 +80,16 @@
                     :key="i"
                     :value="showAllForms"
                     @click.stop="showAllForms = null"
-                    color="green lighten-4"
-                    class="green lighten-4 noPaddingLeftRight">
+                    color="green lighten-3"
+                    class="green lighten-3"
+                    :class="{ listColorAlt: i % 2 == 0 }">
 
                     <!-- header -->
                     <div 
                         slot="header"
                         class="pl-0">
                         <v-list>
-                            <v-list-tile class="noPaddingLeftRight">
+                            <v-list-tile>
                                 <v-list-tile-action>
                                     <!-- class="shadow" -->
                                     <v-icon
@@ -126,6 +127,7 @@
                         :key="y"
                         color="white">
                         <v-list-tile @click.stop="displayReferencePoints(reference.id, category.color)">
+                            <div class="borderReferences"></div>
                             <v-list-tile-action>
                                 <!-- class="shadow" -->
                                 <v-icon
@@ -427,6 +429,21 @@ export default {
         width: 48px;
         height: 48px;
     }
+
+    .listColorAlt{
+        background-color: #C8E6C9 !important;
+    }
+
+    .borderReferences{
+        content:'';
+        position:absolute;
+        width:100%;
+        height:3px;
+        background:linear-gradient(to left, rgba(0, 0, 0, 0), #C8E6C9);
+        top:0px;
+        left:0;
+    }
+
     .flexCenter {
         justify-content: center;
     }
