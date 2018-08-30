@@ -61,10 +61,11 @@
                                         <v-expansion-panel-content
                                             v-for="(language,i) in languages"
                                             :key="i"
-                                            color="light-green lighten-3"
-                                            class="light-green lighten-3 highlightHeader">
+                                            color="green lighten-3"
+                                            class="green lighten-3 highlightHeader"
+                                            :class="{ listColorAlt: i % 2 == 0 }">
                                             <div slot="header">
-                                                <div class="separator"></div>
+                                                <div></div>
                                                 {{language.name}}
                                             </div>
                                             <v-card>
@@ -857,10 +858,13 @@
 </script>
 
 <style scoped>
-    .highlightHeader:hover{
-        background-color: #AED581 !important;
+    .listColorAlt{
+        background-color: #C8E6C9 !important;
     }
-    .separator:before {
+    .highlightHeader:hover{
+        background-color: #81C784 !important;
+    }
+    /* .separator:before {
         content:'';
         position:absolute;
         width:100%;
@@ -868,7 +872,7 @@
         background:linear-gradient(to left, rgba(0, 0, 0, 0), #AED581, rgba(0, 0, 0, 0));
         top:0px;
         left:0;
-    }
+    } */
     .imgContainer{
         /* width:150px !important; */
         width:100px !important;

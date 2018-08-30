@@ -16,6 +16,7 @@
                                         :label= language.name
                                         value= names[i]
                                         required
+                                        solo
                                         :counter="50"
                                         class="mb-2"
                                     ></v-text-field>
@@ -33,16 +34,25 @@
                                 <v-flex xs12 class="my-5">
                                 <!-- select library -->
                                     <div>Choix de la bibliothèque * : </div>
-                                    <v-select
-                                        label="Sélectionner une bibliothèque"
-                                        item-text="text"
-                                        item-value="code"
-                                        :items="iconsPrefix"
-                                        v-model="selectedPrefix"
-                                        solo
-                                        required
-                                        class="mt-2"
-                                    ></v-select>
+                                    <v-btn
+                                        v-for="(prefix,i) in iconsPrefix"
+                                        :key="i"
+                                        :disabled="selectedPrefix == prefix.code"
+                                        color="success"
+                                        @click="setPrefix(prefix.code)">
+                                        {{prefix.text}}
+                                    </v-btn>
+                                    <!-- OBSOLETE old select -->
+                                            <!-- <v-select
+                                                label="Sélectionner une bibliothèque"
+                                                item-text="text"
+                                                item-value="code"
+                                                :items="iconsPrefix"
+                                                v-model="selectedPrefix"
+                                                solo
+                                                required
+                                                class="mt-2"
+                                            ></v-select> -->
                                 <!-- hints how to use -->
                                     <div class="mb-5">
                                         <div
@@ -50,7 +60,9 @@
                                             <v-tooltip right>
                                                 <a
                                                     slot="activator"
-                                                    id="linkDiv"target="_blank"rel="noopener noreferrer"
+                                                    id="linkDiv" 
+                                                    target="_blank" 
+                                                    rel="noopener noreferrer"
                                                     href="https://fontawesome.com/icons?from=io">
                                                     Bibliothèque Font Awesome
                                                 </a>
@@ -342,6 +354,10 @@
                     this.selectedColor = "";
                     this.valid = false;
                 }
+            },
+
+            setPrefix(code) {
+                this.selectedPrefix = code;
             },
 
             validation() {

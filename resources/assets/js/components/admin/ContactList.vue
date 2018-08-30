@@ -26,14 +26,17 @@
                     slot-scope="props">
                     <td
                         class="hidden-sm-and-down"
+                        :class="{ listColorAlt: props.index % 2 == 0 }"
                         @click="read(props.item.id, props.item.name, props.item.title, props.item.email, props.item.message, props.item.created_at, props.item.updated_at)">
                         {{ props.item.title }}
                     </td>
                     <td
+                        :class="{ listColorAlt: props.index % 2 == 0 }"
                         @click="read(props.item.id, props.item.name, props.item.title, props.item.email, props.item.message, props.item.created_at, props.item.updated_at)">
                         {{ props.item.name }}
                     </td>
                     <td
+                        :class="{ listColorAlt: props.index % 2 == 0 }"
                         @click="read(props.item.id, props.item.name, props.item.title, props.item.email, props.item.message, props.item.created_at, props.item.updated_at)">
                         {{ props.item.created_at }}
                     </td>
@@ -342,6 +345,9 @@
     .subheader{
         overflow: hidden;
         text-overflow: ellipsis;
+    }
+    .listColorAlt{
+        background-color: #E8F5E9 !important;
     }
     td{
         cursor: pointer;

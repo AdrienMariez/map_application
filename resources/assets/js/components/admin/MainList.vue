@@ -19,11 +19,12 @@
                 v-for="(category,i) in categories"
                 :key="i"
                 color="green lighten-3"
-                class="green lighten-3">
+                class="green lighten-3"
+                :class="{ listColorCatAlt: i % 2 == 0 }">
 
                 <!-- category header -->
                 <div class="headerCategories" slot="header">
-                    <div class="borderCategories"></div>
+                    <!-- <div class="borderCategories"></div> -->
                     <v-list
                         color="transparent"
                         class="transparent">
@@ -52,7 +53,8 @@
                 <v-list
                     xs12
                     color="green lighten-3"
-                    class="hidden-sm-and-down green lighten-3">
+                    class="hidden-sm-and-down green lighten-3"
+                    :class="{ listColorCatAlt: i % 2 == 0 }">
                     <v-layout align-center justify-space-around>
                         <v-btn
                             color="success"
@@ -87,7 +89,8 @@
                 <!-- categories responsive buttons -->
                 <v-list
                     color="green lighten-3"
-                    class="hidden-md-and-up green lighten-3">
+                    class="hidden-md-and-up green lighten-3"
+                    :class="{ listColorCatAlt: i % 2 == 0 }">
                     <v-layout align-center justify-space-around>
                         <v-btn
                             small
@@ -132,12 +135,12 @@
                         v-for="(reference,y) in references"
                         v-if="reference.fk_category_id == category.id"
                         :key="y"
-                        color="green lighten-4"
-                        class="green lighten-4">
+                        color="green lighten-5"
+                        class="green lighten-5 referencesListElement">
 
                         <!-- reference header -->
                         <div  class="headerReferences" slot="header">
-                            <div class="borderReferences"></div>
+                            <!-- <div class="borderReferences"></div> -->
                             <v-list
                                 color="transparent"
                                 class="transparent">
@@ -163,8 +166,8 @@
 
                         <!-- references desktop buttons -->
                         <v-list
-                            color="green lighten-4"
-                            class="hidden-sm-and-down green lighten-4">
+                            color="green lighten-5"
+                            class="green lighten-5 hidden-sm-and-down">
                             <v-layout align-center justify-space-around>
                                 <v-btn
                                     color="success"
@@ -195,8 +198,8 @@
 
                         <!-- references responsive button -->
                         <v-list
-                            color="green lighten-4"
-                            class="hidden-md-and-up green lighten-4">
+                            color="green lighten-5"
+                            class="green lighten-5 hidden-md-and-up">
                             <v-layout align-center justify-space-around>
                                 <v-btn
                                     small
@@ -799,16 +802,14 @@
 </script>
 
 <style scoped>
-    .borderCategories:before {
-        content:'';
-        position:absolute;
-        width:100%;
-        height:3px;
-        background:linear-gradient(to left, rgba(0, 0, 0, 0), #388E3C, rgba(0, 0, 0, 0));
-        top:0px;
-        left:0;
+    .listColorCatAlt{
+        background-color: #C8E6C9 !important;
     }
-    .borderReferences{
+
+    /* .v-list.transparent{
+        padding: 0 !important;
+    } */
+    /* .borderReferences{
         content:'';
         position:absolute;
         width:100%;
@@ -816,7 +817,7 @@
         background:linear-gradient(to left, rgba(0, 0, 0, 0), #A5D6A7, rgba(0, 0, 0, 0));
         top:0px;
         left:0;
-    }
+    } */
     .headerCategories{
         padding-left: 0px;
     }
@@ -827,6 +828,11 @@
         .headerReferences{
             padding-left: 30px;
         }
+    }
+    .referencesListElement{
+        border-bottom: 1px !important;
+        border-bottom-color: rgb(87, 87, 87) !important;
+        border-bottom-style:solid !important;
     }
     .pointsListElement{
         padding-left: 80px;

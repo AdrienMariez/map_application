@@ -12992,7 +12992,7 @@ module.exports = Component.exports
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(24);
-module.exports = __webpack_require__(189);
+module.exports = __webpack_require__(191);
 
 
 /***/ }),
@@ -69637,7 +69637,7 @@ exports = module.exports = __webpack_require__(0)(false);
 
 
 // module
-exports.push([module.i, "\n.borderCategories[data-v-52d311a4]:before {\n    content:'';\n    position:absolute;\n    width:100%;\n    height:3px;\n    background:-webkit-gradient(linear, right top, left top, from(rgba(0, 0, 0, 0)), color-stop(#388E3C), to(rgba(0, 0, 0, 0)));\n    background:linear-gradient(to left, rgba(0, 0, 0, 0), #388E3C, rgba(0, 0, 0, 0));\n    top:0px;\n    left:0;\n}\n.borderReferences[data-v-52d311a4]{\n    content:'';\n    position:absolute;\n    width:100%;\n    height:3px;\n    background:-webkit-gradient(linear, right top, left top, from(rgba(0, 0, 0, 0)), color-stop(#A5D6A7), to(rgba(0, 0, 0, 0)));\n    background:linear-gradient(to left, rgba(0, 0, 0, 0), #A5D6A7, rgba(0, 0, 0, 0));\n    top:0px;\n    left:0;\n}\n.headerCategories[data-v-52d311a4]{\n    padding-left: 0px;\n}\n.headerReferences[data-v-52d311a4]{\n    padding-left: 10px;\n}\n@media screen and (min-width: 600px) {\n.headerReferences[data-v-52d311a4]{\n        padding-left: 30px;\n}\n}\n.pointsListElement[data-v-52d311a4]{\n    padding-left: 80px;\n    border-bottom: 1px !important;\n    border-bottom-color: rgb(87, 87, 87) !important;\n    border-bottom-style:solid !important;\n}\n.v-btn--small[data-v-52d311a4]{\n    min-width: 25px !important;\n}\n.v-menu__content[data-v-52d311a4]{\n    background-color: white !important;\n}\n\n/* .v-snack--bottom{\n    bottom: 50px;\n} */\n", ""]);
+exports.push([module.i, "\n.listColorCatAlt[data-v-52d311a4]{\n    background-color: #C8E6C9 !important;\n}\n\n/* .v-list.transparent{\n    padding: 0 !important;\n} */\n/* .borderReferences{\n    content:'';\n    position:absolute;\n    width:100%;\n    height:3px;\n    background:linear-gradient(to left, rgba(0, 0, 0, 0), #A5D6A7, rgba(0, 0, 0, 0));\n    top:0px;\n    left:0;\n} */\n.headerCategories[data-v-52d311a4]{\n    padding-left: 0px;\n}\n.headerReferences[data-v-52d311a4]{\n    padding-left: 10px;\n}\n@media screen and (min-width: 600px) {\n.headerReferences[data-v-52d311a4]{\n        padding-left: 30px;\n}\n}\n.referencesListElement[data-v-52d311a4]{\n    border-bottom: 1px !important;\n    border-bottom-color: rgb(87, 87, 87) !important;\n    border-bottom-style:solid !important;\n}\n.pointsListElement[data-v-52d311a4]{\n    padding-left: 80px;\n    border-bottom: 1px !important;\n    border-bottom-color: rgb(87, 87, 87) !important;\n    border-bottom-style:solid !important;\n}\n.v-btn--small[data-v-52d311a4]{\n    min-width: 25px !important;\n}\n.v-menu__content[data-v-52d311a4]{\n    background-color: white !important;\n}\n\n/* .v-snack--bottom{\n    bottom: 50px;\n} */\n", ""]);
 
 // exports
 
@@ -69651,6 +69651,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__services_points_js__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_categories_js__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_references_js__ = __webpack_require__(6);
+//
+//
+//
 //
 //
 //
@@ -70481,6 +70484,7 @@ var render = function() {
             {
               key: i,
               staticClass: "green lighten-3",
+              class: { listColorCatAlt: i % 2 == 0 },
               attrs: { color: "green lighten-3" }
             },
             [
@@ -70492,8 +70496,6 @@ var render = function() {
                   slot: "header"
                 },
                 [
-                  _c("div", { staticClass: "borderCategories" }),
-                  _vm._v(" "),
                   _c(
                     "v-list",
                     {
@@ -70552,6 +70554,7 @@ var render = function() {
                 "v-list",
                 {
                   staticClass: "hidden-sm-and-down green lighten-3",
+                  class: { listColorCatAlt: i % 2 == 0 },
                   attrs: { xs12: "", color: "green lighten-3" }
                 },
                 [
@@ -70654,6 +70657,7 @@ var render = function() {
                 "v-list",
                 {
                   staticClass: "hidden-md-and-up green lighten-3",
+                  class: { listColorCatAlt: i % 2 == 0 },
                   attrs: { color: "green lighten-3" }
                 },
                 [
@@ -70752,8 +70756,8 @@ var render = function() {
                         "v-expansion-panel-content",
                         {
                           key: y,
-                          staticClass: "green lighten-4",
-                          attrs: { color: "green lighten-4" }
+                          staticClass: "green lighten-5 referencesListElement",
+                          attrs: { color: "green lighten-5" }
                         },
                         [
                           _c(
@@ -70764,8 +70768,6 @@ var render = function() {
                               slot: "header"
                             },
                             [
-                              _c("div", { staticClass: "borderReferences" }),
-                              _vm._v(" "),
                               _c(
                                 "v-list",
                                 {
@@ -70832,8 +70834,8 @@ var render = function() {
                           _c(
                             "v-list",
                             {
-                              staticClass: "hidden-sm-and-down green lighten-4",
-                              attrs: { color: "green lighten-4" }
+                              staticClass: "green lighten-5 hidden-sm-and-down",
+                              attrs: { color: "green lighten-5" }
                             },
                             [
                               _c(
@@ -70933,8 +70935,8 @@ var render = function() {
                           _c(
                             "v-list",
                             {
-                              staticClass: "hidden-md-and-up green lighten-4",
-                              attrs: { color: "green lighten-4" }
+                              staticClass: "green lighten-5 hidden-md-and-up",
+                              attrs: { color: "green lighten-5" }
                             },
                             [
                               _c(
@@ -71652,6 +71654,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -71794,6 +71808,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 this.selectedColor = "";
                 this.valid = false;
             }
+        },
+        setPrefix: function setPrefix(code) {
+            this.selectedPrefix = code;
         },
         validation: function validation() {
             //front validation
@@ -72037,6 +72054,7 @@ var render = function() {
                                   label: language.name,
                                   value: "names[i]",
                                   required: "",
+                                  solo: "",
                                   counter: 50
                                 },
                                 model: {
@@ -72087,23 +72105,29 @@ var render = function() {
                               _vm._v("Choix de la bibliothèque * : ")
                             ]),
                             _vm._v(" "),
-                            _c("v-select", {
-                              staticClass: "mt-2",
-                              attrs: {
-                                label: "Sélectionner une bibliothèque",
-                                "item-text": "text",
-                                "item-value": "code",
-                                items: _vm.iconsPrefix,
-                                solo: "",
-                                required: ""
-                              },
-                              model: {
-                                value: _vm.selectedPrefix,
-                                callback: function($$v) {
-                                  _vm.selectedPrefix = $$v
+                            _vm._l(_vm.iconsPrefix, function(prefix, i) {
+                              return _c(
+                                "v-btn",
+                                {
+                                  key: i,
+                                  attrs: {
+                                    disabled: _vm.selectedPrefix == prefix.code,
+                                    color: "success"
+                                  },
+                                  on: {
+                                    click: function($event) {
+                                      _vm.setPrefix(prefix.code)
+                                    }
+                                  }
                                 },
-                                expression: "selectedPrefix"
-                              }
+                                [
+                                  _vm._v(
+                                    "\n                                    " +
+                                      _vm._s(prefix.text) +
+                                      "\n                                "
+                                  )
+                                ]
+                              )
                             }),
                             _vm._v(" "),
                             _c("div", { staticClass: "mb-5" }, [
@@ -72342,7 +72366,7 @@ var render = function() {
                               1
                             )
                           ],
-                          1
+                          2
                         ),
                         _vm._v(" "),
                         _c(
@@ -72776,6 +72800,22 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -72944,6 +72984,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 }
             }
             document.getElementById('coloredDiv').style.backgroundColor = this.selectedColor;
+        },
+        setPrefix: function setPrefix(code) {
+            this.selectedPrefix = code;
         },
         validation: function validation() {
             //front validation
@@ -73222,26 +73265,100 @@ var render = function() {
                           { staticClass: "my-5", attrs: { xs12: "" } },
                           [
                             _c("div", [
+                              _vm._v(
+                                "Nom de la réference dans chaque langue *: "
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _vm._l(_vm.languages, function(language, i) {
+                              return _c(
+                                "div",
+                                { key: i },
+                                [
+                                  _c("div", [
+                                    _vm._v(
+                                      "\n                                        " +
+                                        _vm._s(language.name) +
+                                        "\n                                    "
+                                    )
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("v-text-field", {
+                                    staticClass: "mb-2",
+                                    attrs: {
+                                      rules: _vm.nameRules,
+                                      value: "names[i]",
+                                      required: "",
+                                      solo: "",
+                                      counter: 50
+                                    },
+                                    model: {
+                                      value: _vm.names[i],
+                                      callback: function($$v) {
+                                        _vm.$set(_vm.names, i, $$v)
+                                      },
+                                      expression: "names[i]"
+                                    }
+                                  })
+                                ],
+                                1
+                              )
+                            }),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              { staticClass: "validationFailure" },
+                              [
+                                _vm.nameValidationFailure.length > 0
+                                  ? _c("v-icon", [
+                                      _vm._v(
+                                        "\n                                        warning\n                                    "
+                                      )
+                                    ])
+                                  : _vm._e(),
+                                _vm._v(
+                                  "\n                                    " +
+                                    _vm._s(_vm.nameValidationFailure) +
+                                    "\n                                "
+                                )
+                              ],
+                              1
+                            )
+                          ],
+                          2
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "v-flex",
+                          { staticClass: "my-5", attrs: { xs12: "" } },
+                          [
+                            _c("div", [
                               _vm._v("Choix de la bibliothèque * : ")
                             ]),
                             _vm._v(" "),
-                            _c("v-select", {
-                              staticClass: "mt-2 mb-4",
-                              attrs: {
-                                label: "Sélectionner une bibliothèque",
-                                "item-text": "text",
-                                "item-value": "code",
-                                items: _vm.iconsPrefix,
-                                solo: "",
-                                required: ""
-                              },
-                              model: {
-                                value: _vm.selectedPrefix,
-                                callback: function($$v) {
-                                  _vm.selectedPrefix = $$v
+                            _vm._l(_vm.iconsPrefix, function(prefix, i) {
+                              return _c(
+                                "v-btn",
+                                {
+                                  key: i,
+                                  attrs: {
+                                    disabled: _vm.selectedPrefix == prefix.code,
+                                    color: "success"
+                                  },
+                                  on: {
+                                    click: function($event) {
+                                      _vm.setPrefix(prefix.code)
+                                    }
+                                  }
                                 },
-                                expression: "selectedPrefix"
-                              }
+                                [
+                                  _vm._v(
+                                    "\n                                    " +
+                                      _vm._s(prefix.text) +
+                                      "\n                                "
+                                  )
+                                ]
+                              )
                             }),
                             _vm._v(" "),
                             _c("div", { staticClass: "mb-4" }, [
@@ -73479,7 +73596,7 @@ var render = function() {
                               1
                             )
                           ],
-                          1
+                          2
                         ),
                         _vm._v(" "),
                         _c(
@@ -73487,60 +73604,6 @@ var render = function() {
                           { staticClass: "my-5", attrs: { xs12: "" } },
                           [_c("v-divider")],
                           1
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "v-flex",
-                          { staticClass: "my-5", attrs: { xs12: "" } },
-                          [
-                            _c("div", [
-                              _vm._v(
-                                "Nom de la réference dans chaque langue *: "
-                              )
-                            ]),
-                            _vm._v(" "),
-                            _vm._l(_vm.languages, function(language, i) {
-                              return _c("v-text-field", {
-                                key: i,
-                                staticClass: "mb-2",
-                                attrs: {
-                                  rules: _vm.nameRules,
-                                  label: language.name,
-                                  value: "names[i]",
-                                  required: "",
-                                  counter: 50
-                                },
-                                model: {
-                                  value: _vm.names[i],
-                                  callback: function($$v) {
-                                    _vm.$set(_vm.names, i, $$v)
-                                  },
-                                  expression: "names[i]"
-                                }
-                              })
-                            }),
-                            _vm._v(" "),
-                            _c(
-                              "div",
-                              { staticClass: "validationFailure" },
-                              [
-                                _vm.nameValidationFailure.length > 0
-                                  ? _c("v-icon", [
-                                      _vm._v(
-                                        "\n                                        warning\n                                    "
-                                      )
-                                    ])
-                                  : _vm._e(),
-                                _vm._v(
-                                  "\n                                    " +
-                                    _vm._s(_vm.nameValidationFailure) +
-                                    "\n                                "
-                                )
-                              ],
-                              1
-                            )
-                          ],
-                          2
                         )
                       ],
                       1
@@ -73726,7 +73789,7 @@ exports = module.exports = __webpack_require__(0)(false);
 
 
 // module
-exports.push([module.i, "\n.highlightHeader[data-v-01c4eeff]:hover{\n    background-color: #AED581 !important;\n}\n.separator[data-v-01c4eeff]:before {\n    content:'';\n    position:absolute;\n    width:100%;\n    height:3px;\n    background:-webkit-gradient(linear, right top, left top, from(rgba(0, 0, 0, 0)), color-stop(#AED581), to(rgba(0, 0, 0, 0)));\n    background:linear-gradient(to left, rgba(0, 0, 0, 0), #AED581, rgba(0, 0, 0, 0));\n    top:0px;\n    left:0;\n}\n.imgContainer[data-v-01c4eeff]{\n    /* width:150px !important; */\n    width:100px !important;\n    min-width:70px !important;\n    /* max-height:200px !important; */\n    /* background-color: red; */\n    -webkit-box-shadow: 0px 5px 10px 2px #afafaf;\n            box-shadow: 0px 5px 10px 2px #afafaf;\n}\n.imgContainerPreview[data-v-01c4eeff]{\n    width:250px !important;\n    -webkit-box-shadow: 0px 5px 10px 2px #afafaf;\n            box-shadow: 0px 5px 10px 2px #afafaf;\n}\n.imgContainer > img[data-v-01c4eeff], .imgContainerPreview > img[data-v-01c4eeff]{\n    width:100% !important;\n    height:100% !important;\n}\n.selectedImg[data-v-01c4eeff] {\n    padding: 40px;\n    background-color: rgb(82, 196, 82);\n}\n", ""]);
+exports.push([module.i, "\n.listColorAlt[data-v-01c4eeff]{\n    background-color: #C8E6C9 !important;\n}\n.highlightHeader[data-v-01c4eeff]:hover{\n    background-color: #81C784 !important;\n}\n/* .separator:before {\n    content:'';\n    position:absolute;\n    width:100%;\n    height:3px;\n    background:linear-gradient(to left, rgba(0, 0, 0, 0), #AED581, rgba(0, 0, 0, 0));\n    top:0px;\n    left:0;\n} */\n.imgContainer[data-v-01c4eeff]{\n    /* width:150px !important; */\n    width:100px !important;\n    min-width:70px !important;\n    /* max-height:200px !important; */\n    /* background-color: red; */\n    -webkit-box-shadow: 0px 5px 10px 2px #afafaf;\n            box-shadow: 0px 5px 10px 2px #afafaf;\n}\n.imgContainerPreview[data-v-01c4eeff]{\n    width:250px !important;\n    -webkit-box-shadow: 0px 5px 10px 2px #afafaf;\n            box-shadow: 0px 5px 10px 2px #afafaf;\n}\n.imgContainer > img[data-v-01c4eeff], .imgContainerPreview > img[data-v-01c4eeff]{\n    width:100% !important;\n    height:100% !important;\n}\n.selectedImg[data-v-01c4eeff] {\n    padding: 40px;\n    background-color: rgb(82, 196, 82);\n}\n", ""]);
 
 // exports
 
@@ -73746,6 +73809,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_references_js__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__services_categories_js__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__services_languages_js__ = __webpack_require__(7);
+//
 //
 //
 //
@@ -74669,7 +74733,7 @@ exports = module.exports = __webpack_require__(0)(false);
 
 
 // module
-exports.push([module.i, "\n.highlightHeader[data-v-6c7b1928]:hover{\n    background-color: #AED581 !important;\n}\n.imgContainer[data-v-6c7b1928]{\n    max-width:100px !important;\n    min-width:50px !important;\n    -webkit-box-shadow: 0px 5px 10px 2px #afafaf;\n            box-shadow: 0px 5px 10px 2px #afafaf;\n    cursor: pointer;\n}\n.imgContainerPreview[data-v-6c7b1928]{\n    max-width: 90vw !important;\n    width:250px !important;\n    min-width:75px !important;\n    -webkit-box-shadow: 0px 5px 10px 2px #afafaf;\n            box-shadow: 0px 5px 10px 2px #afafaf;\n}\n.imgContainerDialog[data-v-6c7b1928]{\n    width:175px !important;\n    -webkit-box-shadow: 0px 5px 5px 2px #afafaf;\n            box-shadow: 0px 5px 5px 2px #afafaf;\n}\n.imgContainer > img[data-v-6c7b1928], .imgContainerPreview > img[data-v-6c7b1928]{\n    width:100% !important;\n    height:100% !important;\n}\n.selectedImg[data-v-6c7b1928] {\n    padding: 20px;\n    background-color: rgb(82, 196, 82);\n}\n", ""]);
+exports.push([module.i, "\n.highlightHeader[data-v-6c7b1928]:hover{\n    background-color: #81C784 !important;\n}\n.imgContainer[data-v-6c7b1928]{\n    max-width:100px !important;\n    min-width:50px !important;\n    -webkit-box-shadow: 0px 5px 10px 2px #afafaf;\n            box-shadow: 0px 5px 10px 2px #afafaf;\n    cursor: pointer;\n}\n.imgContainerPreview[data-v-6c7b1928]{\n    max-width: 90vw !important;\n    width:250px !important;\n    min-width:75px !important;\n    -webkit-box-shadow: 0px 5px 10px 2px #afafaf;\n            box-shadow: 0px 5px 10px 2px #afafaf;\n}\n.imgContainerDialog[data-v-6c7b1928]{\n    width:175px !important;\n    -webkit-box-shadow: 0px 5px 5px 2px #afafaf;\n            box-shadow: 0px 5px 5px 2px #afafaf;\n}\n.imgContainer > img[data-v-6c7b1928], .imgContainerPreview > img[data-v-6c7b1928]{\n    width:100% !important;\n    height:100% !important;\n}\n.selectedImg[data-v-6c7b1928] {\n    padding: 20px;\n    background-color: rgb(82, 196, 82);\n}\n", ""]);
 
 // exports
 
@@ -75053,8 +75117,8 @@ var render = function() {
           _c(
             "v-expansion-panel-content",
             {
-              staticClass: "light-green lighten-3 highlightHeader",
-              attrs: { color: "light-green lighten-3" }
+              staticClass: "green lighten-3 highlightHeader",
+              attrs: { color: "green lighten-3" }
             },
             [
               _c("div", { attrs: { slot: "header" }, slot: "header" }, [
@@ -76523,8 +76587,9 @@ var render = function() {
                                   {
                                     key: i,
                                     staticClass:
-                                      "light-green lighten-3 highlightHeader",
-                                    attrs: { color: "light-green lighten-3" }
+                                      "green lighten-3 highlightHeader",
+                                    class: { listColorAlt: i % 2 == 0 },
+                                    attrs: { color: "green lighten-3" }
                                   },
                                   [
                                     _c(
@@ -76534,7 +76599,7 @@ var render = function() {
                                         slot: "header"
                                       },
                                       [
-                                        _c("div", { staticClass: "separator" }),
+                                        _c("div"),
                                         _vm._v(
                                           "\n                                            " +
                                             _vm._s(language.name) +
@@ -78810,7 +78875,7 @@ exports = module.exports = __webpack_require__(0)(false);
 
 
 // module
-exports.push([module.i, "\n.hoveredItem[data-v-1845ce4d]:hover{\n    background-color: rgb(233, 233, 233) !important;\n}\n", ""]);
+exports.push([module.i, "\n.listColorAlt[data-v-1845ce4d]{\n    background-color: #E8F5E9 !important;\n}\n.hoveredItem[data-v-1845ce4d]:hover{\n    background-color: rgb(233, 233, 233) !important;\n}\n", ""]);
 
 // exports
 
@@ -78825,6 +78890,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_points_js__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_references_js__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_categories_js__ = __webpack_require__(4);
+//
 //
 //
 //
@@ -79419,6 +79485,7 @@ var render = function() {
                 {
                   key: i,
                   staticClass: "hoveredItem",
+                  class: { listColorAlt: i % 2 == 0 },
                   attrs: { avatar: "" },
                   on: {
                     click: function($event) {
@@ -80134,7 +80201,7 @@ exports = module.exports = __webpack_require__(0)(false);
 
 
 // module
-exports.push([module.i, "\n.subheader[data-v-ffeb9c12]{\n    overflow: hidden;\n    text-overflow: ellipsis;\n}\ntd[data-v-ffeb9c12]{\n    cursor: pointer;\n}\ntd[data-v-ffeb9c12]:hover{\n    background-color: rgb(233, 233, 233) !important;\n}\n", ""]);
+exports.push([module.i, "\n.subheader[data-v-ffeb9c12]{\n    overflow: hidden;\n    text-overflow: ellipsis;\n}\n.listColorAlt[data-v-ffeb9c12]{\n    background-color: #E8F5E9 !important;\n}\ntd[data-v-ffeb9c12]{\n    cursor: pointer;\n}\ntd[data-v-ffeb9c12]:hover{\n    background-color: rgb(233, 233, 233) !important;\n}\n", ""]);
 
 // exports
 
@@ -80146,6 +80213,9 @@ exports.push([module.i, "\n.subheader[data-v-ffeb9c12]{\n    overflow: hidden;\n
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__services_contacts_js__ = __webpack_require__(140);
+//
+//
+//
 //
 //
 //
@@ -80596,6 +80666,7 @@ var render = function() {
                         "td",
                         {
                           staticClass: "hidden-sm-and-down",
+                          class: { listColorAlt: props.index % 2 == 0 },
                           on: {
                             click: function($event) {
                               _vm.read(
@@ -80622,6 +80693,7 @@ var render = function() {
                       _c(
                         "td",
                         {
+                          class: { listColorAlt: props.index % 2 == 0 },
                           on: {
                             click: function($event) {
                               _vm.read(
@@ -80648,6 +80720,7 @@ var render = function() {
                       _c(
                         "td",
                         {
+                          class: { listColorAlt: props.index % 2 == 0 },
                           on: {
                             click: function($event) {
                               _vm.read(
@@ -85596,13 +85669,13 @@ if (false) {
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(196)
+  __webpack_require__(187)
 }
 var normalizeComponent = __webpack_require__(1)
 /* script */
-var __vue_script__ = __webpack_require__(187)
+var __vue_script__ = __webpack_require__(189)
 /* template */
-var __vue_template__ = __webpack_require__(188)
+var __vue_template__ = __webpack_require__(190)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -85642,57 +85715,12 @@ module.exports = Component.exports
 
 /***/ }),
 /* 187 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({});
-
-/***/ }),
-/* 188 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("router-view")
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-34935b93", module.exports)
-  }
-}
-
-/***/ }),
-/* 189 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 190 */,
-/* 191 */,
-/* 192 */,
-/* 193 */,
-/* 194 */,
-/* 195 */,
-/* 196 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(197);
+var content = __webpack_require__(188);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -85712,7 +85740,7 @@ if(false) {
 }
 
 /***/ }),
-/* 197 */
+/* 188 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)(false);
@@ -85720,10 +85748,49 @@ exports = module.exports = __webpack_require__(0)(false);
 
 
 // module
-exports.push([module.i, "\n.v-card{\n    background-color: white !important;\n}\n.v-menu--inline{\n    width: 100% !important;\n}\n.validationFailure{\n    color: red;\n}\n.iconTooltip{\n    cursor: help;\n}\n", ""]);
+exports.push([module.i, "\n.v-card{\n    background-color: white !important;\n}\n.v-menu--inline{\n    width: 100% !important;\n}\n.validationFailure{\n    color: red;\n}\n.iconTooltip{\n    cursor: help;\n}\n.v-btn.v-btn--disabled{\n    background-color: #E0E0E0 !important;\n    color: #757575 !important;\n}\n", ""]);
 
 // exports
 
+
+/***/ }),
+/* 189 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({});
+
+/***/ }),
+/* 190 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("router-view")
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-34935b93", module.exports)
+  }
+}
+
+/***/ }),
+/* 191 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
 
 /***/ })
 /******/ ]);

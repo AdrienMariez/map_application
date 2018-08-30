@@ -27,20 +27,55 @@
                                 <v-flex xs12 class="my-5">
                                     <v-divider></v-divider>
                                 </v-flex>
+                            <!-- Translations -->
+                                <v-flex xs12 class="my-5">
+                                    <div>Nom de la réference dans chaque langue *: </div>
+                                    <div
+                                        v-for="(language,i) in languages"
+                                        :key="i">
+                                        <div>
+                                            {{language.name}}
+                                        </div>
+                                        <v-text-field
+                                            v-model=names[i]
+                                            :rules="nameRules"
+                                            value= names[i]
+                                            required
+                                            solo
+                                            :counter="50"
+                                            class="mb-2"
+                                        ></v-text-field>
+                                    </div>
+                                    <div class="validationFailure">
+                                        <v-icon v-if="nameValidationFailure.length>0">
+                                            warning
+                                        </v-icon>
+                                        {{nameValidationFailure}}
+                                    </div>
+                                </v-flex>
                             <!-- Icon selection/icon test -->
                                 <v-flex xs12 class="my-5">
                                 <!-- Select library -->
                                     <div>Choix de la bibliothèque * : </div>
-                                    <v-select
-                                        label="Sélectionner une bibliothèque"
-                                        item-text="text"
-                                        item-value="code"
-                                        :items="iconsPrefix"
-                                        v-model="selectedPrefix"
-                                        solo
-                                        required
-                                        class="mt-2 mb-4"
-                                    ></v-select>
+                                    <v-btn
+                                        v-for="(prefix,i) in iconsPrefix"
+                                        :key="i"
+                                        :disabled="selectedPrefix == prefix.code"
+                                        color="success"
+                                        @click="setPrefix(prefix.code)">
+                                        {{prefix.text}}
+                                    </v-btn>
+                                    <!-- OBSOLETE old select -->
+                                            <!-- <v-select
+                                                label="Sélectionner une bibliothèque"
+                                                item-text="text"
+                                                item-value="code"
+                                                :items="iconsPrefix"
+                                                v-model="selectedPrefix"
+                                                solo
+                                                required
+                                                class="mt-2"
+                                            ></v-select> -->
                                 <!-- Hints how to use -->
                                     <div class="mb-4">
                                         <div
@@ -48,7 +83,9 @@
                                             <v-tooltip right>
                                                 <a
                                                     slot="activator"
-                                                    id="linkDiv"target="_blank"rel="noopener noreferrer"
+                                                    id="linkDiv"
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
                                                     href="https://fontawesome.com/icons?from=io">
                                                     Bibliothèque Font Awesome
                                                 </a>
@@ -120,27 +157,6 @@
                                 </v-flex>
                                 <v-flex xs12 class="my-5">
                                     <v-divider></v-divider>
-                                </v-flex>
-                            <!-- Translations -->
-                                <v-flex xs12 class="my-5">
-                                    <div>Nom de la réference dans chaque langue *: </div>
-                                    <v-text-field
-                                        v-for="(language,i) in languages"
-                                        :key="i"
-                                        v-model=names[i]
-                                        :rules="nameRules"
-                                        :label= language.name
-                                        value= names[i]
-                                        required
-                                        :counter="50"
-                                        class="mb-2"
-                                    ></v-text-field>
-                                    <div class="validationFailure">
-                                        <v-icon v-if="nameValidationFailure.length>0">
-                                            warning
-                                        </v-icon>
-                                        {{nameValidationFailure}}
-                                    </div>
                                 </v-flex>
                             </v-layout>
                         </v-container>
@@ -360,6 +376,10 @@
                     }
                 }
                 document.getElementById('coloredDiv').style.backgroundColor = this.selectedColor;
+            },
+
+            setPrefix(code) {
+                this.selectedPrefix = code;
             },
             
             validation() {

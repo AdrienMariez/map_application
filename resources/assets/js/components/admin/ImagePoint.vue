@@ -3,8 +3,8 @@
         <!-- Image list -->
             <v-expansion-panel>
                 <v-expansion-panel-content
-                    color="light-green lighten-3"
-                    class="light-green lighten-3 highlightHeader">
+                    color="green lighten-3"
+                    class="green lighten-3 highlightHeader">
                     <div slot="header">Banque d'images</div>
                         <v-card>
                             <!-- button show upload -->
@@ -356,7 +356,7 @@
 
 <style scoped>
     .highlightHeader:hover{
-        background-color: #AED581 !important;
+        background-color: #81C784 !important;
     }
     .imgContainer{
         max-width:100px !important;

@@ -19,5 +19,9 @@
     .iconTooltip{
         cursor: help;
     }
+    .v-btn.v-btn--disabled{
+        background-color: #E0E0E0 !important;
+        color: #757575 !important;
+    }
 </style>
 

@@ -13,7 +13,8 @@
                     :key="i"
                     avatar
                     @click="dummy()"
-                    class="hoveredItem">
+                    class="hoveredItem"
+                    :class="{ listColorAlt: i % 2 == 0 }">
                     <v-list-tile-content @click="updateLanguageMode(language.id)">
                         <v-list-tile-title v-html="language.name"></v-list-tile-title>
                         <v-list-tile-sub-title v-html="language.code"></v-list-tile-sub-title>
@@ -583,6 +584,9 @@
 </script>
 
 <style scoped>
+    .listColorAlt{
+        background-color: #E8F5E9 !important;
+    }
     .hoveredItem:hover{
         background-color: rgb(233, 233, 233) !important;
     }
