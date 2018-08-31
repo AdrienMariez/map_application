@@ -3,24 +3,24 @@
     <!-- Main aside -->
         <v-navigation-drawer
             v-model="drawer"
-            :mini-variant="mini"
             color="white"
             class="white asideDrawer"
             app>
+            <!-- :mini-variant="mini" -->
 
             <!-- deploy full nav when miniaturized -->
-            <v-list-tile v-if="mini" @click.stop="mini = !mini">
+            <!-- <v-list-tile v-if="mini" @click.stop="mini = !mini">
                 <v-list-tile-action class="cursorAction">
                     <v-icon>chevron_right</v-icon>
                 </v-list-tile-action>
-            </v-list-tile>
+            </v-list-tile> -->
 
             <!-- top menu when deployed -->
             <v-list-tile v-if="!mini">
                 <v-layout row wrap justify-center>
                 <!-- fold full nav -->
-                    <v-flex xs4>
-                        <v-list-tile-action
+                    <!-- <v-flex xs4> -->
+                        <!-- <v-list-tile-action
                             text-xs-center
                             align-center
                             justify-center
@@ -29,10 +29,10 @@
                             <v-icon>
                                 chevron_left
                             </v-icon>
-                        </v-list-tile-action>
-                    </v-flex>
+                        </v-list-tile-action> -->
+                    <!-- </v-flex> -->
                 <!-- logo Prayssac responsive -->
-                    <v-flex xs4 align-center>
+                    <v-flex xs6 align-center>
                         <v-list-tile-action
                             text-xs-center
                             align-center
@@ -43,7 +43,7 @@
                         </v-list-tile-action>
                     </v-flex>
                 <!-- close full nav -->
-                    <v-flex xs4 align-center>
+                    <v-flex xs6 align-center>
                         <v-list-tile-action
                             text-xs-center
                             align-center
@@ -401,6 +401,9 @@ export default {
 <style scoped>
     .asideDrawer{
         max-height: 100% !important;
+    }
+    .v-list{
+        padding: 0 !important;
     }
     .v-list__tile__action--stack{
         padding-top: 0 !important;

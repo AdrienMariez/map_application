@@ -1,6 +1,13 @@
 <template>
     <div>
         <div>
+            <div>
+                <v-btn
+                    @click="pageReinit"
+                    color="lime lighten-3">
+                    <v-icon>fas fa-circle-notch fa-spin</v-icon> Reinitialiser et mettre à jour
+                </v-btn>
+            </div>
             <v-form ref="form" v-model="valid" lazy-validation>
                     <v-card-text>
                         <v-container grid-list-md>
@@ -228,6 +235,33 @@
                     </v-card-actions>
             </v-form>
         </div>
+        <!-- loading... -->
+            <v-snackbar
+                v-model="snackbarLoading"
+                bottom
+                right
+                multi-line
+                :timeout=0>
+                Envoi en cours...
+                <v-icon large>fas fa-circle-notch fa-spin</v-icon>
+            </v-snackbar>
+        <!-- snackbar info -->
+            <v-snackbar
+                v-model="snackbar"
+                bottom
+                right
+                multi-line
+                :timeout=6000
+                >
+                {{ snackText }}
+                <v-btn
+                    color="yellow lighten-1"
+                    flat
+                    @click="snackbar = false"
+                >
+                    Close
+                </v-btn>
+            </v-snackbar>
     </div>
 </template>
 
@@ -247,6 +281,7 @@
             return {
                 mute: false,
                 loading: true,
+
                 points: [],
                 pointsContents: [],
                 images: [],
@@ -304,6 +339,10 @@
                 },
                 preview: false,
 
+                snackbarLoading: false,
+                snackText: "",
+                snackbar: false,
+
                 point: {
                     id: null,
                     link: "",
@@ -315,12 +354,20 @@
             }
         },
         watch: {
+            loading(val, oldVal) {
+                if (val === false) {
+                    // console.log("loading finished !");
+                    
+                    this.pageInit();
+                }
+            },
+
             idSelected(val, oldVal){
                 console.log("id changed in reference THIS IS NOT SUPPOSED TO HAPPEN.");console.log("Previous value : "+val+" New value : "+oldVal);
             },
             titlesInitial(val, oldVal){
-                console.log("");
-                this.pageInit();
+                // console.log("");
+                // this.pageInit();
             },
             selectedReference(val, oldVal){
                 this.setIcon(val);
@@ -355,6 +402,7 @@
         methods: {
             pageInit(){
                 console.log("");
+                
                 //baking references list
                 for (let a = 0; a < this.references.length; a++) {
                     for (let b = 0; b < this.referenceNames.length; b++) {
@@ -479,6 +527,21 @@
                     }
                 }
                 // document.getElementById('coloredDiv').style.backgroundColor = this.selectedColor;
+            },
+
+            pageReinit(){
+                console.log("");
+                this.loading = true;
+                // console.log("loading...");
+                this.methodsApiCalls();
+                this.titles = [];
+                this.desc = [];
+                this.linkAlias = [];
+                this.link = "";
+                this.selectedReference = null;
+                // this.lattitude = null;
+                // this.longitude = null;
+                this.pageInit()
             },
 
             imageSelected(img) {    
@@ -682,6 +745,9 @@
 
             submit () {
                 if (this.$refs.form.validate()) {
+
+                    this.snackbarLoading = true;
+
                     // In create mode
                     if(this.page == "pointParent"){
                         this.createPoint();
@@ -722,7 +788,7 @@
                     resp =>
                         Promise.all([
                         resp,
-                        console.log("point created")
+                        console.log("")
                         ,
                         this.createPointNames(resp.data.id),
                         ])   
@@ -759,16 +825,22 @@
                     console.log("");
                     
                     axios.post('/api/pointsnames', newPointName)
-                        .then(function (resp) {
-                            console.log("point name created"+this.codes[i]);
-                        })
+                        .then(
+                        response =>
+                            Promise.all([
+                            response,
+                            console.log("")
+                            ,
+                            this.success(response, "Création effectuée !"),
+                            ])   
+                        )
                         .catch(function (error) {
                             console.log(error.response.data);
                             
-                            alert("Un problème est survenu lors de la création. Error located in EditPoint.vue !");
+                            // alert("Un problème est survenu lors de la création. Error located in EditPoint.vue !");
+                            this.failed(error, "Erreur lors de la création du point !");
                         });
                 }
-                this.$emit('pageToShow', "", null);
             },
             updatePoint(id) {
                 this.point.longitude = this.longitude;
@@ -792,13 +864,15 @@
                 
                 axios.patch('/api/points/' + id, newPoint)
                     .then(function (resp) {
+                        console.log("");
+                        
                     })
                     .catch(function (error) {
                         console.log(error.response.data);
                         
                         alert("Un problème est survenu lors de la mise à jour. Error located in EditPoint.vue !");
                     });
-                this.$emit('pageToShow', "", null);
+                // this.$emit('pageToShow', "", null);
             },
             updatePointNames(id) {
                 for (let i = 0; i < this.codes.length; i++) {
@@ -825,15 +899,36 @@
                     console.log("");
                     
                     axios.patch('/api/pointsnames/' + id[i], newPointName)
-                        .then(function (resp) {
-                        })
+                        .then(
+                            response =>
+                                Promise.all([
+                                response,
+                                console.log("")
+                                ,
+                                this.success(response, "Mise à jour effectuée !"),
+                                ])   
+                            )
                         .catch(function (error) {
                             console.log(error.response.data);
                             
-                            alert("Un problème est survenu lors de la mise à jour. Error located in EditPoint.vue !");
+                            // alert("Un problème est survenu lors de la mise à jour. Error located in EditPoint.vue !");
+                            this.failed(error, "Erreur lors de la mise à jour du point !");
                         });
                 }
+                // this.$emit('pageToShow', "", null);
+            },
+
+            success(response, msg) {
+                this.snackbarLoading = false;
+                this.snackbar = true;
+                this.snackText = msg;
                 this.$emit('pageToShow', "", null);
+            },
+            failed(error) {
+                console.log(error);
+                this.snackbarLoading = false;
+                this.snackbar = true;
+                this.snackText = msg;
             },
 
             //API CALLS
@@ -856,6 +951,30 @@
                             this.titlesInitial.push("");
                         });
                         this.loading = false;
+                    });
+
+                    // function resolveAfter2Seconds() {
+                    //     return new Promise(resolve => {
+                    //         setTimeout(() => {
+                    //         resolve('resolved');
+                    //         }, 2000);
+                    //     });
+                    // }
+
+                    // async function asyncCall() {
+                        // console.log('calling');
+                        // var result = await resolveAfter2Seconds();
+                        // this.loading = false;
+                        // console.log(result);
+                        // expected output: 'resolved'
+                    // }
+
+                    // asyncCall();
+
+                    return new Promise(resolve => {
+                        setTimeout(() => {
+                            resolve('resolved');
+                        }, 2000);
                     });
                 },
         },

@@ -223,7 +223,7 @@ export default {
 
                         if (point["fk_image_id"]!== null) {
                           imgCtnr = document.createElement("div");
-                          imgCtnr.setAttribute("style", "width:150px; height:auto;");
+                          imgCtnr.setAttribute("style", "width:150px; height:auto; margin-left:auto; margin-right:auto;");
                           var img = document.createElement("img");
                           img.setAttribute("style", "width:100%; height:100%;");
                           img.setAttribute("alt", "image");

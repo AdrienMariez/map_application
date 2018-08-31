@@ -844,13 +844,16 @@ var categoriesMethods = {
     },
 
     //createCategoryName is in EditCategory.vue, due to not working here
-    editCategoryName: function editCategoryName(id, newCategoryName) {
-        axios.patch('/api/categoriesnames/' + id, newCategoryName).then(function (resp) {}).catch(function (error) {
-            console.log(error.response.data);
+    // editCategoryName(id,newCategoryName){
+    // axios.patch('/api/categoriesnames/' + id, newCategoryName)
+    // .then(function (resp) {
+    // })
+    // .catch(function (error) {
+    //     console.log(error.response.data);
 
-            alert("Un problème est survenu lors de la mise à jour. Error located in EditCategory.vue !");
-        });
-    },
+    //     alert("Un problème est survenu lors de la mise à jour. Error located in EditCategory.vue !");
+    // });
+    // },
     destroyCategory: function destroyCategory(id) {
         axios.delete('/api/categories/' + id).then(function (resp) {}).catch(function (error) {
             console.log(error.response.data);
@@ -919,13 +922,16 @@ var pointsMethods = {
     //         alert("Un problème est survenu lors de la création. Error located in EditPoint.vue !");
     //     });
     // },
-    editPointName: function editPointName(id, newPointName) {
-        axios.patch('/api/pointsnames/' + id, newPointName).then(function (resp) {}).catch(function (error) {
-            console.log(error.response.data);
+    // editPointName(id,newPointName) {
+    //     axios.patch('/api/pointsnames/' + id, newPointName)
+    //     .then(function (resp) {
+    //     })
+    //     .catch(function (error) {
+    //         console.log(error.response.data);
 
-            alert("Un problème est survenu lors de la mise à jour. Error located in EditPoint.vue !");
-        });
-    },
+    //         alert("Un problème est survenu lors de la mise à jour. Error located in EditPoint.vue !");
+    //     });
+    // },
     destroyPoint: function destroyPoint(id) {
         axios.delete('/api/points/' + id).then(function (resp) {}).catch(function (error) {
             console.log(error.response.data);
@@ -952,6 +958,8 @@ var pointsMethods = {
 var referencesMethods = {
     readReferences: function readReferences() {
         var references = [];
+        var x = true;
+        var y = "test";
         window.axios.get('/api/references').then(function (_ref) {
             var data = _ref.data;
 
@@ -987,13 +995,16 @@ var referencesMethods = {
     },
 
     //createReference is in EditReference.vue
-    createReferenceName: function createReferenceName(newReferenceName) {
-        axios.post('/api/referencesnames', newReferenceName).then(function (resp) {}).catch(function (error) {
-            console.log(error.response.data);
+    // createReferenceName(newReferenceName) {
+    // axios.post('/api/referencesnames', newReferenceName)
+    //     .then(function (resp) {
+    //     })
+    //     .catch(function (error) {
+    //         console.log(error.response.data);
 
-            alert("Un problème est survenu lors de la création. Error located in EditReference.vue !");
-        });
-    },
+    //         alert("Un problème est survenu lors de la création. Error located in EditReference.vue !");
+    //     });
+    // },
     editReference: function editReference(id, newReference) {
         axios.patch('/api/references/' + id, newReference).then(function (resp) {}).catch(function (error) {
             console.log(error.response.data);
@@ -1001,13 +1012,17 @@ var referencesMethods = {
             alert("Un problème est survenu lors de la mise à jour. Error located in EditReference.vue !");
         });
     },
-    editReferenceName: function editReferenceName(id, newReferenceName) {
-        axios.patch('/api/referencesnames/' + id, newReferenceName).then(function (resp) {}).catch(function (error) {
-            console.log(error.response.data);
 
-            alert("Un problème est survenu lors de la mise à jour. Error located in EditReference.vue !");
-        });
-    },
+    // editReferenceName(id,newReferenceName) {
+    // axios.patch('/api/referencesnames/' + id, newReferenceName)
+    //     .then(function (resp) {
+    //     })
+    //     .catch(function (error) {
+    //         console.log(error.response.data);
+
+    //         alert("Un problème est survenu lors de la mise à jour. Error located in EditReference.vue !");
+    //     });
+    // },
     destroyReference: function destroyReference(id) {
         axios.delete('/api/references/' + id).then(function (resp) {}).catch(function (error) {
             console.log(error.response.data);
@@ -71644,6 +71659,40 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -71654,6 +71703,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         return {
             mute: false,
             loading: true,
+
             categories: [],
             categoriesNames: [],
 
@@ -71700,6 +71750,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             colors: [{ text: 'Rouge', code: '#B71C1C' }, { text: 'Orange sombre', code: '#F4511E' }, { text: 'Orange', code: '#FFA726' }, { text: 'Jaune', code: '#FFC400' }, { text: 'Cyan', code: '#006064' }, { text: 'Bleu', code: '#01579B' }, { text: 'Bleu clair', code: '#1E88E5' }, { text: 'Violet', code: '#4A148C' }, { text: 'Bordeaux', code: '#880E4F' }, { text: 'Rose', code: '#F50057' }, { text: 'Vert sombre', code: '#1B5E20' }, { text: 'Vert', code: '#388E3C' }, { text: 'Vert clair', code: '#4CAF50' }],
             selectedColor: "",
 
+            snackbarLoading: false,
+            snackText: "",
+            snackbar: false,
+
             category: {
                 id: null,
                 icon: '',
@@ -71710,11 +71764,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
 
     watch: {
+        loading: function loading(val, oldVal) {
+
+            if (val === false) {
+                // console.log("loading finished !");
+                this.pageInit();
+            }
+        },
         idSelected: function idSelected(val, oldVal) {
             console.log("id changed in category THIS IS NOT SUPPOSED TO HAPPEN.");console.log("Previous value : " + val + " New value : " + oldVal);
         },
         namesInitial: function namesInitial(val, oldVal) {
-            this.editMode();
+            // this.editMode();
+            // this.pageInit();
         },
         names: function names() {
             this.validation();
@@ -71747,46 +71809,70 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         }
     },
     methods: {
-        editMode: function editMode() {
-            console.log("");
+        pageInit: function pageInit() {
+            console.log("pageInit");
+
+            //In edit mode
             if (this.idSelected != null) {
-                //set name(s) :
-                for (var i = 0; i < this.categoriesNames.length; i++) {
-                    if (this.idSelected == this.categoriesNames[i]["fk_category_id"]) {
-                        for (var y = 0; y < this.languages.length; y++) {
-                            if (this.categoriesNames[i]["fk_language_code"] == this.languages[y]["code"]) {
-                                this.fk_id[y] = this.categoriesNames[i]["id"];
+                this.editMode();
+            }
+            //In create mode
+            else {
+                    this.createMode();
+                }
+        },
+        editMode: function editMode() {
+            console.log("editMode");
+            var icon;
+            //set name(s) :
+            for (var i = 0; i < this.categoriesNames.length; i++) {
+                if (this.idSelected == this.categoriesNames[i]["fk_category_id"]) {
+                    for (var y = 0; y < this.languages.length; y++) {
+                        if (this.categoriesNames[i]["fk_language_code"] == this.languages[y]["code"]) {
+                            this.fk_id[y] = this.categoriesNames[i]["id"];
 
-                                this.names[y] = this.categoriesNames[i]["text"];
+                            this.names[y] = this.categoriesNames[i]["text"];
 
-                                this.codes[y] = this.categoriesNames[i]["fk_language_code"];
-                            }
+                            this.codes[y] = this.categoriesNames[i]["fk_language_code"];
                         }
                     }
                 }
-                var icon;
-                //search for color & icon & set color :
-                for (var x = 0; x < this.categories.length; x++) {
-                    if (this.idSelected == this.categories[x]["id"]) {
-                        this.selectedColor = this.categories[x]["color"];
-                        icon = this.categories[x]["icon"];
-                    }
-                }
-
-                //set icon
-                var prefix = icon.substring(0, 3);
-                if (prefix == "fa-" || prefix == "mdi-") {
-                    this.selectedPrefix = prefix;
-                    this.icon = icon.substring(3);
-                } else {
-                    this.icon = icon;
-                }
-            } else {
-                this.selectedPrefix = "";
-                this.icon = "";
-                this.selectedColor = "";
-                this.valid = false;
             }
+            //search for color & icon & set color :
+            for (var x = 0; x < this.categories.length; x++) {
+                if (this.idSelected == this.categories[x]["id"]) {
+                    this.selectedColor = this.categories[x]["color"];
+                    icon = this.categories[x]["icon"];
+                }
+            }
+
+            //set icon
+            var prefix = icon.substring(0, 3);
+            if (prefix == "fa-") {
+                this.selectedPrefix = prefix;
+                this.icon = icon.substring(3);
+            } else if (prefix == "mdi") {
+                this.selectedPrefix = "mdi-";
+                this.icon = icon.substring(4);
+            } else {
+                this.icon = icon;
+            }
+        },
+        createMode: function createMode() {
+            this.selectedPrefix = "";
+            this.icon = "";
+            this.selectedColor = "";
+            this.valid = false;
+        },
+        pageReinit: function pageReinit() {
+            console.log("");
+            this.loading = true;
+
+            this.methodsApiCalls();
+            this.names = [];
+            this.selectedPrefix = "";
+            this.icon = "";
+            this.pageInit();
         },
         setPrefix: function setPrefix(code) {
             this.selectedPrefix = code;
@@ -71856,6 +71942,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         submit: function submit() {
             if (this.$refs.form.validate()) {
+
+                this.snackbarLoading = true;
+
                 // console.log("names "+this.names);
                 // console.log("icon "+this.iconTotal);
                 // console.log("selectedColor "+this.selectedColor);
@@ -71926,6 +72015,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.$emit('pageToShow', "", null);
         },
         createCategoryNames: function createCategoryNames(id, names) {
+            var _this2 = this;
 
             for (var i = 0; i < names.length; i++) {
                 var newCategoryName = {
@@ -71936,16 +72026,21 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
                 console.log("");
 
-                axios.post('/api/categoriesnames', newCategoryName).then(function (resp) {}).catch(function (error) {
+                axios.post('/api/categoriesnames', newCategoryName).then(function (response) {
+                    return Promise.all([response, console.log(""), _this2.success(response, "Création effectuée !")]);
+                }).catch(function (error) {
                     console.log(error.response.data);
 
-                    alert("Un problème est survenu lors de la création. Error located in EditCategory.vue !");
+                    // alert("Un problème est survenu lors de la création. Error located in EditCategory.vue !");
+                    this.failed(error, "Erreur lors de la création de la catégorie !");
                 });
             }
 
             this.$emit('pageToShow', "", null);
         },
         updateCategoryNames: function updateCategoryNames(id, fk_id, codes, names) {
+            var _this3 = this;
+
             for (var i = 0; i < names.length; i++) {
                 var newCategoryName = {
                     "fk_category_id": fk_id,
@@ -71955,14 +72050,36 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
                 console.log("");
 
-                __WEBPACK_IMPORTED_MODULE_0__services_categories_js__["a" /* default */].editCategoryName(id[i], newCategoryName);
+                // categoriesMethods.editCategoryName(id[i], newCategoryName);
+
+                axios.patch('/api/categoriesnames/' + id[i], newCategoryName).then(function (response) {
+                    return Promise.all([response, console.log(""), _this3.success(response, "Mise à jour effectuée !")]);
+                }).catch(function (error) {
+                    console.log(error.response.data);
+
+                    // alert("Un problème est survenu lors de la mise à jour. Error located in EditCategory.vue !");
+
+                    this.failed(error, "Erreur lors de la mise à jour de la catégorie !");
+                });
             }
             this.$emit('pageToShow', "", null);
         },
+        success: function success(response, msg) {
+            this.snackbarLoading = false;
+            this.snackbar = true;
+            this.snackText = msg;
+        },
+        failed: function failed(error) {
+            console.log(error);
+            this.snackbarLoading = false;
+            this.snackbar = true;
+            this.snackText = msg;
+        },
+
 
         //API CALLS
         methodsApiCalls: function methodsApiCalls() {
-            var _this2 = this;
+            var _this4 = this;
 
             this.categories = __WEBPACK_IMPORTED_MODULE_0__services_categories_js__["a" /* default */].readCategories();
             this.categoriesNames = __WEBPACK_IMPORTED_MODULE_0__services_categories_js__["a" /* default */].readCategoriesNames();
@@ -71973,10 +72090,32 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 var data = _ref.data;
 
                 data.forEach(function (language) {
-                    _this2.names.push("");
-                    _this2.namesInitial.push("");
+                    _this4.names.push("");
+                    _this4.namesInitial.push("");
                 });
-                _this2.loading = false;
+                _this4.loading = false;
+            });
+
+            // function resolveAfter2Seconds() {
+            //     return new Promise(resolve => {
+            //         setTimeout(() => {
+            //         resolve('resolved');
+            //         }, 2000);
+            //     });
+            // }
+
+            // async function asyncCall() {
+            //     var result = await resolveAfter2Seconds();
+            //     if (result == 'resolved') {
+            //     }
+            // }
+
+            // asyncCall();
+
+            return new Promise(function (resolve) {
+                setTimeout(function () {
+                    resolve('resolved');
+                }, 2000);
             });
         }
     },
@@ -71993,512 +72132,591 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
-    _c(
-      "div",
-      [
-        _c(
-          "v-form",
-          {
-            ref: "form",
-            attrs: { "lazy-validation": "" },
-            model: {
-              value: _vm.valid,
-              callback: function($$v) {
-                _vm.valid = $$v
-              },
-              expression: "valid"
-            }
-          },
-          [
-            _c(
-              "v-card-text",
-              [
-                _c(
-                  "v-container",
-                  { attrs: { "grid-list-md": "" } },
-                  [
-                    _c(
-                      "v-layout",
-                      { attrs: { wrap: "" } },
-                      [
-                        _c(
-                          "v-flex",
-                          { staticClass: "my-5", attrs: { xs12: "" } },
-                          [
-                            _c("div", [
-                              _vm._v(
-                                "Nom de la catégorie dans chaque langue *: "
-                              )
-                            ]),
-                            _vm._v(" "),
-                            _vm._l(_vm.languages, function(language, i) {
-                              return _c("v-text-field", {
-                                key: i,
-                                staticClass: "mb-2",
-                                attrs: {
-                                  rules: _vm.nameRules,
-                                  label: language.name,
-                                  value: "names[i]",
-                                  required: "",
-                                  solo: "",
-                                  counter: 50
-                                },
-                                model: {
-                                  value: _vm.names[i],
-                                  callback: function($$v) {
-                                    _vm.$set(_vm.names, i, $$v)
-                                  },
-                                  expression: "names[i]"
-                                }
-                              })
-                            }),
-                            _vm._v(" "),
-                            _c(
-                              "div",
-                              { staticClass: "validationFailure" },
-                              [
-                                _vm.nameValidationFailure.length > 0
-                                  ? _c("v-icon", [
-                                      _vm._v(
-                                        "\n                                        warning\n                                    "
-                                      )
-                                    ])
-                                  : _vm._e(),
+  return _c(
+    "div",
+    [
+      _c(
+        "div",
+        [
+          _c(
+            "div",
+            [
+              _c(
+                "v-btn",
+                {
+                  attrs: { color: "lime lighten-3" },
+                  on: { click: _vm.pageReinit }
+                },
+                [
+                  _c("v-icon", [_vm._v("fas fa-circle-notch fa-spin")]),
+                  _vm._v(" Reinitialiser et mettre à jour\n            ")
+                ],
+                1
+              )
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-form",
+            {
+              ref: "form",
+              attrs: { "lazy-validation": "" },
+              model: {
+                value: _vm.valid,
+                callback: function($$v) {
+                  _vm.valid = $$v
+                },
+                expression: "valid"
+              }
+            },
+            [
+              _c(
+                "v-card-text",
+                [
+                  _c(
+                    "v-container",
+                    { attrs: { "grid-list-md": "" } },
+                    [
+                      _c(
+                        "v-layout",
+                        { attrs: { wrap: "" } },
+                        [
+                          _c(
+                            "v-flex",
+                            { staticClass: "my-5", attrs: { xs12: "" } },
+                            [
+                              _c("div", [
                                 _vm._v(
-                                  "\n                                    " +
-                                    _vm._s(_vm.nameValidationFailure) +
-                                    "\n                                "
+                                  "Nom de la catégorie dans chaque langue *: "
                                 )
-                              ],
-                              1
-                            )
-                          ],
-                          2
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "v-flex",
-                          { staticClass: "my-5", attrs: { xs12: "" } },
-                          [_c("v-divider")],
-                          1
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "v-flex",
-                          { staticClass: "my-5", attrs: { xs12: "" } },
-                          [
-                            _c("div", [
-                              _vm._v("Choix de la bibliothèque * : ")
-                            ]),
-                            _vm._v(" "),
-                            _vm._l(_vm.iconsPrefix, function(prefix, i) {
-                              return _c(
-                                "v-btn",
-                                {
+                              ]),
+                              _vm._v(" "),
+                              _vm._l(_vm.languages, function(language, i) {
+                                return _c("v-text-field", {
                                   key: i,
+                                  staticClass: "mb-2",
                                   attrs: {
-                                    disabled: _vm.selectedPrefix == prefix.code,
-                                    color: "success"
+                                    rules: _vm.nameRules,
+                                    label: language.name,
+                                    value: "names[i]",
+                                    required: "",
+                                    solo: "",
+                                    counter: 50
                                   },
-                                  on: {
-                                    click: function($event) {
-                                      _vm.setPrefix(prefix.code)
-                                    }
+                                  model: {
+                                    value: _vm.names[i],
+                                    callback: function($$v) {
+                                      _vm.$set(_vm.names, i, $$v)
+                                    },
+                                    expression: "names[i]"
                                   }
-                                },
+                                })
+                              }),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                { staticClass: "validationFailure" },
                                 [
+                                  _vm.nameValidationFailure.length > 0
+                                    ? _c("v-icon", [
+                                        _vm._v(
+                                          "\n                                        warning\n                                    "
+                                        )
+                                      ])
+                                    : _vm._e(),
                                   _vm._v(
                                     "\n                                    " +
-                                      _vm._s(prefix.text) +
+                                      _vm._s(_vm.nameValidationFailure) +
                                       "\n                                "
                                   )
-                                ]
+                                ],
+                                1
                               )
-                            }),
-                            _vm._v(" "),
-                            _c("div", { staticClass: "mb-5" }, [
-                              _vm.selectedPrefix === "fa-"
-                                ? _c(
-                                    "div",
-                                    [
-                                      _c(
-                                        "v-tooltip",
-                                        { attrs: { right: "" } },
-                                        [
-                                          _c(
-                                            "a",
-                                            {
-                                              attrs: {
-                                                slot: "activator",
-                                                id: "linkDiv",
-                                                target: "_blank",
-                                                rel: "noopener noreferrer",
-                                                href:
-                                                  "https://fontawesome.com/icons?from=io"
-                                              },
-                                              slot: "activator"
-                                            },
-                                            [
-                                              _vm._v(
-                                                "\n                                                Bibliothèque Font Awesome\n                                            "
-                                              )
-                                            ]
-                                          ),
-                                          _vm._v(" "),
-                                          _c("span", [
-                                            _vm._v(
-                                              "Ouverture dans un nouvel onglet"
-                                            )
-                                          ])
-                                        ]
-                                      ),
-                                      _vm._v(" "),
-                                      _c(
-                                        "v-tooltip",
-                                        { attrs: { right: "" } },
-                                        [
-                                          _c(
-                                            "v-icon",
-                                            {
-                                              staticClass: "iconTooltip",
-                                              attrs: { slot: "activator" },
-                                              slot: "activator"
-                                            },
-                                            [
-                                              _vm._v(
-                                                "\n                                                help\n                                            "
-                                              )
-                                            ]
-                                          ),
-                                          _vm._v(" "),
-                                          _c("div", [
-                                            _c("div", [
-                                              _vm._v("Ouvrir le lien.")
-                                            ]),
-                                            _vm._v(" "),
-                                            _c("div", [
-                                              _vm._v(
-                                                "Cliquer une fois sur le texte sous l'icône choisie,  copiez le."
-                                              )
-                                            ]),
-                                            _vm._v(" "),
-                                            _c("div", [
-                                              _vm._v(
-                                                'Placer le texte ainsi sélectionné dans la zone "icône" ci-dessous.'
-                                              )
-                                            ])
-                                          ])
-                                        ],
-                                        1
-                                      )
-                                    ],
-                                    1
-                                  )
-                                : _vm._e(),
+                            ],
+                            2
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-flex",
+                            { staticClass: "my-5", attrs: { xs12: "" } },
+                            [_c("v-divider")],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-flex",
+                            { staticClass: "my-5", attrs: { xs12: "" } },
+                            [
+                              _c("div", [
+                                _vm._v("Choix de la bibliothèque * : ")
+                              ]),
                               _vm._v(" "),
-                              _vm.selectedPrefix === "mdi-"
-                                ? _c(
-                                    "div",
-                                    [
-                                      _c(
-                                        "v-tooltip",
-                                        { attrs: { right: "" } },
-                                        [
-                                          _c(
-                                            "a",
-                                            {
-                                              attrs: {
-                                                slot: "activator",
-                                                id: "linkDiv",
-                                                target: "_blank",
-                                                rel: "noopener noreferrer",
-                                                href:
-                                                  "https://materialdesignicons.com/"
-                                              },
-                                              slot: "activator"
-                                            },
-                                            [
-                                              _vm._v(
-                                                "\n                                                Bibliothèque Material Design\n                                            "
-                                              )
-                                            ]
-                                          ),
-                                          _vm._v(" "),
-                                          _c("span", [
-                                            _vm._v(
-                                              "Ouverture dans un nouvel onglet"
-                                            )
-                                          ])
-                                        ]
-                                      ),
-                                      _vm._v(" "),
-                                      _c(
-                                        "v-tooltip",
-                                        { attrs: { right: "" } },
-                                        [
-                                          _c(
-                                            "v-icon",
-                                            {
-                                              staticClass: "iconTooltip",
-                                              attrs: { slot: "activator" },
-                                              slot: "activator"
-                                            },
-                                            [
-                                              _vm._v(
-                                                "\n                                                help\n                                            "
-                                              )
-                                            ]
-                                          ),
-                                          _vm._v(" "),
-                                          _c("div", [
-                                            _c("div", [
-                                              _vm._v("Ouvrir le lien.")
-                                            ]),
-                                            _vm._v(" "),
-                                            _c("div", [
-                                              _vm._v(
-                                                "Cliquer sur l'icône choise."
-                                              )
-                                            ]),
-                                            _vm._v(" "),
-                                            _c("div", [
-                                              _vm._v(
-                                                "Copier le titre de la fenêtre qui s'affiche."
-                                              )
-                                            ])
-                                          ])
-                                        ],
-                                        1
-                                      )
-                                    ],
-                                    1
-                                  )
-                                : _vm._e()
-                            ]),
-                            _vm._v(" "),
-                            _c("div", [_vm._v("Choix de l'icône * : ")]),
-                            _vm._v(" "),
-                            _c("v-text-field", {
-                              staticClass: "mt-2 mb-4",
-                              attrs: {
-                                rules: _vm.iconRules,
-                                solo: "",
-                                hint: "icône utilisée par la catégorie",
-                                required: "",
-                                counter: 40
-                              },
-                              model: {
-                                value: _vm.icon,
-                                callback: function($$v) {
-                                  _vm.icon = $$v
-                                },
-                                expression: "icon"
-                              }
-                            }),
-                            _vm._v(" "),
-                            _c(
-                              "div",
-                              [
-                                _vm._v(
-                                  "Aperçu de " +
-                                    _vm._s(_vm.selectedPrefix) +
-                                    _vm._s(_vm.icon) +
-                                    " :\n                                    "
-                                ),
-                                _c(
-                                  "v-icon",
+                              _vm._l(_vm.iconsPrefix, function(prefix, i) {
+                                return _c(
+                                  "v-btn",
                                   {
-                                    style: { color: _vm.selectedColor },
-                                    attrs: { "x-large": "" }
+                                    key: i,
+                                    attrs: {
+                                      disabled:
+                                        _vm.selectedPrefix == prefix.code,
+                                      color: "success"
+                                    },
+                                    on: {
+                                      click: function($event) {
+                                        _vm.setPrefix(prefix.code)
+                                      }
+                                    }
                                   },
                                   [
                                     _vm._v(
-                                      "\n                                        " +
-                                        _vm._s(_vm.selectedPrefix) +
-                                        _vm._s(_vm.icon) +
-                                        "\n                                    "
+                                      "\n                                    " +
+                                        _vm._s(prefix.text) +
+                                        "\n                                "
                                     )
                                   ]
-                                ),
+                                )
+                              }),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "mb-5" }, [
+                                _vm.selectedPrefix === "fa-"
+                                  ? _c(
+                                      "div",
+                                      [
+                                        _c(
+                                          "v-tooltip",
+                                          { attrs: { right: "" } },
+                                          [
+                                            _c(
+                                              "a",
+                                              {
+                                                attrs: {
+                                                  slot: "activator",
+                                                  id: "linkDiv",
+                                                  target: "_blank",
+                                                  rel: "noopener noreferrer",
+                                                  href:
+                                                    "https://fontawesome.com/icons?from=io"
+                                                },
+                                                slot: "activator"
+                                              },
+                                              [
+                                                _vm._v(
+                                                  "\n                                                Bibliothèque Font Awesome\n                                            "
+                                                )
+                                              ]
+                                            ),
+                                            _vm._v(" "),
+                                            _c("span", [
+                                              _vm._v(
+                                                "Ouverture dans un nouvel onglet"
+                                              )
+                                            ])
+                                          ]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "v-tooltip",
+                                          { attrs: { right: "" } },
+                                          [
+                                            _c(
+                                              "v-icon",
+                                              {
+                                                staticClass: "iconTooltip",
+                                                attrs: { slot: "activator" },
+                                                slot: "activator"
+                                              },
+                                              [
+                                                _vm._v(
+                                                  "\n                                                help\n                                            "
+                                                )
+                                              ]
+                                            ),
+                                            _vm._v(" "),
+                                            _c("div", [
+                                              _c("div", [
+                                                _vm._v("Ouvrir le lien.")
+                                              ]),
+                                              _vm._v(" "),
+                                              _c("div", [
+                                                _vm._v(
+                                                  "Cliquer une fois sur le texte sous l'icône choisie,  copiez le."
+                                                )
+                                              ]),
+                                              _vm._v(" "),
+                                              _c("div", [
+                                                _vm._v(
+                                                  'Placer le texte ainsi sélectionné dans la zone "icône" ci-dessous.'
+                                                )
+                                              ])
+                                            ])
+                                          ],
+                                          1
+                                        )
+                                      ],
+                                      1
+                                    )
+                                  : _vm._e(),
                                 _vm._v(" "),
-                                _vm.icon.length > 0
-                                  ? _c("div", [
-                                      _vm._v(
-                                        "Attention ! Pas plus d'une icône ne doit s'afficher ici !"
-                                      )
-                                    ])
+                                _vm.selectedPrefix === "mdi-"
+                                  ? _c(
+                                      "div",
+                                      [
+                                        _c(
+                                          "v-tooltip",
+                                          { attrs: { right: "" } },
+                                          [
+                                            _c(
+                                              "a",
+                                              {
+                                                attrs: {
+                                                  slot: "activator",
+                                                  id: "linkDiv",
+                                                  target: "_blank",
+                                                  rel: "noopener noreferrer",
+                                                  href:
+                                                    "https://materialdesignicons.com/"
+                                                },
+                                                slot: "activator"
+                                              },
+                                              [
+                                                _vm._v(
+                                                  "\n                                                Bibliothèque Material Design\n                                            "
+                                                )
+                                              ]
+                                            ),
+                                            _vm._v(" "),
+                                            _c("span", [
+                                              _vm._v(
+                                                "Ouverture dans un nouvel onglet"
+                                              )
+                                            ])
+                                          ]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "v-tooltip",
+                                          { attrs: { right: "" } },
+                                          [
+                                            _c(
+                                              "v-icon",
+                                              {
+                                                staticClass: "iconTooltip",
+                                                attrs: { slot: "activator" },
+                                                slot: "activator"
+                                              },
+                                              [
+                                                _vm._v(
+                                                  "\n                                                help\n                                            "
+                                                )
+                                              ]
+                                            ),
+                                            _vm._v(" "),
+                                            _c("div", [
+                                              _c("div", [
+                                                _vm._v("Ouvrir le lien.")
+                                              ]),
+                                              _vm._v(" "),
+                                              _c("div", [
+                                                _vm._v(
+                                                  "Cliquer sur l'icône choise."
+                                                )
+                                              ]),
+                                              _vm._v(" "),
+                                              _c("div", [
+                                                _vm._v(
+                                                  "Copier le titre de la fenêtre qui s'affiche."
+                                                )
+                                              ])
+                                            ])
+                                          ],
+                                          1
+                                        )
+                                      ],
+                                      1
+                                    )
                                   : _vm._e()
-                              ],
-                              1
-                            ),
-                            _vm._v(" "),
-                            _c(
-                              "div",
-                              { staticClass: "validationFailure" },
-                              [
-                                _vm.iconValidationFailure.length > 0
-                                  ? _c("v-icon", [
-                                      _vm._v(
-                                        "\n                                        warning\n                                    "
-                                      )
-                                    ])
-                                  : _vm._e(),
-                                _vm._v(
-                                  "\n                                    " +
-                                    _vm._s(_vm.iconValidationFailure) +
-                                    "\n                                "
-                                )
-                              ],
-                              1
-                            )
-                          ],
-                          2
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "v-flex",
-                          { staticClass: "my-5", attrs: { xs12: "" } },
-                          [_c("v-divider")],
-                          1
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "v-flex",
-                          { staticClass: "my-5", attrs: { xs12: "" } },
-                          [
-                            _c("div", [
-                              _vm._v("Couleur de l'icone de la catégorie *: ")
-                            ]),
-                            _vm._v(" "),
-                            _c("v-select", {
-                              attrs: {
-                                "item-text": "text",
-                                "item-value": "code",
-                                items: _vm.colors,
-                                solo: "",
-                                required: ""
-                              },
-                              model: {
-                                value: _vm.selectedColor,
-                                callback: function($$v) {
-                                  _vm.selectedColor = $$v
-                                },
-                                expression: "selectedColor"
-                              }
-                            }),
-                            _vm._v(" "),
-                            _c("div", { attrs: { id: "coloredDiv" } }),
-                            _vm._v(" "),
-                            _c(
-                              "div",
-                              { staticClass: "validationFailure" },
-                              [
-                                _vm.colorValidationFailure.length > 0
-                                  ? _c("v-icon", [
-                                      _vm._v(
-                                        "\n                                        warning\n                                    "
-                                      )
-                                    ])
-                                  : _vm._e(),
-                                _vm._v(
-                                  "\n                                    " +
-                                    _vm._s(_vm.colorValidationFailure) +
-                                    "\n                                "
-                                )
-                              ],
-                              1
-                            )
-                          ],
-                          1
-                        )
-                      ],
-                      1
-                    )
-                  ],
-                  1
-                )
-              ],
-              1
-            ),
-            _vm._v(" "),
-            _c(
-              "v-card-actions",
-              [
-                _c(
-                  "v-layout",
-                  {
-                    attrs: {
-                      "align-center": "",
-                      column: "",
-                      "justify-center": ""
-                    }
-                  },
-                  [
-                    _c(
-                      "v-flex",
-                      [
-                        !_vm.valid
-                          ? _c(
-                              "v-btn",
-                              {
+                              ]),
+                              _vm._v(" "),
+                              _c("div", [_vm._v("Choix de l'icône * : ")]),
+                              _vm._v(" "),
+                              _c("v-text-field", {
+                                staticClass: "mt-2 mb-4",
                                 attrs: {
-                                  disabled: !_vm.valid,
-                                  color: "grey lighten-1"
+                                  rules: _vm.iconRules,
+                                  solo: "",
+                                  hint: "icône utilisée par la catégorie",
+                                  required: "",
+                                  counter: 40
+                                },
+                                model: {
+                                  value: _vm.icon,
+                                  callback: function($$v) {
+                                    _vm.icon = $$v
+                                  },
+                                  expression: "icon"
                                 }
-                              },
-                              [
-                                _c("v-icon", [_vm._v("add")]),
-                                _vm._v(" Valider\n                            ")
-                              ],
-                              1
-                            )
-                          : _vm._e(),
-                        _vm._v(" "),
-                        _vm.valid
-                          ? _c(
-                              "v-btn",
-                              {
+                              }),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                [
+                                  _vm._v(
+                                    "Aperçu de " +
+                                      _vm._s(_vm.selectedPrefix) +
+                                      _vm._s(_vm.icon) +
+                                      " :\n                                    "
+                                  ),
+                                  _c(
+                                    "v-icon",
+                                    {
+                                      style: { color: _vm.selectedColor },
+                                      attrs: { "x-large": "" }
+                                    },
+                                    [
+                                      _vm._v(
+                                        "\n                                        " +
+                                          _vm._s(_vm.selectedPrefix) +
+                                          _vm._s(_vm.icon) +
+                                          "\n                                    "
+                                      )
+                                    ]
+                                  ),
+                                  _vm._v(" "),
+                                  _vm.icon.length > 0
+                                    ? _c("div", [
+                                        _vm._v(
+                                          "Attention ! Pas plus d'une icône ne doit s'afficher ici !"
+                                        )
+                                      ])
+                                    : _vm._e()
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                { staticClass: "validationFailure" },
+                                [
+                                  _vm.iconValidationFailure.length > 0
+                                    ? _c("v-icon", [
+                                        _vm._v(
+                                          "\n                                        warning\n                                    "
+                                        )
+                                      ])
+                                    : _vm._e(),
+                                  _vm._v(
+                                    "\n                                    " +
+                                      _vm._s(_vm.iconValidationFailure) +
+                                      "\n                                "
+                                  )
+                                ],
+                                1
+                              )
+                            ],
+                            2
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-flex",
+                            { staticClass: "my-5", attrs: { xs12: "" } },
+                            [_c("v-divider")],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-flex",
+                            { staticClass: "my-5", attrs: { xs12: "" } },
+                            [
+                              _c("div", [
+                                _vm._v("Couleur de l'icone de la catégorie *: ")
+                              ]),
+                              _vm._v(" "),
+                              _c("v-select", {
                                 attrs: {
-                                  disabled: !_vm.valid,
-                                  large: "",
-                                  color: "success"
+                                  "item-text": "text",
+                                  "item-value": "code",
+                                  items: _vm.colors,
+                                  solo: "",
+                                  required: ""
                                 },
-                                on: { click: _vm.submit }
-                              },
-                              [
-                                _c("v-icon", [_vm._v("add")]),
-                                _vm._v(" Valider\n                            ")
-                              ],
-                              1
-                            )
-                          : _vm._e()
-                      ],
-                      1
-                    ),
-                    _vm._v(" "),
-                    _c("v-flex", [
-                      _c("div", { staticClass: "validationFailure mt-3" }, [
-                        _vm._v(
-                          "\n                                " +
-                            _vm._s(_vm.validationFailure) +
-                            "\n                            "
-                        )
+                                model: {
+                                  value: _vm.selectedColor,
+                                  callback: function($$v) {
+                                    _vm.selectedColor = $$v
+                                  },
+                                  expression: "selectedColor"
+                                }
+                              }),
+                              _vm._v(" "),
+                              _c("div", { attrs: { id: "coloredDiv" } }),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                { staticClass: "validationFailure" },
+                                [
+                                  _vm.colorValidationFailure.length > 0
+                                    ? _c("v-icon", [
+                                        _vm._v(
+                                          "\n                                        warning\n                                    "
+                                        )
+                                      ])
+                                    : _vm._e(),
+                                  _vm._v(
+                                    "\n                                    " +
+                                      _vm._s(_vm.colorValidationFailure) +
+                                      "\n                                "
+                                  )
+                                ],
+                                1
+                              )
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  )
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "v-card-actions",
+                [
+                  _c(
+                    "v-layout",
+                    {
+                      attrs: {
+                        "align-center": "",
+                        column: "",
+                        "justify-center": ""
+                      }
+                    },
+                    [
+                      _c(
+                        "v-flex",
+                        [
+                          !_vm.valid
+                            ? _c(
+                                "v-btn",
+                                {
+                                  attrs: {
+                                    disabled: !_vm.valid,
+                                    color: "grey lighten-1"
+                                  }
+                                },
+                                [
+                                  _c("v-icon", [_vm._v("add")]),
+                                  _vm._v(
+                                    " Valider\n                            "
+                                  )
+                                ],
+                                1
+                              )
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _vm.valid
+                            ? _c(
+                                "v-btn",
+                                {
+                                  attrs: {
+                                    disabled: !_vm.valid,
+                                    large: "",
+                                    color: "success"
+                                  },
+                                  on: { click: _vm.submit }
+                                },
+                                [
+                                  _c("v-icon", [_vm._v("add")]),
+                                  _vm._v(
+                                    " Valider\n                            "
+                                  )
+                                ],
+                                1
+                              )
+                            : _vm._e()
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c("v-flex", [
+                        _c("div", { staticClass: "validationFailure mt-3" }, [
+                          _vm._v(
+                            "\n                                " +
+                              _vm._s(_vm.validationFailure) +
+                              "\n                            "
+                          )
+                        ])
                       ])
-                    ])
-                  ],
-                  1
-                )
-              ],
-              1
-            )
-          ],
-          1
-        )
-      ],
-      1
-    )
-  ])
+                    ],
+                    1
+                  )
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-snackbar",
+        {
+          attrs: { bottom: "", right: "", "multi-line": "", timeout: 0 },
+          model: {
+            value: _vm.snackbarLoading,
+            callback: function($$v) {
+              _vm.snackbarLoading = $$v
+            },
+            expression: "snackbarLoading"
+          }
+        },
+        [
+          _vm._v("\n            Envoi en cours...\n            "),
+          _c("v-icon", { attrs: { large: "" } }, [
+            _vm._v("fas fa-circle-notch fa-spin")
+          ])
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-snackbar",
+        {
+          attrs: { bottom: "", right: "", "multi-line": "", timeout: 6000 },
+          model: {
+            value: _vm.snackbar,
+            callback: function($$v) {
+              _vm.snackbar = $$v
+            },
+            expression: "snackbar"
+          }
+        },
+        [
+          _vm._v("\n            " + _vm._s(_vm.snackText) + "\n            "),
+          _c(
+            "v-btn",
+            {
+              attrs: { color: "yellow lighten-1", flat: "" },
+              on: {
+                click: function($event) {
+                  _vm.snackbar = false
+                }
+              }
+            },
+            [_vm._v("\n                Close\n            ")]
+          )
+        ],
+        1
+      )
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -72803,6 +73021,40 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -72814,6 +73066,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         return {
             mute: false,
             loading: true,
+
             references: [],
             referenceNames: [],
             categories: [],
@@ -72830,7 +73083,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             fk_cat: null,
             categoryList: [],
             selectedCategory: null,
-            selectedCategoryId: null,
             selectedColor: "",
             fk_id: [],
             names: [],
@@ -72853,6 +73105,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }],
             colors: [{ text: 'Rouge', code: '#B71C1C' }, { text: 'Orange sombre', code: '#F4511E' }, { text: 'Orange', code: '#FFA726' }, { text: 'Jaune', code: '#FFC400' }, { text: 'Cyan', code: '#006064' }, { text: 'Bleu', code: '#01579B' }, { text: 'Bleu clair', code: '#1E88E5' }, { text: 'Violet', code: '#4A148C' }, { text: 'Bordeaux', code: '#880E4F' }, { text: 'Rose', code: '#F50057' }, { text: 'Vert sombre', code: '#1B5E20' }, { text: 'Vert', code: '#388E3C' }, { text: 'Vert clair', code: '#4CAF50' }],
 
+            snackbarLoading: false,
+            snackText: "",
+            snackbar: false,
+
             reference: {
                 id: null,
                 fk_category_id: null,
@@ -72863,11 +73119,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
 
     watch: {
+        loading: function loading(val, oldVal) {
+            if (val === false) {
+                // console.log("loading finished !");
+                this.pageInit();
+            }
+        },
         idSelected: function idSelected(val, oldVal) {
             console.log("id changed in reference THIS IS NOT SUPPOSED TO HAPPEN.");console.log("Previous value : " + val + " New value : " + oldVal);
         },
         namesInitial: function namesInitial(val, oldVal) {
-            this.pageInit();
+            // this.pageInit();
         },
         names: function names() {
             this.validation();
@@ -72888,6 +73150,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     methods: {
         pageInit: function pageInit() {
             console.log("");
+
             //baking category list
             for (var a = 0; a < this.categories.length; a++) {
                 for (var b = 0; b < this.categoriesNames.length; b++) {
@@ -72931,6 +73194,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 }
             }
             var icon;
+
             //search for fk_category_id & icon :
             for (var x = 0; x < this.references.length; x++) {
                 if (this.idSelected == this.references[x]["id"]) {
@@ -72940,9 +73204,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }
             //set icon
             var prefix = icon.substring(0, 3);
-            if (prefix == "fa-" || prefix == "mdi-") {
+            if (prefix == "fa-") {
                 this.selectedPrefix = prefix;
                 this.icon = icon.substring(3);
+            } else if (prefix == "mdi") {
+                this.selectedPrefix = "mdi-";
+                this.icon = icon.substring(4);
             } else {
                 this.icon = icon;
             }
@@ -72973,6 +73240,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 }
             }
             document.getElementById('coloredDiv').style.backgroundColor = this.selectedColor;
+        },
+        pageReinit: function pageReinit() {
+            console.log("");
+            this.loading = true;
+            this.methodsApiCalls();
+            this.names = [];
+            this.selectedCategory = null;
+            this.selectedPrefix = "";
+            this.icon = "";
+            this.pageInit();
         },
         setPrefix: function setPrefix(code) {
             this.selectedPrefix = code;
@@ -73043,6 +73320,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         submit: function submit() {
             if (this.$refs.form.validate()) {
+
+                this.snackbarLoading = true;
+
                 var icon = this.selectedPrefix + "" + this.icon;
                 //In create mode
                 if (this.page == "referenceParent") {
@@ -73103,6 +73383,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.$emit('pageToShow', "", null);
         },
         createReferenceNames: function createReferenceNames(id, names) {
+            var _this2 = this;
+
             for (var i = 0; i < names.length; i++) {
                 var newReferenceName = {
                     "fk_reference_id": id,
@@ -73112,19 +73394,22 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
                 console.log("");
 
-                __WEBPACK_IMPORTED_MODULE_0__services_references_js__["a" /* default */].createReferenceName(newReferenceName);
-                // axios.post('/api/referencesnames', newReferenceName)
-                //     .then(function (resp) {
-                //     })
-                //     .catch(function (error) {
-                //         console.log(error.response.data);
+                // referencesMethods.createReferenceName(newReferenceName);
+                axios.post('/api/referencesnames', newReferenceName).then(function (response) {
+                    return Promise.all([response, console.log(""), _this2.success(response, "Création effectuée !")]);
+                }).catch(function (error) {
+                    console.log(error.response.data);
 
-                //         alert("Un problème est survenu lors de la création. Error located in EditReference.vue !");
-                //     });
+                    // alert("Un problème est survenu lors de la création. Error located in EditReference.vue !");
+
+                    this.failed(error, "Erreur lors de la création de la référence !");
+                });
             }
             this.$emit('pageToShow', "", null);
         },
         updateReferenceNames: function updateReferenceNames(id, fk_reference_id, codes, names) {
+            var _this3 = this;
+
             for (var i = 0; i < names.length; i++) {
                 var newReferenceName = {
                     "fk_reference_id": fk_reference_id,
@@ -73134,16 +73419,39 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
                 console.log("");
 
-                __WEBPACK_IMPORTED_MODULE_0__services_references_js__["a" /* default */].editReferenceName(id[i], newReferenceName);
+                // referencesMethods.editReferenceName(id[i],newReferenceName);
+
+                axios.patch('/api/referencesnames/' + id[i], newReferenceName).then(function (response) {
+                    return Promise.all([response, console.log(""), _this3.success(response, "Mise à jour effectuée !")]);
+                }).catch(function (error) {
+                    console.log(error.response.data);
+
+                    // alert("Un problème est survenu lors de la mise à jour. Error located in EditReference.vue !");
+
+                    this.failed(error, "Erreur lors de la mise à jour de la référence !");
+                });
             }
             this.$emit('pageToShow', "", null);
         },
+        success: function success(response, msg) {
+            this.snackbarLoading = false;
+            this.snackbar = true;
+            this.snackText = msg;
+        },
+        failed: function failed(error) {
+            console.log(error);
+            this.snackbarLoading = false;
+            this.snackbar = true;
+            this.snackText = msg;
+        },
+
 
         //API CALLS
         methodsApiCalls: function methodsApiCalls() {
-            var _this2 = this;
+            var _this4 = this;
 
             this.references = __WEBPACK_IMPORTED_MODULE_0__services_references_js__["a" /* default */].readReferences();
+
             this.referenceNames = __WEBPACK_IMPORTED_MODULE_0__services_references_js__["a" /* default */].readReferenceNames();
             this.categories = __WEBPACK_IMPORTED_MODULE_1__services_categories_js__["a" /* default */].readCategories();
             this.categoriesNames = __WEBPACK_IMPORTED_MODULE_1__services_categories_js__["a" /* default */].readCategoriesNamesFrOnly();
@@ -73154,10 +73462,33 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 var data = _ref.data;
 
                 data.forEach(function (language) {
-                    _this2.names.push("");
-                    _this2.namesInitial.push("");
+                    _this4.names.push("");
+                    _this4.namesInitial.push("");
                 });
-                _this2.loading = false;
+                _this4.loading = false;
+            });
+
+            // function resolveAfter2Seconds() {
+            //     return new Promise(resolve => {
+            //         setTimeout(() => {
+            //         resolve('resolved');
+            //         }, 2000);
+            //     });
+            // }
+
+            // async function asyncCall() {
+            // console.log('calling');
+            // var result = await resolveAfter2Seconds();
+            // console.log(result);
+            // expected output: 'resolved'
+            // }
+
+            // asyncCall();
+
+            return new Promise(function (resolve) {
+                setTimeout(function () {
+                    resolve('resolved');
+                }, 2000);
             });
         }
     },
@@ -73174,522 +73505,601 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
-    _c(
-      "div",
-      [
-        _c(
-          "v-form",
-          {
-            ref: "form",
-            attrs: { "lazy-validation": "" },
-            model: {
-              value: _vm.valid,
-              callback: function($$v) {
-                _vm.valid = $$v
-              },
-              expression: "valid"
-            }
-          },
-          [
-            _c(
-              "v-card-text",
-              [
-                _c(
-                  "v-container",
-                  { attrs: { "grid-list-md": "" } },
-                  [
-                    _c(
-                      "v-layout",
-                      { attrs: { wrap: "" } },
-                      [
-                        _c(
-                          "v-flex",
-                          { staticClass: "my-5", attrs: { xs12: "" } },
-                          [
-                            _c("div", [_vm._v("Catégorie parent *: ")]),
-                            _vm._v(" "),
-                            _c("v-select", {
-                              attrs: {
-                                "item-text": "text",
-                                "item-value": "id",
-                                items: _vm.categoryList,
-                                solo: "",
-                                required: ""
-                              },
-                              model: {
-                                value: _vm.selectedCategory,
-                                callback: function($$v) {
-                                  _vm.selectedCategory = $$v
+  return _c(
+    "div",
+    [
+      _c(
+        "div",
+        [
+          _c(
+            "div",
+            [
+              _c(
+                "v-btn",
+                {
+                  attrs: { color: "lime lighten-3" },
+                  on: { click: _vm.pageReinit }
+                },
+                [
+                  _c("v-icon", [_vm._v("fas fa-circle-notch fa-spin")]),
+                  _vm._v(" Reinitialiser et mettre à jour\n            ")
+                ],
+                1
+              )
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-form",
+            {
+              ref: "form",
+              attrs: { "lazy-validation": "" },
+              model: {
+                value: _vm.valid,
+                callback: function($$v) {
+                  _vm.valid = $$v
+                },
+                expression: "valid"
+              }
+            },
+            [
+              _c(
+                "v-card-text",
+                [
+                  _c(
+                    "v-container",
+                    { attrs: { "grid-list-md": "" } },
+                    [
+                      _c(
+                        "v-layout",
+                        { attrs: { wrap: "" } },
+                        [
+                          _c(
+                            "v-flex",
+                            { staticClass: "my-5", attrs: { xs12: "" } },
+                            [
+                              _c("div", [_vm._v("Catégorie parent *: ")]),
+                              _vm._v(" "),
+                              _c("v-select", {
+                                attrs: {
+                                  "item-text": "text",
+                                  "item-value": "id",
+                                  items: _vm.categoryList,
+                                  solo: "",
+                                  required: ""
                                 },
-                                expression: "selectedCategory"
-                              }
-                            }),
-                            _vm._v(" "),
-                            _c("div", { attrs: { id: "coloredDiv" } }),
-                            _vm._v(" "),
-                            _c(
-                              "div",
-                              { staticClass: "validationFailure" },
-                              [
-                                _vm.categoryValidationFailure.length > 0
-                                  ? _c("v-icon", [
-                                      _vm._v(
-                                        "\n                                        warning\n                                    "
-                                      )
-                                    ])
-                                  : _vm._e(),
-                                _vm._v(
-                                  "\n                                    " +
-                                    _vm._s(_vm.categoryValidationFailure) +
-                                    "\n                                "
-                                )
-                              ],
-                              1
-                            )
-                          ],
-                          1
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "v-flex",
-                          { staticClass: "my-5", attrs: { xs12: "" } },
-                          [_c("v-divider")],
-                          1
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "v-flex",
-                          { staticClass: "my-5", attrs: { xs12: "" } },
-                          [
-                            _c("div", [
-                              _vm._v(
-                                "Nom de la réference dans chaque langue *: "
-                              )
-                            ]),
-                            _vm._v(" "),
-                            _vm._l(_vm.languages, function(language, i) {
-                              return _c(
+                                model: {
+                                  value: _vm.selectedCategory,
+                                  callback: function($$v) {
+                                    _vm.selectedCategory = $$v
+                                  },
+                                  expression: "selectedCategory"
+                                }
+                              }),
+                              _vm._v(" "),
+                              _c("div", { attrs: { id: "coloredDiv" } }),
+                              _vm._v(" "),
+                              _c(
                                 "div",
-                                { key: i },
+                                { staticClass: "validationFailure" },
                                 [
-                                  _c("div", [
-                                    _vm._v(
-                                      "\n                                        " +
-                                        _vm._s(language.name) +
-                                        "\n                                    "
-                                    )
-                                  ]),
-                                  _vm._v(" "),
-                                  _c("v-text-field", {
-                                    staticClass: "mb-2",
-                                    attrs: {
-                                      rules: _vm.nameRules,
-                                      value: "names[i]",
-                                      required: "",
-                                      solo: "",
-                                      counter: 50
-                                    },
-                                    model: {
-                                      value: _vm.names[i],
-                                      callback: function($$v) {
-                                        _vm.$set(_vm.names, i, $$v)
-                                      },
-                                      expression: "names[i]"
-                                    }
-                                  })
+                                  _vm.categoryValidationFailure.length > 0
+                                    ? _c("v-icon", [
+                                        _vm._v(
+                                          "\n                                        warning\n                                    "
+                                        )
+                                      ])
+                                    : _vm._e(),
+                                  _vm._v(
+                                    "\n                                    " +
+                                      _vm._s(_vm.categoryValidationFailure) +
+                                      "\n                                "
+                                  )
                                 ],
                                 1
                               )
-                            }),
-                            _vm._v(" "),
-                            _c(
-                              "div",
-                              { staticClass: "validationFailure" },
-                              [
-                                _vm.nameValidationFailure.length > 0
-                                  ? _c("v-icon", [
-                                      _vm._v(
-                                        "\n                                        warning\n                                    "
-                                      )
-                                    ])
-                                  : _vm._e(),
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-flex",
+                            { staticClass: "my-5", attrs: { xs12: "" } },
+                            [_c("v-divider")],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-flex",
+                            { staticClass: "my-5", attrs: { xs12: "" } },
+                            [
+                              _c("div", [
                                 _vm._v(
-                                  "\n                                    " +
-                                    _vm._s(_vm.nameValidationFailure) +
-                                    "\n                                "
+                                  "Nom de la réference dans chaque langue *: "
                                 )
-                              ],
-                              1
-                            )
-                          ],
-                          2
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "v-flex",
-                          { staticClass: "my-5", attrs: { xs12: "" } },
-                          [
-                            _c("div", [
-                              _vm._v("Choix de la bibliothèque * : ")
-                            ]),
-                            _vm._v(" "),
-                            _vm._l(_vm.iconsPrefix, function(prefix, i) {
-                              return _c(
-                                "v-btn",
-                                {
-                                  key: i,
-                                  attrs: {
-                                    disabled: _vm.selectedPrefix == prefix.code,
-                                    color: "success"
-                                  },
-                                  on: {
-                                    click: function($event) {
-                                      _vm.setPrefix(prefix.code)
-                                    }
-                                  }
-                                },
+                              ]),
+                              _vm._v(" "),
+                              _vm._l(_vm.languages, function(language, i) {
+                                return _c(
+                                  "div",
+                                  { key: i },
+                                  [
+                                    _c("div", [
+                                      _vm._v(
+                                        "\n                                        " +
+                                          _vm._s(language.name) +
+                                          "\n                                    "
+                                      )
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("v-text-field", {
+                                      staticClass: "mb-2",
+                                      attrs: {
+                                        rules: _vm.nameRules,
+                                        value: "names[i]",
+                                        required: "",
+                                        solo: "",
+                                        counter: 50
+                                      },
+                                      model: {
+                                        value: _vm.names[i],
+                                        callback: function($$v) {
+                                          _vm.$set(_vm.names, i, $$v)
+                                        },
+                                        expression: "names[i]"
+                                      }
+                                    })
+                                  ],
+                                  1
+                                )
+                              }),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                { staticClass: "validationFailure" },
                                 [
+                                  _vm.nameValidationFailure.length > 0
+                                    ? _c("v-icon", [
+                                        _vm._v(
+                                          "\n                                        warning\n                                    "
+                                        )
+                                      ])
+                                    : _vm._e(),
                                   _vm._v(
                                     "\n                                    " +
-                                      _vm._s(prefix.text) +
+                                      _vm._s(_vm.nameValidationFailure) +
                                       "\n                                "
                                   )
-                                ]
+                                ],
+                                1
                               )
-                            }),
-                            _vm._v(" "),
-                            _c("div", { staticClass: "mb-4" }, [
-                              _vm.selectedPrefix === "fa-"
-                                ? _c(
-                                    "div",
-                                    [
-                                      _c(
-                                        "v-tooltip",
-                                        { attrs: { right: "" } },
-                                        [
-                                          _c(
-                                            "a",
-                                            {
-                                              attrs: {
-                                                slot: "activator",
-                                                id: "linkDiv",
-                                                target: "_blank",
-                                                rel: "noopener noreferrer",
-                                                href:
-                                                  "https://fontawesome.com/icons?from=io"
-                                              },
-                                              slot: "activator"
-                                            },
-                                            [
-                                              _vm._v(
-                                                "\n                                                Bibliothèque Font Awesome\n                                            "
-                                              )
-                                            ]
-                                          ),
-                                          _vm._v(" "),
-                                          _c("span", [
-                                            _vm._v(
-                                              "Ouverture dans un nouvel onglet"
-                                            )
-                                          ])
-                                        ]
-                                      ),
-                                      _vm._v(" "),
-                                      _c(
-                                        "v-tooltip",
-                                        { attrs: { right: "" } },
-                                        [
-                                          _c(
-                                            "v-icon",
-                                            {
-                                              staticClass: "iconTooltip",
-                                              attrs: { slot: "activator" },
-                                              slot: "activator"
-                                            },
-                                            [
-                                              _vm._v(
-                                                "\n                                                help\n                                            "
-                                              )
-                                            ]
-                                          ),
-                                          _vm._v(" "),
-                                          _c("div", [
-                                            _c("div", [
-                                              _vm._v("Ouvrir le lien.")
-                                            ]),
-                                            _vm._v(" "),
-                                            _c("div", [
-                                              _vm._v(
-                                                "Cliquer une fois sur le texte sous l'icône choisie,  copiez le."
-                                              )
-                                            ]),
-                                            _vm._v(" "),
-                                            _c("div", [
-                                              _vm._v(
-                                                'Placer le texte ainsi sélectionné dans la zone "icône" ci-dessous.'
-                                              )
-                                            ])
-                                          ])
-                                        ],
-                                        1
-                                      )
-                                    ],
-                                    1
-                                  )
-                                : _vm._e(),
+                            ],
+                            2
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-flex",
+                            { staticClass: "my-5", attrs: { xs12: "" } },
+                            [
+                              _c("div", [
+                                _vm._v("Choix de la bibliothèque * : ")
+                              ]),
                               _vm._v(" "),
-                              _vm.selectedPrefix === "mdi-"
-                                ? _c(
-                                    "div",
-                                    [
-                                      _c(
-                                        "v-tooltip",
-                                        { attrs: { right: "" } },
-                                        [
-                                          _c(
-                                            "a",
-                                            {
-                                              attrs: {
-                                                slot: "activator",
-                                                id: "linkDiv",
-                                                target: "_blank",
-                                                rel: "noopener noreferrer",
-                                                href:
-                                                  "https://materialdesignicons.com/"
-                                              },
-                                              slot: "activator"
-                                            },
-                                            [
-                                              _vm._v(
-                                                "\n                                                Bibliothèque Material Design\n                                            "
-                                              )
-                                            ]
-                                          ),
-                                          _vm._v(" "),
-                                          _c("span", [
-                                            _vm._v(
-                                              "Ouverture dans un nouvel onglet"
-                                            )
-                                          ])
-                                        ]
-                                      ),
-                                      _vm._v(" "),
-                                      _c(
-                                        "v-tooltip",
-                                        { attrs: { right: "" } },
-                                        [
-                                          _c(
-                                            "v-icon",
-                                            {
-                                              staticClass: "iconTooltip",
-                                              attrs: { slot: "activator" },
-                                              slot: "activator"
-                                            },
-                                            [
-                                              _vm._v(
-                                                "\n                                                help\n                                            "
-                                              )
-                                            ]
-                                          ),
-                                          _vm._v(" "),
-                                          _c("div", [
-                                            _c("div", [
-                                              _vm._v("Ouvrir le lien.")
-                                            ]),
-                                            _vm._v(" "),
-                                            _c("div", [
-                                              _vm._v(
-                                                "Cliquer sur l'icône choise."
-                                              )
-                                            ]),
-                                            _vm._v(" "),
-                                            _c("div", [
-                                              _vm._v(
-                                                "Copier le titre de la fenêtre qui s'affiche."
-                                              )
-                                            ])
-                                          ])
-                                        ],
-                                        1
-                                      )
-                                    ],
-                                    1
-                                  )
-                                : _vm._e()
-                            ]),
-                            _vm._v(" "),
-                            _c("div", [_vm._v("Choix de l'icône * : ")]),
-                            _vm._v(" "),
-                            _c("v-text-field", {
-                              staticClass: "mt-2 mb-4",
-                              attrs: {
-                                rules: _vm.iconRules,
-                                hint: "Icône utilisée par la reférence",
-                                required: "",
-                                counter: 40
-                              },
-                              model: {
-                                value: _vm.icon,
-                                callback: function($$v) {
-                                  _vm.icon = $$v
-                                },
-                                expression: "icon"
-                              }
-                            }),
-                            _vm._v(" "),
-                            _c(
-                              "div",
-                              [
-                                _vm._v(
-                                  "Aperçu de " +
-                                    _vm._s(_vm.selectedPrefix) +
-                                    _vm._s(_vm.icon) +
-                                    " :\n                                    "
-                                ),
-                                _c(
-                                  "v-icon",
+                              _vm._l(_vm.iconsPrefix, function(prefix, i) {
+                                return _c(
+                                  "v-btn",
                                   {
-                                    style: { color: _vm.selectedColor },
-                                    attrs: { "x-large": "" }
+                                    key: i,
+                                    attrs: {
+                                      disabled:
+                                        _vm.selectedPrefix == prefix.code,
+                                      color: "success"
+                                    },
+                                    on: {
+                                      click: function($event) {
+                                        _vm.setPrefix(prefix.code)
+                                      }
+                                    }
                                   },
                                   [
                                     _vm._v(
-                                      "\n                                        " +
-                                        _vm._s(_vm.selectedPrefix) +
-                                        _vm._s(_vm.icon) +
-                                        "\n                                    "
+                                      "\n                                    " +
+                                        _vm._s(prefix.text) +
+                                        "\n                                "
                                     )
                                   ]
-                                ),
-                                _vm._v(" "),
-                                _vm.icon.length > 0
-                                  ? _c("div", [
-                                      _vm._v(
-                                        "Attention ! Pas plus d'une icône ne doit s'afficher ici !"
-                                      )
-                                    ])
-                                  : _vm._e()
-                              ],
-                              1
-                            ),
-                            _vm._v(" "),
-                            _c(
-                              "div",
-                              { staticClass: "validationFailure" },
-                              [
-                                _vm.iconValidationFailure.length > 0
-                                  ? _c("v-icon", [
-                                      _vm._v(
-                                        "\n                                        warning\n                                    "
-                                      )
-                                    ])
-                                  : _vm._e(),
-                                _vm._v(
-                                  "\n                                    " +
-                                    _vm._s(_vm.iconValidationFailure) +
-                                    "\n                                "
                                 )
-                              ],
-                              1
-                            )
-                          ],
-                          2
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "v-flex",
-                          { staticClass: "my-5", attrs: { xs12: "" } },
-                          [_c("v-divider")],
-                          1
-                        )
-                      ],
-                      1
-                    )
-                  ],
-                  1
-                )
-              ],
-              1
-            ),
-            _vm._v(" "),
-            _c(
-              "v-card-actions",
-              [
-                _c(
-                  "v-layout",
-                  {
-                    attrs: {
-                      "align-center": "",
-                      column: "",
-                      "justify-center": ""
-                    }
-                  },
-                  [
-                    _c(
-                      "v-flex",
-                      [
-                        !_vm.valid
-                          ? _c(
-                              "v-btn",
-                              {
+                              }),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "mb-4" }, [
+                                _vm.selectedPrefix === "fa-"
+                                  ? _c(
+                                      "div",
+                                      [
+                                        _c(
+                                          "v-tooltip",
+                                          { attrs: { right: "" } },
+                                          [
+                                            _c(
+                                              "a",
+                                              {
+                                                attrs: {
+                                                  slot: "activator",
+                                                  id: "linkDiv",
+                                                  target: "_blank",
+                                                  rel: "noopener noreferrer",
+                                                  href:
+                                                    "https://fontawesome.com/icons?from=io"
+                                                },
+                                                slot: "activator"
+                                              },
+                                              [
+                                                _vm._v(
+                                                  "\n                                                Bibliothèque Font Awesome\n                                            "
+                                                )
+                                              ]
+                                            ),
+                                            _vm._v(" "),
+                                            _c("span", [
+                                              _vm._v(
+                                                "Ouverture dans un nouvel onglet"
+                                              )
+                                            ])
+                                          ]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "v-tooltip",
+                                          { attrs: { right: "" } },
+                                          [
+                                            _c(
+                                              "v-icon",
+                                              {
+                                                staticClass: "iconTooltip",
+                                                attrs: { slot: "activator" },
+                                                slot: "activator"
+                                              },
+                                              [
+                                                _vm._v(
+                                                  "\n                                                help\n                                            "
+                                                )
+                                              ]
+                                            ),
+                                            _vm._v(" "),
+                                            _c("div", [
+                                              _c("div", [
+                                                _vm._v("Ouvrir le lien.")
+                                              ]),
+                                              _vm._v(" "),
+                                              _c("div", [
+                                                _vm._v(
+                                                  "Cliquer une fois sur le texte sous l'icône choisie,  copiez le."
+                                                )
+                                              ]),
+                                              _vm._v(" "),
+                                              _c("div", [
+                                                _vm._v(
+                                                  'Placer le texte ainsi sélectionné dans la zone "icône" ci-dessous.'
+                                                )
+                                              ])
+                                            ])
+                                          ],
+                                          1
+                                        )
+                                      ],
+                                      1
+                                    )
+                                  : _vm._e(),
+                                _vm._v(" "),
+                                _vm.selectedPrefix === "mdi-"
+                                  ? _c(
+                                      "div",
+                                      [
+                                        _c(
+                                          "v-tooltip",
+                                          { attrs: { right: "" } },
+                                          [
+                                            _c(
+                                              "a",
+                                              {
+                                                attrs: {
+                                                  slot: "activator",
+                                                  id: "linkDiv",
+                                                  target: "_blank",
+                                                  rel: "noopener noreferrer",
+                                                  href:
+                                                    "https://materialdesignicons.com/"
+                                                },
+                                                slot: "activator"
+                                              },
+                                              [
+                                                _vm._v(
+                                                  "\n                                                Bibliothèque Material Design\n                                            "
+                                                )
+                                              ]
+                                            ),
+                                            _vm._v(" "),
+                                            _c("span", [
+                                              _vm._v(
+                                                "Ouverture dans un nouvel onglet"
+                                              )
+                                            ])
+                                          ]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "v-tooltip",
+                                          { attrs: { right: "" } },
+                                          [
+                                            _c(
+                                              "v-icon",
+                                              {
+                                                staticClass: "iconTooltip",
+                                                attrs: { slot: "activator" },
+                                                slot: "activator"
+                                              },
+                                              [
+                                                _vm._v(
+                                                  "\n                                                help\n                                            "
+                                                )
+                                              ]
+                                            ),
+                                            _vm._v(" "),
+                                            _c("div", [
+                                              _c("div", [
+                                                _vm._v("Ouvrir le lien.")
+                                              ]),
+                                              _vm._v(" "),
+                                              _c("div", [
+                                                _vm._v(
+                                                  "Cliquer sur l'icône choise."
+                                                )
+                                              ]),
+                                              _vm._v(" "),
+                                              _c("div", [
+                                                _vm._v(
+                                                  "Copier le titre de la fenêtre qui s'affiche."
+                                                )
+                                              ])
+                                            ])
+                                          ],
+                                          1
+                                        )
+                                      ],
+                                      1
+                                    )
+                                  : _vm._e()
+                              ]),
+                              _vm._v(" "),
+                              _c("div", [_vm._v("Choix de l'icône * : ")]),
+                              _vm._v(" "),
+                              _c("v-text-field", {
+                                staticClass: "mt-2 mb-4",
                                 attrs: {
-                                  disabled: !_vm.valid,
-                                  color: "grey lighten-1"
-                                }
-                              },
-                              [
-                                _c("v-icon", [_vm._v("add")]),
-                                _vm._v(" Valider\n                            ")
-                              ],
-                              1
-                            )
-                          : _vm._e(),
-                        _vm._v(" "),
-                        _vm.valid
-                          ? _c(
-                              "v-btn",
-                              {
-                                attrs: {
-                                  disabled: !_vm.valid,
-                                  large: "",
-                                  color: "success"
+                                  rules: _vm.iconRules,
+                                  hint: "Icône utilisée par la reférence",
+                                  required: "",
+                                  counter: 40
                                 },
-                                on: { click: _vm.submit }
-                              },
-                              [
-                                _c("v-icon", [_vm._v("add")]),
-                                _vm._v(" Valider\n                            ")
-                              ],
-                              1
-                            )
-                          : _vm._e()
-                      ],
-                      1
-                    ),
-                    _vm._v(" "),
-                    _c("v-flex", [
-                      _c("div", { staticClass: "validationFailure mt-3" }, [
-                        _vm._v(
-                          "\n                                " +
-                            _vm._s(_vm.validationFailure) +
-                            "\n                            "
-                        )
+                                model: {
+                                  value: _vm.icon,
+                                  callback: function($$v) {
+                                    _vm.icon = $$v
+                                  },
+                                  expression: "icon"
+                                }
+                              }),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                [
+                                  _vm._v(
+                                    "Aperçu de " +
+                                      _vm._s(_vm.selectedPrefix) +
+                                      _vm._s(_vm.icon) +
+                                      " :\n                                    "
+                                  ),
+                                  _c(
+                                    "v-icon",
+                                    {
+                                      style: { color: _vm.selectedColor },
+                                      attrs: { "x-large": "" }
+                                    },
+                                    [
+                                      _vm._v(
+                                        "\n                                        " +
+                                          _vm._s(_vm.selectedPrefix) +
+                                          _vm._s(_vm.icon) +
+                                          "\n                                    "
+                                      )
+                                    ]
+                                  ),
+                                  _vm._v(" "),
+                                  _vm.icon.length > 0
+                                    ? _c("div", [
+                                        _vm._v(
+                                          "Attention ! Pas plus d'une icône ne doit s'afficher ici !"
+                                        )
+                                      ])
+                                    : _vm._e()
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                { staticClass: "validationFailure" },
+                                [
+                                  _vm.iconValidationFailure.length > 0
+                                    ? _c("v-icon", [
+                                        _vm._v(
+                                          "\n                                        warning\n                                    "
+                                        )
+                                      ])
+                                    : _vm._e(),
+                                  _vm._v(
+                                    "\n                                    " +
+                                      _vm._s(_vm.iconValidationFailure) +
+                                      "\n                                "
+                                  )
+                                ],
+                                1
+                              )
+                            ],
+                            2
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-flex",
+                            { staticClass: "my-5", attrs: { xs12: "" } },
+                            [_c("v-divider")],
+                            1
+                          )
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  )
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "v-card-actions",
+                [
+                  _c(
+                    "v-layout",
+                    {
+                      attrs: {
+                        "align-center": "",
+                        column: "",
+                        "justify-center": ""
+                      }
+                    },
+                    [
+                      _c(
+                        "v-flex",
+                        [
+                          !_vm.valid
+                            ? _c(
+                                "v-btn",
+                                {
+                                  attrs: {
+                                    disabled: !_vm.valid,
+                                    color: "grey lighten-1"
+                                  }
+                                },
+                                [
+                                  _c("v-icon", [_vm._v("add")]),
+                                  _vm._v(
+                                    " Valider\n                            "
+                                  )
+                                ],
+                                1
+                              )
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _vm.valid
+                            ? _c(
+                                "v-btn",
+                                {
+                                  attrs: {
+                                    disabled: !_vm.valid,
+                                    large: "",
+                                    color: "success"
+                                  },
+                                  on: { click: _vm.submit }
+                                },
+                                [
+                                  _c("v-icon", [_vm._v("add")]),
+                                  _vm._v(
+                                    " Valider\n                            "
+                                  )
+                                ],
+                                1
+                              )
+                            : _vm._e()
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c("v-flex", [
+                        _c("div", { staticClass: "validationFailure mt-3" }, [
+                          _vm._v(
+                            "\n                                " +
+                              _vm._s(_vm.validationFailure) +
+                              "\n                            "
+                          )
+                        ])
                       ])
-                    ])
-                  ],
-                  1
-                )
-              ],
-              1
-            )
-          ],
-          1
-        )
-      ],
-      1
-    )
-  ])
+                    ],
+                    1
+                  )
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-snackbar",
+        {
+          attrs: { bottom: "", right: "", "multi-line": "", timeout: 0 },
+          model: {
+            value: _vm.snackbarLoading,
+            callback: function($$v) {
+              _vm.snackbarLoading = $$v
+            },
+            expression: "snackbarLoading"
+          }
+        },
+        [
+          _vm._v("\n            Envoi en cours...\n            "),
+          _c("v-icon", { attrs: { large: "" } }, [
+            _vm._v("fas fa-circle-notch fa-spin")
+          ])
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-snackbar",
+        {
+          attrs: { bottom: "", right: "", "multi-line": "", timeout: 6000 },
+          model: {
+            value: _vm.snackbar,
+            callback: function($$v) {
+              _vm.snackbar = $$v
+            },
+            expression: "snackbar"
+          }
+        },
+        [
+          _vm._v("\n            " + _vm._s(_vm.snackText) + "\n            "),
+          _c(
+            "v-btn",
+            {
+              attrs: { color: "yellow lighten-1", flat: "" },
+              on: {
+                click: function($event) {
+                  _vm.snackbar = false
+                }
+              }
+            },
+            [_vm._v("\n                Close\n            ")]
+          )
+        ],
+        1
+      )
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -74040,6 +74450,40 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -74056,6 +74500,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         return {
             mute: false,
             loading: true,
+
             points: [],
             pointsContents: [],
             images: [],
@@ -74114,6 +74559,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             },
             preview: false,
 
+            snackbarLoading: false,
+            snackText: "",
+            snackbar: false,
+
             point: {
                 id: null,
                 link: "",
@@ -74126,12 +74575,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
 
     watch: {
+        loading: function loading(val, oldVal) {
+            if (val === false) {
+                // console.log("loading finished !");
+
+                this.pageInit();
+            }
+        },
         idSelected: function idSelected(val, oldVal) {
             console.log("id changed in reference THIS IS NOT SUPPOSED TO HAPPEN.");console.log("Previous value : " + val + " New value : " + oldVal);
         },
         titlesInitial: function titlesInitial(val, oldVal) {
-            console.log("");
-            this.pageInit();
+            // console.log("");
+            // this.pageInit();
         },
         selectedReference: function selectedReference(val, oldVal) {
             this.setIcon(val);
@@ -74166,6 +74622,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     methods: {
         pageInit: function pageInit() {
             console.log("");
+
             //baking references list
             for (var a = 0; a < this.references.length; a++) {
                 for (var b = 0; b < this.referenceNames.length; b++) {
@@ -74288,6 +74745,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 }
             }
             // document.getElementById('coloredDiv').style.backgroundColor = this.selectedColor;
+        },
+        pageReinit: function pageReinit() {
+            console.log("");
+            this.loading = true;
+            // console.log("loading...");
+            this.methodsApiCalls();
+            this.titles = [];
+            this.desc = [];
+            this.linkAlias = [];
+            this.link = "";
+            this.selectedReference = null;
+            // this.lattitude = null;
+            // this.longitude = null;
+            this.pageInit();
         },
         imageSelected: function imageSelected(img) {
             var images = JSON.parse(JSON.stringify(this.images));
@@ -74479,6 +74950,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         submit: function submit() {
             if (this.$refs.form.validate()) {
+
+                this.snackbarLoading = true;
+
                 // In create mode
                 if (this.page == "pointParent") {
                     this.createPoint();
@@ -74515,7 +74989,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             console.log("");
 
             axios.post('/api/points', newPoint).then(function (resp) {
-                return Promise.all([resp, console.log("point created"), _this.createPointNames(resp.data.id)]);
+                return Promise.all([resp, console.log(""), _this.createPointNames(resp.data.id)]);
             }).catch(function (error) {
                 console.log(error.response.data);
 
@@ -74525,42 +74999,37 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         createPointNames: function createPointNames(id) {
             var _this2 = this;
 
-            var _loop = function _loop(i) {
-                if (_this2.link !== "") {
+            for (var i = 0; i < this.codes.length; i++) {
+                var newPointName;
+                if (this.link !== "") {
                     newPointName = {
                         "fk_point_id": id,
-                        "fk_language_code": _this2.codes[i],
-                        "title": _this2.titles[i],
-                        "description": _this2.desc[i],
-                        "linkalias": _this2.linkAlias[i]
+                        "fk_language_code": this.codes[i],
+                        "title": this.titles[i],
+                        "description": this.desc[i],
+                        "linkalias": this.linkAlias[i]
                     };
                 } else {
                     newPointName = {
                         "fk_point_id": id,
-                        "fk_language_code": _this2.codes[i],
-                        "title": _this2.titles[i],
-                        "description": _this2.desc[i],
+                        "fk_language_code": this.codes[i],
+                        "title": this.titles[i],
+                        "description": this.desc[i],
                         "linkalias": ""
                     };
                 };
 
                 console.log("");
 
-                axios.post('/api/pointsnames', newPointName).then(function (resp) {
-                    console.log("point name created" + this.codes[i]);
+                axios.post('/api/pointsnames', newPointName).then(function (response) {
+                    return Promise.all([response, console.log(""), _this2.success(response, "Création effectuée !")]);
                 }).catch(function (error) {
                     console.log(error.response.data);
 
-                    alert("Un problème est survenu lors de la création. Error located in EditPoint.vue !");
+                    // alert("Un problème est survenu lors de la création. Error located in EditPoint.vue !");
+                    this.failed(error, "Erreur lors de la création du point !");
                 });
-            };
-
-            for (var i = 0; i < this.codes.length; i++) {
-                var newPointName;
-
-                _loop(i);
             }
-            this.$emit('pageToShow', "", null);
         },
         updatePoint: function updatePoint(id) {
             this.point.longitude = this.longitude;
@@ -74580,14 +75049,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             console.log("");
 
-            axios.patch('/api/points/' + id, newPoint).then(function (resp) {}).catch(function (error) {
+            axios.patch('/api/points/' + id, newPoint).then(function (resp) {
+                console.log("");
+            }).catch(function (error) {
                 console.log(error.response.data);
 
                 alert("Un problème est survenu lors de la mise à jour. Error located in EditPoint.vue !");
             });
-            this.$emit('pageToShow', "", null);
+            // this.$emit('pageToShow', "", null);
         },
         updatePointNames: function updatePointNames(id) {
+            var _this3 = this;
+
             for (var i = 0; i < this.codes.length; i++) {
                 var newPointName;
                 if (this.link !== "") {
@@ -74610,19 +75083,34 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
                 console.log("");
 
-                axios.patch('/api/pointsnames/' + id[i], newPointName).then(function (resp) {}).catch(function (error) {
+                axios.patch('/api/pointsnames/' + id[i], newPointName).then(function (response) {
+                    return Promise.all([response, console.log(""), _this3.success(response, "Mise à jour effectuée !")]);
+                }).catch(function (error) {
                     console.log(error.response.data);
 
-                    alert("Un problème est survenu lors de la mise à jour. Error located in EditPoint.vue !");
+                    // alert("Un problème est survenu lors de la mise à jour. Error located in EditPoint.vue !");
+                    this.failed(error, "Erreur lors de la mise à jour du point !");
                 });
             }
+            // this.$emit('pageToShow', "", null);
+        },
+        success: function success(response, msg) {
+            this.snackbarLoading = false;
+            this.snackbar = true;
+            this.snackText = msg;
             this.$emit('pageToShow', "", null);
+        },
+        failed: function failed(error) {
+            console.log(error);
+            this.snackbarLoading = false;
+            this.snackbar = true;
+            this.snackText = msg;
         },
 
 
         //API CALLS
         methodsApiCalls: function methodsApiCalls() {
-            var _this3 = this;
+            var _this4 = this;
 
             this.images = __WEBPACK_IMPORTED_MODULE_2__services_images_js__["a" /* default */].readImages();
             this.points = __WEBPACK_IMPORTED_MODULE_3__services_points_js__["a" /* default */].readPoints();
@@ -74638,12 +75126,36 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 var data = _ref.data;
 
                 data.forEach(function (language) {
-                    _this3.titles.push("");
-                    _this3.desc.push("");
-                    _this3.linkAlias.push("");
-                    _this3.titlesInitial.push("");
+                    _this4.titles.push("");
+                    _this4.desc.push("");
+                    _this4.linkAlias.push("");
+                    _this4.titlesInitial.push("");
                 });
-                _this3.loading = false;
+                _this4.loading = false;
+            });
+
+            // function resolveAfter2Seconds() {
+            //     return new Promise(resolve => {
+            //         setTimeout(() => {
+            //         resolve('resolved');
+            //         }, 2000);
+            //     });
+            // }
+
+            // async function asyncCall() {
+            // console.log('calling');
+            // var result = await resolveAfter2Seconds();
+            // this.loading = false;
+            // console.log(result);
+            // expected output: 'resolved'
+            // }
+
+            // asyncCall();
+
+            return new Promise(function (resolve) {
+                setTimeout(function () {
+                    resolve('resolved');
+                }, 2000);
             });
         }
     },
@@ -76425,632 +76937,721 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
-    _c(
-      "div",
-      [
-        _c(
-          "v-form",
-          {
-            ref: "form",
-            attrs: { "lazy-validation": "" },
-            model: {
-              value: _vm.valid,
-              callback: function($$v) {
-                _vm.valid = $$v
-              },
-              expression: "valid"
-            }
-          },
-          [
-            _c(
-              "v-card-text",
-              [
-                _c(
-                  "v-container",
-                  { attrs: { "grid-list-md": "" } },
-                  [
-                    _c(
-                      "v-layout",
-                      { attrs: { wrap: "" } },
-                      [
-                        _c(
-                          "v-flex",
-                          { staticClass: "my-5", attrs: { xs12: "" } },
-                          [
-                            _c("div", [_vm._v("Réference parent *: ")]),
-                            _vm._v(" "),
-                            _c("v-select", {
-                              attrs: {
-                                "item-text": "text",
-                                "item-value": "id",
-                                items: _vm.referenceList,
-                                solo: "",
-                                required: ""
-                              },
-                              model: {
-                                value: _vm.selectedReference,
-                                callback: function($$v) {
-                                  _vm.selectedReference = $$v
+  return _c(
+    "div",
+    [
+      _c(
+        "div",
+        [
+          _c(
+            "div",
+            [
+              _c(
+                "v-btn",
+                {
+                  attrs: { color: "lime lighten-3" },
+                  on: { click: _vm.pageReinit }
+                },
+                [
+                  _c("v-icon", [_vm._v("fas fa-circle-notch fa-spin")]),
+                  _vm._v(" Reinitialiser et mettre à jour\n            ")
+                ],
+                1
+              )
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-form",
+            {
+              ref: "form",
+              attrs: { "lazy-validation": "" },
+              model: {
+                value: _vm.valid,
+                callback: function($$v) {
+                  _vm.valid = $$v
+                },
+                expression: "valid"
+              }
+            },
+            [
+              _c(
+                "v-card-text",
+                [
+                  _c(
+                    "v-container",
+                    { attrs: { "grid-list-md": "" } },
+                    [
+                      _c(
+                        "v-layout",
+                        { attrs: { wrap: "" } },
+                        [
+                          _c(
+                            "v-flex",
+                            { staticClass: "my-5", attrs: { xs12: "" } },
+                            [
+                              _c("div", [_vm._v("Réference parent *: ")]),
+                              _vm._v(" "),
+                              _c("v-select", {
+                                attrs: {
+                                  "item-text": "text",
+                                  "item-value": "id",
+                                  items: _vm.referenceList,
+                                  solo: "",
+                                  required: ""
                                 },
-                                expression: "selectedReference"
-                              }
-                            }),
-                            _vm._v(" "),
-                            _c(
-                              "div",
-                              { staticClass: "my-2" },
-                              [
-                                _vm._v(
-                                  "Aperçu de l'icône de la référence sélectionnée :\n                                    "
-                                ),
-                                _c(
-                                  "v-icon",
-                                  {
-                                    style: { color: _vm.selectedColor },
-                                    attrs: { "x-large": "" }
+                                model: {
+                                  value: _vm.selectedReference,
+                                  callback: function($$v) {
+                                    _vm.selectedReference = $$v
                                   },
-                                  [
-                                    _vm._v(
-                                      "\n                                        " +
-                                        _vm._s(_vm.icon) +
-                                        "\n                                    "
-                                    )
-                                  ]
-                                )
-                              ],
-                              1
-                            ),
-                            _vm._v(" "),
-                            _c(
-                              "div",
-                              { staticClass: "validationFailure" },
-                              [
-                                _vm.fkrefValidationFailure.length > 0
-                                  ? _c("v-icon", [
-                                      _vm._v(
-                                        "\n                                        warning\n                                    "
-                                      )
-                                    ])
-                                  : _vm._e(),
-                                _vm._v(
-                                  "\n                                    " +
-                                    _vm._s(_vm.fkrefValidationFailure) +
-                                    "\n                                "
-                                )
-                              ],
-                              1
-                            )
-                          ],
-                          1
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "v-flex",
-                          { staticClass: "my-5", attrs: { xs12: "" } },
-                          [_c("v-divider")],
-                          1
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "v-flex",
-                          { staticClass: "my-5", attrs: { xs12: "" } },
-                          [
-                            _c("div", [_vm._v("Lien : ")]),
-                            _vm._v(" "),
-                            _c("v-text-field", {
-                              staticClass: "mb-2",
-                              attrs: { value: "link", counter: 100, solo: "" },
-                              model: {
-                                value: _vm.link,
-                                callback: function($$v) {
-                                  _vm.link = $$v
-                                },
-                                expression: "link"
-                              }
-                            }),
-                            _vm._v(" "),
-                            _vm.link.length > 0
-                              ? _c("div", [
+                                  expression: "selectedReference"
+                                }
+                              }),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                { staticClass: "my-2" },
+                                [
+                                  _vm._v(
+                                    "Aperçu de l'icône de la référence sélectionnée :\n                                    "
+                                  ),
                                   _c(
-                                    "a",
+                                    "v-icon",
                                     {
-                                      attrs: {
-                                        id: "linkDiv",
-                                        target: "_blank",
-                                        rel: "noopener noreferrer",
-                                        href: _vm.link
-                                      }
+                                      style: { color: _vm.selectedColor },
+                                      attrs: { "x-large": "" }
                                     },
                                     [
                                       _vm._v(
-                                        "\n                                        test du lien\n                                    "
+                                        "\n                                        " +
+                                          _vm._s(_vm.icon) +
+                                          "\n                                    "
                                       )
                                     ]
-                                  ),
-                                  _vm._v(
-                                    "\n                                    (nouvel onglet)\n                                "
                                   )
-                                ])
-                              : _vm._e()
-                          ],
-                          1
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "v-flex",
-                          { staticClass: "my-5", attrs: { xs12: "" } },
-                          [_c("v-divider")],
-                          1
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "v-flex",
-                          { staticClass: "my-5", attrs: { xs12: "" } },
-                          [
-                            _c(
-                              "v-expansion-panel",
-                              { staticClass: "elevation-10" },
-                              _vm._l(_vm.languages, function(language, i) {
-                                return _c(
-                                  "v-expansion-panel-content",
-                                  {
-                                    key: i,
-                                    staticClass:
-                                      "green lighten-3 highlightHeader",
-                                    class: { listColorAlt: i % 2 == 0 },
-                                    attrs: { color: "green lighten-3" }
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                { staticClass: "validationFailure" },
+                                [
+                                  _vm.fkrefValidationFailure.length > 0
+                                    ? _c("v-icon", [
+                                        _vm._v(
+                                          "\n                                        warning\n                                    "
+                                        )
+                                      ])
+                                    : _vm._e(),
+                                  _vm._v(
+                                    "\n                                    " +
+                                      _vm._s(_vm.fkrefValidationFailure) +
+                                      "\n                                "
+                                  )
+                                ],
+                                1
+                              )
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-flex",
+                            { staticClass: "my-5", attrs: { xs12: "" } },
+                            [_c("v-divider")],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-flex",
+                            { staticClass: "my-5", attrs: { xs12: "" } },
+                            [
+                              _c("div", [_vm._v("Lien : ")]),
+                              _vm._v(" "),
+                              _c("v-text-field", {
+                                staticClass: "mb-2",
+                                attrs: {
+                                  value: "link",
+                                  counter: 100,
+                                  solo: ""
+                                },
+                                model: {
+                                  value: _vm.link,
+                                  callback: function($$v) {
+                                    _vm.link = $$v
                                   },
-                                  [
+                                  expression: "link"
+                                }
+                              }),
+                              _vm._v(" "),
+                              _vm.link.length > 0
+                                ? _c("div", [
                                     _c(
-                                      "div",
+                                      "a",
                                       {
-                                        attrs: { slot: "header" },
-                                        slot: "header"
+                                        attrs: {
+                                          id: "linkDiv",
+                                          target: "_blank",
+                                          rel: "noopener noreferrer",
+                                          href: _vm.link
+                                        }
                                       },
                                       [
-                                        _c("div"),
                                         _vm._v(
-                                          "\n                                            " +
-                                            _vm._s(language.name) +
-                                            "\n                                        "
+                                          "\n                                        test du lien\n                                    "
                                         )
                                       ]
                                     ),
-                                    _vm._v(" "),
-                                    _c("v-card", [
-                                      _c("div", [
-                                        _c(
-                                          "div",
-                                          {
-                                            staticClass: "my-4 mx-2 py-4 px-2"
-                                          },
-                                          [
-                                            _c("div", [
-                                              _vm._v("Nom du point *: ")
-                                            ]),
-                                            _vm._v(" "),
-                                            _c("v-text-field", {
-                                              attrs: {
-                                                rules: _vm.nameRules,
-                                                value: "titles[i]",
-                                                required: "",
-                                                counter: 50
-                                              },
-                                              model: {
-                                                value: _vm.titles[i],
-                                                callback: function($$v) {
-                                                  _vm.$set(_vm.titles, i, $$v)
+                                    _vm._v(
+                                      "\n                                    (nouvel onglet)\n                                "
+                                    )
+                                  ])
+                                : _vm._e()
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-flex",
+                            { staticClass: "my-5", attrs: { xs12: "" } },
+                            [_c("v-divider")],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-flex",
+                            { staticClass: "my-5", attrs: { xs12: "" } },
+                            [
+                              _c(
+                                "v-expansion-panel",
+                                { staticClass: "elevation-10" },
+                                _vm._l(_vm.languages, function(language, i) {
+                                  return _c(
+                                    "v-expansion-panel-content",
+                                    {
+                                      key: i,
+                                      staticClass:
+                                        "green lighten-3 highlightHeader",
+                                      class: { listColorAlt: i % 2 == 0 },
+                                      attrs: { color: "green lighten-3" }
+                                    },
+                                    [
+                                      _c(
+                                        "div",
+                                        {
+                                          attrs: { slot: "header" },
+                                          slot: "header"
+                                        },
+                                        [
+                                          _c("div"),
+                                          _vm._v(
+                                            "\n                                            " +
+                                              _vm._s(language.name) +
+                                              "\n                                        "
+                                          )
+                                        ]
+                                      ),
+                                      _vm._v(" "),
+                                      _c("v-card", [
+                                        _c("div", [
+                                          _c(
+                                            "div",
+                                            {
+                                              staticClass: "my-4 mx-2 py-4 px-2"
+                                            },
+                                            [
+                                              _c("div", [
+                                                _vm._v("Nom du point *: ")
+                                              ]),
+                                              _vm._v(" "),
+                                              _c("v-text-field", {
+                                                attrs: {
+                                                  rules: _vm.nameRules,
+                                                  value: "titles[i]",
+                                                  required: "",
+                                                  counter: 50
                                                 },
-                                                expression: "titles[i]"
-                                              }
-                                            })
-                                          ],
-                                          1
-                                        ),
-                                        _vm._v(" "),
-                                        _c(
-                                          "div",
-                                          {
-                                            staticClass: "my-4 mx-2 py-4 px-2"
-                                          },
-                                          [
-                                            _c("div", [
-                                              _vm._v("Description du point *: ")
-                                            ]),
-                                            _vm._v(" "),
-                                            _c("v-text-field", {
-                                              attrs: {
-                                                rules: _vm.nameRules,
-                                                value: "desc[i]",
-                                                counter: 50
-                                              },
-                                              model: {
-                                                value: _vm.desc[i],
-                                                callback: function($$v) {
-                                                  _vm.$set(_vm.desc, i, $$v)
-                                                },
-                                                expression: "desc[i]"
-                                              }
-                                            })
-                                          ],
-                                          1
-                                        ),
-                                        _vm._v(" "),
-                                        _vm.link.length > 0
-                                          ? _c(
-                                              "div",
-                                              {
-                                                staticClass:
-                                                  "my-4 mx-2 py-4 px-2"
-                                              },
-                                              [
-                                                _c("div", [
-                                                  _vm._v(
-                                                    "Texte du lien du point *: "
-                                                  )
-                                                ]),
-                                                _vm._v(" "),
-                                                _c("v-text-field", {
-                                                  attrs: {
-                                                    value: "linkAlias[i]",
-                                                    counter: 50
+                                                model: {
+                                                  value: _vm.titles[i],
+                                                  callback: function($$v) {
+                                                    _vm.$set(_vm.titles, i, $$v)
                                                   },
-                                                  model: {
-                                                    value: _vm.linkAlias[i],
-                                                    callback: function($$v) {
-                                                      _vm.$set(
-                                                        _vm.linkAlias,
-                                                        i,
-                                                        $$v
-                                                      )
+                                                  expression: "titles[i]"
+                                                }
+                                              })
+                                            ],
+                                            1
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "div",
+                                            {
+                                              staticClass: "my-4 mx-2 py-4 px-2"
+                                            },
+                                            [
+                                              _c("div", [
+                                                _vm._v(
+                                                  "Description du point *: "
+                                                )
+                                              ]),
+                                              _vm._v(" "),
+                                              _c("v-text-field", {
+                                                attrs: {
+                                                  rules: _vm.nameRules,
+                                                  value: "desc[i]",
+                                                  counter: 50
+                                                },
+                                                model: {
+                                                  value: _vm.desc[i],
+                                                  callback: function($$v) {
+                                                    _vm.$set(_vm.desc, i, $$v)
+                                                  },
+                                                  expression: "desc[i]"
+                                                }
+                                              })
+                                            ],
+                                            1
+                                          ),
+                                          _vm._v(" "),
+                                          _vm.link.length > 0
+                                            ? _c(
+                                                "div",
+                                                {
+                                                  staticClass:
+                                                    "my-4 mx-2 py-4 px-2"
+                                                },
+                                                [
+                                                  _c("div", [
+                                                    _vm._v(
+                                                      "Texte du lien du point *: "
+                                                    )
+                                                  ]),
+                                                  _vm._v(" "),
+                                                  _c("v-text-field", {
+                                                    attrs: {
+                                                      value: "linkAlias[i]",
+                                                      counter: 50
                                                     },
-                                                    expression: "linkAlias[i]"
-                                                  }
-                                                })
-                                              ],
-                                              1
-                                            )
-                                          : _vm._e()
+                                                    model: {
+                                                      value: _vm.linkAlias[i],
+                                                      callback: function($$v) {
+                                                        _vm.$set(
+                                                          _vm.linkAlias,
+                                                          i,
+                                                          $$v
+                                                        )
+                                                      },
+                                                      expression: "linkAlias[i]"
+                                                    }
+                                                  })
+                                                ],
+                                                1
+                                              )
+                                            : _vm._e()
+                                        ])
                                       ])
-                                    ])
-                                  ],
-                                  1
-                                )
-                              })
-                            ),
-                            _vm._v(" "),
-                            _c(
-                              "div",
-                              { staticClass: "validationFailure" },
-                              [
-                                _vm.titlesValidationFailure.length > 0
-                                  ? _c("v-icon", [
-                                      _vm._v(
-                                        "\n                                        warning\n                                    "
-                                      )
-                                    ])
-                                  : _vm._e(),
-                                _vm._v(
-                                  "\n                                    " +
-                                    _vm._s(_vm.titlesValidationFailure) +
-                                    "\n                                "
-                                )
-                              ],
-                              1
-                            ),
-                            _vm._v(" "),
-                            _c(
-                              "div",
-                              { staticClass: "validationFailure" },
-                              [
-                                _vm.descValidationFailure.length > 0
-                                  ? _c("v-icon", [
-                                      _vm._v(
-                                        "\n                                        warning\n                                    "
-                                      )
-                                    ])
-                                  : _vm._e(),
-                                _vm._v(
-                                  "\n                                    " +
-                                    _vm._s(_vm.descValidationFailure) +
-                                    "\n                                "
-                                )
-                              ],
-                              1
-                            ),
-                            _vm._v(" "),
-                            _c(
-                              "div",
-                              { staticClass: "validationFailure" },
-                              [
-                                _vm.linkAliasValidationFailure.length > 0
-                                  ? _c("v-icon", [
-                                      _vm._v(
-                                        "\n                                        warning\n                                    "
-                                      )
-                                    ])
-                                  : _vm._e(),
-                                _vm._v(
-                                  "\n                                    " +
-                                    _vm._s(_vm.linkAliasValidationFailure) +
-                                    "\n                                "
-                                )
-                              ],
-                              1
-                            )
-                          ],
-                          1
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "v-flex",
-                          { staticClass: "my-5", attrs: { xs12: "" } },
-                          [_c("v-divider")],
-                          1
-                        ),
-                        _vm._v(" "),
-                        _c("image-point", {
-                          attrs: { image: _vm.image },
-                          on: {
-                            imageSelected: _vm.imageSelected,
-                            clearImage: _vm.clearImage,
-                            imageListReload: _vm.imageListReload
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c(
-                          "v-flex",
-                          { staticClass: "my-5", attrs: { xs12: "" } },
-                          [_c("v-divider")],
-                          1
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "v-flex",
-                          { staticClass: "my-5", attrs: { xs12: "" } },
-                          [
-                            _c("location-map-admin", {
-                              attrs: {
-                                lattitude: _vm.lattitude,
-                                longitude: _vm.longitude,
-                                lattitudeUpdater: _vm.lattitudeUpdater,
-                                longitudeUpdater: _vm.longitudeUpdater,
-                                icon: _vm.icon,
-                                markerColor: _vm.selectedColor,
-                                pointPreview: _vm.pointPreview,
-                                preview: _vm.preview
-                              },
-                              on: {
-                                pointLattitudeUpdate: _vm.pointLattitudeUpdate,
-                                pointLongitudeUpdate: _vm.pointLongitudeUpdate
-                              }
-                            }),
-                            _vm._v(" "),
-                            _c("div", [
-                              _vm._v(
-                                "\n                                    Lattitude :\n                                "
+                                    ],
+                                    1
+                                  )
+                                })
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                { staticClass: "validationFailure" },
+                                [
+                                  _vm.titlesValidationFailure.length > 0
+                                    ? _c("v-icon", [
+                                        _vm._v(
+                                          "\n                                        warning\n                                    "
+                                        )
+                                      ])
+                                    : _vm._e(),
+                                  _vm._v(
+                                    "\n                                    " +
+                                      _vm._s(_vm.titlesValidationFailure) +
+                                      "\n                                "
+                                  )
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                { staticClass: "validationFailure" },
+                                [
+                                  _vm.descValidationFailure.length > 0
+                                    ? _c("v-icon", [
+                                        _vm._v(
+                                          "\n                                        warning\n                                    "
+                                        )
+                                      ])
+                                    : _vm._e(),
+                                  _vm._v(
+                                    "\n                                    " +
+                                      _vm._s(_vm.descValidationFailure) +
+                                      "\n                                "
+                                  )
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                { staticClass: "validationFailure" },
+                                [
+                                  _vm.linkAliasValidationFailure.length > 0
+                                    ? _c("v-icon", [
+                                        _vm._v(
+                                          "\n                                        warning\n                                    "
+                                        )
+                                      ])
+                                    : _vm._e(),
+                                  _vm._v(
+                                    "\n                                    " +
+                                      _vm._s(_vm.linkAliasValidationFailure) +
+                                      "\n                                "
+                                  )
+                                ],
+                                1
                               )
-                            ]),
-                            _vm._v(" "),
-                            _c("v-text-field", {
-                              attrs: {
-                                label: "Lattitude",
-                                hint: "Entre 44.590387  et 44.392567",
-                                "single-line": "",
-                                solo: ""
-                              },
-                              on: {
-                                change: function($event) {
-                                  _vm.pointLattitudeUpdate(_vm.lattitudeUpdater)
-                                }
-                              },
-                              model: {
-                                value: _vm.lattitudeUpdater,
-                                callback: function($$v) {
-                                  _vm.lattitudeUpdater = $$v
-                                },
-                                expression: "lattitudeUpdater"
-                              }
-                            }),
-                            _vm._v(" "),
-                            _c(
-                              "div",
-                              { staticClass: "validationFailure" },
-                              [
-                                _vm.lattitudeValidationFailure.length > 0
-                                  ? _c("v-icon", [
-                                      _vm._v(
-                                        "\n                                        warning\n                                    "
-                                      )
-                                    ])
-                                  : _vm._e(),
-                                _vm._v(
-                                  "\n                                    " +
-                                    _vm._s(_vm.lattitudeValidationFailure) +
-                                    "\n                                "
-                                )
-                              ],
-                              1
-                            ),
-                            _vm._v(" "),
-                            _c("div", [
-                              _vm._v(
-                                "\n                                    Longitude :\n                                "
-                              )
-                            ]),
-                            _vm._v(" "),
-                            _c("v-text-field", {
-                              attrs: {
-                                label: "Longitude",
-                                hint: "Entre 1.360224 et 1.027538",
-                                "single-line": "",
-                                solo: ""
-                              },
-                              on: {
-                                change: function($event) {
-                                  _vm.pointLongitudeUpdate(_vm.longitudeUpdater)
-                                }
-                              },
-                              model: {
-                                value: _vm.longitudeUpdater,
-                                callback: function($$v) {
-                                  _vm.longitudeUpdater = $$v
-                                },
-                                expression: "longitudeUpdater"
-                              }
-                            }),
-                            _vm._v(" "),
-                            _c(
-                              "div",
-                              { staticClass: "validationFailure" },
-                              [
-                                _vm.longitudeValidationFailure.length > 0
-                                  ? _c("v-icon", [
-                                      _vm._v(
-                                        "\n                                        warning\n                                    "
-                                      )
-                                    ])
-                                  : _vm._e(),
-                                _vm._v(
-                                  "\n                                    " +
-                                    _vm._s(_vm.longitudeValidationFailure) +
-                                    "\n                                "
-                                )
-                              ],
-                              1
-                            )
-                          ],
-                          1
-                        )
-                      ],
-                      1
-                    )
-                  ],
-                  1
-                ),
-                _vm._v(" "),
-                _c(
-                  "v-container",
-                  [
-                    _c(
-                      "v-layout",
-                      {
-                        attrs: {
-                          "align-center": "",
-                          column: "",
-                          "justify-center": ""
-                        }
-                      },
-                      [
-                        _c(
-                          "v-btn",
-                          {
-                            attrs: {
-                              dark: "",
-                              color: "success",
-                              disabled: !_vm.valid
-                            },
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-flex",
+                            { staticClass: "my-5", attrs: { xs12: "" } },
+                            [_c("v-divider")],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c("image-point", {
+                            attrs: { image: _vm.image },
                             on: {
-                              click: function($event) {
-                                $event.stopPropagation()
-                                _vm.previewPoint()
-                              }
+                              imageSelected: _vm.imageSelected,
+                              clearImage: _vm.clearImage,
+                              imageListReload: _vm.imageListReload
                             }
-                          },
-                          [
-                            _vm._v(
-                              "\n                                Previsualiser le point\n                            "
-                            )
-                          ]
-                        )
-                      ],
-                      1
-                    )
-                  ],
-                  1
-                )
-              ],
-              1
-            ),
-            _vm._v(" "),
-            _c(
-              "v-card-actions",
-              [
-                _c(
-                  "v-layout",
-                  {
-                    attrs: {
-                      "align-center": "",
-                      column: "",
-                      "justify-center": ""
-                    }
-                  },
-                  [
-                    _c(
-                      "v-flex",
-                      [
-                        !_vm.valid
-                          ? _c(
-                              "v-btn",
-                              {
+                          }),
+                          _vm._v(" "),
+                          _c(
+                            "v-flex",
+                            { staticClass: "my-5", attrs: { xs12: "" } },
+                            [_c("v-divider")],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-flex",
+                            { staticClass: "my-5", attrs: { xs12: "" } },
+                            [
+                              _c("location-map-admin", {
                                 attrs: {
-                                  disabled: !_vm.valid,
-                                  color: "grey lighten-1"
-                                }
-                              },
-                              [
-                                _c("v-icon", [_vm._v("add")]),
-                                _vm._v(" Valider\n                            ")
-                              ],
-                              1
-                            )
-                          : _vm._e(),
-                        _vm._v(" "),
-                        _vm.valid
-                          ? _c(
-                              "v-btn",
-                              {
-                                attrs: {
-                                  disabled: !_vm.valid,
-                                  large: "",
-                                  color: "success"
+                                  lattitude: _vm.lattitude,
+                                  longitude: _vm.longitude,
+                                  lattitudeUpdater: _vm.lattitudeUpdater,
+                                  longitudeUpdater: _vm.longitudeUpdater,
+                                  icon: _vm.icon,
+                                  markerColor: _vm.selectedColor,
+                                  pointPreview: _vm.pointPreview,
+                                  preview: _vm.preview
                                 },
-                                on: { click: _vm.submit }
+                                on: {
+                                  pointLattitudeUpdate:
+                                    _vm.pointLattitudeUpdate,
+                                  pointLongitudeUpdate: _vm.pointLongitudeUpdate
+                                }
+                              }),
+                              _vm._v(" "),
+                              _c("div", [
+                                _vm._v(
+                                  "\n                                    Lattitude :\n                                "
+                                )
+                              ]),
+                              _vm._v(" "),
+                              _c("v-text-field", {
+                                attrs: {
+                                  label: "Lattitude",
+                                  hint: "Entre 44.590387  et 44.392567",
+                                  "single-line": "",
+                                  solo: ""
+                                },
+                                on: {
+                                  change: function($event) {
+                                    _vm.pointLattitudeUpdate(
+                                      _vm.lattitudeUpdater
+                                    )
+                                  }
+                                },
+                                model: {
+                                  value: _vm.lattitudeUpdater,
+                                  callback: function($$v) {
+                                    _vm.lattitudeUpdater = $$v
+                                  },
+                                  expression: "lattitudeUpdater"
+                                }
+                              }),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                { staticClass: "validationFailure" },
+                                [
+                                  _vm.lattitudeValidationFailure.length > 0
+                                    ? _c("v-icon", [
+                                        _vm._v(
+                                          "\n                                        warning\n                                    "
+                                        )
+                                      ])
+                                    : _vm._e(),
+                                  _vm._v(
+                                    "\n                                    " +
+                                      _vm._s(_vm.lattitudeValidationFailure) +
+                                      "\n                                "
+                                  )
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c("div", [
+                                _vm._v(
+                                  "\n                                    Longitude :\n                                "
+                                )
+                              ]),
+                              _vm._v(" "),
+                              _c("v-text-field", {
+                                attrs: {
+                                  label: "Longitude",
+                                  hint: "Entre 1.360224 et 1.027538",
+                                  "single-line": "",
+                                  solo: ""
+                                },
+                                on: {
+                                  change: function($event) {
+                                    _vm.pointLongitudeUpdate(
+                                      _vm.longitudeUpdater
+                                    )
+                                  }
+                                },
+                                model: {
+                                  value: _vm.longitudeUpdater,
+                                  callback: function($$v) {
+                                    _vm.longitudeUpdater = $$v
+                                  },
+                                  expression: "longitudeUpdater"
+                                }
+                              }),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                { staticClass: "validationFailure" },
+                                [
+                                  _vm.longitudeValidationFailure.length > 0
+                                    ? _c("v-icon", [
+                                        _vm._v(
+                                          "\n                                        warning\n                                    "
+                                        )
+                                      ])
+                                    : _vm._e(),
+                                  _vm._v(
+                                    "\n                                    " +
+                                      _vm._s(_vm.longitudeValidationFailure) +
+                                      "\n                                "
+                                  )
+                                ],
+                                1
+                              )
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-container",
+                    [
+                      _c(
+                        "v-layout",
+                        {
+                          attrs: {
+                            "align-center": "",
+                            column: "",
+                            "justify-center": ""
+                          }
+                        },
+                        [
+                          _c(
+                            "v-btn",
+                            {
+                              attrs: {
+                                dark: "",
+                                color: "success",
+                                disabled: !_vm.valid
                               },
-                              [
-                                _c("v-icon", [_vm._v("add")]),
-                                _vm._v(" Valider\n                            ")
-                              ],
-                              1
-                            )
-                          : _vm._e()
-                      ],
-                      1
-                    ),
-                    _vm._v(" "),
-                    _c("v-flex", [
-                      _c("div", { staticClass: "validationFailure mt-3" }, [
-                        _vm._v(
-                          "\n                                " +
-                            _vm._s(_vm.validationFailure) +
-                            "\n                            "
-                        )
+                              on: {
+                                click: function($event) {
+                                  $event.stopPropagation()
+                                  _vm.previewPoint()
+                                }
+                              }
+                            },
+                            [
+                              _vm._v(
+                                "\n                                Previsualiser le point\n                            "
+                              )
+                            ]
+                          )
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  )
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "v-card-actions",
+                [
+                  _c(
+                    "v-layout",
+                    {
+                      attrs: {
+                        "align-center": "",
+                        column: "",
+                        "justify-center": ""
+                      }
+                    },
+                    [
+                      _c(
+                        "v-flex",
+                        [
+                          !_vm.valid
+                            ? _c(
+                                "v-btn",
+                                {
+                                  attrs: {
+                                    disabled: !_vm.valid,
+                                    color: "grey lighten-1"
+                                  }
+                                },
+                                [
+                                  _c("v-icon", [_vm._v("add")]),
+                                  _vm._v(
+                                    " Valider\n                            "
+                                  )
+                                ],
+                                1
+                              )
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _vm.valid
+                            ? _c(
+                                "v-btn",
+                                {
+                                  attrs: {
+                                    disabled: !_vm.valid,
+                                    large: "",
+                                    color: "success"
+                                  },
+                                  on: { click: _vm.submit }
+                                },
+                                [
+                                  _c("v-icon", [_vm._v("add")]),
+                                  _vm._v(
+                                    " Valider\n                            "
+                                  )
+                                ],
+                                1
+                              )
+                            : _vm._e()
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c("v-flex", [
+                        _c("div", { staticClass: "validationFailure mt-3" }, [
+                          _vm._v(
+                            "\n                                " +
+                              _vm._s(_vm.validationFailure) +
+                              "\n                            "
+                          )
+                        ])
                       ])
-                    ])
-                  ],
-                  1
-                )
-              ],
-              1
-            )
-          ],
-          1
-        )
-      ],
-      1
-    )
-  ])
+                    ],
+                    1
+                  )
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-snackbar",
+        {
+          attrs: { bottom: "", right: "", "multi-line": "", timeout: 0 },
+          model: {
+            value: _vm.snackbarLoading,
+            callback: function($$v) {
+              _vm.snackbarLoading = $$v
+            },
+            expression: "snackbarLoading"
+          }
+        },
+        [
+          _vm._v("\n            Envoi en cours...\n            "),
+          _c("v-icon", { attrs: { large: "" } }, [
+            _vm._v("fas fa-circle-notch fa-spin")
+          ])
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-snackbar",
+        {
+          attrs: { bottom: "", right: "", "multi-line": "", timeout: 6000 },
+          model: {
+            value: _vm.snackbar,
+            callback: function($$v) {
+              _vm.snackbar = $$v
+            },
+            expression: "snackbar"
+          }
+        },
+        [
+          _vm._v("\n            " + _vm._s(_vm.snackText) + "\n            "),
+          _c(
+            "v-btn",
+            {
+              attrs: { color: "yellow lighten-1", flat: "" },
+              on: {
+                click: function($event) {
+                  _vm.snackbar = false
+                }
+              }
+            },
+            [_vm._v("\n                Close\n            ")]
+          )
+        ],
+        1
+      )
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -83083,7 +83684,7 @@ exports = module.exports = __webpack_require__(0)(false);
 
 
 // module
-exports.push([module.i, "\n.asideDrawer[data-v-ff68bee4]{\n      max-height: 100% !important;\n}\n.v-list__tile__action--stack[data-v-ff68bee4]{\n      padding-top: 0 !important;\n      padding-bottom: 0 !important;\n      white-space: unset !important;\n}\n.selectTop[data-v-ff68bee4]{\n      z-index: 200;\n      max-width: 100px;\n      margin-top: 10px;\n}\n  /* .shadow{\n      text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;\n  } */\n.logoContainer > img[data-v-ff68bee4]{\n      width: 200px;\n      height: 200px;\n}\n.logoContainerMedium > img[data-v-ff68bee4]{\n      width: 80px;\n      height: 80px;\n}\n.logoContainerMini[data-v-ff68bee4]{\n      height: 100%;\n}\n.logoContainerMini > img[data-v-ff68bee4]{\n      width: 48px;\n      height: 48px;\n}\n.listColorAlt[data-v-ff68bee4]{\n      background-color: #C8E6C9 !important;\n}\n.refListElement[data-v-ff68bee4]:nth-child(odd) {\n      background-color: #F0F4C3;\n}\n.refListElement[data-v-ff68bee4]:nth-child(even) {\n      background-color: #F9FBE7;\n}\n\n  /* .borderReferences{\n      content:'';\n      position:absolute;\n      width:100%;\n      height:3px;\n      background:linear-gradient(to left, rgba(0, 0, 0, 0), #C8E6C9);\n      top:0px;\n      left:0;\n  } */\n.flexCenter[data-v-ff68bee4] {\n      -webkit-box-pack: center;\n          -ms-flex-pack: center;\n              justify-content: center;\n}\n.cursorAction[data-v-ff68bee4]{\n      cursor: pointer;\n}\na[data-v-ff68bee4]{\n      color: rgb(24, 53, 17) !important;\n      text-decoration: inherit;\n}\n/* #publicMapControls{\n  float: right;\n  border: 5px;\n  border-color: brown;\n  border-style: solid;\n  z-index: 100;\n} */\n", ""]);
+exports.push([module.i, "\n.asideDrawer[data-v-ff68bee4]{\n      max-height: 100% !important;\n}\n.v-list[data-v-ff68bee4]{\n      padding: 0 !important;\n}\n.v-list__tile__action--stack[data-v-ff68bee4]{\n      padding-top: 0 !important;\n      padding-bottom: 0 !important;\n      white-space: unset !important;\n}\n.selectTop[data-v-ff68bee4]{\n      z-index: 200;\n      max-width: 100px;\n      margin-top: 10px;\n}\n  /* .shadow{\n      text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;\n  } */\n.logoContainer > img[data-v-ff68bee4]{\n      width: 200px;\n      height: 200px;\n}\n.logoContainerMedium > img[data-v-ff68bee4]{\n      width: 80px;\n      height: 80px;\n}\n.logoContainerMini[data-v-ff68bee4]{\n      height: 100%;\n}\n.logoContainerMini > img[data-v-ff68bee4]{\n      width: 48px;\n      height: 48px;\n}\n.listColorAlt[data-v-ff68bee4]{\n      background-color: #C8E6C9 !important;\n}\n.refListElement[data-v-ff68bee4]:nth-child(odd) {\n      background-color: #F0F4C3;\n}\n.refListElement[data-v-ff68bee4]:nth-child(even) {\n      background-color: #F9FBE7;\n}\n\n  /* .borderReferences{\n      content:'';\n      position:absolute;\n      width:100%;\n      height:3px;\n      background:linear-gradient(to left, rgba(0, 0, 0, 0), #C8E6C9);\n      top:0px;\n      left:0;\n  } */\n.flexCenter[data-v-ff68bee4] {\n      -webkit-box-pack: center;\n          -ms-flex-pack: center;\n              justify-content: center;\n}\n.cursorAction[data-v-ff68bee4]{\n      cursor: pointer;\n}\na[data-v-ff68bee4]{\n      color: rgb(24, 53, 17) !important;\n      text-decoration: inherit;\n}\n/* #publicMapControls{\n  float: right;\n  border: 5px;\n  border-color: brown;\n  border-style: solid;\n  z-index: 100;\n} */\n", ""]);
 
 // exports
 
@@ -84424,7 +85025,7 @@ var render = function() {
         "v-navigation-drawer",
         {
           staticClass: "white asideDrawer",
-          attrs: { "mini-variant": _vm.mini, color: "white", app: "" },
+          attrs: { color: "white", app: "" },
           model: {
             value: _vm.drawer,
             callback: function($$v) {
@@ -84434,29 +85035,6 @@ var render = function() {
           }
         },
         [
-          _vm.mini
-            ? _c(
-                "v-list-tile",
-                {
-                  on: {
-                    click: function($event) {
-                      $event.stopPropagation()
-                      _vm.mini = !_vm.mini
-                    }
-                  }
-                },
-                [
-                  _c(
-                    "v-list-tile-action",
-                    { staticClass: "cursorAction" },
-                    [_c("v-icon", [_vm._v("chevron_right")])],
-                    1
-                  )
-                ],
-                1
-              )
-            : _vm._e(),
-          _vm._v(" "),
           !_vm.mini
             ? _c(
                 "v-list-tile",
@@ -84467,41 +85045,7 @@ var render = function() {
                     [
                       _c(
                         "v-flex",
-                        { attrs: { xs4: "" } },
-                        [
-                          _c(
-                            "v-list-tile-action",
-                            {
-                              staticClass:
-                                "text-xs-center flexCenter cursorAction",
-                              attrs: {
-                                "text-xs-center": "",
-                                "align-center": "",
-                                "justify-center": ""
-                              },
-                              on: {
-                                click: function($event) {
-                                  $event.stopPropagation()
-                                  _vm.mini = !_vm.mini
-                                }
-                              }
-                            },
-                            [
-                              _c("v-icon", [
-                                _vm._v(
-                                  "\n                            chevron_left\n                        "
-                                )
-                              ])
-                            ],
-                            1
-                          )
-                        ],
-                        1
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "v-flex",
-                        { attrs: { xs4: "", "align-center": "" } },
+                        { attrs: { xs6: "", "align-center": "" } },
                         [
                           !_vm.mini
                             ? _c(
@@ -84528,7 +85072,7 @@ var render = function() {
                       _vm._v(" "),
                       _c(
                         "v-flex",
-                        { attrs: { xs4: "", "align-center": "" } },
+                        { attrs: { xs6: "", "align-center": "" } },
                         [
                           _c(
                             "v-list-tile-action",
@@ -85107,7 +85651,7 @@ var L = window.L;
 
                       if (point["fk_image_id"] !== null) {
                         imgCtnr = document.createElement("div");
-                        imgCtnr.setAttribute("style", "width:150px; height:auto;");
+                        imgCtnr.setAttribute("style", "width:150px; height:auto; margin-left:auto; margin-right:auto;");
                         var img = document.createElement("img");
                         img.setAttribute("style", "width:100%; height:100%;");
                         img.setAttribute("alt", "image");

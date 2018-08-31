@@ -38,16 +38,16 @@ var pointsMethods = {
     //         alert("Un problème est survenu lors de la création. Error located in EditPoint.vue !");
     //     });
     // },
-    editPointName(id,newPointName) {
-        axios.patch('/api/pointsnames/' + id, newPointName)
-        .then(function (resp) {
-        })
-        .catch(function (error) {
-            console.log(error.response.data);
+    // editPointName(id,newPointName) {
+    //     axios.patch('/api/pointsnames/' + id, newPointName)
+    //     .then(function (resp) {
+    //     })
+    //     .catch(function (error) {
+    //         console.log(error.response.data);
             
-            alert("Un problème est survenu lors de la mise à jour. Error located in EditPoint.vue !");
-        });
-    },
+    //         alert("Un problème est survenu lors de la mise à jour. Error located in EditPoint.vue !");
+    //     });
+    // },
     destroyPoint(id){
         axios.delete(`/api/points/${id}`)
             .then(function (resp) {

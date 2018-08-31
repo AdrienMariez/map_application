@@ -41,16 +41,16 @@ var categoriesMethods = {
             });
     },
     //createCategoryName is in EditCategory.vue, due to not working here
-    editCategoryName(id,newCategoryName){
-        axios.patch('/api/categoriesnames/' + id, newCategoryName)
-        .then(function (resp) {
-        })
-        .catch(function (error) {
-            console.log(error.response.data);
+    // editCategoryName(id,newCategoryName){
+        // axios.patch('/api/categoriesnames/' + id, newCategoryName)
+        // .then(function (resp) {
+        // })
+        // .catch(function (error) {
+        //     console.log(error.response.data);
             
-            alert("Un problème est survenu lors de la mise à jour. Error located in EditCategory.vue !");
-        });
-    },
+        //     alert("Un problème est survenu lors de la mise à jour. Error located in EditCategory.vue !");
+        // });
+    // },
     destroyCategory(id){
         axios.delete(`/api/categories/${id}`)
             .then(function (resp) {

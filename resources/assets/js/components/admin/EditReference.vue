@@ -1,6 +1,13 @@
 <template>
     <div>
         <div>
+            <div>
+                <v-btn
+                    @click="pageReinit"
+                    color="lime lighten-3">
+                    <v-icon>fas fa-circle-notch fa-spin</v-icon> Reinitialiser et mettre à jour
+                </v-btn>
+            </div>
             <v-form ref="form" v-model="valid" lazy-validation>
                     <v-card-text>
                         <v-container grid-list-md>
@@ -188,6 +195,33 @@
                     </v-card-actions>
             </v-form>
         </div>
+        <!-- loading... -->
+            <v-snackbar
+                v-model="snackbarLoading"
+                bottom
+                right
+                multi-line
+                :timeout=0>
+                Envoi en cours...
+                <v-icon large>fas fa-circle-notch fa-spin</v-icon>
+            </v-snackbar>
+        <!-- snackbar info -->
+            <v-snackbar
+                v-model="snackbar"
+                bottom
+                right
+                multi-line
+                :timeout=6000
+                >
+                {{ snackText }}
+                <v-btn
+                    color="yellow lighten-1"
+                    flat
+                    @click="snackbar = false"
+                >
+                    Close
+                </v-btn>
+            </v-snackbar>
     </div>
 </template>
 
@@ -202,6 +236,7 @@
             return {
                 mute: false,
                 loading: true,
+
                 references: [],
                 referenceNames: [],
                 categories: [],
@@ -218,7 +253,6 @@
                 fk_cat: null,
                 categoryList: [],
                 selectedCategory: null,
-                selectedCategoryId: null,
                 selectedColor: "",
                 fk_id: [],
                 names: [],
@@ -256,6 +290,10 @@
                     { text: 'Vert clair', code: '#4CAF50' },
                 ],
 
+                snackbarLoading: false,
+                snackText: "",
+                snackbar: false,
+
                 reference: {
                     id: null,
                     fk_category_id: null,
@@ -265,11 +303,17 @@
             }
         },
         watch: {
+            loading(val, oldVal) {
+                if (val === false) {
+                    // console.log("loading finished !");
+                    this.pageInit();
+                }
+            },
             idSelected(val, oldVal){
                 console.log("id changed in reference THIS IS NOT SUPPOSED TO HAPPEN.");console.log("Previous value : "+val+" New value : "+oldVal);
             },
             namesInitial(val, oldVal){
-                this.pageInit();
+                // this.pageInit();
             },
             names(){
                 this.validation();
@@ -290,6 +334,7 @@
         methods: {
             pageInit(){
                 console.log("");
+                
                 //baking category list
                 for (let a = 0; a < this.categories.length; a++) {
                     for (let b = 0; b < this.categoriesNames.length; b++) {
@@ -332,7 +377,8 @@
                                 }
                             }
                         }
-                    var icon;
+                var icon;
+                
                 //search for fk_category_id & icon :
                         for (let x = 0; x < this.references.length; x++) {
                             if (this.idSelected == this.references[x]["id"]) {
@@ -342,12 +388,15 @@
                         }
                 //set icon
                     var prefix = icon.substring(0,3);
-                    if (prefix == "fa-" || prefix == "mdi-") {
+                    if (prefix == "fa-") {
                         this.selectedPrefix = prefix;
                         this.icon = icon.substring(3);
-                        
-                        
-                    }else{
+                    }
+                    else if(prefix == "mdi") {
+                        this.selectedPrefix = "mdi-";
+                        this.icon = icon.substring(4);
+                    }
+                    else{
                         this.icon = icon;
                     }
                 //set object selectedCategory
@@ -378,6 +427,17 @@
                     }
                 }
                 document.getElementById('coloredDiv').style.backgroundColor = this.selectedColor;
+            },
+
+            pageReinit(){
+                console.log("");
+                this.loading = true;
+                this.methodsApiCalls();
+                this.names = [];
+                this.selectedCategory = null;
+                this.selectedPrefix = "";
+                this.icon = "";
+                this.pageInit()
             },
 
             setPrefix(code) {
@@ -452,6 +512,9 @@
 
             submit () {
                 if (this.$refs.form.validate()) {
+
+                    this.snackbarLoading = true;
+
                     var icon = this.selectedPrefix +""+ this.icon;
                     //In create mode
                     if(this.page == "referenceParent"){
@@ -527,15 +590,24 @@
 
                     console.log("");
 
-                    referencesMethods.createReferenceName(newReferenceName);
-                    // axios.post('/api/referencesnames', newReferenceName)
-                    //     .then(function (resp) {
-                    //     })
-                    //     .catch(function (error) {
-                    //         console.log(error.response.data);
+                    // referencesMethods.createReferenceName(newReferenceName);
+                    axios.post('/api/referencesnames', newReferenceName)
+                        .then(
+                        response =>
+                            Promise.all([
+                            response,
+                            console.log("")
+                            ,
+                            this.success(response, "Création effectuée !"),
+                            ])   
+                        )
+                        .catch(function (error) {
+                            console.log(error.response.data);
                                         
-                    //         alert("Un problème est survenu lors de la création. Error located in EditReference.vue !");
-                    //     });
+                            // alert("Un problème est survenu lors de la création. Error located in EditReference.vue !");
+
+                            this.failed(error, "Erreur lors de la création de la référence !");
+                        });
                 }
                 this.$emit('pageToShow', "", null);
             },
@@ -549,13 +621,46 @@
 
                     console.log("");
 
-                    referencesMethods.editReferenceName(id[i],newReferenceName);
+                    // referencesMethods.editReferenceName(id[i],newReferenceName);
+
+                    axios.patch('/api/referencesnames/' + id[i], newReferenceName)
+                        .then(
+                            response =>
+                                Promise.all([
+                                response,
+                                console.log("")
+                                ,
+                                this.success(response, "Mise à jour effectuée !"),
+                                ])   
+                            )
+                        .catch(function (error) {
+                            console.log(error.response.data);
+                                        
+                            // alert("Un problème est survenu lors de la mise à jour. Error located in EditReference.vue !");
+
+                            this.failed(error, "Erreur lors de la mise à jour de la référence !");
+                        });
                 }
                 this.$emit('pageToShow', "", null);
             },
+
+            success(response, msg) {
+                this.snackbarLoading = false;
+                this.snackbar = true;
+                this.snackText = msg;
+            },
+            failed(error) {
+                console.log(error);
+                this.snackbarLoading = false;
+                this.snackbar = true;
+                this.snackText = msg;
+            },
+
             //API CALLS
                 methodsApiCalls() {
+
                     this.references = referencesMethods.readReferences();
+
                     this.referenceNames = referencesMethods.readReferenceNames();
                     this.categories = categoriesMethods.readCategories();
                     this.categoriesNames = categoriesMethods.readCategoriesNamesFrOnly();
@@ -568,6 +673,29 @@
                             this.namesInitial.push("");
                         });
                         this.loading = false;
+                    });
+
+                    // function resolveAfter2Seconds() {
+                    //     return new Promise(resolve => {
+                    //         setTimeout(() => {
+                    //         resolve('resolved');
+                    //         }, 2000);
+                    //     });
+                    // }
+
+                    // async function asyncCall() {
+                        // console.log('calling');
+                        // var result = await resolveAfter2Seconds();
+                        // console.log(result);
+                        // expected output: 'resolved'
+                    // }
+
+                    // asyncCall();
+
+                    return new Promise(resolve => {
+                        setTimeout(() => {
+                            resolve('resolved');
+                        }, 2000);
                     });
                 },
         },

@@ -1,6 +1,8 @@
 var referencesMethods = {
     readReferences() {
         var references = [];
+        var x = true;
+        var y = "test";
         window.axios.get('/api/references').then(({ data }) => {
             data.forEach(reference => {
                 references.push(reference);
@@ -29,16 +31,16 @@ var referencesMethods = {
         return referencesNames;
     },
     //createReference is in EditReference.vue
-    createReferenceName(newReferenceName) {
-        axios.post('/api/referencesnames', newReferenceName)
-            .then(function (resp) {
-            })
-            .catch(function (error) {
-                console.log(error.response.data);
+    // createReferenceName(newReferenceName) {
+        // axios.post('/api/referencesnames', newReferenceName)
+        //     .then(function (resp) {
+        //     })
+        //     .catch(function (error) {
+        //         console.log(error.response.data);
                             
-                alert("Un problème est survenu lors de la création. Error located in EditReference.vue !");
-            });
-    },
+        //         alert("Un problème est survenu lors de la création. Error located in EditReference.vue !");
+        //     });
+    // },
     editReference(id, newReference) {
         axios.patch('/api/references/' + id, newReference)
             .then(function (resp) {
@@ -49,16 +51,16 @@ var referencesMethods = {
                 alert("Un problème est survenu lors de la mise à jour. Error located in EditReference.vue !");
             });
     },
-    editReferenceName(id,newReferenceName) {
-        axios.patch('/api/referencesnames/' + id, newReferenceName)
-            .then(function (resp) {
-            })
-            .catch(function (error) {
-                console.log(error.response.data);
+    // editReferenceName(id,newReferenceName) {
+        // axios.patch('/api/referencesnames/' + id, newReferenceName)
+        //     .then(function (resp) {
+        //     })
+        //     .catch(function (error) {
+        //         console.log(error.response.data);
                             
-                alert("Un problème est survenu lors de la mise à jour. Error located in EditReference.vue !");
-            });
-    },
+        //         alert("Un problème est survenu lors de la mise à jour. Error located in EditReference.vue !");
+        //     });
+    // },
     destroyReference(id){
         axios.delete(`/api/references/${id}`)
             .then(function (resp) {

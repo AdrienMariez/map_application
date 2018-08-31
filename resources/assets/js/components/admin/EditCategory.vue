@@ -1,6 +1,13 @@
 <template>
     <div>
         <div>
+            <div>
+                <v-btn
+                    @click="pageReinit"
+                    color="lime lighten-3">
+                    <v-icon>fas fa-circle-notch fa-spin</v-icon> Reinitialiser et mettre à jour
+                </v-btn>
+            </div>
             <v-form ref="form" v-model="valid" lazy-validation>
                     <v-card-text>
                         <v-container grid-list-md>
@@ -193,6 +200,33 @@
                     </v-card-actions>
             </v-form>
         </div>
+        <!-- loading... -->
+            <v-snackbar
+                v-model="snackbarLoading"
+                bottom
+                right
+                multi-line
+                :timeout=0>
+                Envoi en cours...
+                <v-icon large>fas fa-circle-notch fa-spin</v-icon>
+            </v-snackbar>
+        <!-- snackbar info -->
+            <v-snackbar
+                v-model="snackbar"
+                bottom
+                right
+                multi-line
+                :timeout=6000
+                >
+                {{ snackText }}
+                <v-btn
+                    color="yellow lighten-1"
+                    flat
+                    @click="snackbar = false"
+                >
+                    Close
+                </v-btn>
+            </v-snackbar>
     </div>
 </template>
 
@@ -206,6 +240,7 @@
             return {
                 mute: false,
                 loading: true,
+
                 categories: [],
                 categoriesNames: [],
 
@@ -266,6 +301,10 @@
                 ],
                 selectedColor: "",
 
+                snackbarLoading: false,
+                snackText: "",
+                snackbar: false,
+
                 category: {
                     id: null,
                     icon: '',
@@ -275,11 +314,19 @@
             }
         },
         watch: {
+            loading(val, oldVal) {
+                
+                if (val === false) {
+                    // console.log("loading finished !");
+                    this.pageInit();
+                }
+            },
             idSelected(val, oldVal){
                 console.log("id changed in category THIS IS NOT SUPPOSED TO HAPPEN.");console.log("Previous value : "+val+" New value : "+oldVal);
             },
             namesInitial(val, oldVal){
-                this.editMode();
+                // this.editMode();
+                // this.pageInit();
             },
             names() {
                 this.validation();
@@ -312,49 +359,73 @@
             },
         },
         methods: {
-            editMode(){
-                console.log("");
+            pageInit(){
+                console.log("pageInit");
+
+                //In edit mode
                 if (this.idSelected != null) {
-                    //set name(s) :
-                        for (let i = 0; i < this.categoriesNames.length; i++) {
-                            if (this.idSelected == this.categoriesNames[i]["fk_category_id"]) {
-                                for (let y = 0; y < this.languages.length; y++) {
-                                    if (this.categoriesNames[i]["fk_language_code"] ==          this.languages[y]["code"]) {
-                                        this.fk_id[y] = this.categoriesNames[i]["id"];
+                    this.editMode();
+                }
+                //In create mode
+                else{
+                    this.createMode();
+                }
+            },
+            editMode(){
+                console.log("editMode");
+                var icon;
+                //set name(s) :
+                    for (let i = 0; i < this.categoriesNames.length; i++) {
+                        if (this.idSelected == this.categoriesNames[i]["fk_category_id"]) {
+                            for (let y = 0; y < this.languages.length; y++) {
+                                if (this.categoriesNames[i]["fk_language_code"] ==          this.languages[y]["code"]) {
+                                    this.fk_id[y] = this.categoriesNames[i]["id"];
 
-                                        this.names[y] = this.categoriesNames[i]["text"];
+                                    this.names[y] = this.categoriesNames[i]["text"];
 
-                                        this.codes[y] = this.categoriesNames[i]["fk_language_code"];
-                                    }
+                                    this.codes[y] = this.categoriesNames[i]["fk_language_code"];
                                 }
                             }
                         }
-                    var icon;
-                    //search for color & icon & set color :
-                        for (let x = 0; x < this.categories.length; x++) {
-                            if (this.idSelected == this.categories[x]["id"]) {
-                                this.selectedColor = this.categories[x]["color"];
-                                icon = this.categories[x]["icon"];
-                            }
+                    }
+                //search for color & icon & set color :
+                    for (let x = 0; x < this.categories.length; x++) {
+                        if (this.idSelected == this.categories[x]["id"]) {
+                            this.selectedColor = this.categories[x]["color"];
+                            icon = this.categories[x]["icon"];
                         }
+                    }
 
-                    //set icon
+                //set icon
                     var prefix = icon.substring(0,3);
-                    if (prefix == "fa-" || prefix == "mdi-") {
+                    if (prefix == "fa-") {
                         this.selectedPrefix = prefix;
                         this.icon = icon.substring(3);
-                        
-                        
-                    }else{
+                    }
+                    else if(prefix == "mdi") {
+                        this.selectedPrefix = "mdi-";
+                        this.icon = icon.substring(4);
+                    }
+                    else{
                         this.icon = icon;
                     }
-                }
-                else{
-                    this.selectedPrefix = "";
-                    this.icon = "";
-                    this.selectedColor = "";
-                    this.valid = false;
-                }
+            },
+            createMode() {
+                this.selectedPrefix = "";
+                this.icon = "";
+                this.selectedColor = "";
+                this.valid = false;
+            },
+
+            pageReinit(){
+                console.log("");
+                this.loading = true;
+                
+                this.methodsApiCalls();
+                this.names = [];
+                this.selectedPrefix = "";
+                this.icon = "";
+                this.pageInit()
             },
 
             setPrefix(code) {
@@ -428,6 +499,9 @@
 
             submit () {
                 if (this.$refs.form.validate()) {
+
+                    this.snackbarLoading = true;
+
                     // console.log("names "+this.names);
                     // console.log("icon "+this.iconTotal);
                     // console.log("selectedColor "+this.selectedColor);
@@ -517,12 +591,20 @@
                     console.log("");
                     
                     axios.post('/api/categoriesnames', newCategoryName)
-                        .then(function (resp) {
-                        })
+                        .then(
+                        response =>
+                            Promise.all([
+                            response,
+                            console.log("")
+                            ,
+                            this.success(response, "Création effectuée !"),
+                            ])   
+                        )
                         .catch(function (error) {
                             console.log(error.response.data);
                             
-                            alert("Un problème est survenu lors de la création. Error located in EditCategory.vue !");
+                            // alert("Un problème est survenu lors de la création. Error located in EditCategory.vue !");
+                            this.failed(error, "Erreur lors de la création de la catégorie !");
                         });
                 }
 
@@ -538,10 +620,41 @@
 
                     console.log("");
 
-                    categoriesMethods.editCategoryName(id[i], newCategoryName);
+                    // categoriesMethods.editCategoryName(id[i], newCategoryName);
+
+                    axios.patch('/api/categoriesnames/' + id[i], newCategoryName)
+                        .then(
+                            response =>
+                                Promise.all([
+                                response,
+                                console.log("")
+                                ,
+                                this.success(response, "Mise à jour effectuée !"),
+                                ])   
+                            )
+                        .catch(function (error) {
+                            console.log(error.response.data);
+                            
+                            // alert("Un problème est survenu lors de la mise à jour. Error located in EditCategory.vue !");
+
+                            this.failed(error, "Erreur lors de la mise à jour de la catégorie !");
+                        });
                 }
                 this.$emit('pageToShow', "", null);
             },
+
+            success(response, msg) {
+                this.snackbarLoading = false;
+                this.snackbar = true;
+                this.snackText = msg;
+            },
+            failed(error) {
+                console.log(error);
+                this.snackbarLoading = false;
+                this.snackbar = true;
+                this.snackText = msg;
+            },
+
             //API CALLS
                 methodsApiCalls() {
                     this.categories = categoriesMethods.readCategories();
@@ -555,6 +668,28 @@
                             this.namesInitial.push("");
                         });
                         this.loading = false;
+                    });
+
+                    // function resolveAfter2Seconds() {
+                    //     return new Promise(resolve => {
+                    //         setTimeout(() => {
+                    //         resolve('resolved');
+                    //         }, 2000);
+                    //     });
+                    // }
+
+                    // async function asyncCall() {
+                    //     var result = await resolveAfter2Seconds();
+                    //     if (result == 'resolved') {
+                    //     }
+                    // }
+
+                    // asyncCall();
+
+                    return new Promise(resolve => {
+                        setTimeout(() => {
+                            resolve('resolved');
+                        }, 2000);
                     });
                 },
         },
