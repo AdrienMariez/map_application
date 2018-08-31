@@ -319,6 +319,7 @@
                 console.log("id changed in reference THIS IS NOT SUPPOSED TO HAPPEN.");console.log("Previous value : "+val+" New value : "+oldVal);
             },
             titlesInitial(val, oldVal){
+                console.log("");
                 this.pageInit();
             },
             selectedReference(val, oldVal){
@@ -353,6 +354,7 @@
         },
         methods: {
             pageInit(){
+                console.log("");
                 //baking references list
                 for (let a = 0; a < this.references.length; a++) {
                     for (let b = 0; b < this.referenceNames.length; b++) {
@@ -382,26 +384,27 @@
                 this.setcodes();
             },
             editMode() {
+                console.log("");
                 //set name(s) :
-                        for (let i = 0; i < this.pointsContents.length; i++) {
-                            if (this.idSelected == this.pointsContents[i]["fk_point_id"]) {
-                                for (let y = 0; y < this.languages.length; y++) {
-                                    if (this.pointsContents[i]["fk_language_code"] ==          this.languages[y]["code"]) {
-                                        this.fk_id[y] = this.pointsContents[i]["id"];
-                                        this.titles[y] = this.pointsContents[i]["title"];
+                    for (let i = 0; i < this.pointsContents.length; i++) {
+                        if (this.idSelected == this.pointsContents[i]["fk_point_id"]) {
+                            for (let y = 0; y < this.languages.length; y++) {
+                                if (this.pointsContents[i]["fk_language_code"] ==          this.languages[y]["code"]) {
+                                    this.fk_id[y] = this.pointsContents[i]["id"];
+                                    this.titles[y] = this.pointsContents[i]["title"];
 
-                                        this.desc[y] = this.pointsContents[i]["description"];
+                                    this.desc[y] = this.pointsContents[i]["description"];
 
-                                        if (this.pointsContents[i]["linkalias"]) {
-                                            this.linkAlias[y] = this.pointsContents[i]["linkalias"];
-                                        }
-                                        else{
-                                            this.linkAlias[y] = "";
-                                        }
+                                    if (this.pointsContents[i]["linkalias"]) {
+                                        this.linkAlias[y] = this.pointsContents[i]["linkalias"];
+                                    }
+                                    else{
+                                        this.linkAlias[y] = "";
                                     }
                                 }
                             }
                         }
+                    }
                 //search for fk_reference_id, fk_category_id & icon :
                         for (let x = 0; x < this.points.length; x++) {
                             if (this.idSelected == this.points[x]["id"]) { 
@@ -442,12 +445,12 @@
             createMode() {
                 this.fk_ref = this.idSelected;
                 //search for fk_category_id & icon :
-                        for (let x = 0; x < this.references.length; x++) {
-                            if (this.idSelected == this.references[x]["id"]) {
-                                this.fk_cat = this.references[x]["fk_category_id"];
-                                this.icon = this.references[x]["icon"];
-                            }
+                    for (let x = 0; x < this.references.length; x++) {
+                        if (this.idSelected == this.references[x]["id"]) {
+                            this.fk_cat = this.references[x]["fk_category_id"];
+                            this.icon = this.references[x]["icon"];
                         }
+                    }
 
                 //set object selectedReference
                     for (let y = 0; y < this.references.length; y++) {
@@ -459,11 +462,12 @@
             },
             setcodes(){
                 //set languages codes
-                    for (let lang = 0; lang < this.languages.length; lang++) {
-                        this.codes[lang] = this.languages[lang]["code"];
-                    }
+                for (let lang = 0; lang < this.languages.length; lang++) {
+                    this.codes[lang] = this.languages[lang]["code"];
+                }
             },
             setIcon(id) {
+                //get icon from parent reference, then get icon color from parent category
                 for (let ref = 0; ref < this.references.length; ref++) {
                     if (this.references[ref]["id"] == id) {
                         this.icon = this.references[ref]["icon"];
@@ -710,6 +714,9 @@
                     this.point.fk_image_id = "";
                 }
                 var newPoint = this.point;
+
+                console.log("");
+
                 axios.post('/api/points', newPoint)
                     .then(
                     resp =>
@@ -749,7 +756,7 @@
                         };
                     };
 
-                    // console.log(newPointName);
+                    console.log("");
                     
                     axios.post('/api/pointsnames', newPointName)
                         .then(function (resp) {
@@ -780,6 +787,9 @@
                     this.point.fk_image_id = "";
                 }
                 var newPoint = this.point;
+
+                console.log("");
+                
                 axios.patch('/api/points/' + id, newPoint)
                     .then(function (resp) {
                     })
@@ -811,6 +821,8 @@
                             "linkalias": "",
                         };
                     };
+
+                    console.log("");
                     
                     axios.patch('/api/pointsnames/' + id[i], newPointName)
                         .then(function (resp) {

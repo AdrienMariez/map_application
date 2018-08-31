@@ -69637,7 +69637,7 @@ exports = module.exports = __webpack_require__(0)(false);
 
 
 // module
-exports.push([module.i, "\n.listColorCatAlt[data-v-52d311a4]{\n    background-color: #C8E6C9 !important;\n}\n\n/* .v-list.transparent{\n    padding: 0 !important;\n} */\n/* .borderReferences{\n    content:'';\n    position:absolute;\n    width:100%;\n    height:3px;\n    background:linear-gradient(to left, rgba(0, 0, 0, 0), #A5D6A7, rgba(0, 0, 0, 0));\n    top:0px;\n    left:0;\n} */\n.headerCategories[data-v-52d311a4]{\n    padding-left: 0px;\n}\n.headerReferences[data-v-52d311a4]{\n    padding-left: 10px;\n}\n@media screen and (min-width: 600px) {\n.headerReferences[data-v-52d311a4]{\n        padding-left: 30px;\n}\n}\n.referencesListElement[data-v-52d311a4]{\n    border-bottom: 1px !important;\n    border-bottom-color: rgb(87, 87, 87) !important;\n    border-bottom-style:solid !important;\n}\n.pointsListElement[data-v-52d311a4]{\n    padding-left: 80px;\n    border-bottom: 1px !important;\n    border-bottom-color: rgb(87, 87, 87) !important;\n    border-bottom-style:solid !important;\n}\n.v-btn--small[data-v-52d311a4]{\n    min-width: 25px !important;\n}\n.v-menu__content[data-v-52d311a4]{\n    background-color: white !important;\n}\n\n/* .v-snack--bottom{\n    bottom: 50px;\n} */\n", ""]);
+exports.push([module.i, "\n.listColorCatAlt[data-v-52d311a4]{\n    background-color: #C8E6C9 !important;\n}\n.parentCat>li[data-v-52d311a4]:nth-child(odd) {\n    background-color: #C5E1A5;\n}\n.parentCat>li[data-v-52d311a4]:nth-child(even) {\n    background-color: #DCEDC8;\n}\n.pointsListElement[data-v-52d311a4]:nth-child(odd) {\n    background-color: #F0F4C3;\n}\n.pointsListElement[data-v-52d311a4]:nth-child(even) {\n    background-color: #F9FBE7;\n}\n/* .v-list.transparent{\n    padding: 0 !important;\n} */\n/* .borderReferences{\n    content:'';\n    position:absolute;\n    width:100%;\n    height:3px;\n    background:linear-gradient(to left, rgba(0, 0, 0, 0), #A5D6A7, rgba(0, 0, 0, 0));\n    top:0px;\n    left:0;\n} */\n.headerCategories[data-v-52d311a4]{\n    padding-left: 0px;\n}\n.headerReferences[data-v-52d311a4]{\n    padding-left: 10px;\n}\n@media screen and (min-width: 600px) {\n.headerReferences[data-v-52d311a4]{\n        padding-left: 30px;\n}\n}\n.pointsListElement[data-v-52d311a4]{\n    padding-left: 80px;\n}\n.v-btn--small[data-v-52d311a4]{\n    min-width: 25px !important;\n}\n.v-menu__content[data-v-52d311a4]{\n    background-color: white !important;\n}\n\n/* .v-snack--bottom{\n    bottom: 50px;\n} */\n", ""]);
 
 // exports
 
@@ -69651,10 +69651,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__services_points_js__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_categories_js__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_references_js__ = __webpack_require__(6);
-//
-//
-//
-//
 //
 //
 //
@@ -70749,16 +70745,12 @@ var render = function() {
               _vm._v(" "),
               _c(
                 "v-expansion-panel",
-                { attrs: { expand: "" } },
+                { staticClass: "parentCat", attrs: { expand: "" } },
                 _vm._l(_vm.references, function(reference, y) {
                   return reference.fk_category_id == category.id
                     ? _c(
                         "v-expansion-panel-content",
-                        {
-                          key: y,
-                          staticClass: "green lighten-5 referencesListElement",
-                          attrs: { color: "green lighten-5" }
-                        },
+                        { key: y },
                         [
                           _c(
                             "div",
@@ -70833,10 +70825,7 @@ var render = function() {
                           _vm._v(" "),
                           _c(
                             "v-list",
-                            {
-                              staticClass: "green lighten-5 hidden-sm-and-down",
-                              attrs: { color: "green lighten-5" }
-                            },
+                            { staticClass: "hidden-sm-and-down" },
                             [
                               _c(
                                 "v-layout",
@@ -70934,10 +70923,7 @@ var render = function() {
                           _vm._v(" "),
                           _c(
                             "v-list",
-                            {
-                              staticClass: "green lighten-5 hidden-md-and-up",
-                              attrs: { color: "green lighten-5" }
-                            },
+                            { staticClass: "hidden-md-and-up" },
                             [
                               _c(
                                 "v-layout",
@@ -71024,200 +71010,192 @@ var render = function() {
                             1
                           ),
                           _vm._v(" "),
-                          _vm._l(_vm.points, function(point, z) {
-                            return point.fk_reference_id == reference.id
-                              ? _c(
-                                  "v-list",
-                                  {
-                                    key: z,
-                                    staticClass: "white pointsListElement",
-                                    attrs: { color: "white" }
-                                  },
-                                  [
-                                    _c(
-                                      "v-list-tile",
-                                      [
-                                        _c(
-                                          "v-list-tile-action",
-                                          [
-                                            _c(
-                                              "v-menu",
-                                              { attrs: { right: "" } },
-                                              [
-                                                _c(
-                                                  "v-btn",
-                                                  {
-                                                    attrs: {
-                                                      slot: "activator",
-                                                      icon: ""
+                          _c(
+                            "v-list",
+                            _vm._l(_vm.points, function(point, z) {
+                              return point.fk_reference_id == reference.id
+                                ? _c(
+                                    "v-list-tile",
+                                    {
+                                      key: z,
+                                      staticClass: "pointsListElement"
+                                    },
+                                    [
+                                      _c(
+                                        "v-list-tile-action",
+                                        [
+                                          _c(
+                                            "v-menu",
+                                            { attrs: { right: "" } },
+                                            [
+                                              _c(
+                                                "v-btn",
+                                                {
+                                                  attrs: {
+                                                    slot: "activator",
+                                                    icon: ""
+                                                  },
+                                                  slot: "activator"
+                                                },
+                                                [
+                                                  _c("v-icon", [
+                                                    _vm._v("build")
+                                                  ])
+                                                ],
+                                                1
+                                              ),
+                                              _vm._v(" "),
+                                              _c(
+                                                "v-list",
+                                                {
+                                                  staticClass:
+                                                    "hidden-sm-and-down"
+                                                },
+                                                [
+                                                  _c(
+                                                    "v-btn",
+                                                    {
+                                                      attrs: {
+                                                        color: "warning"
+                                                      },
+                                                      on: {
+                                                        click: function(
+                                                          $event
+                                                        ) {
+                                                          _vm.editPoint(
+                                                            point.id
+                                                          )
+                                                        }
+                                                      }
                                                     },
-                                                    slot: "activator"
-                                                  },
-                                                  [
-                                                    _c("v-icon", [
-                                                      _vm._v("build")
-                                                    ])
-                                                  ],
-                                                  1
-                                                ),
-                                                _vm._v(" "),
-                                                _c(
-                                                  "v-list",
-                                                  {
-                                                    staticClass:
-                                                      "hidden-sm-and-down"
-                                                  },
-                                                  [
-                                                    _c(
-                                                      "v-btn",
-                                                      {
-                                                        attrs: {
-                                                          color: "warning"
-                                                        },
-                                                        on: {
-                                                          click: function(
-                                                            $event
-                                                          ) {
-                                                            _vm.editPoint(
-                                                              point.id
-                                                            )
-                                                          }
+                                                    [
+                                                      _vm._v(
+                                                        "\n                                            modifier\n                                        "
+                                                      )
+                                                    ]
+                                                  ),
+                                                  _vm._v(" "),
+                                                  _c(
+                                                    "v-btn",
+                                                    {
+                                                      attrs: { color: "error" },
+                                                      on: {
+                                                        click: function(
+                                                          $event
+                                                        ) {
+                                                          _vm.deletePoint(
+                                                            point.id
+                                                          )
                                                         }
+                                                      }
+                                                    },
+                                                    [
+                                                      _vm._v(
+                                                        "\n                                            supprimer\n                                        "
+                                                      )
+                                                    ]
+                                                  )
+                                                ],
+                                                1
+                                              ),
+                                              _vm._v(" "),
+                                              _c(
+                                                "v-list",
+                                                {
+                                                  staticClass:
+                                                    "hidden-md-and-up"
+                                                },
+                                                [
+                                                  _c(
+                                                    "v-btn",
+                                                    {
+                                                      attrs: {
+                                                        small: "",
+                                                        color: "warning"
                                                       },
-                                                      [
-                                                        _vm._v(
-                                                          "\n                                            modifier\n                                        "
-                                                        )
-                                                      ]
-                                                    ),
-                                                    _vm._v(" "),
-                                                    _c(
-                                                      "v-btn",
-                                                      {
-                                                        attrs: {
-                                                          color: "error"
-                                                        },
-                                                        on: {
-                                                          click: function(
-                                                            $event
-                                                          ) {
-                                                            _vm.deletePoint(
-                                                              point.id
-                                                            )
-                                                          }
+                                                      on: {
+                                                        click: function(
+                                                          $event
+                                                        ) {
+                                                          _vm.editPoint(
+                                                            point.id
+                                                          )
                                                         }
+                                                      }
+                                                    },
+                                                    [
+                                                      _c("v-icon", [
+                                                        _vm._v("build")
+                                                      ])
+                                                    ],
+                                                    1
+                                                  ),
+                                                  _vm._v(" "),
+                                                  _c(
+                                                    "v-btn",
+                                                    {
+                                                      attrs: {
+                                                        small: "",
+                                                        color: "error"
                                                       },
-                                                      [
-                                                        _vm._v(
-                                                          "\n                                            supprimer\n                                        "
-                                                        )
-                                                      ]
-                                                    )
-                                                  ],
-                                                  1
-                                                ),
-                                                _vm._v(" "),
-                                                _c(
-                                                  "v-list",
-                                                  {
-                                                    staticClass:
-                                                      "hidden-md-and-up"
-                                                  },
-                                                  [
-                                                    _c(
-                                                      "v-btn",
-                                                      {
-                                                        attrs: {
-                                                          small: "",
-                                                          color: "warning"
-                                                        },
-                                                        on: {
-                                                          click: function(
-                                                            $event
-                                                          ) {
-                                                            _vm.editPoint(
-                                                              point.id
-                                                            )
-                                                          }
+                                                      on: {
+                                                        click: function(
+                                                          $event
+                                                        ) {
+                                                          _vm.deletePoint(
+                                                            point.id
+                                                          )
                                                         }
-                                                      },
-                                                      [
-                                                        _c("v-icon", [
-                                                          _vm._v("build")
-                                                        ])
-                                                      ],
-                                                      1
-                                                    ),
-                                                    _vm._v(" "),
-                                                    _c(
-                                                      "v-btn",
-                                                      {
-                                                        attrs: {
-                                                          small: "",
-                                                          color: "error"
-                                                        },
-                                                        on: {
-                                                          click: function(
-                                                            $event
-                                                          ) {
-                                                            _vm.deletePoint(
-                                                              point.id
-                                                            )
-                                                          }
-                                                        }
-                                                      },
-                                                      [
-                                                        _c("v-icon", [
-                                                          _vm._v("delete")
-                                                        ])
-                                                      ],
-                                                      1
-                                                    )
-                                                  ],
-                                                  1
-                                                )
-                                              ],
-                                              1
-                                            )
-                                          ],
-                                          1
-                                        ),
-                                        _vm._v(" "),
-                                        _c(
-                                          "v-list-tile-action",
-                                          _vm._l(_vm.pointsContents, function(
-                                            pointName,
-                                            c
-                                          ) {
-                                            return pointName.fk_language_code ==
-                                              _vm.languageSelected &&
-                                              pointName.fk_point_id == point.id
-                                              ? _c(
-                                                  "v-list-tile-content",
-                                                  { key: c },
-                                                  [
-                                                    _vm._v(
-                                                      "\n                                            " +
-                                                        _vm._s(
-                                                          pointName.title
-                                                        ) +
-                                                        "\n                                        "
-                                                    )
-                                                  ]
-                                                )
-                                              : _vm._e()
-                                          })
-                                        )
-                                      ],
-                                      1
-                                    )
-                                  ],
-                                  1
-                                )
-                              : _vm._e()
-                          })
+                                                      }
+                                                    },
+                                                    [
+                                                      _c("v-icon", [
+                                                        _vm._v("delete")
+                                                      ])
+                                                    ],
+                                                    1
+                                                  )
+                                                ],
+                                                1
+                                              )
+                                            ],
+                                            1
+                                          )
+                                        ],
+                                        1
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "v-list-tile-action",
+                                        _vm._l(_vm.pointsContents, function(
+                                          pointName,
+                                          c
+                                        ) {
+                                          return pointName.fk_language_code ==
+                                            _vm.languageSelected &&
+                                            pointName.fk_point_id == point.id
+                                            ? _c(
+                                                "v-list-tile-content",
+                                                { key: c },
+                                                [
+                                                  _vm._v(
+                                                    "\n                                            " +
+                                                      _vm._s(pointName.title) +
+                                                      "\n                                        "
+                                                  )
+                                                ]
+                                              )
+                                            : _vm._e()
+                                        })
+                                      )
+                                    ],
+                                    1
+                                  )
+                                : _vm._e()
+                            })
+                          )
                         ],
-                        2
+                        1
                       )
                     : _vm._e()
                 })
@@ -71770,6 +71748,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     methods: {
         editMode: function editMode() {
+            console.log("");
             if (this.idSelected != null) {
                 //set name(s) :
                 for (var i = 0; i < this.categoriesNames.length; i++) {
@@ -71910,6 +71889,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.category.weight = weight;
             var newCategory = this.category;
 
+            console.log("");
+
             axios.post('/api/categories', newCategory).then(function (resp) {
                 return Promise.all([resp, _this.createCategoryNames(resp.data.id, _this.names)]);
             }).then(function (resp) {}).catch(function (error) {
@@ -71938,6 +71919,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.category.weight = weight;
             var newCategory = this.category;
 
+            console.log("");
+
             __WEBPACK_IMPORTED_MODULE_0__services_categories_js__["a" /* default */].editCategory(id, newCategory);
 
             this.$emit('pageToShow', "", null);
@@ -71950,6 +71933,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     "fk_language_code": this.languages[i]["code"],
                     "text": names[i]
                 };
+
+                console.log("");
 
                 axios.post('/api/categoriesnames', newCategoryName).then(function (resp) {}).catch(function (error) {
                     console.log(error.response.data);
@@ -71967,6 +71952,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     "fk_language_code": codes[i],
                     "text": names[i]
                 };
+
+                console.log("");
 
                 __WEBPACK_IMPORTED_MODULE_0__services_categories_js__["a" /* default */].editCategoryName(id[i], newCategoryName);
             }
@@ -72900,6 +72887,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     methods: {
         pageInit: function pageInit() {
+            console.log("");
             //baking category list
             for (var a = 0; a < this.categories.length; a++) {
                 for (var b = 0; b < this.categoriesNames.length; b++) {
@@ -72927,6 +72915,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     }
         },
         editMode: function editMode() {
+            console.log("");
             //set name(s) :
             for (var i = 0; i < this.referenceNames.length; i++) {
                 if (this.idSelected == this.referenceNames[i]["fk_reference_id"]) {
@@ -73082,6 +73071,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.reference.icon = icon;
             this.reference.weight = weight;
             var newReference = this.reference;
+
+            console.log("");
+
             // Cannot place this elsewhere or the promise does not work
             axios.post('/api/references', newReference).then(function (resp) {
                 return Promise.all([resp, _this.createReferenceNames(resp.data.id, _this.names)]);
@@ -73104,6 +73096,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.reference.weight = weight;
             var newReference = this.reference;
 
+            console.log("");
+
             __WEBPACK_IMPORTED_MODULE_0__services_references_js__["a" /* default */].editReference(id, newReference);
 
             this.$emit('pageToShow', "", null);
@@ -73115,6 +73109,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     "fk_language_code": this.languages[i]["code"],
                     "text": names[i]
                 };
+
+                console.log("");
 
                 __WEBPACK_IMPORTED_MODULE_0__services_references_js__["a" /* default */].createReferenceName(newReferenceName);
                 // axios.post('/api/referencesnames', newReferenceName)
@@ -73135,6 +73131,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     "fk_language_code": codes[i],
                     "text": names[i]
                 };
+
+                console.log("");
 
                 __WEBPACK_IMPORTED_MODULE_0__services_references_js__["a" /* default */].editReferenceName(id[i], newReferenceName);
             }
@@ -74132,6 +74130,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             console.log("id changed in reference THIS IS NOT SUPPOSED TO HAPPEN.");console.log("Previous value : " + val + " New value : " + oldVal);
         },
         titlesInitial: function titlesInitial(val, oldVal) {
+            console.log("");
             this.pageInit();
         },
         selectedReference: function selectedReference(val, oldVal) {
@@ -74166,6 +74165,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     methods: {
         pageInit: function pageInit() {
+            console.log("");
             //baking references list
             for (var a = 0; a < this.references.length; a++) {
                 for (var b = 0; b < this.referenceNames.length; b++) {
@@ -74195,6 +74195,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.setcodes();
         },
         editMode: function editMode() {
+            console.log("");
             //set name(s) :
             for (var i = 0; i < this.pointsContents.length; i++) {
                 if (this.idSelected == this.pointsContents[i]["fk_point_id"]) {
@@ -74275,6 +74276,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }
         },
         setIcon: function setIcon(id) {
+            //get icon from parent reference, then get icon color from parent category
             for (var ref = 0; ref < this.references.length; ref++) {
                 if (this.references[ref]["id"] == id) {
                     this.icon = this.references[ref]["icon"];
@@ -74509,6 +74511,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 this.point.fk_image_id = "";
             }
             var newPoint = this.point;
+
+            console.log("");
+
             axios.post('/api/points', newPoint).then(function (resp) {
                 return Promise.all([resp, console.log("point created"), _this.createPointNames(resp.data.id)]);
             }).catch(function (error) {
@@ -74539,7 +74544,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     };
                 };
 
-                // console.log(newPointName);
+                console.log("");
 
                 axios.post('/api/pointsnames', newPointName).then(function (resp) {
                     console.log("point name created" + this.codes[i]);
@@ -74572,6 +74577,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 this.point.fk_image_id = "";
             }
             var newPoint = this.point;
+
+            console.log("");
+
             axios.patch('/api/points/' + id, newPoint).then(function (resp) {}).catch(function (error) {
                 console.log(error.response.data);
 
@@ -74599,6 +74607,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                         "linkalias": ""
                     };
                 };
+
+                console.log("");
 
                 axios.patch('/api/pointsnames/' + id[i], newPointName).then(function (resp) {}).catch(function (error) {
                     console.log(error.response.data);
@@ -83073,7 +83083,7 @@ exports = module.exports = __webpack_require__(0)(false);
 
 
 // module
-exports.push([module.i, "\n.asideDrawer[data-v-ff68bee4]{\n      max-height: 100% !important;\n}\n.v-list__tile__action--stack[data-v-ff68bee4]{\n      padding-top: 0 !important;\n      padding-bottom: 0 !important;\n      white-space: unset !important;\n}\n.selectTop[data-v-ff68bee4]{\n      z-index: 200;\n      max-width: 100px;\n      margin-top: 10px;\n}\n  /* .shadow{\n      text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;\n  } */\n.logoContainer > img[data-v-ff68bee4]{\n      width: 200px;\n      height: 200px;\n}\n.logoContainerMedium > img[data-v-ff68bee4]{\n      width: 80px;\n      height: 80px;\n}\n.logoContainerMini[data-v-ff68bee4]{\n      height: 100%;\n}\n.logoContainerMini > img[data-v-ff68bee4]{\n      width: 48px;\n      height: 48px;\n}\n.listColorAlt[data-v-ff68bee4]{\n      background-color: #C8E6C9 !important;\n}\n.borderReferences[data-v-ff68bee4]{\n      content:'';\n      position:absolute;\n      width:100%;\n      height:3px;\n      background:-webkit-gradient(linear, right top, left top, from(rgba(0, 0, 0, 0)), to(#C8E6C9));\n      background:linear-gradient(to left, rgba(0, 0, 0, 0), #C8E6C9);\n      top:0px;\n      left:0;\n}\n.flexCenter[data-v-ff68bee4] {\n      -webkit-box-pack: center;\n          -ms-flex-pack: center;\n              justify-content: center;\n}\n.cursorAction[data-v-ff68bee4]{\n      cursor: pointer;\n}\na[data-v-ff68bee4]{\n      color: rgb(24, 53, 17) !important;\n      text-decoration: inherit;\n}\n/* #publicMapControls{\n  float: right;\n  border: 5px;\n  border-color: brown;\n  border-style: solid;\n  z-index: 100;\n} */\n", ""]);
+exports.push([module.i, "\n.asideDrawer[data-v-ff68bee4]{\n      max-height: 100% !important;\n}\n.v-list__tile__action--stack[data-v-ff68bee4]{\n      padding-top: 0 !important;\n      padding-bottom: 0 !important;\n      white-space: unset !important;\n}\n.selectTop[data-v-ff68bee4]{\n      z-index: 200;\n      max-width: 100px;\n      margin-top: 10px;\n}\n  /* .shadow{\n      text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;\n  } */\n.logoContainer > img[data-v-ff68bee4]{\n      width: 200px;\n      height: 200px;\n}\n.logoContainerMedium > img[data-v-ff68bee4]{\n      width: 80px;\n      height: 80px;\n}\n.logoContainerMini[data-v-ff68bee4]{\n      height: 100%;\n}\n.logoContainerMini > img[data-v-ff68bee4]{\n      width: 48px;\n      height: 48px;\n}\n.listColorAlt[data-v-ff68bee4]{\n      background-color: #C8E6C9 !important;\n}\n.refListElement[data-v-ff68bee4]:nth-child(odd) {\n      background-color: #F0F4C3;\n}\n.refListElement[data-v-ff68bee4]:nth-child(even) {\n      background-color: #F9FBE7;\n}\n\n  /* .borderReferences{\n      content:'';\n      position:absolute;\n      width:100%;\n      height:3px;\n      background:linear-gradient(to left, rgba(0, 0, 0, 0), #C8E6C9);\n      top:0px;\n      left:0;\n  } */\n.flexCenter[data-v-ff68bee4] {\n      -webkit-box-pack: center;\n          -ms-flex-pack: center;\n              justify-content: center;\n}\n.cursorAction[data-v-ff68bee4]{\n      cursor: pointer;\n}\na[data-v-ff68bee4]{\n      color: rgb(24, 53, 17) !important;\n      text-decoration: inherit;\n}\n/* #publicMapControls{\n  float: right;\n  border: 5px;\n  border-color: brown;\n  border-style: solid;\n  z-index: 100;\n} */\n", ""]);
 
 // exports
 
@@ -83092,6 +83102,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_references_js__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_categories_js__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__services_languages_js__ = __webpack_require__(7);
+//
 //
 //
 //
@@ -84662,82 +84673,75 @@ var render = function() {
                     1
                   ),
                   _vm._v(" "),
-                  _vm._l(_vm.references, function(reference, y) {
-                    return reference.fk_category_id == category.id
-                      ? _c(
-                          "v-list",
-                          {
-                            key: y,
-                            staticClass: "pt-0 white",
-                            attrs: { color: "white" }
-                          },
-                          [
-                            _c(
-                              "v-list-tile",
-                              {
-                                on: {
-                                  click: function($event) {
-                                    $event.stopPropagation()
-                                    _vm.displayReferencePoints(
-                                      reference.id,
-                                      category.color
-                                    )
-                                  }
+                  _c(
+                    "v-list",
+                    { staticClass: "pt-0 pb-0" },
+                    _vm._l(_vm.references, function(reference, y) {
+                      return reference.fk_category_id == category.id
+                        ? _c(
+                            "v-list-tile",
+                            {
+                              key: y,
+                              staticClass: "refListElement",
+                              on: {
+                                click: function($event) {
+                                  $event.stopPropagation()
+                                  _vm.displayReferencePoints(
+                                    reference.id,
+                                    category.color
+                                  )
                                 }
-                              },
-                              [
-                                _c("div", { staticClass: "borderReferences" }),
-                                _vm._v(" "),
-                                _c(
-                                  "v-list-tile-action",
-                                  [
-                                    _c(
-                                      "v-icon",
-                                      {
-                                        style: { color: category.color },
-                                        attrs: { large: "" }
-                                      },
-                                      [
+                              }
+                            },
+                            [
+                              _c(
+                                "v-list-tile-action",
+                                [
+                                  _c(
+                                    "v-icon",
+                                    {
+                                      style: { color: category.color },
+                                      attrs: { large: "" }
+                                    },
+                                    [
+                                      _vm._v(
+                                        "\n                                " +
+                                          _vm._s(reference.icon) +
+                                          "\n                            "
+                                      )
+                                    ]
+                                  )
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "v-list-tile-action",
+                                _vm._l(_vm.referenceNames, function(
+                                  refName,
+                                  b
+                                ) {
+                                  return refName.fk_language_code ==
+                                    _vm.languageSelected &&
+                                    refName.fk_reference_id == reference.id
+                                    ? _c("v-list-tile-content", { key: b }, [
                                         _vm._v(
                                           "\n                                " +
-                                            _vm._s(reference.icon) +
+                                            _vm._s(refName.text) +
                                             "\n                            "
                                         )
-                                      ]
-                                    )
-                                  ],
-                                  1
-                                ),
-                                _vm._v(" "),
-                                _c(
-                                  "v-list-tile-action",
-                                  _vm._l(_vm.referenceNames, function(
-                                    refName,
-                                    b
-                                  ) {
-                                    return refName.fk_language_code ==
-                                      _vm.languageSelected &&
-                                      refName.fk_reference_id == reference.id
-                                      ? _c("v-list-tile-content", { key: b }, [
-                                          _vm._v(
-                                            "\n                                " +
-                                              _vm._s(refName.text) +
-                                              "\n                            "
-                                          )
-                                        ])
-                                      : _vm._e()
-                                  })
-                                )
-                              ],
-                              1
-                            )
-                          ],
-                          1
-                        )
-                      : _vm._e()
-                  })
+                                      ])
+                                    : _vm._e()
+                                })
+                              )
+                            ],
+                            1
+                          )
+                        : _vm._e()
+                    })
+                  )
                 ],
-                2
+                1
               )
             })
           )

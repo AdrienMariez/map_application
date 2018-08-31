@@ -313,6 +313,7 @@
         },
         methods: {
             editMode(){
+                console.log("");
                 if (this.idSelected != null) {
                     //set name(s) :
                         for (let i = 0; i < this.categoriesNames.length; i++) {
@@ -459,6 +460,8 @@
                 this.category.weight = weight;
                 var newCategory = this.category;
 
+                console.log("");
+
                 axios.post('/api/categories', newCategory)
                     .then(
                     resp =>
@@ -495,6 +498,8 @@
                 this.category.weight = weight;
                 var newCategory = this.category;
 
+                console.log("");
+
                 categoriesMethods.editCategory(id, newCategory);
 
                 this.$emit('pageToShow', "", null);
@@ -508,6 +513,8 @@
                         "fk_language_code": this.languages[i]["code"],
                         "text": names[i]
                     };
+
+                    console.log("");
                     
                     axios.post('/api/categoriesnames', newCategoryName)
                         .then(function (resp) {
@@ -528,6 +535,8 @@
                         "fk_language_code": codes[i],
                         "text": names[i]
                     };
+
+                    console.log("");
 
                     categoriesMethods.editCategoryName(id[i], newCategoryName);
                 }

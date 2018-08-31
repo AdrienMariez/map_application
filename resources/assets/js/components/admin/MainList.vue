@@ -129,14 +129,13 @@
 
                 <!-- loop on references in categories -->
                 <v-expansion-panel
+                    class="parentCat"
                     expand>
                     <!-- loop on references -->
                     <v-expansion-panel-content
                         v-for="(reference,y) in references"
                         v-if="reference.fk_category_id == category.id"
-                        :key="y"
-                        color="green lighten-5"
-                        class="green lighten-5 referencesListElement">
+                        :key="y">
 
                         <!-- reference header -->
                         <div  class="headerReferences" slot="header">
@@ -166,8 +165,7 @@
 
                         <!-- references desktop buttons -->
                         <v-list
-                            color="green lighten-5"
-                            class="green lighten-5 hidden-sm-and-down">
+                            class="hidden-sm-and-down">
                             <v-layout align-center justify-space-around>
                                 <v-btn
                                     color="success"
@@ -198,8 +196,7 @@
 
                         <!-- references responsive button -->
                         <v-list
-                            color="green lighten-5"
-                            class="green lighten-5 hidden-md-and-up">
+                            class="hidden-md-and-up">
                             <v-layout align-center justify-space-around>
                                 <v-btn
                                     small
@@ -261,13 +258,12 @@
                         </v-menu> -->
 
                         <!-- loop on points in references -->
-                        <v-list
-                            v-for="(point,z) in points"
-                            v-if="point.fk_reference_id == reference.id"
-                            :key="z"
-                            color="white"
-                            class="white pointsListElement">
-                            <v-list-tile>
+                        <v-list>
+                            <v-list-tile
+                                v-for="(point,z) in points"
+                                v-if="point.fk_reference_id == reference.id"
+                                :key="z"
+                                class="pointsListElement">
 
                                 <v-list-tile-action>
                                     <v-menu right>
@@ -806,6 +802,18 @@
         background-color: #C8E6C9 !important;
     }
 
+    .parentCat>li:nth-child(odd) {
+        background-color: #C5E1A5;
+    }
+    .parentCat>li:nth-child(even) {
+        background-color: #DCEDC8;
+    }
+    .pointsListElement:nth-child(odd) {
+        background-color: #F0F4C3;
+    }
+    .pointsListElement:nth-child(even) {
+        background-color: #F9FBE7;
+    }
     /* .v-list.transparent{
         padding: 0 !important;
     } */
@@ -829,16 +837,8 @@
             padding-left: 30px;
         }
     }
-    .referencesListElement{
-        border-bottom: 1px !important;
-        border-bottom-color: rgb(87, 87, 87) !important;
-        border-bottom-style:solid !important;
-    }
     .pointsListElement{
         padding-left: 80px;
-        border-bottom: 1px !important;
-        border-bottom-color: rgb(87, 87, 87) !important;
-        border-bottom-style:solid !important;
     }
     .v-btn--small{
         min-width: 25px !important;

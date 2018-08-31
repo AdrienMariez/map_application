@@ -289,6 +289,7 @@
         },
         methods: {
             pageInit(){
+                console.log("");
                 //baking category list
                 for (let a = 0; a < this.categories.length; a++) {
                     for (let b = 0; b < this.categoriesNames.length; b++) {
@@ -316,6 +317,7 @@
                 }
             },
             editMode() {
+                console.log("");
                 //set name(s) :
                         for (let i = 0; i < this.referenceNames.length; i++) {
                             if (this.idSelected == this.referenceNames[i]["fk_reference_id"]) {
@@ -477,6 +479,9 @@
                 this.reference.icon = icon;
                 this.reference.weight = weight;
                 var newReference = this.reference;
+
+                console.log("");
+
                 // Cannot place this elsewhere or the promise does not work
                 axios.post('/api/references', newReference)
                     .then(
@@ -505,6 +510,8 @@
                 this.reference.weight = weight;
                 var newReference = this.reference;
 
+                console.log("");
+
                 referencesMethods.editReference(id, newReference);
                 
                 this.$emit('pageToShow', "", null);
@@ -517,6 +524,8 @@
                         "fk_language_code": this.languages[i]["code"],
                         "text": names[i]
                     };
+
+                    console.log("");
 
                     referencesMethods.createReferenceName(newReferenceName);
                     // axios.post('/api/referencesnames', newReferenceName)
@@ -537,6 +546,8 @@
                         "fk_language_code": codes[i],
                         "text": names[i]
                     };
+
+                    console.log("");
 
                     referencesMethods.editReferenceName(id[i],newReferenceName);
                 }

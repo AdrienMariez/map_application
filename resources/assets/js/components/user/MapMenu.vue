@@ -121,13 +121,14 @@
 
                     <!-- loop on references in categories -->
                     <v-list
-                        class="pt-0 white"
-                        v-for="(reference,y) in references"
-                        v-if="reference.fk_category_id == category.id"
-                        :key="y"
-                        color="white">
-                        <v-list-tile @click.stop="displayReferencePoints(reference.id, category.color)">
-                            <div class="borderReferences"></div>
+                        class="pt-0 pb-0">
+                        <v-list-tile
+                            v-for="(reference,y) in references"
+                            v-if="reference.fk_category_id == category.id"
+                            :key="y"
+                            @click.stop="displayReferencePoints(reference.id, category.color)"
+                            class="refListElement">
+                            <!-- <div class="borderReferences"></div> -->
                             <v-list-tile-action>
                                 <!-- class="shadow" -->
                                 <v-icon
@@ -433,8 +434,14 @@ export default {
     .listColorAlt{
         background-color: #C8E6C9 !important;
     }
+    .refListElement:nth-child(odd) {
+        background-color: #F0F4C3;
+    }
+    .refListElement:nth-child(even) {
+        background-color: #F9FBE7;
+    }
 
-    .borderReferences{
+    /* .borderReferences{
         content:'';
         position:absolute;
         width:100%;
@@ -442,7 +449,7 @@ export default {
         background:linear-gradient(to left, rgba(0, 0, 0, 0), #C8E6C9);
         top:0px;
         left:0;
-    }
+    } */
 
     .flexCenter {
         justify-content: center;
