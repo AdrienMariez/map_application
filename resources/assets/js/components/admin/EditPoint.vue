@@ -5,7 +5,7 @@
                 <v-btn
                     @click="pageReinit"
                     color="lime lighten-3">
-                    <v-icon>fas fa-circle-notch fa-spin</v-icon> Reinitialiser et mettre à jour
+                    <!-- <v-icon>fas fa-circle-notch fa-spin</v-icon>  -->Reinitialiser et mettre à jour
                 </v-btn>
             </div>
             <v-form ref="form" v-model="valid" lazy-validation>
@@ -270,25 +270,25 @@
     import LocationMapAdmin from "./LocationMapAdmin.vue";
 
     import imagesMethods from './../../services/images.js'
-    import pointsMethods from './../../services/points.js'
-    import referencesMethods from './../../services/references.js'
-    import categoriesMethods from './../../services/categories.js'
+    // import pointsMethods from './../../services/points.js'
+    // import referencesMethods from './../../services/references.js'
+    // import categoriesMethods from './../../services/categories.js'
     import languagesMethods from './../../services/languages.js'
 
     export default {
-        props: ['idSelected', 'page'],
+        props: ['idSelected', 'page','categories','categoriesNames','references','referenceNames','points','pointsContents'],
         data () {
             return {
                 mute: false,
                 loading: true,
 
-                points: [],
-                pointsContents: [],
                 images: [],
-                references: [],
-                referenceNames: [],
-                categories: [],
-                categoriesNames: [],
+                // categories: [],
+                // categoriesNames: [],
+                // references: [],
+                // referenceNames: [],
+                // points: [],
+                // pointsContents: [],
                 languages: [],
                 
                 valid: false,
@@ -934,12 +934,12 @@
             //API CALLS
                 methodsApiCalls() {
                     this.images = imagesMethods.readImages();
-                    this.points = pointsMethods.readPoints();
-                    this.pointsContents = pointsMethods.readPointsPopupContent();
-                    this.references = referencesMethods.readReferences();
-                    this.referenceNames = referencesMethods.readReferenceNamesFrOnly();
-                    this.categories = categoriesMethods.readCategories();
-                    this.categoriesNames = categoriesMethods.readCategoriesNamesFrOnly();
+                    // this.points = pointsMethods.readPoints();
+                    // this.pointsContents = pointsMethods.readPointsPopupContent();
+                    // this.references = referencesMethods.readReferences();
+                    // this.referenceNames = referencesMethods.readReferenceNamesFrOnly();
+                    // this.categories = categoriesMethods.readCategories();
+                    // this.categoriesNames = categoriesMethods.readCategoriesNamesFrOnly();
                     this.languages = languagesMethods.readLanguages();
 
                     //setting initial empty names

@@ -5,7 +5,7 @@
                 <v-btn
                     @click="pageReinit"
                     color="lime lighten-3">
-                    <v-icon>fas fa-circle-notch fa-spin</v-icon> Reinitialiser et mettre à jour
+                    <!-- <v-icon>fas fa-circle-notch fa-spin</v-icon>  -->Reinitialiser et mettre à jour
                 </v-btn>
             </div>
             <v-form ref="form" v-model="valid" lazy-validation>
@@ -231,16 +231,16 @@
     import languagesMethods from './../../services/languages.js'
 
     export default {
-        props: ['idSelected', 'page'],
+        props: ['idSelected', 'page','categories','categoriesNames','references','referenceNames'],
         data () {
             return {
                 mute: false,
                 loading: true,
 
-                references: [],
-                referenceNames: [],
-                categories: [],
-                categoriesNames: [],
+                // references: [],
+                // referenceNames: [],
+                // categories: [],
+                // categoriesNames: [],
                 languages: [],
 
                 valid: false,
@@ -659,11 +659,10 @@
             //API CALLS
                 methodsApiCalls() {
 
-                    this.references = referencesMethods.readReferences();
-
-                    this.referenceNames = referencesMethods.readReferenceNames();
-                    this.categories = categoriesMethods.readCategories();
-                    this.categoriesNames = categoriesMethods.readCategoriesNamesFrOnly();
+                    // this.references = referencesMethods.readReferences();
+                    // this.referenceNames = referencesMethods.readReferenceNames();
+                    // this.categories = categoriesMethods.readCategories();
+                    // this.categoriesNames = categoriesMethods.readCategoriesNamesFrOnly();
                     this.languages = languagesMethods.readLanguages();
 
                     //setting initial empty names

@@ -388,15 +388,16 @@
     import referencesMethods from './../../services/references.js'
 
   export default {
+    props: ['categories','categoriesNames','references','referenceNames','points','pointsContents'],
     data () {
       return {
-        points: [],
-        pointsContents: [],
-        languageSelected: 'fr',
-        categories: [],
-        categoriesNames: [],
-        references: [],
-        referenceNames: [],
+          languageSelected: 'fr',
+        // categories: [],
+        // categoriesNames: [],
+        // references: [],
+        // referenceNames: [],
+        // points: [],
+        // pointsContents: [],
         snackbar: false,
         snackText: '',
         dialog: false,
@@ -412,12 +413,12 @@
     methods: {
         //API CALLS
             methodsApiCalls() {
-                this.categories = categoriesMethods.readCategories();
-                this.categoriesNames = categoriesMethods.readCategoriesNames();
-                this.references = referencesMethods.readReferences();
-                this.referenceNames = referencesMethods.readReferenceNames();
-                this.points = pointsMethods.readPoints();
-                this.pointsContents = pointsMethods.readPointsPopupContent();
+                // this.categories = categoriesMethods.readCategories();
+                // this.categoriesNames = categoriesMethods.readCategoriesNames();
+                // this.references = referencesMethods.readReferences();
+                // this.referenceNames = referencesMethods.readReferenceNames();
+                // this.points = pointsMethods.readPoints();
+                // this.pointsContents = pointsMethods.readPointsPopupContent();
             },
         //
         //MOVE CAT UP

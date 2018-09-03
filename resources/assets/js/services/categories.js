@@ -10,9 +10,10 @@ var categoriesMethods = {
     },
     readCategoriesNames() {
         var categoriesnames = [];
-        window.axios.get('/api/categoriesnames').then(({ data }) => {
-            data.forEach(categoryName => {
-                categoriesnames.push(categoryName);
+        window.axios.get('/api/categoriesnames')
+            .then(({ data }) => {
+                data.forEach(categoryName => {
+                    categoriesnames.push(categoryName);
             });
         });
         return categoriesnames;

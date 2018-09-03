@@ -114,8 +114,11 @@ Sources :
     Laravel migrations from MySQL Workbench
         https://github.com/beckenrode/mysql-workbench-export-laravel-5-migrations
 
-    contact form
+    Contact form
         https://www.cloudways.com/blog/laravel-contact-form/
+
+    Hosting on ovh
+        https://docs.ovh.com/fr/hosting/mettre-mon-site-en-ligne/
 
 
 Good reads :

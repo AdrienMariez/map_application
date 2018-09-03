@@ -8,12 +8,20 @@
 
     <main-list
         v-if="page == ''"
+        v-bind:categories="categories"
+        v-bind:categoriesNames="categoriesNames"
+        v-bind:references="references"
+        v-bind:referenceNames="referenceNames"
+        v-bind:points="points"
+        v-bind:pointsContents="pointsContents"
         @pageToShow="pageToShow"
         class="adminPage">
     </main-list>
 
     <edit-category
         v-bind:idSelected="idSelected"
+        v-bind:categories="categories"
+        v-bind:categoriesNames="categoriesNames"
         v-if="page == 'category'"
         @pageToShow="pageToShow"
         class="adminPage">
@@ -22,6 +30,10 @@
     <edit-reference
         v-bind:idSelected="idSelected"
         v-bind:page="page"
+        v-bind:categories="categories"
+        v-bind:categoriesNames="categoriesNames"
+        v-bind:references="references"
+        v-bind:referenceNames="referenceNames"
         @pageToShow="pageToShow"
         v-if="page == 'reference' || page == 'referenceParent'"
         class="adminPage">
@@ -30,6 +42,12 @@
     <edit-point
         v-bind:idSelected="idSelected"
         v-bind:page="page"
+        v-bind:categories="categories"
+        v-bind:categoriesNames="categoriesNames"
+        v-bind:references="references"
+        v-bind:referenceNames="referenceNames"
+        v-bind:points="points"
+        v-bind:pointsContents="pointsContents"
         @pageToShow="pageToShow"
         v-if="page == 'point' || page == 'pointParent'"
         class="adminPage">
@@ -58,27 +76,57 @@
 </template>
 
 <script>
-import AdminHeader from "./admin/AdminHeader.vue";
-import MainList from "./admin/MainList.vue";
-import EditCategory from "./admin/EditCategory.vue";
-import EditReference from "./admin/EditReference.vue";
-import EditPoint from "./admin/EditPoint.vue";
+    import AdminHeader from "./admin/AdminHeader.vue";
+    import MainList from "./admin/MainList.vue";
+    import EditCategory from "./admin/EditCategory.vue";
+    import EditReference from "./admin/EditReference.vue";
+    import EditPoint from "./admin/EditPoint.vue";
+
+    import categoriesMethods from './../services/categories.js'
+    import referencesMethods from './../services/references.js'
+    import pointsMethods from './../services/points.js'
 
 export default {
       name: "app",
     data() {
         return {
             data: 'nothing',
+
+            categories: [],
+            categoriesNames: [],
+
+            references: [],
+            referenceNames: [],
+
+            points: [],
+            pointsContents: [],
+
             page: '',
             idSelected: null,
         };
     },
     methods: {
         //CHANGE PAGE
-            pageToShow(newValue, newId) {           
+            pageToShow(newValue, newId) {
+                this.points = pointsMethods.readPoints();
+                this.pointsContents = pointsMethods.readPointsPopupContent();
+                this.references = referencesMethods.readReferences();
+                this.referenceNames = referencesMethods.readReferenceNames();
+                this.categories = categoriesMethods.readCategories();
+                this.categoriesNames = categoriesMethods.readCategoriesNames();
+                
                 this.page = newValue;
                 this.idSelected = newId;
             },  
+        //API CALLS
+            methodsApiCalls() {
+                this.points = pointsMethods.readPoints();
+                this.pointsContents = pointsMethods.readPointsPopupContent();
+                this.references = referencesMethods.readReferences();
+                this.referenceNames = referencesMethods.readReferenceNames();
+                this.categories = categoriesMethods.readCategories();
+                this.categoriesNames = categoriesMethods.readCategoriesNames();
+            },
     },
     mounted() {
             axios.get('/api/dashboard', {
@@ -89,8 +137,10 @@ export default {
             .then(response => {
                 this.data = response.data.data
             }).catch(error => {
-
             })
+    },
+    created() {
+        this.methodsApiCalls();
     },
     components: {
         AdminHeader,

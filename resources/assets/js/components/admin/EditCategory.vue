@@ -5,7 +5,7 @@
                 <v-btn
                     @click="pageReinit"
                     color="lime lighten-3">
-                    <v-icon>fas fa-circle-notch fa-spin</v-icon> Reinitialiser et mettre à jour
+                    <!-- <v-icon>fas fa-circle-notch fa-spin</v-icon>  -->Reinitialiser et mettre à jour
                 </v-btn>
             </div>
             <v-form ref="form" v-model="valid" lazy-validation>
@@ -20,7 +20,6 @@
                                         :key="i"
                                         v-model=names[i]
                                         :rules="nameRules"
-                                        :label= language.name
                                         value= names[i]
                                         required
                                         solo
@@ -235,14 +234,14 @@
     import languagesMethods from './../../services/languages.js'
 
     export default {
-        props: ['idSelected'],
+        props: ['idSelected','categories','categoriesNames'],
         data () {
             return {
                 mute: false,
                 loading: true,
 
-                categories: [],
-                categoriesNames: [],
+                // categories: [],
+                // categoriesNames: [],
 
                 languages: [],
                 codes:  [],
@@ -360,7 +359,7 @@
         },
         methods: {
             pageInit(){
-                console.log("pageInit");
+                // console.log("pageInit");
 
                 //In edit mode
                 if (this.idSelected != null) {
@@ -372,7 +371,7 @@
                 }
             },
             editMode(){
-                console.log("editMode");
+                // console.log("editMode");
                 var icon;
                 //set name(s) :
                     for (let i = 0; i < this.categoriesNames.length; i++) {
@@ -657,8 +656,8 @@
 
             //API CALLS
                 methodsApiCalls() {
-                    this.categories = categoriesMethods.readCategories();
-                    this.categoriesNames = categoriesMethods.readCategoriesNames();
+                    // this.categories = categoriesMethods.readCategories();
+                    // this.categoriesNames = categoriesMethods.readCategoriesNames();
                     this.languages = languagesMethods.readLanguages();
 
                     //setting initial empty names
@@ -677,20 +676,31 @@
                     //         }, 2000);
                     //     });
                     // }
+                    // function resolveAfter2Seconds() {
+                    //     return new Promise(resolve => {
+                    //         setTimeout(() => {
+                    //             resolve(categoriesMethods.readCategories());
+                    //         }, 2000);
+                    //     });
+                    // }
+
+                    // var result;
 
                     // async function asyncCall() {
-                    //     var result = await resolveAfter2Seconds();
-                    //     if (result == 'resolved') {
-                    //     }
+                    //     console.log('calling');
+                    //     result = await resolveAfter2Seconds();
+                    //     console.log(result);
+                    //     // expected output: 'resolved'
                     // }
+
 
                     // asyncCall();
 
-                    return new Promise(resolve => {
-                        setTimeout(() => {
-                            resolve('resolved');
-                        }, 2000);
-                    });
+                    // return new Promise(resolve => {
+                    //     setTimeout(() => {
+                    //         resolve('resolved');
+                    //     }, 2000);
+                    // });
                 },
         },
         created() {
@@ -700,9 +710,3 @@
 </script>
 
 <style scoped>
-    #coloredDiv{
-        width: 50%;
-        height: 20px;
-        border-radius: 5px;
-    }
-</style>

@@ -81,13 +81,13 @@
                     :value="showAllForms"
                     @click.stop="showAllForms = null"
                     color="green lighten-3"
-                    class="green lighten-3"
+                    class="green lighten-3 px-0 py-0"
                     :class="{ listColorAlt: i % 2 == 0 }">
 
                     <!-- header -->
                     <div 
                         slot="header"
-                        class="pl-0">
+                        class="px-0 py-0">
                         <v-list>
                             <v-list-tile>
                                 <v-list-tile-action>

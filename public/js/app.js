@@ -69037,6 +69037,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__admin_EditReference_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__admin_EditReference_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__admin_EditPoint_vue__ = __webpack_require__(95);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__admin_EditPoint_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__admin_EditPoint_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__services_categories_js__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__services_references_js__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__services_points_js__ = __webpack_require__(5);
 //
 //
 //
@@ -69096,6 +69099,28 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
 
 
 
@@ -69108,6 +69133,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     data: function data() {
         return {
             data: 'nothing',
+
+            categories: [],
+            categoriesNames: [],
+
+            references: [],
+            referenceNames: [],
+
+            points: [],
+            pointsContents: [],
+
             page: '',
             idSelected: null
         };
@@ -69116,8 +69151,25 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     methods: {
         //CHANGE PAGE
         pageToShow: function pageToShow(newValue, newId) {
+            this.points = __WEBPACK_IMPORTED_MODULE_7__services_points_js__["a" /* default */].readPoints();
+            this.pointsContents = __WEBPACK_IMPORTED_MODULE_7__services_points_js__["a" /* default */].readPointsPopupContent();
+            this.references = __WEBPACK_IMPORTED_MODULE_6__services_references_js__["a" /* default */].readReferences();
+            this.referenceNames = __WEBPACK_IMPORTED_MODULE_6__services_references_js__["a" /* default */].readReferenceNames();
+            this.categories = __WEBPACK_IMPORTED_MODULE_5__services_categories_js__["a" /* default */].readCategories();
+            this.categoriesNames = __WEBPACK_IMPORTED_MODULE_5__services_categories_js__["a" /* default */].readCategoriesNames();
+
             this.page = newValue;
             this.idSelected = newId;
+        },
+
+        //API CALLS
+        methodsApiCalls: function methodsApiCalls() {
+            this.points = __WEBPACK_IMPORTED_MODULE_7__services_points_js__["a" /* default */].readPoints();
+            this.pointsContents = __WEBPACK_IMPORTED_MODULE_7__services_points_js__["a" /* default */].readPointsPopupContent();
+            this.references = __WEBPACK_IMPORTED_MODULE_6__services_references_js__["a" /* default */].readReferences();
+            this.referenceNames = __WEBPACK_IMPORTED_MODULE_6__services_references_js__["a" /* default */].readReferenceNames();
+            this.categories = __WEBPACK_IMPORTED_MODULE_5__services_categories_js__["a" /* default */].readCategories();
+            this.categoriesNames = __WEBPACK_IMPORTED_MODULE_5__services_categories_js__["a" /* default */].readCategoriesNames();
         }
     },
     mounted: function mounted() {
@@ -69130,6 +69182,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         }).then(function (response) {
             _this.data = response.data.data;
         }).catch(function (error) {});
+    },
+    created: function created() {
+        this.methodsApiCalls();
     },
 
     components: {
@@ -70056,15 +70111,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+    props: ['categories', 'categoriesNames', 'references', 'referenceNames', 'points', 'pointsContents'],
     data: function data() {
         return {
-            points: [],
-            pointsContents: [],
             languageSelected: 'fr',
-            categories: [],
-            categoriesNames: [],
-            references: [],
-            referenceNames: [],
+            // categories: [],
+            // categoriesNames: [],
+            // references: [],
+            // referenceNames: [],
+            // points: [],
+            // pointsContents: [],
             snackbar: false,
             snackText: '',
             dialog: false,
@@ -70080,12 +70136,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     methods: {
         //API CALLS
         methodsApiCalls: function methodsApiCalls() {
-            this.categories = __WEBPACK_IMPORTED_MODULE_1__services_categories_js__["a" /* default */].readCategories();
-            this.categoriesNames = __WEBPACK_IMPORTED_MODULE_1__services_categories_js__["a" /* default */].readCategoriesNames();
-            this.references = __WEBPACK_IMPORTED_MODULE_2__services_references_js__["a" /* default */].readReferences();
-            this.referenceNames = __WEBPACK_IMPORTED_MODULE_2__services_references_js__["a" /* default */].readReferenceNames();
-            this.points = __WEBPACK_IMPORTED_MODULE_0__services_points_js__["a" /* default */].readPoints();
-            this.pointsContents = __WEBPACK_IMPORTED_MODULE_0__services_points_js__["a" /* default */].readPointsPopupContent();
+            // this.categories = categoriesMethods.readCategories();
+            // this.categoriesNames = categoriesMethods.readCategoriesNames();
+            // this.references = referencesMethods.readReferences();
+            // this.referenceNames = referencesMethods.readReferenceNames();
+            // this.points = pointsMethods.readPoints();
+            // this.pointsContents = pointsMethods.readPointsPopupContent();
         },
 
         //
@@ -71448,7 +71504,7 @@ exports = module.exports = __webpack_require__(0)(false);
 
 
 // module
-exports.push([module.i, "\n#coloredDiv[data-v-7426e342]{\n    width: 50%;\n    height: 20px;\n    border-radius: 5px;\n}\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -71692,20 +71748,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
 
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['idSelected'],
+    props: ['idSelected', 'categories', 'categoriesNames'],
     data: function data() {
         return {
             mute: false,
             loading: true,
 
-            categories: [],
-            categoriesNames: [],
+            // categories: [],
+            // categoriesNames: [],
 
             languages: [],
             codes: [],
@@ -71810,7 +71865,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     methods: {
         pageInit: function pageInit() {
-            console.log("pageInit");
+            // console.log("pageInit");
 
             //In edit mode
             if (this.idSelected != null) {
@@ -71822,7 +71877,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 }
         },
         editMode: function editMode() {
-            console.log("editMode");
+            // console.log("editMode");
             var icon;
             //set name(s) :
             for (var i = 0; i < this.categoriesNames.length; i++) {
@@ -72081,8 +72136,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         methodsApiCalls: function methodsApiCalls() {
             var _this4 = this;
 
-            this.categories = __WEBPACK_IMPORTED_MODULE_0__services_categories_js__["a" /* default */].readCategories();
-            this.categoriesNames = __WEBPACK_IMPORTED_MODULE_0__services_categories_js__["a" /* default */].readCategoriesNames();
+            // this.categories = categoriesMethods.readCategories();
+            // this.categoriesNames = categoriesMethods.readCategoriesNames();
             this.languages = __WEBPACK_IMPORTED_MODULE_1__services_languages_js__["a" /* default */].readLanguages();
 
             //setting initial empty names
@@ -72103,20 +72158,31 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             //         }, 2000);
             //     });
             // }
+            // function resolveAfter2Seconds() {
+            //     return new Promise(resolve => {
+            //         setTimeout(() => {
+            //             resolve(categoriesMethods.readCategories());
+            //         }, 2000);
+            //     });
+            // }
+
+            // var result;
 
             // async function asyncCall() {
-            //     var result = await resolveAfter2Seconds();
-            //     if (result == 'resolved') {
-            //     }
+            //     console.log('calling');
+            //     result = await resolveAfter2Seconds();
+            //     console.log(result);
+            //     // expected output: 'resolved'
             // }
+
 
             // asyncCall();
 
-            return new Promise(function (resolve) {
-                setTimeout(function () {
-                    resolve('resolved');
-                }, 2000);
-            });
+            // return new Promise(resolve => {
+            //     setTimeout(() => {
+            //         resolve('resolved');
+            //     }, 2000);
+            // });
         }
     },
     created: function created() {
@@ -72147,11 +72213,7 @@ var render = function() {
                   attrs: { color: "lime lighten-3" },
                   on: { click: _vm.pageReinit }
                 },
-                [
-                  _c("v-icon", [_vm._v("fas fa-circle-notch fa-spin")]),
-                  _vm._v(" Reinitialiser et mettre à jour\n            ")
-                ],
-                1
+                [_vm._v("Reinitialiser et mettre à jour\n            ")]
               )
             ],
             1
@@ -72198,7 +72260,6 @@ var render = function() {
                                   staticClass: "mb-2",
                                   attrs: {
                                     rules: _vm.nameRules,
-                                    label: language.name,
                                     value: "names[i]",
                                     required: "",
                                     solo: "",
@@ -73061,16 +73122,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['idSelected', 'page'],
+    props: ['idSelected', 'page', 'categories', 'categoriesNames', 'references', 'referenceNames'],
     data: function data() {
         return {
             mute: false,
             loading: true,
 
-            references: [],
-            referenceNames: [],
-            categories: [],
-            categoriesNames: [],
+            // references: [],
+            // referenceNames: [],
+            // categories: [],
+            // categoriesNames: [],
             languages: [],
 
             valid: false,
@@ -73450,11 +73511,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         methodsApiCalls: function methodsApiCalls() {
             var _this4 = this;
 
-            this.references = __WEBPACK_IMPORTED_MODULE_0__services_references_js__["a" /* default */].readReferences();
-
-            this.referenceNames = __WEBPACK_IMPORTED_MODULE_0__services_references_js__["a" /* default */].readReferenceNames();
-            this.categories = __WEBPACK_IMPORTED_MODULE_1__services_categories_js__["a" /* default */].readCategories();
-            this.categoriesNames = __WEBPACK_IMPORTED_MODULE_1__services_categories_js__["a" /* default */].readCategoriesNamesFrOnly();
+            // this.references = referencesMethods.readReferences();
+            // this.referenceNames = referencesMethods.readReferenceNames();
+            // this.categories = categoriesMethods.readCategories();
+            // this.categoriesNames = categoriesMethods.readCategoriesNamesFrOnly();
             this.languages = __WEBPACK_IMPORTED_MODULE_2__services_languages_js__["a" /* default */].readLanguages();
 
             //setting initial empty names
@@ -73520,11 +73580,7 @@ var render = function() {
                   attrs: { color: "lime lighten-3" },
                   on: { click: _vm.pageReinit }
                 },
-                [
-                  _c("v-icon", [_vm._v("fas fa-circle-notch fa-spin")]),
-                  _vm._v(" Reinitialiser et mettre à jour\n            ")
-                ],
-                1
+                [_vm._v("Reinitialiser et mettre à jour\n            ")]
               )
             ],
             1
@@ -74213,10 +74269,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__LocationMapAdmin_vue__ = __webpack_require__(104);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__LocationMapAdmin_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__LocationMapAdmin_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_images_js__ = __webpack_require__(13);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_points_js__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_references_js__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__services_categories_js__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__services_languages_js__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_languages_js__ = __webpack_require__(7);
 //
 //
 //
@@ -74489,25 +74542,25 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
-
-
-
+// import pointsMethods from './../../services/points.js'
+// import referencesMethods from './../../services/references.js'
+// import categoriesMethods from './../../services/categories.js'
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['idSelected', 'page'],
+    props: ['idSelected', 'page', 'categories', 'categoriesNames', 'references', 'referenceNames', 'points', 'pointsContents'],
     data: function data() {
         return {
             mute: false,
             loading: true,
 
-            points: [],
-            pointsContents: [],
             images: [],
-            references: [],
-            referenceNames: [],
-            categories: [],
-            categoriesNames: [],
+            // categories: [],
+            // categoriesNames: [],
+            // references: [],
+            // referenceNames: [],
+            // points: [],
+            // pointsContents: [],
             languages: [],
 
             valid: false,
@@ -75113,13 +75166,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var _this4 = this;
 
             this.images = __WEBPACK_IMPORTED_MODULE_2__services_images_js__["a" /* default */].readImages();
-            this.points = __WEBPACK_IMPORTED_MODULE_3__services_points_js__["a" /* default */].readPoints();
-            this.pointsContents = __WEBPACK_IMPORTED_MODULE_3__services_points_js__["a" /* default */].readPointsPopupContent();
-            this.references = __WEBPACK_IMPORTED_MODULE_4__services_references_js__["a" /* default */].readReferences();
-            this.referenceNames = __WEBPACK_IMPORTED_MODULE_4__services_references_js__["a" /* default */].readReferenceNamesFrOnly();
-            this.categories = __WEBPACK_IMPORTED_MODULE_5__services_categories_js__["a" /* default */].readCategories();
-            this.categoriesNames = __WEBPACK_IMPORTED_MODULE_5__services_categories_js__["a" /* default */].readCategoriesNamesFrOnly();
-            this.languages = __WEBPACK_IMPORTED_MODULE_6__services_languages_js__["a" /* default */].readLanguages();
+            // this.points = pointsMethods.readPoints();
+            // this.pointsContents = pointsMethods.readPointsPopupContent();
+            // this.references = referencesMethods.readReferences();
+            // this.referenceNames = referencesMethods.readReferenceNamesFrOnly();
+            // this.categories = categoriesMethods.readCategories();
+            // this.categoriesNames = categoriesMethods.readCategoriesNamesFrOnly();
+            this.languages = __WEBPACK_IMPORTED_MODULE_3__services_languages_js__["a" /* default */].readLanguages();
 
             //setting initial empty names
             window.axios.get('/api/languages').then(function (_ref) {
@@ -76952,11 +77005,7 @@ var render = function() {
                   attrs: { color: "lime lighten-3" },
                   on: { click: _vm.pageReinit }
                 },
-                [
-                  _c("v-icon", [_vm._v("fas fa-circle-notch fa-spin")]),
-                  _vm._v(" Reinitialiser et mettre à jour\n            ")
-                ],
-                1
+                [_vm._v("Reinitialiser et mettre à jour\n            ")]
               )
             ],
             1
@@ -77683,6 +77732,14 @@ var render = function() {
       _vm.page == ""
         ? _c("main-list", {
             staticClass: "adminPage",
+            attrs: {
+              categories: _vm.categories,
+              categoriesNames: _vm.categoriesNames,
+              references: _vm.references,
+              referenceNames: _vm.referenceNames,
+              points: _vm.points,
+              pointsContents: _vm.pointsContents
+            },
             on: { pageToShow: _vm.pageToShow }
           })
         : _vm._e(),
@@ -77690,7 +77747,11 @@ var render = function() {
       _vm.page == "category"
         ? _c("edit-category", {
             staticClass: "adminPage",
-            attrs: { idSelected: _vm.idSelected },
+            attrs: {
+              idSelected: _vm.idSelected,
+              categories: _vm.categories,
+              categoriesNames: _vm.categoriesNames
+            },
             on: { pageToShow: _vm.pageToShow }
           })
         : _vm._e(),
@@ -77698,7 +77759,14 @@ var render = function() {
       _vm.page == "reference" || _vm.page == "referenceParent"
         ? _c("edit-reference", {
             staticClass: "adminPage",
-            attrs: { idSelected: _vm.idSelected, page: _vm.page },
+            attrs: {
+              idSelected: _vm.idSelected,
+              page: _vm.page,
+              categories: _vm.categories,
+              categoriesNames: _vm.categoriesNames,
+              references: _vm.references,
+              referenceNames: _vm.referenceNames
+            },
             on: { pageToShow: _vm.pageToShow }
           })
         : _vm._e(),
@@ -77706,7 +77774,16 @@ var render = function() {
       _vm.page == "point" || _vm.page == "pointParent"
         ? _c("edit-point", {
             staticClass: "adminPage",
-            attrs: { idSelected: _vm.idSelected, page: _vm.page },
+            attrs: {
+              idSelected: _vm.idSelected,
+              page: _vm.page,
+              categories: _vm.categories,
+              categoriesNames: _vm.categoriesNames,
+              references: _vm.references,
+              referenceNames: _vm.referenceNames,
+              points: _vm.points,
+              pointsContents: _vm.pointsContents
+            },
             on: { pageToShow: _vm.pageToShow }
           })
         : _vm._e()
@@ -84589,6 +84666,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -84812,14 +84893,20 @@ var render = function() {
                                 "v-flex",
                                 { attrs: { xs12: "" } },
                                 [
+                                  _c("div", [
+                                    _vm._v(
+                                      _vm._s(
+                                        _vm.$t("message.contact_name_label")
+                                      )
+                                    )
+                                  ]),
+                                  _vm._v(" "),
                                   _c("v-text-field", {
                                     attrs: {
                                       rules: _vm.nameRules,
-                                      label: _vm.$t(
-                                        "message.contact_name_label"
-                                      ),
                                       hint: _vm.$t("message.contact_name_hint"),
                                       required: "",
+                                      solo: "",
                                       counter: 100
                                     },
                                     model: {
@@ -84838,16 +84925,22 @@ var render = function() {
                                 "v-flex",
                                 { attrs: { xs12: "" } },
                                 [
+                                  _c("div", [
+                                    _vm._v(
+                                      _vm._s(
+                                        _vm.$t("message.contact_title_label")
+                                      )
+                                    )
+                                  ]),
+                                  _vm._v(" "),
                                   _c("v-text-field", {
                                     attrs: {
                                       rules: _vm.titleRules,
-                                      label: _vm.$t(
-                                        "message.contact_title_label"
-                                      ),
                                       hint: _vm.$t(
                                         "message.contact_title_hint"
                                       ),
                                       required: "",
+                                      solo: "",
                                       counter: 100
                                     },
                                     model: {
@@ -84866,16 +84959,22 @@ var render = function() {
                                 "v-flex",
                                 { attrs: { xs12: "" } },
                                 [
+                                  _c("div", [
+                                    _vm._v(
+                                      _vm._s(
+                                        _vm.$t("message.contact_email_label")
+                                      )
+                                    )
+                                  ]),
+                                  _vm._v(" "),
                                   _c("v-text-field", {
                                     attrs: {
                                       rules: _vm.emailRules,
-                                      label: _vm.$t(
-                                        "message.contact_email_label"
-                                      ),
                                       hint: _vm.$t(
                                         "message.contact_email_hint"
                                       ),
                                       required: "",
+                                      solo: "",
                                       counter: 100
                                     },
                                     model: {
@@ -84887,14 +84986,20 @@ var render = function() {
                                     }
                                   }),
                                   _vm._v(" "),
+                                  _c("div", [
+                                    _vm._v(
+                                      _vm._s(
+                                        _vm.$t("message.contact_text_label")
+                                      )
+                                    )
+                                  ]),
+                                  _vm._v(" "),
                                   _c("v-textarea", {
                                     attrs: {
                                       rules: _vm.textRules,
                                       outline: "",
-                                      label: _vm.$t(
-                                        "message.contact_text_label"
-                                      ),
                                       hint: _vm.$t("message.contact_text_hint"),
+                                      solo: "",
                                       counter: 1000
                                     },
                                     model: {
@@ -85136,7 +85241,7 @@ var render = function() {
                 "v-expansion-panel-content",
                 {
                   key: i,
-                  staticClass: "green lighten-3",
+                  staticClass: "green lighten-3 px-0 py-0",
                   class: { listColorAlt: i % 2 == 0 },
                   attrs: { value: _vm.showAllForms, color: "green lighten-3" },
                   on: {
@@ -85150,7 +85255,7 @@ var render = function() {
                   _c(
                     "div",
                     {
-                      staticClass: "pl-0",
+                      staticClass: "px-0 py-0",
                       attrs: { slot: "header" },
                       slot: "header"
                     },

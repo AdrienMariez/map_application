@@ -39,40 +39,44 @@
                                     <small>{{ $t("message.contact_fr_or_en_only") }}</small>
                                 </v-flex>
                                 <v-flex xs12>
+                                    <div>{{$t("message.contact_name_label")}}</div>
                                     <v-text-field
                                         v-model="name"
                                         :rules="nameRules"
-                                        :label="$t('message.contact_name_label')"
                                         :hint="$t('message.contact_name_hint')"
                                         required
+                                        solo
                                         :counter="100"
                                     ></v-text-field>
                                 </v-flex>
                                 <v-flex xs12>
+                                    <div>{{$t("message.contact_title_label")}}</div>
                                     <v-text-field
                                         v-model="title"
                                         :rules="titleRules"
-                                        :label="$t('message.contact_title_label')"
                                         :hint="$t('message.contact_title_hint')"
                                         required
+                                        solo
                                         :counter="100"
                                     ></v-text-field>
                                 </v-flex>
                                 <v-flex xs12>
+                                    <div>{{$t("message.contact_email_label")}}</div>
                                     <v-text-field
                                         v-model="email"
                                         :rules="emailRules"
-                                        :label="$t('message.contact_email_label')"
                                         :hint="$t('message.contact_email_hint')"
                                         required
+                                        solo
                                         :counter="100"
                                     ></v-text-field>
+                                    <div>{{$t("message.contact_text_label")}}</div>
                                     <v-textarea
                                         v-model="text"
                                         :rules="textRules"
                                         outline
-                                        :label="$t('message.contact_text_label')"
                                         :hint="$t('message.contact_text_hint')"
+                                        solo
                                         :counter="1000"
                                     ></v-textarea>
                                 </v-flex>
