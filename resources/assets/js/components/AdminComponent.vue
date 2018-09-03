@@ -114,7 +114,7 @@ export default {
                 this.referenceNames = referencesMethods.readReferenceNames();
                 this.categories = categoriesMethods.readCategories();
                 this.categoriesNames = categoriesMethods.readCategoriesNames();
-                
+
                 this.page = newValue;
                 this.idSelected = newId;
             },  
@@ -129,15 +129,15 @@ export default {
             },
     },
     mounted() {
-            axios.get('/api/dashboard', {
-                headers: {
-                    Authorization: 'Bearer ' + localStorage.getItem('token')
-                }
-            })
-            .then(response => {
-                this.data = response.data.data
-            }).catch(error => {
-            })
+            // axios.get('/api/dashboard', {
+            //     headers: {
+            //         Authorization: 'Bearer ' + localStorage.getItem('token')
+            //     }
+            // })
+            // .then(response => {
+            //     this.data = response.data.data
+            // }).catch(error => {
+            // })
     },
     created() {
         this.methodsApiCalls();

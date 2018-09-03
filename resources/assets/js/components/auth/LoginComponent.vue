@@ -6,17 +6,51 @@
         </admin-header>
 
         <div class="text-center form-wrapper">
-            <form class="form-signin" v-on:submit.prevent="submitLogin">
-                <img class="mb-4" src="https://getbootstrap.com/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
+            <form
+                class="form-signin"
+                v-on:submit.prevent="submitLogin">
                 <h1 class="h3 mb-3 font-weight-normal">Connection administrateur</h1>
 
-                <label for="inputEmail" class="sr-only">Email</label>
-                <input type="email" id="inputEmail" class="form-control" placeholder="Courriel" required autofocus v-model="email">
+                <label
+                    for="inputEmail"
+                    class="sr-only">
+                    Identifiant
+                </label>
+                <input
+                    type="email"
+                    id="inputEmail"
+                    class="form-control"
+                    placeholder="Identifiant"
+                    required
+                    autofocus
+                    v-model="email">
 
-                <label for="inputPassword" class="sr-only">Mot de passe</label>
-                <input type="password" id="inputPassword" class="form-control" placeholder="Mot de passe" required v-model="password">
+                <label
+                    for="inputPassword"
+                    class="sr-only">
+                    Mot de passe
+                </label>
+                <input
+                    type="password"
+                    id="inputPassword"
+                    class="form-control"
+                    placeholder="Mot de passe"
+                    required
+                    v-model="password">
 
-                <button class="btn btn-lg green lighten-4 btn-block" type="submit">Connection</button>
+                <button
+                    class="btn btn-lg green darken-1 btn-block white--text"
+                    type="submit">
+                    Connection
+                </button>
+                <div
+                    class="red--text"
+                    v-if="loginError">Identifiants erronnés !
+                </div>
+                <div
+                    class="red--text"
+                    v-if="loginErrorCounter == 4">Un échec à la prochaine tentative ramènera à la page publique.
+                </div>
             </form>
         </div>
 
@@ -52,6 +86,7 @@
                 email: '',
                 password: '',
                 loginError: false,
+                loginErrorCounter: 0,
             }
         },
         methods: {
@@ -67,6 +102,10 @@
                     this.$router.push({ name: 'admin' })
                 }).catch(error => {
                     this.loginError = true
+                    this.loginErrorCounter = this.loginErrorCounter+1;
+                    if (this.loginErrorCounter == 5) {
+                        this.$router.push({ name: 'public' })
+                    }
                 });
             }
         },

@@ -69173,15 +69173,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         }
     },
     mounted: function mounted() {
-        var _this = this;
-
-        axios.get('/api/dashboard', {
-            headers: {
-                Authorization: 'Bearer ' + localStorage.getItem('token')
-            }
-        }).then(function (response) {
-            _this.data = response.data.data;
-        }).catch(function (error) {});
+        // axios.get('/api/dashboard', {
+        //     headers: {
+        //         Authorization: 'Bearer ' + localStorage.getItem('token')
+        //     }
+        // })
+        // .then(response => {
+        //     this.data = response.data.data
+        // }).catch(error => {
+        // })
     },
     created: function created() {
         this.methodsApiCalls();
@@ -82000,6 +82000,40 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -82009,7 +82043,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         return {
             email: '',
             password: '',
-            loginError: false
+            loginError: false,
+            loginErrorCounter: 0
         };
     },
 
@@ -82028,6 +82063,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 _this.$router.push({ name: 'admin' });
             }).catch(function (error) {
                 _this.loginError = true;
+                _this.loginErrorCounter = _this.loginErrorCounter + 1;
+                if (_this.loginErrorCounter == 5) {
+                    _this.$router.push({ name: 'public' });
+                }
             });
         }
     },
@@ -83249,17 +83288,6 @@ var render = function() {
             }
           },
           [
-            _c("img", {
-              staticClass: "mb-4",
-              attrs: {
-                src:
-                  "https://getbootstrap.com/assets/brand/bootstrap-solid.svg",
-                alt: "",
-                width: "72",
-                height: "72"
-              }
-            }),
-            _vm._v(" "),
             _c("h1", { staticClass: "h3 mb-3 font-weight-normal" }, [
               _vm._v("Connection administrateur")
             ]),
@@ -83267,7 +83295,7 @@ var render = function() {
             _c(
               "label",
               { staticClass: "sr-only", attrs: { for: "inputEmail" } },
-              [_vm._v("Email")]
+              [_vm._v("\n                Identifiant\n            ")]
             ),
             _vm._v(" "),
             _c("input", {
@@ -83283,7 +83311,7 @@ var render = function() {
               attrs: {
                 type: "email",
                 id: "inputEmail",
-                placeholder: "Courriel",
+                placeholder: "Identifiant",
                 required: "",
                 autofocus: ""
               },
@@ -83301,7 +83329,7 @@ var render = function() {
             _c(
               "label",
               { staticClass: "sr-only", attrs: { for: "inputPassword" } },
-              [_vm._v("Mot de passe")]
+              [_vm._v("\n                Mot de passe\n            ")]
             ),
             _vm._v(" "),
             _c("input", {
@@ -83334,11 +83362,25 @@ var render = function() {
             _c(
               "button",
               {
-                staticClass: "btn btn-lg green lighten-4 btn-block",
+                staticClass: "btn btn-lg green darken-1 btn-block white--text",
                 attrs: { type: "submit" }
               },
-              [_vm._v("Connection")]
-            )
+              [_vm._v("\n                Connection\n            ")]
+            ),
+            _vm._v(" "),
+            _vm.loginError
+              ? _c("div", { staticClass: "red--text" }, [
+                  _vm._v("Identifiants erronnés !\n            ")
+                ])
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.loginErrorCounter == 4
+              ? _c("div", { staticClass: "red--text" }, [
+                  _vm._v(
+                    "Un échec à la prochaine tentative ramènera à la page publique.\n            "
+                  )
+                ])
+              : _vm._e()
           ]
         )
       ]),
