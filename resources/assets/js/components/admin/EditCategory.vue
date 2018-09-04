@@ -14,18 +14,23 @@
                             <v-layout wrap>
                             <!-- Translations -->
                                 <v-flex xs12 class="my-5">
-                                    <div>Nom de la catégorie dans chaque langue *: </div>
-                                    <v-text-field
+                                    <div class="mb-3">Nom de la catégorie dans chaque langue *: </div>
+                                    <div
                                         v-for="(language,i) in languages"
-                                        :key="i"
-                                        v-model=names[i]
-                                        :rules="nameRules"
-                                        value= names[i]
-                                        required
-                                        solo
-                                        :counter="50"
-                                        class="mb-2"
-                                    ></v-text-field>
+                                        :key="i">
+                                        <div>
+                                            {{language.name}}
+                                        </div>
+                                        <v-text-field
+                                            v-model=names[i]
+                                            :rules="nameRules"
+                                            value= names[i]
+                                            required
+                                            solo
+                                            :counter="50"
+                                            class="mb-2"
+                                        ></v-text-field>
+                                    </div>
                                     <div class="validationFailure">
                                         <v-icon v-if="nameValidationFailure.length>0">
                                             warning

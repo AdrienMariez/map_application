@@ -36,7 +36,7 @@
                                 </v-flex>
                             <!-- Translations -->
                                 <v-flex xs12 class="my-5">
-                                    <div>Nom de la réference dans chaque langue *: </div>
+                                    <div class="mb-3">Nom de la réference dans chaque langue *: </div>
                                     <div
                                         v-for="(language,i) in languages"
                                         :key="i">

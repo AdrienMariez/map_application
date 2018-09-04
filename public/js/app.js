@@ -13073,6 +13073,8 @@ var messages = {
             contact_title_hint: 'Filling the object form is required',
             contact_email_label: 'Your email',
             contact_email_hint: 'Fill this field only if you wish to be answered',
+            contact_RGPD_hint_1: 'According to the GDPR, all of your personnal data, like your email, cannot be used commercially without your agreement and will be stored securely in a server based in European Union.',
+            contact_RGPD_hint_2: 'As specified by the GDPR, you have the right to request the erasure of all personal data from our database.',
             contact_text_label: 'Message *',
             contact_text_hint: 'Filling the form content is required',
             contact_required_fields: '* indicates a required field',
@@ -13095,6 +13097,8 @@ var messages = {
             contact_title_hint: "La saisie de l'objet du message est obligatoire",
             contact_email_label: 'Votre courriel',
             contact_email_hint: 'Ne remplissez ce champ que si vous souhaitez être recontactés',
+            contact_RGPD_hint_1: 'Conformément à la loi RGPD, toute vos données personnelles, comme votre email, ne pourront être utilisées à des fins commerciales sans votre accord et seront conservées de manière sécurisées et confidentielles sur un serveur situé en Union Européenne.',
+            contact_RGPD_hint_2: 'Conformément à vos droits, vous pouvez nous faire connaître votre intention de supprimer vos informations personnelles de nos bases de données.',
             contact_text_label: 'Texte *',
             contact_text_hint: 'La saisie du contenu du message est obligatoire',
             contact_required_fields: '* indique un champ obligatoire',
@@ -69172,17 +69176,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.categoriesNames = __WEBPACK_IMPORTED_MODULE_5__services_categories_js__["a" /* default */].readCategoriesNames();
         }
     },
-    mounted: function mounted() {
-        // axios.get('/api/dashboard', {
-        //     headers: {
-        //         Authorization: 'Bearer ' + localStorage.getItem('token')
-        //     }
-        // })
-        // .then(response => {
-        //     this.data = response.data.data
-        // }).catch(error => {
-        // })
-    },
+    // mounted() {
+    // axios.get('/api/dashboard', {
+    //     headers: {
+    //         Authorization: 'Bearer ' + localStorage.getItem('token')
+    //     }
+    // })
+    // .then(response => {
+    //     this.data = response.data.data
+    // }).catch(error => {
+    // })
+    // },
     created: function created() {
         this.methodsApiCalls();
     },
@@ -71504,7 +71508,7 @@ exports = module.exports = __webpack_require__(0)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -71517,6 +71521,11 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__services_categories_js__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_languages_js__ = __webpack_require__(7);
+//
+//
+//
+//
+//
 //
 //
 //
@@ -72248,31 +72257,45 @@ var render = function() {
                             "v-flex",
                             { staticClass: "my-5", attrs: { xs12: "" } },
                             [
-                              _c("div", [
+                              _c("div", { staticClass: "mb-3" }, [
                                 _vm._v(
                                   "Nom de la catégorie dans chaque langue *: "
                                 )
                               ]),
                               _vm._v(" "),
                               _vm._l(_vm.languages, function(language, i) {
-                                return _c("v-text-field", {
-                                  key: i,
-                                  staticClass: "mb-2",
-                                  attrs: {
-                                    rules: _vm.nameRules,
-                                    value: "names[i]",
-                                    required: "",
-                                    solo: "",
-                                    counter: 50
-                                  },
-                                  model: {
-                                    value: _vm.names[i],
-                                    callback: function($$v) {
-                                      _vm.$set(_vm.names, i, $$v)
-                                    },
-                                    expression: "names[i]"
-                                  }
-                                })
+                                return _c(
+                                  "div",
+                                  { key: i },
+                                  [
+                                    _c("div", [
+                                      _vm._v(
+                                        "\n                                        " +
+                                          _vm._s(language.name) +
+                                          "\n                                    "
+                                      )
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("v-text-field", {
+                                      staticClass: "mb-2",
+                                      attrs: {
+                                        rules: _vm.nameRules,
+                                        value: "names[i]",
+                                        required: "",
+                                        solo: "",
+                                        counter: 50
+                                      },
+                                      model: {
+                                        value: _vm.names[i],
+                                        callback: function($$v) {
+                                          _vm.$set(_vm.names, i, $$v)
+                                        },
+                                        expression: "names[i]"
+                                      }
+                                    })
+                                  ],
+                                  1
+                                )
                               }),
                               _vm._v(" "),
                               _c(
@@ -73670,7 +73693,7 @@ var render = function() {
                             "v-flex",
                             { staticClass: "my-5", attrs: { xs12: "" } },
                             [
-                              _c("div", [
+                              _c("div", { staticClass: "mb-3" }, [
                                 _vm._v(
                                   "Nom de la réference dans chaque langue *: "
                                 )
@@ -84712,6 +84735,33 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -84719,7 +84769,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
         return {
             dialog: false,
-            valid: true,
+            valid: false,
+            errorMessage: '',
 
             name: '',
             nameRules: [function (v) {
@@ -84744,6 +84795,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 return v && v.length <= 1000 || _this.$t('message.contact_too_long');
             }],
 
+            legal: false,
+
             contact: {
                 name: "",
                 title: "",
@@ -84753,7 +84806,69 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         };
     },
 
+    watch: {
+        // watchers name, title, email, text to test validation
+        name: function name(val, oldVal) {
+            // Verification of presence of variables (prevents errors when closing the contact form as the variables are reset)
+            if (this.name && this.title && this.email && this.text) {
+                this.validation();
+            }
+        },
+        title: function title(val, oldVal) {
+            if (this.name && this.title && this.email && this.text) {
+                this.validation();
+            }
+        },
+        email: function email(val, oldVal) {
+            if (this.name && this.title && this.email && this.text) {
+                this.validation();
+            }
+        },
+        text: function text(val, oldVal) {
+            if (this.name && this.title && this.email && this.text) {
+                this.validation();
+            }
+        }
+    },
     methods: {
+        validStart: function validStart() {
+            // Forces valid false when showing the form
+            this.valid = false;
+        },
+        validation: function validation() {
+            // Disable the form validation button when the values are not correct
+            var valid;
+            var error = "";
+
+            if (this.name.length == 0) {
+                error += "name = 0, ";
+            }
+            if (this.name.length > 50) {
+                error += "name >= 50, ";
+            }
+            if (this.title.length == 0) {
+                error += "title = 0, ";
+            }
+            if (this.title.length > 60) {
+                error += "title >= 60, ";
+            }
+            if (this.email.length > 40) {
+                error += "email >= 40, ";
+            }
+            if (this.text.length == 0) {
+                error += "text = 0, ";
+            }
+            if (this.text.length > 1000) {
+                error += "text >= 1000";
+            }
+
+            if (error.length > 0) {
+                valid = false;
+            } else {
+                valid = true;
+            }
+            this.valid = valid;
+        },
         submit: function submit() {
             var _this2 = this;
 
@@ -84827,6 +84942,7 @@ var render = function() {
                 center: "",
                 color: "green lighten-1"
               },
+              on: { click: _vm.validStart },
               slot: "activator"
             },
             [
@@ -84949,7 +85065,7 @@ var render = function() {
                                       hint: _vm.$t("message.contact_name_hint"),
                                       required: "",
                                       solo: "",
-                                      counter: 100
+                                      counter: 50
                                     },
                                     model: {
                                       value: _vm.name,
@@ -84983,7 +85099,7 @@ var render = function() {
                                       ),
                                       required: "",
                                       solo: "",
-                                      counter: 100
+                                      counter: 60
                                     },
                                     model: {
                                       value: _vm.title,
@@ -85017,7 +85133,7 @@ var render = function() {
                                       ),
                                       required: "",
                                       solo: "",
-                                      counter: 100
+                                      counter: 40
                                     },
                                     model: {
                                       value: _vm.email,
@@ -85027,6 +85143,53 @@ var render = function() {
                                       expression: "email"
                                     }
                                   }),
+                                  _vm._v(" "),
+                                  _c(
+                                    "v-icon",
+                                    {
+                                      on: {
+                                        click: function($event) {
+                                          _vm.legal = !_vm.legal
+                                        }
+                                      }
+                                    },
+                                    [
+                                      _vm._v(
+                                        "\n                                    help\n                                "
+                                      )
+                                    ]
+                                  ),
+                                  _vm._v(" "),
+                                  _vm.legal
+                                    ? _c(
+                                        "div",
+                                        {
+                                          staticClass:
+                                            "elevation-5 my-3 mx-3 py-3 px-3"
+                                        },
+                                        [
+                                          _c("div", [
+                                            _vm._v(
+                                              _vm._s(
+                                                _vm.$t(
+                                                  "message.contact_RGPD_hint_1"
+                                                )
+                                              )
+                                            )
+                                          ]),
+                                          _vm._v(" "),
+                                          _c("div", [
+                                            _vm._v(
+                                              _vm._s(
+                                                _vm.$t(
+                                                  "message.contact_RGPD_hint_2"
+                                                )
+                                              )
+                                            )
+                                          ])
+                                        ]
+                                      )
+                                    : _vm._e(),
                                   _vm._v(" "),
                                   _c("div", [
                                     _vm._v(
@@ -85085,49 +85248,48 @@ var render = function() {
                         },
                         [
                           _c(
-                            "v-flex",
-                            { attrs: { xs2: "", "align-left": "" } },
+                            "v-list-tile",
+                            { on: { click: _vm.clear } },
                             [
                               _c(
-                                "v-list-tile",
-                                { on: { click: _vm.clear } },
-                                [
-                                  _c(
-                                    "v-list-tile-action",
-                                    { staticClass: "cursorAction" },
-                                    [_c("v-icon", [_vm._v("close")])],
-                                    1
-                                  )
-                                ],
+                                "v-list-tile-action",
+                                { staticClass: "cursorAction" },
+                                [_c("v-icon", [_vm._v("close")])],
                                 1
                               )
                             ],
                             1
                           ),
                           _vm._v(" "),
-                          _c(
-                            "v-flex",
-                            { attrs: { xs2: "", "align-right": "" } },
-                            [
-                              _c(
-                                "v-list-tile",
+                          !_vm.valid
+                            ? _c(
+                                "v-btn",
                                 {
-                                  attrs: { disabled: !_vm.valid },
-                                  on: { click: _vm.submit }
+                                  attrs: {
+                                    disabled: !_vm.valid,
+                                    color: "grey lighten-1"
+                                  }
                                 },
-                                [
-                                  _c(
-                                    "v-list-tile-action",
-                                    { staticClass: "cursorAction" },
-                                    [_c("v-icon", [_vm._v("send")])],
-                                    1
-                                  )
-                                ],
+                                [_c("v-icon", [_vm._v("send")])],
                                 1
                               )
-                            ],
-                            1
-                          )
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _vm.valid
+                            ? _c(
+                                "v-btn",
+                                {
+                                  attrs: {
+                                    disabled: !_vm.valid,
+                                    large: "",
+                                    color: "success"
+                                  },
+                                  on: { click: _vm.submit }
+                                },
+                                [_c("v-icon", [_vm._v("send")])],
+                                1
+                              )
+                            : _vm._e()
                         ],
                         1
                       )

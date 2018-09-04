@@ -128,7 +128,7 @@ export default {
                 this.categoriesNames = categoriesMethods.readCategoriesNames();
             },
     },
-    mounted() {
+    // mounted() {
             // axios.get('/api/dashboard', {
             //     headers: {
             //         Authorization: 'Bearer ' + localStorage.getItem('token')
@@ -138,7 +138,7 @@ export default {
             //     this.data = response.data.data
             // }).catch(error => {
             // })
-    },
+    // },
     created() {
         this.methodsApiCalls();
     },

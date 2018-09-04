@@ -3,6 +3,7 @@
         <v-dialog v-model="dialog" persistent max-width="500px" transition="dialog-bottom-transition">
             <v-btn
                 slot="activator"
+                @click="validStart"
                 absolute
                 dark
                 center
@@ -39,6 +40,7 @@
                                     <small>{{ $t("message.contact_fr_or_en_only") }}</small>
                                 </v-flex>
                                 <v-flex xs12>
+                                <!-- NAME -->
                                     <div>{{$t("message.contact_name_label")}}</div>
                                     <v-text-field
                                         v-model="name"
@@ -46,10 +48,11 @@
                                         :hint="$t('message.contact_name_hint')"
                                         required
                                         solo
-                                        :counter="100"
+                                        :counter="50"
                                     ></v-text-field>
                                 </v-flex>
                                 <v-flex xs12>
+                                <!-- TITLE -->
                                     <div>{{$t("message.contact_title_label")}}</div>
                                     <v-text-field
                                         v-model="title"
@@ -57,10 +60,11 @@
                                         :hint="$t('message.contact_title_hint')"
                                         required
                                         solo
-                                        :counter="100"
+                                        :counter="60"
                                     ></v-text-field>
                                 </v-flex>
                                 <v-flex xs12>
+                                <!-- EMAIL -->
                                     <div>{{$t("message.contact_email_label")}}</div>
                                     <v-text-field
                                         v-model="email"
@@ -68,8 +72,17 @@
                                         :hint="$t('message.contact_email_hint')"
                                         required
                                         solo
-                                        :counter="100"
+                                        :counter="40"
                                     ></v-text-field>
+                                    <v-icon
+                                        @click="legal = !legal">
+                                        help
+                                    </v-icon>
+                                    <div v-if="legal" class="elevation-5 my-3 mx-3 py-3 px-3">
+                                        <div>{{$t("message.contact_RGPD_hint_1")}}</div>
+                                        <div>{{$t("message.contact_RGPD_hint_2")}}</div>
+                                    </div>
+                                <!-- TEXT -->
                                     <div>{{$t("message.contact_text_label")}}</div>
                                     <v-textarea
                                         v-model="text"
@@ -86,22 +99,36 @@
                     </v-card-text>
                     <v-card-actions>
                         <v-layout row wrap justify-space-between>
-                            <v-flex xs2 align-left>
+                            <!-- <v-flex xs2> -->
                                 <v-list-tile @click="clear">
                                     <v-list-tile-action class="cursorAction">
                                         <v-icon>close</v-icon>
                                     </v-list-tile-action>
                                 </v-list-tile>
-                            </v-flex>
-                            <v-flex xs2 align-right>
-                                <v-list-tile
+                            <!-- </v-flex>
+                            <v-flex> -->
+                                <v-btn
+                                    v-if="!valid"
+                                    :disabled="!valid"
+                                    color="grey lighten-1">
+                                    <v-icon>send</v-icon>
+                                </v-btn>
+                                <v-btn
+                                    v-if="valid"
+                                    :disabled="!valid"
+                                    @click="submit"
+                                    large
+                                    color="success">
+                                    <v-icon>send</v-icon>
+                                </v-btn>
+                                <!-- <v-list-tile
                                     :disabled="!valid"
                                     @click="submit">
                                     <v-list-tile-action class="cursorAction">
                                         <v-icon>send</v-icon>
                                     </v-list-tile-action>
-                                </v-list-tile>
-                            </v-flex>
+                                </v-list-tile> -->
+                            <!-- </v-flex> -->
                         </v-layout>
                     </v-card-actions>
                 </v-form>
@@ -115,7 +142,8 @@
         data () {
             return {
                 dialog: false,
-                valid: true,
+                valid: false,
+                errorMessage: '',
 
                 name: '',
                 nameRules: [
@@ -137,6 +165,8 @@
                     v => (v && v.length <= 1000) || this.$t('message.contact_too_long')
                 ],
 
+                legal: false,
+
                 contact: {
                     name: "",
                     title: "",
@@ -145,7 +175,70 @@
                 },
             }
         },
+        watch: {
+            // watchers name, title, email, text to test validation
+            name(val, oldVal){
+                // Verification of presence of variables (prevents errors when closing the contact form as the variables are reset)
+                if (this.name && this.title && this.email && this.text) {
+                    this.validation();
+                }
+            },
+            title(val, oldVal){
+                if (this.name && this.title && this.email && this.text) {
+                    this.validation();
+                }
+            },
+            email(val, oldVal){
+                if (this.name && this.title && this.email && this.text) {
+                    this.validation();
+                }
+            },
+            text(val, oldVal){
+                if (this.name && this.title && this.email && this.text) {
+                    this.validation();
+                }
+            },
+        },
         methods: {
+            validStart () {
+                // Forces valid false when showing the form
+                this.valid = false;
+            },
+            validation () {
+                // Disable the form validation button when the values are not correct
+                var valid;
+                var error = "";
+
+                if (this.name.length == 0) {
+                    error += "name = 0, "
+                }
+                if (this.name.length > 50) {
+                    error += "name >= 50, "
+                }
+                if (this.title.length == 0) {
+                    error += "title = 0, "
+                }
+                if (this.title.length > 60) {
+                    error += "title >= 60, "
+                }
+                if (this.email.length > 40) {
+                    error += "email >= 40, "
+                }
+                if (this.text.length == 0) {
+                    error += "text = 0, "
+                }
+                if (this.text.length > 1000) {
+                    error += "text >= 1000"
+                }
+
+                if (error.length > 0) {
+                    valid = false;
+                }
+                else{
+                    valid = true;
+                }
+                this.valid = valid;
+            },
             submit () {
                 if (this.$refs.form.validate()) {
                 // Native form submission is not yet supported
