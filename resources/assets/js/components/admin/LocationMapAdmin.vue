@@ -42,10 +42,9 @@
                     <v-layout
                         v-if="previewMode == false"
                         justify-space-between
-                        class="hidden-md-and-up">>
+                        class="hidden-md-and-up mx-2">
                         <v-btn
                             dark
-                            right
                             color="success"
                             class="mx-2"
                             @click.stop="getPointCoord()">
@@ -53,7 +52,6 @@
                         </v-btn>
                         <v-btn
                             dark
-                            right
                             color="success"
                             class="mx-2"
                             @click.stop="centerPointCoord()">
@@ -61,7 +59,6 @@
                         </v-btn>
                         <v-btn
                             dark
-                            right
                             color="warning"
                             class="mx-2"
                             @click.stop="reinitPointCoord()">
@@ -72,10 +69,9 @@
                     <v-layout
                         v-if="previewMode"
                         justify-space-between
-                        class="hidden-md-and-up">>
+                        class="hidden-md-and-up mx-2">>
                         <v-btn
                             dark
-                            right
                             color="warning"
                             class="mx-2"
                             @click.stop="createPositionnedPoint()">
@@ -86,10 +82,9 @@
                     <v-layout
                         v-if="previewMode == false"
                         justify-space-between
-                        class="hidden-sm-and-down">
+                        class="hidden-sm-and-down mx-2">
                         <v-btn
                             dark
-                            right
                             color="success"
                             class="mx-2"
                             @click.stop="getPointCoord()">
@@ -98,7 +93,6 @@
                         </v-btn>
                         <v-btn
                             dark
-                            right
                             color="success"
                             class="mx-2"
                             @click.stop="centerPointCoord()">
@@ -107,7 +101,6 @@
                         </v-btn>
                         <v-btn
                             dark
-                            right
                             color="warning"
                             class="mx-2"
                             @click.stop="reinitPointCoord()">
@@ -119,10 +112,9 @@
                     <v-layout
                         v-if="previewMode"
                         justify-space-between
-                        class="hidden-sm-and-down">
+                        class="hidden-sm-and-down mx-2">
                         <v-btn
                             dark
-                            right
                             color="warning"
                             class="mx-2"
                             @click.stop="createPositionnedPoint()">
@@ -444,5 +436,6 @@
         height: 85%;
         width: 100%;
         position: relative;
+        margin: 5px;
     }
 </style>

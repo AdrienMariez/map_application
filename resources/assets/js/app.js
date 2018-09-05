@@ -17,8 +17,17 @@ require('./bootstrap');
 
 // import 'leaflet/dist/leaflet.css';
 // import 'leaflet.markercluster/dist/MarkerCluster.css';
-require('../../../node_modules/leaflet/dist/leaflet.css')
-require('../../../node_modules/leaflet.markercluster/dist/MarkerCluster.css')
+// require('../../../node_modules/leaflet/dist/leaflet.css')
+// require('../../../node_modules/leaflet.markercluster/dist/MarkerCluster.css')
+
+
+// Uncomment below when compiling to production
+
+    // Vue.config.devtools = false
+    // Vue.config.debug = false
+    // Vue.config.silent = true
+
+// END Uncomment
 
 
 /**
