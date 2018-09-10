@@ -90,7 +90,7 @@
         //
         //API CALLS
             methodsApiCalls() {
-                this.languages = languagesMethods.readLanguages();
+                this.languages = languagesMethods.readActiveLanguages();
             },            
     },
     created() {

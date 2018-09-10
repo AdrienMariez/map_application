@@ -41,6 +41,8 @@
                             <v-list-tile-title v-html="language.name"></v-list-tile-title>
                             <v-list-tile-sub-title v-html="language.code"></v-list-tile-sub-title>
                         </v-list-tile-content>
+                        <div v-if="language.active == 1"> Visible</div>
+                        <div v-if="language.active == 0">Cachée</div>
                         <v-btn
                             dark
                             fab
@@ -83,6 +85,7 @@
             <v-card-text>
                 <v-container grid-list-md>
                     <v-layout wrap>
+                    <!-- Name -->
                         <v-flex xs12 class="my-5">
                             <div>Nom de la langue : </div>
                             <v-text-field
@@ -93,6 +96,7 @@
                                 class="mb-2"
                             ></v-text-field>
                         </v-flex>
+                    <!-- Code -->
                         <v-flex xs12 class="my-5">
                             <div>Code linguistique : </div>
                             <v-text-field
@@ -104,6 +108,28 @@
                                 hint="Utilisez les codes de la norme ISO 639-1 : https://fr.wikipedia.org/wiki/Liste_des_codes_ISO_639-1"
                                 persistent-hint
                             ></v-text-field>
+                        </v-flex>
+                    <!-- Active -->
+                        <v-flex xs12 class="my-5">
+                            <div>Visibilité : </div>
+                            <v-icon
+                                color="info"
+                                @click="helpActive = !helpActive">
+                                help
+                            </v-icon>
+                            <ul
+                                v-if="helpActive"
+                                class="elevation-5 my-3 mx-3 py-3 px-3">
+                                <li>Une langue Cachée n'apparaîtra pas comme choix pour le public.</li>
+                                <li>Une langue Visible apparaîtra comme choix possible pour le public.</li>
+                                <li>Conseil: créez une nouvelle langue en Cachée, allez modifier les données traduisible dans la liste d'administration principale, puis revenez modifier la langue plus tard pour la rendre Visible quand tout est prêt.</li>
+                            </ul>
+                            
+                            <v-switch
+                            v-model="selectedActivation"
+                            ></v-switch>
+                            <div v-if="selectedActivationValid == 1"> Visible</div>
+                            <div v-if="selectedActivationValid == 0">Cachée</div>
                         </v-flex>
                     </v-layout>
                 </v-container>
@@ -230,6 +256,8 @@
                 languages: [],
 
                 help: false,
+                helpActive: false,
+                
                 
                 categories: [],
                 references: [],
@@ -243,9 +271,12 @@
                 selectedId: null,
                 selectedName: "",
                 selectedCode: "",
+                selectedActivation: 0,
+                selectedActivationValid: 0,
 
                 editedName: "",
                 editedCode: "",
+                editedActivation: 0,
 
                 valid: false,
                 validButton: false,
@@ -261,6 +292,7 @@
                     id: null,
                     name: "",
                     code: "",
+                    active: 0,
                 },
             }
         },
@@ -271,6 +303,17 @@
             selectedCode(){
                 this.validation();
             },
+            selectedActivation(){
+                if (this.selectedActivation == true) {
+                    this.selectedActivationValid = 1;
+                }
+                else if(this.selectedActivation == false) {
+                    this.selectedActivationValid = 0;
+                }
+                else{
+                    this.selectedActivationValid = this.selectedActivation;
+                }
+            },
         },
         methods: {
             dummy() {},
@@ -280,6 +323,7 @@
                 this.selectedId = null;
                 this.selectedName = "";
                 this.selectedCode = "";
+                this.selectedActivation = 0;
             },
             updateLanguageMode(id) {
                 // var languages = JSON.parse(JSON.stringify(this.languages));
@@ -290,6 +334,8 @@
                         this.editedName = this.languages[lang]["name"];
                         this.selectedCode = this.languages[lang]["code"];
                         this.editedCode = this.languages[lang]["code"];
+                        this.selectedActivation = this.languages[lang]["active"];
+                        this.editedActivation = this.languages[lang]["active"];
                     }
                 }
                 this.editForm = true;
@@ -331,89 +377,101 @@
             },
 
             submitCreate() {
-                this.language.name = this.selectedName;
-                this.language.code = this.selectedCode;
-                var newLanguage = this.language;
-
-                this.snackbarLoading = true;
-
-                axios.post('/api/languages', newLanguage)
-                    .then(response => { 
-                        this.success(response, "Création effectuée avec succès.");
-                    })
-                    .catch(error => {
-                        this.failed(error, "Erreur lors de la création de la langue !");
-                    });
-
-                // Create all data
-                    var language = this.selectedCode;
-                // For each category, create category name
-                    for (let cat = 0; cat < this.categories.length; cat++) {
-                        var id = this.categories[cat]["id"];
-
-                        var newCatName = {
-                            "fk_category_id": id,
-                            "fk_language_code": language,
-                            "text": "[missing]",
-                        };
-
-                        axios.post('/api/categoriesnames', newCatName)
-                        .then(function (resp) {
-                            console.log("cat create complete");
-                        })
-                        .catch(function (error) {
-                            console.log(error.response.data);
-                            
-                            alert("Un problème est survenu lors de la création. Error located in LanguageList.vue !");
-                        });
+                var exists = false;
+                for (let lang = 0; lang < this.languages.length; lang++) {
+                    if (this.selectedCode === this.languages[lang]["code"]) {
+                        exists = true;
                     }
-                    this.categoriesNames = [];
-                    this.categoriesNames = categoriesMethods.readCategoriesNames();
-                // For each reference, create reference name
-                    for (let ref = 0; ref < this.references.length; ref++) {
-                        var id = this.references[ref]["id"];
+                }
+                if (exists === true) {
+                    this.failed("Code detected in languages !", "La langue existe déjà !");
+                }
+                else{
+                    this.language.name = this.selectedName;
+                    this.language.code = this.selectedCode;
+                    this.language.active = this.selectedActivationValid;
+                    var newLanguage = this.language;
 
-                        var newRefName = {
-                            "fk_reference_id": id,
-                            "fk_language_code": language,
-                            "text": "[missing]",
-                        };
+                    this.snackbarLoading = true;
 
-                        axios.post('/api/referencesnames', newRefName)
-                        .then(function (resp) {
-                            console.log("ref create complete");
+                    axios.post('/api/languages', newLanguage)
+                        .then(response => { 
+                            this.success(response, "Création effectuée avec succès.");
                         })
-                        .catch(function (error) {
-                            console.log(error.response.data);
-                            
-                            alert("Un problème est survenu lors de la création. Error located in LanguageList.vue !");
+                        .catch(error => {
+                            this.failed(error, "Erreur lors de la création de la langue !");
                         });
-                    }
-                    this.referenceNames = [];
-                    this.referenceNames = referencesMethods.readReferenceNames();
-                // For each point, create point name
-                    for (let poi = 0; poi < this.points.length; poi++) {
-                        var id = this.points[poi]["id"];
-                        var newPoiName = {
-                            "fk_point_id": id,
-                            "fk_language_code": language,
-                            "title": "[missing]",
-                            "description": "[missing]",
-                            "linkalias": "[missing]",
-                        };
 
-                        axios.post('/api/pointsnames', newPoiName)
-                        .then(function (resp) {
-                            console.log("point create ok");
-                        })
-                        .catch(function (error) {
-                            console.log(error.response.data);
-                            
-                            alert("Un problème est survenu lors de la création. Error located in LanguageList.vue !");
-                        });
-                    }
-                    this.pointsContents = [];
-                    this.pointsContents = pointsMethods.readPointsPopupContent();
+                    // Create all data
+                        var language = this.selectedCode;
+                    // For each category, create category name
+                        for (let cat = 0; cat < this.categories.length; cat++) {
+                            var id = this.categories[cat]["id"];
+
+                            var newCatName = {
+                                "fk_category_id": id,
+                                "fk_language_code": language,
+                                "text": "[missing]",
+                            };
+
+                            axios.post('/api/categoriesnames', newCatName)
+                            .then(function (resp) {
+                                console.log("cat create complete");
+                            })
+                            .catch(function (error) {
+                                console.log(error.response.data);
+                                
+                                alert("Un problème est survenu lors de la création. Error located in LanguageList.vue !");
+                            });
+                        }
+                        this.categoriesNames = [];
+                        this.categoriesNames = categoriesMethods.readCategoriesNames();
+                    // For each reference, create reference name
+                        for (let ref = 0; ref < this.references.length; ref++) {
+                            var id = this.references[ref]["id"];
+
+                            var newRefName = {
+                                "fk_reference_id": id,
+                                "fk_language_code": language,
+                                "text": "[missing]",
+                            };
+
+                            axios.post('/api/referencesnames', newRefName)
+                            .then(function (resp) {
+                                console.log("ref create complete");
+                            })
+                            .catch(function (error) {
+                                console.log(error.response.data);
+                                
+                                alert("Un problème est survenu lors de la création. Error located in LanguageList.vue !");
+                            });
+                        }
+                        this.referenceNames = [];
+                        this.referenceNames = referencesMethods.readReferenceNames();
+                    // For each point, create point name
+                        for (let poi = 0; poi < this.points.length; poi++) {
+                            var id = this.points[poi]["id"];
+                            var newPoiName = {
+                                "fk_point_id": id,
+                                "fk_language_code": language,
+                                "title": "[missing]",
+                                "description": "[missing]",
+                                "linkalias": "[missing]",
+                            };
+
+                            axios.post('/api/pointsnames', newPoiName)
+                            .then(function (resp) {
+                                console.log("point create ok");
+                            })
+                            .catch(function (error) {
+                                console.log(error.response.data);
+                                
+                                alert("Un problème est survenu lors de la création. Error located in LanguageList.vue !");
+                            });
+                        }
+                        this.pointsContents = [];
+                        this.pointsContents = pointsMethods.readPointsPopupContent();
+                };
             },
             submitEdit() {
                 var id = this.selectedId;
@@ -421,6 +479,7 @@
                 this.language.id = id;
                 this.language.name = this.selectedName;
                 this.language.code = this.selectedCode;
+                this.language.active = this.selectedActivationValid;
                 var newLanguage = this.language;
 
                 this.snackbarLoading = true;
@@ -432,7 +491,7 @@
                         this.failed(error, "Erreur lors de la modification de la langue !");
                     });
 
-
+                if (this.selectedCode !== this.editedCode) {
                 // Edit all data
                     var language = ""
                     for (let lang = 0; lang < this.languages.length; lang++) {
@@ -514,6 +573,7 @@
                     }
                     this.pointsContents = [];
                     this.pointsContents = pointsMethods.readPointsPopupContent();
+                }
             },
 
             deleteLanguage(id) {
@@ -569,7 +629,7 @@
                 this.snackText = msg;
                 this.reloadLanguages();
             },
-            failed(error) {
+            failed(error, msg) {
                 console.log(error);
                 this.snackbarLoading = false;
                 this.snackbar = true;

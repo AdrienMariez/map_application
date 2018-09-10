@@ -1057,6 +1057,19 @@ var languagesMethods = {
             });
         });
         return languages;
+    },
+    readActiveLanguages: function readActiveLanguages() {
+        var languages = [];
+        window.axios.get('/api/languages').then(function (_ref2) {
+            var data = _ref2.data;
+
+            data.forEach(function (language) {
+                if (language.active == 1) {
+                    languages.push(language);
+                }
+            });
+        });
+        return languages;
     }
 };
 
@@ -76663,18 +76676,18 @@ var render = function() {
                             ]
                           ),
                           _vm._v(" "),
-                          _c("div", [
-                            _c("div", [
+                          _c("ul", [
+                            _c("li", [
                               _vm._v("Choisir une image en cliquant dessus.")
                             ]),
                             _vm._v(" "),
-                            _c("div", [
+                            _c("li", [
                               _vm._v(
                                 "Cliquer sur l'icône suppression supprimera l'image du site si elle n'est plus utilisée nulle part."
                               )
                             ]),
                             _vm._v(" "),
-                            _c("div", [
+                            _c("li", [
                               _vm._v(
                                 "Une image choisie peut être enlevée du point en cliquant sur l'icône X"
                               )
@@ -80989,6 +81002,32 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -81000,6 +81039,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             languages: [],
 
             help: false,
+            helpActive: false,
 
             categories: [],
             references: [],
@@ -81013,9 +81053,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             selectedId: null,
             selectedName: "",
             selectedCode: "",
+            selectedActivation: 0,
+            selectedActivationValid: 0,
 
             editedName: "",
             editedCode: "",
+            editedActivation: 0,
 
             valid: false,
             validButton: false,
@@ -81030,7 +81073,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             language: {
                 id: null,
                 name: "",
-                code: ""
+                code: "",
+                active: 0
             }
         };
     },
@@ -81041,6 +81085,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         selectedCode: function selectedCode() {
             this.validation();
+        },
+        selectedActivation: function selectedActivation() {
+            if (this.selectedActivation == true) {
+                this.selectedActivationValid = 1;
+            } else if (this.selectedActivation == false) {
+                this.selectedActivationValid = 0;
+            } else {
+                this.selectedActivationValid = this.selectedActivation;
+            }
         }
     },
     methods: {
@@ -81051,6 +81104,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.selectedId = null;
             this.selectedName = "";
             this.selectedCode = "";
+            this.selectedActivation = 0;
         },
         updateLanguageMode: function updateLanguageMode(id) {
             // var languages = JSON.parse(JSON.stringify(this.languages));
@@ -81061,6 +81115,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     this.editedName = this.languages[lang]["name"];
                     this.selectedCode = this.languages[lang]["code"];
                     this.editedCode = this.languages[lang]["code"];
+                    this.selectedActivation = this.languages[lang]["active"];
+                    this.editedActivation = this.languages[lang]["active"];
                 }
             }
             this.editForm = true;
@@ -81101,81 +81157,92 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         submitCreate: function submitCreate() {
             var _this = this;
 
-            this.language.name = this.selectedName;
-            this.language.code = this.selectedCode;
-            var newLanguage = this.language;
-
-            this.snackbarLoading = true;
-
-            axios.post('/api/languages', newLanguage).then(function (response) {
-                _this.success(response, "Création effectuée avec succès.");
-            }).catch(function (error) {
-                _this.failed(error, "Erreur lors de la création de la langue !");
-            });
-
-            // Create all data
-            var language = this.selectedCode;
-            // For each category, create category name
-            for (var cat = 0; cat < this.categories.length; cat++) {
-                var id = this.categories[cat]["id"];
-
-                var newCatName = {
-                    "fk_category_id": id,
-                    "fk_language_code": language,
-                    "text": "[missing]"
-                };
-
-                axios.post('/api/categoriesnames', newCatName).then(function (resp) {
-                    console.log("cat create complete");
-                }).catch(function (error) {
-                    console.log(error.response.data);
-
-                    alert("Un problème est survenu lors de la création. Error located in LanguageList.vue !");
-                });
+            var exists = false;
+            for (var lang = 0; lang < this.languages.length; lang++) {
+                if (this.selectedCode === this.languages[lang]["code"]) {
+                    exists = true;
+                }
             }
-            this.categoriesNames = [];
-            this.categoriesNames = __WEBPACK_IMPORTED_MODULE_3__services_categories_js__["a" /* default */].readCategoriesNames();
-            // For each reference, create reference name
-            for (var ref = 0; ref < this.references.length; ref++) {
-                var id = this.references[ref]["id"];
+            if (exists === true) {
+                this.failed("Code detected in languages !", "La langue existe déjà !");
+            } else {
+                this.language.name = this.selectedName;
+                this.language.code = this.selectedCode;
+                this.language.active = this.selectedActivationValid;
+                var newLanguage = this.language;
 
-                var newRefName = {
-                    "fk_reference_id": id,
-                    "fk_language_code": language,
-                    "text": "[missing]"
-                };
+                this.snackbarLoading = true;
 
-                axios.post('/api/referencesnames', newRefName).then(function (resp) {
-                    console.log("ref create complete");
+                axios.post('/api/languages', newLanguage).then(function (response) {
+                    _this.success(response, "Création effectuée avec succès.");
                 }).catch(function (error) {
-                    console.log(error.response.data);
-
-                    alert("Un problème est survenu lors de la création. Error located in LanguageList.vue !");
+                    _this.failed(error, "Erreur lors de la création de la langue !");
                 });
-            }
-            this.referenceNames = [];
-            this.referenceNames = __WEBPACK_IMPORTED_MODULE_2__services_references_js__["a" /* default */].readReferenceNames();
-            // For each point, create point name
-            for (var poi = 0; poi < this.points.length; poi++) {
-                var id = this.points[poi]["id"];
-                var newPoiName = {
-                    "fk_point_id": id,
-                    "fk_language_code": language,
-                    "title": "[missing]",
-                    "description": "[missing]",
-                    "linkalias": "[missing]"
-                };
 
-                axios.post('/api/pointsnames', newPoiName).then(function (resp) {
-                    console.log("point create ok");
-                }).catch(function (error) {
-                    console.log(error.response.data);
+                // Create all data
+                var language = this.selectedCode;
+                // For each category, create category name
+                for (var cat = 0; cat < this.categories.length; cat++) {
+                    var id = this.categories[cat]["id"];
 
-                    alert("Un problème est survenu lors de la création. Error located in LanguageList.vue !");
-                });
-            }
-            this.pointsContents = [];
-            this.pointsContents = __WEBPACK_IMPORTED_MODULE_1__services_points_js__["a" /* default */].readPointsPopupContent();
+                    var newCatName = {
+                        "fk_category_id": id,
+                        "fk_language_code": language,
+                        "text": "[missing]"
+                    };
+
+                    axios.post('/api/categoriesnames', newCatName).then(function (resp) {
+                        console.log("cat create complete");
+                    }).catch(function (error) {
+                        console.log(error.response.data);
+
+                        alert("Un problème est survenu lors de la création. Error located in LanguageList.vue !");
+                    });
+                }
+                this.categoriesNames = [];
+                this.categoriesNames = __WEBPACK_IMPORTED_MODULE_3__services_categories_js__["a" /* default */].readCategoriesNames();
+                // For each reference, create reference name
+                for (var ref = 0; ref < this.references.length; ref++) {
+                    var id = this.references[ref]["id"];
+
+                    var newRefName = {
+                        "fk_reference_id": id,
+                        "fk_language_code": language,
+                        "text": "[missing]"
+                    };
+
+                    axios.post('/api/referencesnames', newRefName).then(function (resp) {
+                        console.log("ref create complete");
+                    }).catch(function (error) {
+                        console.log(error.response.data);
+
+                        alert("Un problème est survenu lors de la création. Error located in LanguageList.vue !");
+                    });
+                }
+                this.referenceNames = [];
+                this.referenceNames = __WEBPACK_IMPORTED_MODULE_2__services_references_js__["a" /* default */].readReferenceNames();
+                // For each point, create point name
+                for (var poi = 0; poi < this.points.length; poi++) {
+                    var id = this.points[poi]["id"];
+                    var newPoiName = {
+                        "fk_point_id": id,
+                        "fk_language_code": language,
+                        "title": "[missing]",
+                        "description": "[missing]",
+                        "linkalias": "[missing]"
+                    };
+
+                    axios.post('/api/pointsnames', newPoiName).then(function (resp) {
+                        console.log("point create ok");
+                    }).catch(function (error) {
+                        console.log(error.response.data);
+
+                        alert("Un problème est survenu lors de la création. Error located in LanguageList.vue !");
+                    });
+                }
+                this.pointsContents = [];
+                this.pointsContents = __WEBPACK_IMPORTED_MODULE_1__services_points_js__["a" /* default */].readPointsPopupContent();
+            };
         },
         submitEdit: function submitEdit() {
             var _this2 = this;
@@ -81185,6 +81252,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.language.id = id;
             this.language.name = this.selectedName;
             this.language.code = this.selectedCode;
+            this.language.active = this.selectedActivationValid;
             var newLanguage = this.language;
 
             this.snackbarLoading = true;
@@ -81194,81 +81262,83 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 _this2.failed(error, "Erreur lors de la modification de la langue !");
             });
 
-            // Edit all data
-            var language = "";
-            for (var lang = 0; lang < this.languages.length; lang++) {
-                if (this.languages[lang]["id"] == id) {
-                    language = this.languages[lang]["code"];
+            if (this.selectedCode !== this.editedCode) {
+                // Edit all data
+                var language = "";
+                for (var lang = 0; lang < this.languages.length; lang++) {
+                    if (this.languages[lang]["id"] == id) {
+                        language = this.languages[lang]["code"];
+                    }
                 }
-            }
-            // Edit categories names
-            for (var cat = 0; cat < this.categoriesNames.length; cat++) {
-                if (this.categoriesNames[cat]["fk_language_code"] == language) {
-                    var id = this.categoriesNames[cat]["id"];
+                // Edit categories names
+                for (var cat = 0; cat < this.categoriesNames.length; cat++) {
+                    if (this.categoriesNames[cat]["fk_language_code"] == language) {
+                        var id = this.categoriesNames[cat]["id"];
 
-                    var newCatName = {
-                        "fk_category_id": this.categoriesNames[cat]["fk_category_id"],
-                        "fk_language_code": this.selectedCode,
-                        "text": this.categoriesNames[cat]["text"]
-                    };
+                        var newCatName = {
+                            "fk_category_id": this.categoriesNames[cat]["fk_category_id"],
+                            "fk_language_code": this.selectedCode,
+                            "text": this.categoriesNames[cat]["text"]
+                        };
 
-                    axios.patch('/api/categoriesnames/' + id, newCatName).then(function (resp) {
-                        console.log("cat edit complete");
-                    }).catch(function (error) {
-                        console.log(error.response.data);
+                        axios.patch('/api/categoriesnames/' + id, newCatName).then(function (resp) {
+                            console.log("cat edit complete");
+                        }).catch(function (error) {
+                            console.log(error.response.data);
 
-                        alert("Un problème est survenu lors de la mise à jour. Error located in LanguageList.vue !");
-                    });
+                            alert("Un problème est survenu lors de la mise à jour. Error located in LanguageList.vue !");
+                        });
+                    }
                 }
-            }
-            this.categoriesNames = [];
-            this.categoriesNames = __WEBPACK_IMPORTED_MODULE_3__services_categories_js__["a" /* default */].readCategoriesNames();
-            // Edit references names
-            for (var ref = 0; ref < this.referenceNames.length; ref++) {
-                if (this.referenceNames[ref]["fk_language_code"] == language) {
-                    var id = this.referenceNames[ref]["id"];
+                this.categoriesNames = [];
+                this.categoriesNames = __WEBPACK_IMPORTED_MODULE_3__services_categories_js__["a" /* default */].readCategoriesNames();
+                // Edit references names
+                for (var ref = 0; ref < this.referenceNames.length; ref++) {
+                    if (this.referenceNames[ref]["fk_language_code"] == language) {
+                        var id = this.referenceNames[ref]["id"];
 
-                    var newRefName = {
-                        "fk_reference_id": this.referenceNames[ref]["fk_reference_id"],
-                        "fk_language_code": this.selectedCode,
-                        "text": this.referenceNames[ref]["text"]
-                    };
+                        var newRefName = {
+                            "fk_reference_id": this.referenceNames[ref]["fk_reference_id"],
+                            "fk_language_code": this.selectedCode,
+                            "text": this.referenceNames[ref]["text"]
+                        };
 
-                    axios.patch('/api/referencesnames/' + id, newRefName).then(function (resp) {
-                        console.log("ref edit complete");
-                    }).catch(function (error) {
-                        console.log(error.response.data);
+                        axios.patch('/api/referencesnames/' + id, newRefName).then(function (resp) {
+                            console.log("ref edit complete");
+                        }).catch(function (error) {
+                            console.log(error.response.data);
 
-                        alert("Un problème est survenu lors de la mise à jour. Error located in LanguageList.vue !");
-                    });
+                            alert("Un problème est survenu lors de la mise à jour. Error located in LanguageList.vue !");
+                        });
+                    }
                 }
-            }
-            this.referenceNames = [];
-            this.referenceNames = __WEBPACK_IMPORTED_MODULE_2__services_references_js__["a" /* default */].readReferenceNames();
-            // Edit points names
-            for (var poi = 0; poi < this.pointsContents.length; poi++) {
-                if (this.pointsContents[poi]["fk_language_code"] == language) {
-                    var id = this.pointsContents[poi]["id"];
+                this.referenceNames = [];
+                this.referenceNames = __WEBPACK_IMPORTED_MODULE_2__services_references_js__["a" /* default */].readReferenceNames();
+                // Edit points names
+                for (var poi = 0; poi < this.pointsContents.length; poi++) {
+                    if (this.pointsContents[poi]["fk_language_code"] == language) {
+                        var id = this.pointsContents[poi]["id"];
 
-                    var newPoiName = {
-                        "fk_point_id": this.pointsContents[poi]["fk_point_id"],
-                        "fk_language_code": this.selectedCode,
-                        "title": this.pointsContents[poi]["title"],
-                        "description": this.pointsContents[poi]["description"],
-                        "linkalias": this.pointsContents[poi]["linkalias"]
-                    };
+                        var newPoiName = {
+                            "fk_point_id": this.pointsContents[poi]["fk_point_id"],
+                            "fk_language_code": this.selectedCode,
+                            "title": this.pointsContents[poi]["title"],
+                            "description": this.pointsContents[poi]["description"],
+                            "linkalias": this.pointsContents[poi]["linkalias"]
+                        };
 
-                    axios.patch('/api/pointsnames/' + id, newPoiName).then(function (resp) {
-                        console.log("point edit complete");
-                    }).catch(function (error) {
-                        console.log(error.response.data);
+                        axios.patch('/api/pointsnames/' + id, newPoiName).then(function (resp) {
+                            console.log("point edit complete");
+                        }).catch(function (error) {
+                            console.log(error.response.data);
 
-                        alert("Un problème est survenu lors de la mise à jour. Error located in LanguageList.vue !");
-                    });
+                            alert("Un problème est survenu lors de la mise à jour. Error located in LanguageList.vue !");
+                        });
+                    }
                 }
+                this.pointsContents = [];
+                this.pointsContents = __WEBPACK_IMPORTED_MODULE_1__services_points_js__["a" /* default */].readPointsPopupContent();
             }
-            this.pointsContents = [];
-            this.pointsContents = __WEBPACK_IMPORTED_MODULE_1__services_points_js__["a" /* default */].readPointsPopupContent();
         },
         deleteLanguage: function deleteLanguage(id) {
             this.dialogId = id;
@@ -81322,7 +81392,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.snackText = msg;
             this.reloadLanguages();
         },
-        failed: function failed(error) {
+        failed: function failed(error, msg) {
             console.log(error);
             this.snackbarLoading = false;
             this.snackbar = true;
@@ -81475,6 +81545,14 @@ var render = function() {
                     1
                   ),
                   _vm._v(" "),
+                  language.active == 1
+                    ? _c("div", [_vm._v(" Visible")])
+                    : _vm._e(),
+                  _vm._v(" "),
+                  language.active == 0
+                    ? _c("div", [_vm._v("Cachée")])
+                    : _vm._e(),
+                  _vm._v(" "),
                   _c(
                     "v-btn",
                     {
@@ -81617,6 +81695,79 @@ var render = function() {
                                   expression: "selectedCode"
                                 }
                               })
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-flex",
+                            { staticClass: "my-5", attrs: { xs12: "" } },
+                            [
+                              _c("div", [_vm._v("Visibilité : ")]),
+                              _vm._v(" "),
+                              _c(
+                                "v-icon",
+                                {
+                                  attrs: { color: "info" },
+                                  on: {
+                                    click: function($event) {
+                                      _vm.helpActive = !_vm.helpActive
+                                    }
+                                  }
+                                },
+                                [
+                                  _vm._v(
+                                    "\n                            help\n                        "
+                                  )
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _vm.helpActive
+                                ? _c(
+                                    "ul",
+                                    {
+                                      staticClass:
+                                        "elevation-5 my-3 mx-3 py-3 px-3"
+                                    },
+                                    [
+                                      _c("li", [
+                                        _vm._v(
+                                          "Une langue Cachée n'apparaîtra pas comme choix pour le public."
+                                        )
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("li", [
+                                        _vm._v(
+                                          "Une langue Visible apparaîtra comme choix possible pour le public."
+                                        )
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("li", [
+                                        _vm._v(
+                                          "Conseil: créez une nouvelle langue en Cachée, allez modifier les données traduisible dans la liste d'administration principale, puis revenez modifier la langue plus tard pour la rendre Visible quand tout est prêt."
+                                        )
+                                      ])
+                                    ]
+                                  )
+                                : _vm._e(),
+                              _vm._v(" "),
+                              _c("v-switch", {
+                                model: {
+                                  value: _vm.selectedActivation,
+                                  callback: function($$v) {
+                                    _vm.selectedActivation = $$v
+                                  },
+                                  expression: "selectedActivation"
+                                }
+                              }),
+                              _vm._v(" "),
+                              _vm.selectedActivationValid == 1
+                                ? _c("div", [_vm._v(" Visible")])
+                                : _vm._e(),
+                              _vm._v(" "),
+                              _vm.selectedActivationValid == 0
+                                ? _c("div", [_vm._v("Cachée")])
+                                : _vm._e()
                             ],
                             1
                           )
@@ -85689,7 +85840,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         //
         //API CALLS
         methodsApiCalls: function methodsApiCalls() {
-            this.languages = __WEBPACK_IMPORTED_MODULE_0__services_languages_js__["a" /* default */].readLanguages();
+            this.languages = __WEBPACK_IMPORTED_MODULE_0__services_languages_js__["a" /* default */].readActiveLanguages();
         }
     },
     created: function created() {

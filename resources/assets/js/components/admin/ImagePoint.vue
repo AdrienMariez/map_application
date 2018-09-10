@@ -68,11 +68,11 @@
                                             slot="activator">
                                             help
                                         </v-icon>
-                                        <div>
-                                            <div>Choisir une image en cliquant dessus.</div>
-                                            <div>Cliquer sur l'icône suppression supprimera l'image du site si elle n'est plus utilisée nulle part.</div>
-                                            <div>Une image choisie peut être enlevée du point en cliquant sur l'icône X</div>
-                                        </div>
+                                        <ul>
+                                            <li>Choisir une image en cliquant dessus.</li>
+                                            <li>Cliquer sur l'icône suppression supprimera l'image du site si elle n'est plus utilisée nulle part.</li>
+                                            <li>Une image choisie peut être enlevée du point en cliquant sur l'icône X</li>
+                                        </ul>
                                     </v-tooltip>
                                 </div>
                             <!-- Pics list -->

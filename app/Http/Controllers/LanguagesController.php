@@ -20,6 +20,7 @@ class LanguagesController extends Controller
         $language->id = $request->id;
         $language->name = $request->name;
         $language->code = $request->code;
+        $language->active = $request->active;
         $language->save();
 
         return response($language->jsonSerialize(), Response::HTTP_CREATED);
@@ -30,6 +31,7 @@ class LanguagesController extends Controller
         $language = Language::findOrFail($id);
         $language->name = $request->name;
         $language->code = $request->code;
+        $language->active = $request->active;
         $language->save();
 
         return response(null, Response::HTTP_OK);
