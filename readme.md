@@ -121,9 +121,13 @@ Sources :
         https://docs.ovh.com/fr/hosting/mettre-mon-site-en-ligne/
 
 
-Good reads :
+Good read :
     Vuejs :
         https://medium.com/@Pier/vue-js-the-good-the-meh-and-the-ugly-82800bbe6684
+
+Probable problem with hosting :
+    No possible storage link 
+    > ln -s ../storage/app/public storage
 
 <p align="center"><img src="https://laravel.com/assets/img/components/logo-laravel.svg"></p>
 

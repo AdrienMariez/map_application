@@ -1,20 +1,67 @@
 <template>
     <div>
         <div>
+        <!-- BTN Reinit -->
             <div>
                 <v-btn
                     @click="pageReinit"
                     color="lime lighten-3">
-                    <!-- <v-icon>fas fa-circle-notch fa-spin</v-icon>  -->Reinitialiser et mettre à jour
+                    <v-icon>warning</v-icon> RESET
                 </v-btn>
             </div>
+        <!-- help -->
+            <v-flex xs12>
+                <v-btn
+                    class="mt-5"
+                    color="info"
+                    @click="help = !help">
+                    <v-icon>help</v-icon>
+                    Aide
+                </v-btn>
+                <div
+                    v-if="help"
+                    class="elevation-5 my-3 mx-3 py-3 px-3">
+                    <ul>
+                        <li>Le bouton
+                            <v-btn
+                                color="lime lighten-3">
+                                <v-icon>warning</v-icon> RESET
+                            </v-btn>
+                            permet:
+                            <ul>
+                                <li>
+                                    En mode Création de reinitialiser (supprimer) toutes les informations entrées.
+                                </li>
+                                <li>
+                                    En mode Edition de réinstaurer toutes les données telles qu'elles ont été sauvegardées la dernière fois. (les modifications seront supprimées !)
+                                </li>
+                            </ul>
+                        </li>
+                        <li>Les boutons <v-icon color="info">help</v-icon> indiquent que cliquer sur l'icône permet d'afficher une aide.
+                        </li>
+                        <li>Les boutons <v-icon color="purple lighten-1">help</v-icon>indiquent que passer sa souris sur l'icône permet d'afficher une aide.
+                        </li>
+                    </ul>
+                </div>
+            </v-flex>
+        <!-- form -->
             <v-form ref="form" v-model="valid" lazy-validation>
                     <v-card-text>
                         <v-container grid-list-md>
                             <v-layout wrap>
                             <!-- Select Parent / show icon -->
                                 <v-flex xs12 class="my-5">
-                                    <div>Réference parent *: </div>
+                                    <div class="headline">Réference parent *: </div>
+                                    <v-icon
+                                        color="info"
+                                        @click="helpParent = !helpParent">
+                                        help
+                                    </v-icon>
+                                    <div
+                                        v-if="helpParent"
+                                        class="elevation-5 my-3 mx-3 py-3 px-3">
+                                        <div>Sélectionner dans la liste l'élement qui affichera le point lorsqu'il sera cliqué.</div>
+                                    </div>
                                     <v-select
                                         item-text="text"
                                         item-value="id"
@@ -42,7 +89,20 @@
                                 </v-flex>
                             <!-- Link /link test -->
                                 <v-flex xs12 class="my-5">
-                                    <div>Lien : </div>
+                                    <div class="headline">Lien : </div>
+                                    <v-icon
+                                        color="info"
+                                        @click="helpLink = !helpLink">
+                                        help
+                                    </v-icon>
+                                    <div
+                                        v-if="helpLink"
+                                        class="elevation-5 my-3 mx-3 py-3 px-3">
+                                        <ul>
+                                            <li>Dans les informations qui s'affichent quand on clique sur le point, on peut y placer un lien avec une url à rentrer ici.</li>
+                                            <li>Si un lien est défini, il est possible de mettre un texte pour le remplacer visuellement (voir dans les traductions plus bas sur cette page).</li>
+                                        </ul>
+                                    </div>
                                     <v-text-field
                                         v-model=link
                                         value= link
@@ -64,6 +124,17 @@
                                 </v-flex>
                             <!-- Translations -->
                                 <v-flex xs12 class="my-5">
+                                    <div class="headline">Traductions : </div>
+                                    <v-icon
+                                        color="info"
+                                        @click="helpTranslations = !helpTranslations">
+                                        help
+                                    </v-icon>
+                                    <div
+                                        v-if="helpTranslations"
+                                        class="elevation-5 my-3 mx-3 py-3 px-3">
+                                        <div>Toutes les traductions des éléments du point qui seront visibles quand on clique sur le point.</div>
+                                    </div>
                                     <v-expansion-panel class="elevation-10">
                                         <v-expansion-panel-content
                                             v-for="(language,i) in languages"
@@ -136,6 +207,19 @@
                                     <v-divider></v-divider>
                                 </v-flex>
                             <!-- Images -->
+                                <div class="headline">Image : </div>
+                                <v-flex xs12>
+                                    <v-icon
+                                        color="info"
+                                        @click="helpImage = !helpImage">
+                                        help
+                                    </v-icon>
+                                    <div
+                                        v-if="helpImage"
+                                        class="elevation-5 my-3 mx-3 py-3 px-3">
+                                        <div>Il est possible d'adjoindre une seule image par point qui sera visible quand on clique sur le point.</div>
+                                    </div>
+                                </v-flex>
                                 <image-point
                                     v-bind:image="image"
                                     @imageSelected="imageSelected"
@@ -147,6 +231,22 @@
                                 </v-flex>
                             <!-- Point positionning -->
                                 <v-flex xs12 class="my-5">
+                                    <div class="headline">Positionnement *: </div>
+                                    <v-icon
+                                        color="info"
+                                        @click="helpPosition = !helpPosition">
+                                        help
+                                    </v-icon>
+                                    <div
+                                        v-if="helpPosition"
+                                        class="elevation-5 my-3 mx-3 py-3 px-3">
+                                        <div>Positionner le point via la carte est possible en cliquant sur le point, et garder appuyé pour le déplacer jusqu'à l'endroit où on veut le voir placé.</div>
+                                        <ul>
+                                            <li>Cliquer sur "Mettre à jour la position du point" permet d'enregistrer la position.</li>
+                                            <li>Cliquer sur "Placer le point au centre" replace le point au centre de Prayssac (sur l'église).</li>
+                                            <li>Cliquer sur "Annuler" replace le point au dernier lieu sauvegardé.</li>
+                                        </ul>
+                                    </div>
                                     <location-map-admin
                                         v-bind:lattitude="lattitude"
                                         v-bind:longitude="longitude"
@@ -159,6 +259,7 @@
                                         @pointLattitudeUpdate="pointLattitudeUpdate"
                                         @pointLongitudeUpdate="pointLongitudeUpdate">
                                     </location-map-admin>
+
                                     <div>
                                         Lattitude :
                                     </div>
@@ -198,6 +299,16 @@
                         </v-container>
                         <v-container>
                             <v-layout align-center column justify-center>
+                                <v-icon
+                                    color="info"
+                                    @click="helpPreview = !helpPreview">
+                                    help
+                                </v-icon>
+                                <div
+                                    v-if="helpPreview"
+                                    class="elevation-5 my-3 mx-3 py-3 px-3">
+                                    <div>Avant de créer ou mettre à jour un point, si toutes les informations sont correctes, il sera possible de voir une prévisualisation du point.</div>
+                                </div>
                                 <v-btn
                                     dark
                                     color="success"
@@ -281,6 +392,14 @@
             return {
                 mute: false,
                 loading: true,
+
+                help: false,
+                helpParent: false,
+                helpLink: false,
+                helpTranslations: false,
+                helpImage: false,
+                helpPosition: false,
+                helpPreview: false,
 
                 images: [],
                 // categories: [],

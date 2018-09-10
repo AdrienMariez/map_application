@@ -63,6 +63,7 @@
                                     <v-tooltip
                                         top>
                                         <v-icon
+                                            color="purple lighten-1"
                                             class="iconTooltip"
                                             slot="activator">
                                             help

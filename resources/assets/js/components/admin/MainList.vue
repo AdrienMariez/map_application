@@ -1,5 +1,53 @@
 <template>
     <div>
+    <!-- help -->
+        <v-flex xs12>
+            <v-btn
+                class="mt-5"
+                color="info"
+                @click="help = !help">
+                <v-icon>help</v-icon>
+                Aide
+            </v-btn>
+            <div
+                v-if="help"
+                class="elevation-5 my-3 mx-3 py-3 px-3">
+                <ul>
+                    <li>Dans cette liste, il est possible de
+                        <ul>
+                            <li>
+                                Créer
+                                <v-btn small color="success">
+                                    <v-icon>add</v-icon>
+                                </v-btn>
+                            </li>
+                            <li>
+                                Modifier
+                                <v-btn small color="warning">
+                                    <v-icon>build</v-icon>
+                                </v-btn>
+                            </li>
+                            <li>
+                                Supprimer
+                                <v-btn small color="error">
+                                    <v-icon>delete</v-icon>
+                                </v-btn>
+                            </li>
+                        </ul>
+                        les éléments de la liste de la page publique ainsi que les éléments de la carte.</li>
+                    <li>Pour modifier/supprimer les points, il faut cliquer sur <v-icon>build</v-icon>.</li>
+                    <li>Les boutons
+                        <v-btn small color="info">
+                            <v-icon>arrow_upward</v-icon>
+                        </v-btn>
+                        et
+                        <v-btn small color="info">
+                            <v-icon>arrow_downward</v-icon>
+                        </v-btn> permettent de monter ou descendre un élément dans la liste.
+                    </li>
+                </ul>
+            </div>
+        </v-flex>
     <!-- Create new category button -->
         <v-list>
             <v-btn
@@ -391,13 +439,9 @@
     props: ['categories','categoriesNames','references','referenceNames','points','pointsContents'],
     data () {
       return {
-          languageSelected: 'fr',
-        // categories: [],
-        // categoriesNames: [],
-        // references: [],
-        // referenceNames: [],
-        // points: [],
-        // pointsContents: [],
+        languageSelected: 'fr',
+        help: false,
+
         snackbar: false,
         snackText: '',
         dialog: false,
@@ -405,6 +449,7 @@
         dialogId: null,
         dialogType: '',
         working: false,
+
         readonly: false,
       }
     },

@@ -1,20 +1,69 @@
 <template>
     <div>
         <div>
+        <!-- BTN Reinit -->
             <div>
                 <v-btn
                     @click="pageReinit"
                     color="lime lighten-3">
-                    <!-- <v-icon>fas fa-circle-notch fa-spin</v-icon>  -->Reinitialiser et mettre à jour
+                    <v-icon>warning</v-icon> RESET
                 </v-btn>
             </div>
+        <!-- help -->
+            <v-flex xs12>
+                <v-btn
+                    class="mt-5"
+                    color="info"
+                    @click="help = !help">
+                    <v-icon>help</v-icon>
+                    Aide
+                </v-btn>
+                <div
+                    v-if="help"
+                    class="elevation-5 my-3 mx-3 py-3 px-3">
+                    <ul>
+                        <li>Le bouton
+                            <v-btn
+                                color="lime lighten-3">
+                                <v-icon>warning</v-icon> RESET
+                            </v-btn>
+                            permet:
+                            <ul>
+                                <li>
+                                    En mode Création de reinitialiser (supprimer) toutes les informations entrées.
+                                </li>
+                                <li>
+                                    En mode Edition de réinstaurer toutes les données telles qu'elles ont été sauvegardées la dernière fois. (les modifications seront supprimées !)
+                                </li>
+                            </ul>
+                        </li>
+                        <li>Les boutons <v-icon color="info">help</v-icon> indiquent que cliquer sur l'icône permet d'afficher une aide.
+                        </li>
+                        <li>Les boutons <v-icon color="purple lighten-1">help</v-icon>indiquent que passer sa souris sur l'icône permet d'afficher une aide.
+                        </li>
+                    </ul>
+                </div>
+            </v-flex>
+        <!-- form -->
             <v-form ref="form" v-model="valid" lazy-validation>
                     <v-card-text>
                         <v-container grid-list-md>
                             <v-layout wrap>
                             <!-- Parent selection -->
                                 <v-flex xs12 class="my-5">
-                                    <div>Catégorie parent *: </div>
+                                    <div class="headline">Catégorie parent *: </div>
+                                    <v-icon color="info"
+                                    @click="helpParent = !helpParent">
+                                    help
+                                </v-icon>
+                                <div
+                                    v-if="helpParent"
+                                    class="elevation-5 my-3 mx-3 py-3 px-3">
+                                    <ul>
+                                        <li>Sélectionner dans la liste le groupement qui contiendra cet élément.</li>
+                                        <li>La couleur de l'icône parent déterminera la couleur de l'élément en cours de création/modification ainsi que ses points associés.</li>
+                                    </ul>
+                                </div>
                                     <v-select
                                         item-text="text"
                                         item-value="id"
@@ -23,7 +72,7 @@
                                         solo
                                         required
                                     ></v-select>
-                                    <div id="coloredDiv"></div>
+                                    <div id="coloredDiv" class="py-3 px-3"></div>
                                     <div class="validationFailure">
                                         <v-icon v-if="categoryValidationFailure.length>0">
                                             warning
@@ -36,7 +85,18 @@
                                 </v-flex>
                             <!-- Translations -->
                                 <v-flex xs12 class="my-5">
-                                    <div class="mb-3">Nom de la réference dans chaque langue *: </div>
+                                    <div class="headline">Traductions *: </div>
+                                    <v-icon
+                                        color="info"
+                                        @click="helpTranslations = !helpTranslations">
+                                        help
+                                    </v-icon>
+                                    <div
+                                        v-if="helpTranslations"
+                                        class="elevation-5 my-3 mx-3 py-3 px-3">
+                                        <div>Toutes les traductions de l'élément qui seront visibles dans la liste.</div>
+                                    </div>
+                                    <div class="subheading mb-3">Nom de la réference dans chaque langue *: </div>
                                     <div
                                         v-for="(language,i) in languages"
                                         :key="i">
@@ -62,6 +122,18 @@
                                 </v-flex>
                             <!-- Icon selection/icon test -->
                                 <v-flex xs12 class="my-5">
+                                    <div class="headline">Icône *: </div>
+                                    <v-icon
+                                        color="info"
+                                        @click="helpIcon = !helpIcon">
+                                        help
+                                    </v-icon>
+                                    <div
+                                        v-if="helpIcon"
+                                        class="elevation-5 my-3 mx-3 py-3 px-3">
+                                        <div>Choisir une librairie puis l'icône en elle-même pour l'élément de la liste de la page publique.</div>
+                                        <div>L'icône sera aussi utilisée pour les points contenus dans cet élément.</div>
+                                    </div>
                                 <!-- Select library -->
                                     <div>Choix de la bibliothèque * : </div>
                                     <v-btn
@@ -100,15 +172,16 @@
                                             </v-tooltip>
                                             <v-tooltip right>
                                                 <v-icon
+                                                    color="purple lighten-1"
                                                     class="iconTooltip"
                                                     slot="activator">
                                                     help
                                                 </v-icon>
-                                                <div>
-                                                    <div>Ouvrir le lien.</div>
-                                                    <div>Cliquer une fois sur le texte sous l'icône choisie,  copiez le.</div>
-                                                    <div>Placer le texte ainsi sélectionné dans la zone "icône" ci-dessous.</div>
-                                                </div>
+                                                <ul>
+                                                    <li>Ouvrir le lien.</li>
+                                                    <li>Cliquer une fois sur le texte sous l'icône choisie,  copiez le.</li>
+                                                    <li>Placer le texte ainsi sélectionné dans la zone "icône" ci-dessous.</li>
+                                                </ul>
                                             </v-tooltip>
                                         </div>
                                         <div
@@ -124,15 +197,16 @@
                                             </v-tooltip>
                                             <v-tooltip right>
                                                 <v-icon
+                                                    color="purple lighten-1"
                                                     class="iconTooltip"
                                                     slot="activator">
                                                     help
                                                 </v-icon>
-                                                <div>
-                                                    <div>Ouvrir le lien.</div>
-                                                    <div>Cliquer sur l'icône choise.</div>
-                                                    <div>Copier le titre de la fenêtre qui s'affiche.</div>
-                                                </div>
+                                                <ul>
+                                                    <li>Ouvrir le lien.</li>
+                                                    <li>Cliquer sur l'icône choise.</li>
+                                                    <li>Copier le titre de la fenêtre qui s'affiche.</li>
+                                                </ul>
                                             </v-tooltip>
                                         </div>
                                     </div>
@@ -236,6 +310,11 @@
             return {
                 mute: false,
                 loading: true,
+
+                help: false,
+                helpParent: false,
+                helpTranslations: false,
+                helpIcon: false,
 
                 // references: [],
                 // referenceNames: [],

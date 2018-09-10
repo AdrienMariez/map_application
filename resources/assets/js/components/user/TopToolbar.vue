@@ -51,7 +51,7 @@
 </template>
 
 <script>
-import languagesMethods from './../../services/languages.js'
+    import languagesMethods from './../../services/languages.js'
 
   export default {
     props: ['languageSelected','drawer','mini'],

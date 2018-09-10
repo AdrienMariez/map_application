@@ -1,39 +1,56 @@
 <template>
     <div>
+        <!-- help -->
+            <v-flex xs12>
+                <v-btn
+                    class="mt-5"
+                    color="info"
+                    @click="help = !help">
+                    <v-icon>help</v-icon>
+                    Aide
+                </v-btn>
+                <div
+                    v-if="help"
+                    class="elevation-5 my-3 mx-3 py-3 px-3">
+                    <ul>
+                        <li>La liste affiche toutes les langues implémentées.</li>
+                        <li>Cliquer sur une langue permet de la modifier plus bas.</li>
+                        <li>Cliquer sur l'icône de la poubelle permet de supprimer la langue.</li>
+                        <li class="subheading">Attention les traductions seront supprimées en même temps que la langue !</li>
+                        <li>Il est possible de créer de nouvelles langues, il faut bien s'assurer que la seconde partie de cette page est bien en mode "Création" et non "Edition"</li>
+                        <li>Lorsqu'une langue est crée, les éléments, points, traduisibles se verront traduits de base par la mention [MISSING], il est donc très important d'aller modifier toutes ces éléments après la création de la langue.</li>
+                    </ul>
+                </div>
+            </v-flex>
         <!-- Existing languages list -->
-        <v-list
-            two-line 
-            class="mt-5">
-            <v-subheader>
-                Langues implémentées (cliquer pour mettre à jour):
-            </v-subheader>
-            <!-- <v-divider></v-divider> -->
-            <template v-for="(language,i) in languages">
-                <v-list-tile
-                    :key="i"
-                    avatar
-                    @click="dummy()"
-                    class="hoveredItem"
-                    :class="{ listColorAlt: i % 2 == 0 }">
-                    <v-list-tile-content @click="updateLanguageMode(language.id)">
-                        <v-list-tile-title v-html="language.name"></v-list-tile-title>
-                        <v-list-tile-sub-title v-html="language.code"></v-list-tile-sub-title>
-                    </v-list-tile-content>
-                    <!-- <v-list-tile-avatar @click="deleteLanguage(i)">
-                        <v-icon>
-                            map
-                        </v-icon>
-                    </v-list-tile-avatar> -->
-                    <v-btn
-                        dark
-                        fab
-                        color="error"
-                        @click="deleteLanguage(language.id)">
-                        <v-icon>delete</v-icon>
-                    </v-btn>
-                </v-list-tile>
-            </template>
-        </v-list>
+            <v-list
+                two-line 
+                class="mt-5">
+                <v-subheader>
+                    Langues implémentées :
+                </v-subheader>
+                <!-- <v-divider></v-divider> -->
+                <template v-for="(language,i) in languages">
+                    <v-list-tile
+                        :key="i"
+                        avatar
+                        @click="dummy()"
+                        class="hoveredItem"
+                        :class="{ listColorAlt: i % 2 == 0 }">
+                        <v-list-tile-content @click="updateLanguageMode(language.id)">
+                            <v-list-tile-title v-html="language.name"></v-list-tile-title>
+                            <v-list-tile-sub-title v-html="language.code"></v-list-tile-sub-title>
+                        </v-list-tile-content>
+                        <v-btn
+                            dark
+                            fab
+                            color="error"
+                            @click="deleteLanguage(language.id)">
+                            <v-icon>delete</v-icon>
+                        </v-btn>
+                    </v-list-tile>
+                </template>
+            </v-list>
         <v-divider></v-divider>
         <!-- Creation button -->
         <div
@@ -207,10 +224,12 @@
     import pointsMethods from './../../services/points.js'
     import referencesMethods from './../../services/references.js'
     import categoriesMethods from './../../services/categories.js'
-        export default {
+    export default {
         data () {
             return {
                 languages: [],
+
+                help: false,
                 
                 categories: [],
                 references: [],
