@@ -302,7 +302,7 @@
                     flat
                     @click="snackbar = false"
                 >
-                    Close
+                    Fermer
                 </v-btn>
             </v-snackbar>
     </div>

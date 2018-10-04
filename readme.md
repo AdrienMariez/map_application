@@ -50,7 +50,16 @@ Set auth:
 Create user:
 
     php artisan tinker
-    >   App\User::create(['name' => 'User', 'email' => 'user@email.com', 'password' => Hash::make('UserPass')])
+        >   App\User::create(['name' => 'User', 'email' => 'user@email.com', 'password' => Hash::make('UserPass')])
+
+OR
+
+    php artisan tinker
+        $user = new App\User;
+        $user->name="Admin";
+        $user->email="admin@localhost.com";
+        $user->password=bcrypt('1234');
+        $user->save();
 
 In case of laravel not correctly reloading (can happen in case of global variables in .env changes)
 
@@ -60,7 +69,7 @@ In case of laravel not correctly reloading (can happen in case of global variabl
 Models :
 skycatch-challenge
 -------------------
-To know what is to be worked on or to be refactoredn, search for :
+To know what is to be worked on or to be refactored, search for :
 TEST
 TO REMOVE
 TO CHANGE

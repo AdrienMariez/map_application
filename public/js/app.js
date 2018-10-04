@@ -71487,7 +71487,7 @@ var render = function() {
                 }
               }
             },
-            [_vm._v("\n            Close\n        ")]
+            [_vm._v("\n            Fermer\n        ")]
           )
         ],
         1
@@ -73187,7 +73187,7 @@ var render = function() {
                 }
               }
             },
-            [_vm._v("\n                Close\n            ")]
+            [_vm._v("\n                Fermer\n            ")]
           )
         ],
         1
@@ -74881,7 +74881,7 @@ var render = function() {
                 }
               }
             },
-            [_vm._v("\n                Close\n            ")]
+            [_vm._v("\n                Fermer\n            ")]
           )
         ],
         1
@@ -76863,7 +76863,7 @@ var render = function() {
                 }
               }
             },
-            [_vm._v("\n            Close\n        ")]
+            [_vm._v("\n            Fermer\n        ")]
           )
         ],
         1
@@ -78896,7 +78896,7 @@ var render = function() {
                 }
               }
             },
-            [_vm._v("\n                Close\n            ")]
+            [_vm._v("\n                Fermer\n            ")]
           )
         ],
         1
@@ -81937,7 +81937,7 @@ var render = function() {
                 }
               }
             },
-            [_vm._v("\n                Close\n            ")]
+            [_vm._v("\n                Fermer\n            ")]
           )
         ],
         1
@@ -83142,7 +83142,7 @@ var render = function() {
                 }
               }
             },
-            [_vm._v("\n                Close\n            ")]
+            [_vm._v("\n                Fermer\n            ")]
           )
         ],
         1

@@ -199,7 +199,7 @@
                     flat
                     @click="snackbar = false"
                 >
-                    Close
+                    Fermer
                 </v-btn>
             </v-snackbar>
         <!-- Alert in case of imminent destroy -->
