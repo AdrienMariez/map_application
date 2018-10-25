@@ -32,15 +32,15 @@ class ImagesController extends Controller
         {
            $image = $request->get('image');
            $name = time().'.' . explode('/', explode(':', substr($image, 0, strpos($image, ';')))[1])[1];
+        //    \Image::make($request->get('image'))->save(('/images/uploads/').$name);
            \Image::make($request->get('image'))->save(public_path('images/uploads/').$name);
 
            $image = new Image();
-           $image->image_path = '/images/uploads/'.$name;
+           $image->image_path = '/public/images/uploads/'.$name;
            $image->updated_at = $request->created_at;
            $image->created_at = $request->created_at;
            $image->save();
         }
- 
  
         return response($request, Response::HTTP_CREATED);
 
@@ -52,7 +52,6 @@ class ImagesController extends Controller
         // $image->updated_at = $request->created_at;
         // $image->created_at = $request->created_at;
         // $image->save();
-
     }
 
     public function update(Request $request, $id)
@@ -70,6 +69,7 @@ class ImagesController extends Controller
         //destroy the file
             $image = Image::where('id', $id)->first();
             $path = substr($image->image_path, 1);
+        // unlink(($path));
         unlink(public_path($path));
 
         //remove from db :

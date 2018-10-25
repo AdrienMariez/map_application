@@ -170,7 +170,6 @@
 
 <script>
 import TopToolbar from './TopToolbar.vue'
-import ContactForm from './ContactForm.vue'
 import pointsMethods from './../../services/points.js'
 import referencesMethods from './../../services/references.js'
 import categoriesMethods from './../../services/categories.js'
@@ -393,7 +392,6 @@ export default {
     },
     components: {
         TopToolbar,
-        ContactForm,
     }
   }
 </script>

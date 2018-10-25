@@ -17,10 +17,11 @@
     </locations-map>
 
     <!-- Contact form -->
-        <contact-form
-            v-if="language == 'fr' || language == 'en'"
-            class="buttonContact">
-        </contact-form>
+    <contact-form
+      v-if="language == 'fr' || language == 'en'"
+      class="buttonContact"
+    >
+    </contact-form>
 
     <v-footer
       app

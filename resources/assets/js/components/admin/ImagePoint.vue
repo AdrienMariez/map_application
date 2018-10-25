@@ -260,8 +260,14 @@
                 reader.readAsDataURL(file);
             },
             uploadImage(){
+                console.log("uploadImage()");
+                
+                console.log(this.imageUpload);
+                
                 this.snackbarLoading = true;
-                axios.post('api/images/',{image: this.imageUpload})
+                axios.post('/api/images',{image: this.imageUpload})
+                // axios.post('/api/images', {image: this.imageUpload})
+                // axios.post(`/api/images/${this.imageUpload}`)
                     .then(response => { 
                         this.successUpload(response);
                     })

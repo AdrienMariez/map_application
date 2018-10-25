@@ -1,4 +1,4 @@
-Vous avez reçu un message depuis le formulaire du site de cartogaphie de Prayssac :
+Vous avez reçu un message depuis le formulaire du site de cartographie de Prayssac :
 
 <p>
 Nom:

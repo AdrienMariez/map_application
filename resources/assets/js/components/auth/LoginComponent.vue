@@ -41,7 +41,7 @@
                 <button
                     class="btn btn-lg green darken-1 btn-block white--text"
                     type="submit">
-                    Connection
+                    Connexion
                 </button>
                 <div
                     class="red--text"

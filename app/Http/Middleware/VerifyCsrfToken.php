@@ -12,6 +12,9 @@ class VerifyCsrfToken extends Middleware
      * @var array
      */
     protected $except = [
-        //
+        "http://www.carteprayssac46.fr/#/",
+        "http://www.carteprayssac46.fr/#/admin",
+        "http://www.carteprayssac46.fr/#/languages",
+        "http://www.carteprayssac46.fr/#/contact"
     ];
 }

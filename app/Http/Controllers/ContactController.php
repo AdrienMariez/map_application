@@ -35,7 +35,7 @@ class ContactController extends Controller
                 ),
                 function($message) {
                     $message->from('noreply@cartePrayssac.com');
-                    $message->to('adrien.mariez@gmail.com', 'Admin')->subject('Message utilisateur');
+                    $message->to('benoit.lafargue.cyberbase@prayssac.fr', 'Admin')->subject('Carteprayssac46');
                 }
         );
 
