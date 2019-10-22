@@ -260,10 +260,6 @@
                 reader.readAsDataURL(file);
             },
             uploadImage(){
-                console.log("uploadImage()");
-                
-                console.log(this.imageUpload);
-                
                 this.snackbarLoading = true;
                 axios.post('/api/images',{image: this.imageUpload})
                 // axios.post('/api/images', {image: this.imageUpload})
@@ -279,7 +275,7 @@
                 this.add = false;
                 this.snackbarLoading = false;
                 this.snackbar = true;
-                this.snackText = "Upload effectué !"
+                this.snackText = response;
                 this.images = imagesMethods.readImages();
                 this.$emit('imageListReload');
                 this.imageUpload = "";

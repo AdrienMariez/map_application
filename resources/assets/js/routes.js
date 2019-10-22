@@ -8,8 +8,10 @@ import SortAdminComponent from './components/SortAdministration'
 import LanguagesAdminComponent from './components/LanguageAdministration'
 import ContactAdminComponent from './components/ContactAdministration'
 import LoginComponent from './components/auth/LoginComponent'
+import ConnexionComponent from './components/auth/ConnexionComponent'
 import LogoutComponent from './components/auth/LogoutComponent'
 import PublicComponent from './components/PublicComponent'
+import ModelComponent from './components/ModelComponent'
 import store from './store'
 
 const routes = [
@@ -17,6 +19,12 @@ const routes = [
         path: '/',
         name: 'public',
         component: PublicComponent
+    },
+    //the model component is a work in progress to see if a tool to visualize 3d models could be possible
+    {
+        path: '/model',
+        name: 'model',
+        component: ModelComponent
     },
     {
         path: '/admin',
@@ -43,9 +51,15 @@ const routes = [
         meta: { requiresAuth: true }
     },
     {
-        path: '/login',
+        path: '/cartosprayssacos',
         name: 'login',
         component: LoginComponent
+    },
+    //the connexion component is a fake login page, it doesn't work !
+    {
+        path: '/connexion',
+        name: 'connexion',
+        component: ConnexionComponent
     },
     {
         path: '/logout',
@@ -63,7 +77,7 @@ router.beforeEach((to, from, next) => {
     // check if the route requires authentication and user is not logged in
     if (to.matched.some(route => route.meta.requiresAuth) && !store.state.isLoggedIn) {
         // redirect to login page
-        next({ name: 'login' })
+        next({ name: 'connexion' })
         return
     }
 

@@ -68,3 +68,4 @@ use Illuminate\Http\Request;
     // Route::resource('/contactform', 'ContactformController', [
     //     'except' => ['edit', 'show', 'store']
     // ]);
+

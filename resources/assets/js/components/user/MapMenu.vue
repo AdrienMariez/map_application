@@ -170,6 +170,7 @@
 
 <script>
 import TopToolbar from './TopToolbar.vue'
+import ContactForm from './ContactForm.vue'
 import pointsMethods from './../../services/points.js'
 import referencesMethods from './../../services/references.js'
 import categoriesMethods from './../../services/categories.js'
@@ -216,6 +217,8 @@ export default {
                     this.languageSelected = localLanguage;
                 }
                 else{
+                    this.languageSelected = "fr";
+                }
                     //HOW TO
                         //https://stackoverflow.com/questions/1043339/javascript-for-detecting-browser-language-preference
                         // console.log(navigator.language);
@@ -224,7 +227,7 @@ export default {
                         //is IE only and it's the language set in Windows Control Panel - Regional Options and NOT browser language
                         // https://en.wikipedia.org/wiki/Language_localisation
                     //END HOW TO
-                    var languageCode = window.navigator.userLanguage || window.navigator.language;
+                    /* var languageCode = window.navigator.userLanguage || window.navigator.language;
                     // var languageCode = "de-AT";
                     var language = languageCode.substring(0,2);
                     var languages = JSON.parse(JSON.stringify(this.languages));
@@ -250,10 +253,7 @@ export default {
                     this.languageSelected = languageSelected;
                     this.$locale = this.languageSelected
                 }
-                // $i18n.locale = this.languageSelected
-                this.$i18n.locale = this.languageSelected
-                // this.$locale = this.languageSelected    
-                // this.$root.i18n.locale  = this.languageSelected
+                this.$i18n.locale = this.languageSelected */
             },
         //DRAWER EMIT
             emitDrawer(newDrawer){
@@ -392,6 +392,7 @@ export default {
     },
     components: {
         TopToolbar,
+        ContactForm,
     }
   }
 </script>
@@ -399,6 +400,8 @@ export default {
 <style scoped>
     .asideDrawer{
         max-height: 100% !important;
+        max-width: 60%;
+        min-width: 180px;
     }
     .v-list{
         padding: 0 !important;
